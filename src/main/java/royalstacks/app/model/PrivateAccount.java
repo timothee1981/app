@@ -1,5 +1,8 @@
 package royalstacks.app.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class PrivateAccount extends Account {
 
     // CONSTRUCTORS

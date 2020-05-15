@@ -1,11 +1,23 @@
 package royalstacks.app.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.Set;
+
+@Entity
 public abstract class Account {
 
     protected final static double STARTING_BALANCE = 0.00;
 
+    @Id
+    @GeneratedValue
+    protected int accountId;
     protected String accountNumber;
     protected double balance;
+    @ManyToMany
+    protected Set<Customer> accountHolders;
 
     // CONSTRUCTORS
 

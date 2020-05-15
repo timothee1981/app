@@ -1,7 +1,14 @@
 package royalstacks.app.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public abstract class User {
 
+    @Id
+    @GeneratedValue
     protected int userid;
     protected String name;
     protected String username;
@@ -22,6 +29,7 @@ public abstract class User {
         this.password = password;
     }
 
+    public User() { }
 
     // METHODS
     public static boolean isUsernameValid(String username){

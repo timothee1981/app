@@ -1,5 +1,8 @@
 package royalstacks.app.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class BusinessAccount extends Account {
 
     private String companyName;
@@ -22,6 +25,8 @@ public class BusinessAccount extends Account {
         this.vatNumber = vatNumber;
         this.sector = sector;
     }
+
+    public BusinessAccount() { }
 
     @Override
     public String toString() {

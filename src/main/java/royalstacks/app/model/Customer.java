@@ -1,13 +1,21 @@
 package royalstacks.app.model;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
 public class Customer extends User {
 
     private String address;
     private String city;
     private String postalCode;
     private int socialSecurityNumber;
-    private Employee accountManager;
     private boolean isBusinessAccountHolder;
+    @ManyToOne
+    private Employee accountManager;
+    @ManyToMany
+    // TODO add mapping after implementing config file hibernate
+    private Set<Account> account;
 
     // CONSTRUCTORS
     public Customer(int userid, String name, String username, String password, String address, String city, String postalCode, int socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
@@ -30,6 +38,7 @@ public class Customer extends User {
         this.isBusinessAccountHolder = isBusinessAccountHolder;
     }
 
+    public Customer() { }
 
     // METHODS
     public static boolean isSocialSecurityNumberValid(int socialSecurityNumber){
