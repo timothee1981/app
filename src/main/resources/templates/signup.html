@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>signup</title>
 </head>
 <body>
-
+<h1>Sign up</h1>
+<form th:action="@{create_customer}" method="post" th:object="${customer}">
+    <table>
+        <tr>
+            <td>Username</td><td><input type="text" th:field="*{username}"></td>
+        </tr>
+        <tr>
+            <td>Password</td><td><input type="text" th:field="*{password}"></td>
+        </tr>
+        <tr>
+            <td>Name</td><td><input type="text" th:field="*{name}"></td>
+        </tr>
+        <tr>
+            <td>Address</td><td><input type="text" th:field="*{address}"></td>
+        </tr>
+        <tr>
+            <td>City</td><td><input type="text" th:field="*{city}"></td>
+        </tr>
+        <tr>
+            <td>Postal code</td><td><input type="text" th:field="*{postalcode}"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="submitbutton" value="Sign up"></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>
