@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import royalstacks.app.backingBean.CustomerBackingBean;
+import royalstacks.app.model.Customer;
 import royalstacks.app.service.CustomerService;
 
 @Controller
@@ -13,15 +15,16 @@ public class SignUpController {
     @Autowired
     private CustomerService customerService;
 
-/*    @PostMapping("signup")
-    public ModelAndView signUpHandler(@ModelAttribute CreatePersonBackingBean cbb) {
-        ModelAndView mav = new ModelAndView("person_details");
-        Person person = bb.person();
-        personService.savePerson(person);
-        mav.addObject("name", person.getName());
+    @PostMapping("/signup")
+    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb) {
+        System.out.println(cbb);
+        ModelAndView mav = new ModelAndView();
+        Customer customer = cbb.customer();
+        customerService.saveCustomer(customer);
+/*        mav.addObject("name", person.getName());
         mav.addObject("birth", person.getBirth().getDate().getYear());
-        mav.addObject("death", person.getDeath().getDate().getYear());
+        mav.addObject("death", person.getDeath().getDate().getYear());*/
         return mav;
-    }*/
+    }
 }
 

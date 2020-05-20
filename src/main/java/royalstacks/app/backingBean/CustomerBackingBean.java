@@ -51,7 +51,22 @@ public class CustomerBackingBean {
                 return cbb;
     }
 
-
+    @Override
+    public String toString() {
+        return "CustomerBackingBean{" +
+                "userid=" + userid +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
+                ", isBusinessAccountHolder=" + isBusinessAccountHolder +
+                ", accountManager=" + accountManager +
+                ", account=" + account +
+                '}';
+    }
 }
 
 

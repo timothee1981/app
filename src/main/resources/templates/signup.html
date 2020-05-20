@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Sign up</h1>
-<form th:action="@{create_customer}" method="post" th:object="${customer}">
+<form th:action="@{signup}" method="post" th:object="${customer}">
     <table>
         <tr>
             <td>Username</td><td><input type="text" th:field="*{username}"></td>
