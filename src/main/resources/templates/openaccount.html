@@ -1,8 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>openaccounts</title>
+    <form th:action="@{create_account}" methode="post"  th:object="${account}" >
+    <!--twee radio button nodig, een prive rekening een business account -->
+        <input type="radio" id="private" name="accountType" value="private"/>
+        <label for="private">Private account</label>
+        <input type="radio" id="business" name="accountType" value="business"/>
+        <label for="business">Business account</label><br>
+
+    <!--table for business (set on visible if radio button is clicked -->
+        <table>
+            <tr> <!--Company name -->
+                <td>Company name  </td><td><input type="text" th:field="*{companyName}"/></td>
+            </tr>
+        <!--kvk number-->
+            <tr>
+                <td>Kvk number  </td><td><input type="text" th:field="*{kvkNumber}"/></td>
+            </tr>
+        <!--Vat number -->
+            <tr>
+                <td>Vat number  </td><td><input type="text" th:field="*{vatNumber}"/></td>
+            </tr>
+        <!--Sector drop down menu select multiple -->
+            <tr>
+                <td>Sector </td>
+                <td>
+                    <select id="sector" name="sector">
+                        <option value="financial">Financial</option>
+                        <option value="it">IT</option>
+                        <option value="retail">Retail</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="education">Education</option>
+                        <option value="logistic">Logistic</option>
+                        <option value="industry">Industry</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" name="submitbutton" value="Create account" />
+    </form>
+    <form th:action="myaccount" method="get">
+        <input type="submit" name="submitbutton" value="Back" />
+    </form>
 </head>
 <body>
 
