@@ -13,7 +13,7 @@ public class LogInService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findUserByUsername (String username) {
+    public User findByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             return user.get();

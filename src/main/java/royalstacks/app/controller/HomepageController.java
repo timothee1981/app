@@ -2,7 +2,6 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.model.Customer;
@@ -19,28 +18,31 @@ public class HomepageController {
 
     @GetMapping("/doLogin")
     @ResponseBody
-    public ModelAndView doLoginHandler(@RequestParam String username){
-//        if (loginService.findUserByUsername(username) == null){
-//            return new ModelAndView("homepage");
-//            //TODO nette melding naar gebruiker dat ingevoerde gebruikersnaam niet bestaat
-//        }
-        //als er een user is, dan kun je de methode gebruiken om password te checken
+    public ModelAndView doLoginHandler(@RequestParam String inputUsername, String inputPassword){
+        //Check if username exists in database
+        if (loginService.findByUsername(inputUsername) == null){
+            return new ModelAndView("homepage");
+            //TODO nette melding naar gebruiker dat ingevoerde gebruikersnaam niet bestaat
+        }
 
-        //uitvoeren check bestaat username en password in database(getuserbyusername bijv)
+        //Check if password of user matches entered value
+        if (!loginService.findByUsername(inputUsername).getPassword().equals(inputPassword)){
+            return new ModelAndView("homepage");
+            //TODO nette melding naar gebruiker dat ingevoerde wachtwoord niet hoort bij de user
+        }
 
-
-        if (loginService.findUserByUsername(username) instanceof Employee){
-            Employee employee = (Employee)loginService.findUserByUsername(username);
+        //redirect user to next page
+        if (loginService.findByUsername(inputUsername) instanceof Employee){
+            Employee employee = (Employee)loginService.findByUsername(inputUsername);
             ModelAndView mav = new ModelAndView("headprivateoverview");
             return mav.addObject(employee);
-        } else if (loginService.findUserByUsername(username) instanceof Customer){
-            Customer customer = (Customer)loginService.findUserByUsername(username);
+        } else if (loginService.findByUsername(inputUsername) instanceof Customer){
+            Customer customer = (Customer)loginService.findByUsername(inputUsername);
             ModelAndView mav = new ModelAndView("myaccounts");
             return mav.addObject(customer);
         } else {
             return new ModelAndView("homepage");
         }
-
 
     }
 }
