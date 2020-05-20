@@ -1,12 +1,10 @@
 package royalstacks.app.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account {
 
     protected final static double STARTING_BALANCE = 0.00;
