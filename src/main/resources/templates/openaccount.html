@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>openaccounts</title>
-    <form th:action="@{openaccount}" method="post">
+    <form action="openaccount" method="post">
     <!--twee radio button nodig, een prive rekening een business account -->
         <input type="radio" id="private" name="accountType" value="private"/>
         <label for="private">Private account</label>
@@ -16,27 +16,27 @@
                 <td>Company name  </td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{companyName}"/>
+                        <input type="text" name="companyName"/>
                     </label>
                 </td>
             </tr>
         <!--kvk number-->
             <tr>
                 <td>Kvk number  </td><td><label>
-                <input type="text" th:field="*{kvkNumber}"/>
+                <input type="text" name="kvkNumber"/>
             </label></td>
             </tr>
         <!--Vat number -->
             <tr>
                 <td>Vat number  </td><td><label>
-                <input type="text" th:field="*{vatNumber}"/>
+                <input type="text" name="vatNumber"/>
             </label></td>
             </tr>
         <!--Sector drop down menu select multiple -->
             <tr>
                 <td>Sector </td>
                 <td>
-                    <label for="sector"></label><select id="sector" name="sector" th:field="*{sector}">
+                    <label for="sector"></label><select id="sector" name="sector">
                         <option value="financial">Financial</option>
                         <option value="it">IT</option>
                         <option value="retail">Retail</option>
@@ -50,7 +50,7 @@
         </table>
         <input type="submit" name="submitbutton" value="Create account" />
     </form>
-    <form th:action="myaccount" method="get">
+    <form action="myaccount" method="get">
         <input type="submit" name="submitbutton" value="Back" />
     </form>
 </head>
