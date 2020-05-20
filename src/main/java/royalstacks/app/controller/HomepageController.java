@@ -1,7 +1,9 @@
 package royalstacks.app.controller;
 
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.service.LogInService;
@@ -22,6 +24,12 @@ public class HomepageController {
         //als die bestaan -> wat voor type user is dit? customer/employee
         //stuur door naar de pagina waar ze heen moeten
         ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+
+    @GetMapping("/signup")
+    public ModelAndView signUpHandler(){
+        ModelAndView mav = new ModelAndView("signup");
         return mav;
     }
 }

@@ -13,7 +13,7 @@ public class SignUpController {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping("signup")
+/*    @PostMapping("signup")
     public ModelAndView signUpHandler(@ModelAttribute CreatePersonBackingBean cbb) {
         ModelAndView mav = new ModelAndView("person_details");
         Person person = bb.person();
@@ -22,6 +22,6 @@ public class SignUpController {
         mav.addObject("birth", person.getBirth().getDate().getYear());
         mav.addObject("death", person.getDeath().getDate().getYear());
         return mav;
-    }
+    }*/
 }
 

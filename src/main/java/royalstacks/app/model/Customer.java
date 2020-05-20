@@ -71,6 +71,10 @@ public class Customer extends User {
         return true;
     }
 
+    // GETTERS EN SETTERS
+
+
+
     public String getAddress() {
         return address;
     }
