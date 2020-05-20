@@ -26,10 +26,10 @@ public class HomepageController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-
     @GetMapping("/signup")
     public ModelAndView signUpHandler(){
         ModelAndView mav = new ModelAndView("signup");
         return mav;
     }
+
 }
