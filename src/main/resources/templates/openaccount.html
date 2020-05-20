@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>openaccounts</title>
-    <form th:action="@{create_account}" methode="post"  th:object="${account}" >
+    <form th:action="@{create_business_account}" methode="post"  th:object="${account}" >
     <!--twee radio button nodig, een prive rekening een business account -->
         <input type="radio" id="private" name="accountType" value="private"/>
         <label for="private">Private account</label>
@@ -27,7 +27,7 @@
             <tr>
                 <td>Sector </td>
                 <td>
-                    <select id="sector" name="sector">
+                    <select id="sector" name="sector" th:field="*{sector}">
                         <option value="financial">Financial</option>
                         <option value="it">IT</option>
                         <option value="retail">Retail</option>
