@@ -14,7 +14,7 @@ public class LogInService {
     private UserRepository userRepository;
 
     public User findUserByUsername (String username) {
-        Optional<User> user = Optional.ofNullable(userRepository.findUserByUsername(username));
+        Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             return user.get();
         } else {
