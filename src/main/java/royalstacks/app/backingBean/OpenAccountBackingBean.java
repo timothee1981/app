@@ -10,39 +10,44 @@ public class OpenAccountBackingBean {
     private String kvkNumber;
     private String vatNumber;
     private String sector;
+    private String accountNumber;
+
+
+    private String accountType;
 
     public OpenAccountBackingBean() {
-        this(EMPTY_STRING,EMPTY_STRING,EMPTY_STRING,EMPTY_STRING);
+        this(EMPTY_STRING,EMPTY_STRING,EMPTY_STRING,EMPTY_STRING, EMPTY_STRING);
     }
 
 
 
-    public OpenAccountBackingBean(String companyName, String kvkNumber, String vatNumber, String sector) {
+    public OpenAccountBackingBean(String companyName, String kvkNumber, String vatNumber, String sector, String accountType) {
         this.companyName = companyName;
         this.kvkNumber = kvkNumber;
         this.vatNumber = vatNumber;
         this.sector = sector;
+        this.accountType = accountType;
     }
 
 
     public BusinessAccount businessAccount(){
-        String accountNumber = generateAccountNumber();
+        accountNumber = generateAccountNumber();
         BusinessAccount businessAccount = new BusinessAccount(accountNumber, START_BALANCE, companyName,kvkNumber,vatNumber,sector);
         return businessAccount;
 
     }
 
     public PrivateAccount privateAccount(){
-        String accountNumber = generateAccountNumber();
+        accountNumber = generateAccountNumber();
         PrivateAccount privateAccount = new PrivateAccount(accountNumber,START_BALANCE);
         return privateAccount;
     }
 
-    public static OpenAccountBackingBean createOpenAccountBean(BusinessAccount businessAccount){
+/*    public static OpenAccountBackingBean createOpenAccountBean(BusinessAccount businessAccount){
         OpenAccountBackingBean bb = new OpenAccountBackingBean(businessAccount.getCompanyName(),businessAccount.getKvkNumber(),
                 businessAccount.getVatNumber(),businessAccount.getSector());
         return bb;
-    }
+    }*/
 
     public String generateAccountNumber(){
         // TODO: body generateAccountNumber
@@ -79,5 +84,21 @@ public class OpenAccountBackingBean {
 
     public void setSector(String sector) {
         this.sector = sector;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

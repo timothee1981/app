@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>openaccounts</title>
+
+</head>
+<body>
     <form th:action="@{/openaccount}"  method="post" th:object="${account}">
-    <!--twee radio button nodig, een prive rekening een business account -->
-        <input type="radio" id="private" name="accountType" value="private"/>
+        <!--twee radio button nodig, een prive rekening een business account -->
+        <input type="radio" id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()">
         <label for="private">Private account</label>
-        <input type="radio" id="business" name="accountType" value="business"/>
+        <input type="radio" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
         <label for="business">Business account</label><br>
 
-    <!--table for business (set on visible if radio button is clicked -->
-        <table>
+        <!--table for business (set on visible if radio button is clicked -->
+        <table id="businessFields" style="visibility:hidden">
             <tr> <!--Company name -->
                 <td>Company name  </td>
                 <td>
@@ -20,31 +23,31 @@
                     </label>
                 </td>
             </tr>
-        <!--kvk number-->
+            <!--kvk number-->
             <tr>
                 <td>Kvk number  </td><td><label>
                 <input type="text" th:field="*{kvkNumber}" />
             </label></td>
             </tr>
-        <!--Vat number -->
+            <!--Vat number -->
             <tr>
                 <td>Vat number  </td><td><label>
                 <input type="text" th:field="*{vatNumber}" />
             </label></td>
             </tr>
-        <!--Sector drop down menu select multiple -->
+            <!--Sector drop down menu select multiple -->
             <tr>
                 <td>Sector </td>
                 <td>
                     <label for="sector"></label><select id="sector" th:field="*{sector}">
-                        <option value="financial">Financial</option>
-                        <option value="it">IT</option>
-                        <option value="retail">Retail</option>
-                        <option value="agriculture">Agriculture</option>
-                        <option value="education">Education</option>
-                        <option value="logistic">Logistic</option>
-                        <option value="industry">Industry</option>
-                    </select>
+                    <option value="financial">Financial</option>
+                    <option value="it">IT</option>
+                    <option value="retail">Retail</option>
+                    <option value="agriculture">Agriculture</option>
+                    <option value="education">Education</option>
+                    <option value="logistic">Logistic</option>
+                    <option value="industry">Industry</option>
+                </select>
                 </td>
             </tr>
         </table>
@@ -53,8 +56,16 @@
     <form action="myaccount" method="get">
         <input type="submit" name="submitbutton" value="Back" />
     </form>
-</head>
-<body>
 
 </body>
 </html>
+
+<script>
+
+    function hideBusinessFields() {
+        document.getElementById("businessFields").style.visibility = "hidden";
+    }
+    function showBusinessFields() {
+        document.getElementById("businessFields").style.visibility = "visible";
+    }
+</script>

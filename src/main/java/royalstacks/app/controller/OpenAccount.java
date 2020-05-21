@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.OpenAccountBackingBean;
 import royalstacks.app.model.BusinessAccount;
+import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.service.AccountService;
 
 @Controller
@@ -21,14 +22,21 @@ public class OpenAccount {
 
     @PostMapping("/openaccount")
     public ModelAndView createBusinessAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb) {
-        //maak een nieuwe html view confirmation accout
+
         ModelAndView mav = new ModelAndView("createAccountConfirmation");
-        //ToDo haal gegevens uit th:fields en sla op in account object  (voeg placeholders toe)
-        BusinessAccount businessAccount = bb.businessAccount();
-        //ToDo voer checks uit op gegevens
-        //ToDo if(fout){a terug naar pagina met ingevulde velden en foutmeldingin waar foute gegevens zijn ingevuld}
-        //ToDo if (correct) sla account op in database
-        accountService.saveBusinessAccount(businessAccount);
+
+        if(bb.getAccountType().equals("business")) {
+            BusinessAccount businessAccount = bb.businessAccount();
+            accountService.saveBusinessAccount(businessAccount);
+        }
+        else if (bb.getAccountType().equals("private")) {
+            PrivateAccount privateAccount = bb.privateAccount();
+            accountService.savePrivateAccount(privateAccount);
+        }
+        mav.addObject("account", bb);
+
+
+
 
         // go To  confirmation page: message+account number, ToMyAccountButton , ToAccountDetails
         return mav;

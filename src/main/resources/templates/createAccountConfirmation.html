@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Create Account confirmation</title>
 </head>
-<body>
+<body th:object="${account}">
     <p>Your account is created successfully you account number is
-        <span th:text="${accountNumber}"/></p>
+        <span th:text="*{accountNumber}"/></p>
 
     <form th:action="@{myaccounts}" method="get"><input type="submit" name="submitbutton" value="My Accounts" /></form>
     <form th:action="@{accountdetails}" method="post" ><input type="submit" name="submitbutton" value="Account details " /></form>
