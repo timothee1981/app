@@ -33,7 +33,7 @@ public abstract class User {
     // METHODS
     public boolean isUsernameFormatValid(){
         // username mag kleine letters, grote letters, getallen, en - of _ bevatten en moet tussen 3 en 20 characters lang zijn.
-        return this.username.matches("/^[a-z0-9_-]{3,20}$/");
+        return this.username.matches("^[a-zA-Z0-9_-]{3,15}$");
     }
 
     public boolean isUsernameUnique(){

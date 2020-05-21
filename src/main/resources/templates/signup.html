@@ -9,25 +9,25 @@
 <form th:action="@{signup}" method="post">
     <table>
         <tr>
-            <td>Username</td><td><input type="text" name="username"> <span th:text="${username_error}"/></td>
+            <td>Username</td><td><input type="text" name="username" th:value="${username}"> <span th:text="${username_error}"/></td>
         </tr>
         <tr>
-            <td>Password</td><td><input type="text" name="password"> <span th:text="${password_error}"/></td>
+            <td>Password</td><td><input type="text" name="password" th:value="${password}"> <span th:text="${password_error}"/></td>
         </tr>
         <tr>
-            <td>Name</td><td><input type="text" name="name"> <span th:text="${name_error}"/></td>
+            <td>Name</td><td><input type="text" name="name" th:value="${name}"> <span th:text="${name_error}"/></td>
         </tr>
         <tr>
-            <td>Address</td><td><input type="text" name="address"> <span th:text="${address_error}"/></td>
+            <td>Address</td><td><input type="text" name="address" th:value="${address}"> <span th:text="${address_error}"/></td>
         </tr>
         <tr>
-            <td>City</td><td><input type="text" name="city"> <span th:text="${city_error}"/></td>
+            <td>City</td><td><input type="text" name="city" th:value="${city}"> <span th:text="${city_error}"/></td>
         </tr>
         <tr>
-            <td>Postal code</td><td><input type="text" name="postalCode"> <span th:text="${postalCode_error}"/></td>
+            <td>Postal code</td><td><input type="text" name="postalCode" th:value="${postalCode}"> <span th:text="${postalCode_error}"/></td>
         </tr>
         <tr>
-            <td>SNN code</td><td><input type="text" name="socialSecurityNumber"> <span th:text="${ssn_error}"/></td>
+            <td>SNN code</td><td><input type="text" name="socialSecurityNumber" th:value="${socialSecurityNumber}"> <span th:text="${ssn_error}"/></td>
         </tr>
         <tr>
             <td><input type="submit" name="submitbutton" value="Sign up"></td>
