@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import royalstacks.app.backingBean.OpenAccountBackingBean;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.service.AccountService;
 
@@ -19,18 +20,16 @@ public class OpenAccount {
     }
 
     @PostMapping("/openaccount")
-    public ModelAndView createBusinessAccountHandler(@RequestParam String companyName,
-                                                     @RequestParam String kvkNumber,
-                                                     @RequestParam String vatNumber,
-                                                     @RequestParam String sector) {//
-        ModelAndView mav = new ModelAndView("createAccountConfirmation");//maak een nieuwe html view confirmation accout
+    public ModelAndView createBusinessAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb) {
+        //maak een nieuwe html view confirmation accout
+        ModelAndView mav = new ModelAndView("createAccountConfirmation");
         //ToDo haal gegevens uit th:fields en sla op in account object  (voeg placeholders toe)
-        BusinessAccount businessAccount = new BusinessAccount("123",0.0,companyName,
-                kvkNumber,vatNumber,sector);
+        BusinessAccount businessAccount = bb.businessAccount();
         //ToDo voer checks uit op gegevens
         //ToDo if(fout){a terug naar pagina met ingevulde velden en foutmeldingin waar foute gegevens zijn ingevuld}
         //ToDo if (correct) sla account op in database
         accountService.saveBusinessAccount(businessAccount);
+
         // go To  confirmation page: message+account number, ToMyAccountButton , ToAccountDetails
         return mav;
 

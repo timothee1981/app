@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>openaccounts</title>
-    <form action="openaccount" method="post">
+    <form th:action="@{/openaccount}"  method="post" th:object="${account}">
     <!--twee radio button nodig, een prive rekening een business account -->
         <input type="radio" id="private" name="accountType" value="private"/>
         <label for="private">Private account</label>
@@ -16,27 +16,27 @@
                 <td>Company name  </td>
                 <td>
                     <label>
-                        <input type="text" name="companyName"/>
+                        <input type="text" th:field="*{companyName}" />
                     </label>
                 </td>
             </tr>
         <!--kvk number-->
             <tr>
                 <td>Kvk number  </td><td><label>
-                <input type="text" name="kvkNumber"/>
+                <input type="text" th:field="*{kvkNumber}" />
             </label></td>
             </tr>
         <!--Vat number -->
             <tr>
                 <td>Vat number  </td><td><label>
-                <input type="text" name="vatNumber"/>
+                <input type="text" th:field="*{vatNumber}" />
             </label></td>
             </tr>
         <!--Sector drop down menu select multiple -->
             <tr>
                 <td>Sector </td>
                 <td>
-                    <label for="sector"></label><select id="sector" name="sector">
+                    <label for="sector"></label><select id="sector" th:field="*{sector}">
                         <option value="financial">Financial</option>
                         <option value="it">IT</option>
                         <option value="retail">Retail</option>

@@ -26,16 +26,12 @@ public abstract class Account {
 
     // generates new account
     public Account() {
-        this(generateAccountNumber(),STARTING_BALANCE);
+        this("",0);
     }
 
 
-    // METHODS
 
-    private static String generateAccountNumber(){
-        // TODO: body generateAccountNumber
-        return "";
-    }
+
 
     @Override
     public String toString() {
