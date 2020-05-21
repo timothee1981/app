@@ -21,9 +21,6 @@ public class SignUpController {
         ModelAndView mav = new ModelAndView();
         Customer customer = cbb.customer();
         customerService.saveCustomer(customer);
-/*        mav.addObject("name", person.getName());
-        mav.addObject("birth", person.getBirth().getDate().getYear());
-        mav.addObject("death", person.getDeath().getDate().getYear());*/
         return mav;
     }
 }

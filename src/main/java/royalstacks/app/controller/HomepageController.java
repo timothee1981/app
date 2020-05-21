@@ -30,13 +30,6 @@ public class HomepageController {
     }
     @GetMapping("/signup")
     public ModelAndView signUpHandler(){
-        ModelAndView mav = new ModelAndView("signup");
-        return mav;
+        return new ModelAndView("signup");
     }
-
-    @GetMapping("/test")
-    public void testHandler(){
-        System.out.println("testhandler");
-    }
-
 }

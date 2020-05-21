@@ -6,25 +6,25 @@
 </head>
 <body>
 <h1>Sign up</h1>
-<form th:action="@{signup}" method="post" th:object="${customer}">
+<form th:action="@{signup}" method="post">
     <table>
         <tr>
-            <td>Username</td><td><input type="text" th:field="*{username}"></td>
+            <td>Username</td><td><input type="text" name="username"></td>
         </tr>
         <tr>
-            <td>Password</td><td><input type="text" th:field="*{password}"></td>
+            <td>Password</td><td><input type="text" name="password"></td>
         </tr>
         <tr>
-            <td>Name</td><td><input type="text" th:field="*{name}"></td>
+            <td>Name</td><td><input type="text" name="name"></td>
         </tr>
         <tr>
-            <td>Address</td><td><input type="text" th:field="*{address}"></td>
+            <td>Address</td><td><input type="text" name="address"></td>
         </tr>
         <tr>
-            <td>City</td><td><input type="text" th:field="*{city}"></td>
+            <td>City</td><td><input type="text" name="city"></td>
         </tr>
         <tr>
-            <td>Postal code</td><td><input type="text" th:field="*{postalcode}"></td>
+            <td>Postal code</td><td><input type="text" name="postalcode"></td>
         </tr>
         <tr>
             <td><input type="submit" name="submitbutton" value="Sign up"></td>
