@@ -9,28 +9,32 @@
 <form th:action="@{signup}" method="post">
     <table>
         <tr>
-            <td>Username</td><td><input type="text" name="username"></td>
+            <td>Username</td><td><input type="text" name="username"> <span th:text="${username_error}"/></td>
         </tr>
         <tr>
-            <td>Password</td><td><input type="text" name="password"></td>
+            <td>Password</td><td><input type="text" name="password"> <span th:text="${password_error}"/></td>
         </tr>
         <tr>
-            <td>Name</td><td><input type="text" name="name"></td>
+            <td>Name</td><td><input type="text" name="name"> <span th:text="${name_error}"/></td>
         </tr>
         <tr>
-            <td>Address</td><td><input type="text" name="address"></td>
+            <td>Address</td><td><input type="text" name="address"> <span th:text="${address_error}"/></td>
         </tr>
         <tr>
-            <td>City</td><td><input type="text" name="city"></td>
+            <td>City</td><td><input type="text" name="city"> <span th:text="${city_error}"/></td>
         </tr>
         <tr>
-            <td>Postal code</td><td><input type="text" name="postalCode"></td>
+            <td>Postal code</td><td><input type="text" name="postalCode"> <span th:text="${postalCode_error}"/></td>
+        </tr>
+        <tr>
+            <td>SNN code</td><td><input type="text" name="socialSecurityNumber"> <span th:text="${ssn_error}"/></td>
         </tr>
         <tr>
             <td><input type="submit" name="submitbutton" value="Sign up"></td>
+            <td><a href="/">Homepage</a></td>
         </tr>
     </table>
-    <h2><span th:text="${error}"/></h2>
+    <h2><span th:text="${confirmation}"/></h2>
 </form>
 </body>
 </html>

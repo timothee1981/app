@@ -31,33 +31,37 @@ public class SignUpController {
     @PostMapping("/signup")
     public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
         Customer customer = cbb.customer();
-        String error;
-
-        if(!customer.isPasswordValid()){
-            error = "password invalid";
-        } else if(!customer.isPostalCodeValid()) {
-            error = "postalCode invalid";
-        } else if(!customer.isCityValid()) {
-            error = "city invalid";
-        } else if(!customer.isSocialSecurityNumberFormatValid()) {
-            error = "SSN format invalid";
-        } else if(!customer.isSocialSecurityNumberUnique()) {
-            error = "SSN not unique";
-        } else if(!customer.isAddressValid()) {
-            error = "adress invalid";
-        } else {
+        ModelAndView mav = new ModelAndView("signup");
+        boolean save = true;
+        if(!customer.isPasswordValid()) {
+            mav.addObject("password_error", "invalid password");
+            save = false;
+        }
+        if(!customer.isPostalCodeValid()) {
+            mav.addObject("postalCode_error", "invalid postalCode");
+            save = false;
+        }
+        if(!customer.isCityValid()) {
+            mav.addObject("city_error", "invalid city");
+            save = false;
+        }
+        if(!customer.isSocialSecurityNumberFormatValid()) {
+            mav.addObject("ssn_error", "invalid ssn");
+            save = false;
+        }
+        if(!customer.isSocialSecurityNumberUnique()) {
+            mav.addObject("ssn_error", "invalid ssn");
+            save = false;
+        }
+        if(!customer.isAddressValid()) {
+            mav.addObject("address_error", "invalid address");
+            save = false;
+        }
+        if(save) {
             customerService.saveCustomer(customer);
-            return new ModelAndView("signupconfirmation");
+            mav.addObject("confirmation", "Account successfully created");
         }
 
-        ModelAndView mav = new ModelAndView("signup");
-        mav.addObject("invalid", true);
-        mav.addObject("error", error);
         return mav;
-    }
-
-    @GetMapping("/signupconfirmation")
-    public ModelAndView signUpConfirmationHandler(){
-        return new ModelAndView("signupconfirmation");
     }
 }
