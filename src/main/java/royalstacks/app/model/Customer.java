@@ -41,34 +41,26 @@ public class Customer extends User {
     public Customer() { }
 
     // METHODS
-    public static boolean isSocialSecurityNumberValid(String socialSecurityNumber){
-        return isSocialSecurityNumberUnique(socialSecurityNumber) &&
-                isSocialSecurityNumberFormatValid(socialSecurityNumber);
-    }
-
-    private static boolean isSocialSecurityNumberUnique(String socialSecurityNumber){
+    public boolean isSocialSecurityNumberUnique(){
         // TODO: body isSocialSecurityNumberUnique
         return true;
     }
 
-    private static boolean isSocialSecurityNumberFormatValid(String socialSecurityNumber){
-        // TODO: body isSocialSecurityNumberFormatValid
-        return true;
+    public boolean isSocialSecurityNumberFormatValid(){
+        return this.socialSecurityNumber.matches("\\d{9}");
     }
 
-    public static boolean isAddressValid(String address){
+    public boolean isAddressValid(){
         // TODO: body isAddressValid
         return true;
     }
 
-    public static boolean isPostalCodeValid(String postalCode){
-        // TODO: body isPostalCodeValid
-        return true;
+    public boolean isPostalCodeValid(){
+        return this.postalCode.matches("\\d{4}\\w{2}");
     }
 
-    public static boolean isCityValid(String city){
-        // TODO: body isCityValid
-        return true;
+    public boolean isCityValid(){
+        return this.city.matches("^\\p{Lu}\\p{L}*(?:[\\s-]\\p{Lu}\\p{L}*)*$");
     }
 
     // GETTERS EN SETTERS

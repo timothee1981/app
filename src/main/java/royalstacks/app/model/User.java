@@ -31,33 +31,27 @@ public abstract class User {
     public User() { }
 
     // METHODS
-    public static boolean isUsernameValid(String username){
-        return isUsernameFormatValid(username)
-                && isUsernameUnique(username);
+    public boolean isUsernameFormatValid(){
+        // username mag kleine letters, grote letters, getallen, en - of _ bevatten en moet tussen 3 en 20 characters lang zijn.
+        return this.username.matches("/^[a-z0-9_-]{3,20}$/");
     }
 
-    private static boolean isUsernameFormatValid(String username){
-        // TODO: body isUsernameFormatValid
-        return true;
-    }
-
-    private static boolean isUsernameUnique(String username){
+    public boolean isUsernameUnique(){
         // TODO: body isUsernameUnique
         return true;
     }
 
-    public static boolean isPasswordValid(String password){
-        // TODO: body isPasswordValid
-        return true;
+    public boolean isPasswordValid(){
+        // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 8 karakters lang zijn
+        return this.password.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
     }
 
-    public static boolean isNameValid(String name){
-        // TODO: body isNameValid
+    public boolean isNameValid(){
+        // TODO: is name valid. Voornaam Achternaam?
         return true;
     }
 
     // GETTERS SETTERS
-
     public int getUserid() {
         return userid;
     }
