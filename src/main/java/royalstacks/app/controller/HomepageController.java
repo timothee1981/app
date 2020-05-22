@@ -16,7 +16,7 @@ public class HomepageController {
     private String username;
     private String password;
 
-    @GetMapping("/doLogin")
+    @PostMapping("/doLogin")
     @ResponseBody
     public ModelAndView doLoginHandler(@RequestParam String inputUsername, String inputPassword){
         //Check if username exists in database

@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1>Welkom op de homepage!</h1>
-        <form th:action="@{doLogin}">
+        <form th:action="@{doLogin}" method="post">
         <p>Username:<span><input type="text" name="inputUsername"></span></p>
         <p>Wachtwoord:<span><input type="password" name="inputPassword"></span></p>
     <input type ="submit" name="submitbutton" value="Inloggen">
