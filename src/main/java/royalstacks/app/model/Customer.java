@@ -51,22 +51,30 @@ public class Customer extends User {
     }
 
     public boolean isAddressValid(){
-        // TODO: body isAddressValid
-        return true;
+        // trim eventuele spaties van begin en eind
+        this.address = this.address.trim();
+        return this.address.matches("^([1-9][e][\\s])*([a-zA-Z]+(([\\.][\\s])|([\\s]))?)+[1-9][0-9]*(([-][1-9][0-9]*)|([\\s]?[a-zA-Z]+))?$");
     }
 
-    public boolean isPostalCodeValid(){
-        return this.postalCode.matches("\\d{4}\\w{2}");
+    public boolean isPostalCodeValid() {
+        // verwijder eventuele spaties en maak van alle letters hoofdletters
+        this.postalCode = this.postalCode.replace(" ", "");
+        this.postalCode = this.postalCode.toUpperCase();
+
+        // check of postcode bestaat uit 4 getallen en 2 letters
+        return this.postalCode.matches("\\d{4}[A-Z]{2}");
     }
 
     public boolean isCityValid(){
-        return this.city.matches("^\\p{Lu}\\p{L}*(?:[\\s-]\\p{Lu}\\p{L}*)*$");
+        // trim eventuele spaties van begin en eind
+        this.city = city.trim();
+
+        // moet beginnen met een hoofdletter of ' en minimaal 2 letters lang zijn
+        return this.city.matches("[A-Z']?[a-zA-Z _']+");
     }
 
+
     // GETTERS EN SETTERS
-
-
-
     public String getAddress() {
         return address;
     }
