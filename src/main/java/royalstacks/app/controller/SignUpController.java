@@ -25,6 +25,7 @@ public class SignUpController {
         if (invalid) {
             mav.addObject("error", "Error: " + error);
         }
+        //System.out.println(customerService.findBySocialSecurityNumber("987654321"));
         return mav;
     }
 
@@ -42,8 +43,12 @@ public class SignUpController {
             mav.addObject("password_error", "invalid password");
             save = false;
         }
-        if(!customer.isNameValid()) {
-            mav.addObject("name", "invalid name");
+        if(!customer.isFirstNameValid()) {
+            mav.addObject("firstName", "invalid first name");
+            save = false;
+        }
+        if(!customer.isLastNameValid()) {
+            mav.addObject("lastName", "invalid last name");
             save = false;
         }
         if(!customer.isPostalCodeValid()) {
@@ -55,11 +60,11 @@ public class SignUpController {
             save = false;
         }
         if(!customer.isSocialSecurityNumberFormatValid()) {
-            mav.addObject("ssn_error", "invalid ssn");
+            mav.addObject("ssn_error", "invalid ssn format");
             save = false;
         }
         if(!customer.isSocialSecurityNumberUnique()) {
-            mav.addObject("ssn_error", "invalid ssn");
+            mav.addObject("ssn_error", "ssn is not unique");
             save = false;
         }
         if(!customer.isAddressValid()) {
@@ -86,10 +91,12 @@ public class SignUpController {
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());
         mav.addObject("password", customer.getPassword());
-        mav.addObject("name", customer.getName());
+        mav.addObject("firstName", customer.getFirstName());
+        mav.addObject("lastName", customer.getLastName());
         mav.addObject("postalCode", customer.getPostalCode());
         mav.addObject("city", customer.getCity());
         mav.addObject("socialSecurityNumber", customer.getSocialSecurityNumber());
         mav.addObject("address", customer.getAddress());
     }
+
 }

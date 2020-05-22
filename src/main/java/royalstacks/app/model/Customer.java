@@ -1,5 +1,7 @@
 package royalstacks.app.model;
 
+import royalstacks.app.service.CustomerService;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,8 +20,9 @@ public class Customer extends User {
     private Set<Account> account;
 
     // CONSTRUCTORS
-    public Customer(int userid, String name, String username, String password, String address, String city, String postalCode, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
-        super(userid, name, username, password);
+    // all args
+    public Customer(int userid, String username, String password, String firstName, String lastName, String address, String city, String postalCode, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
+        super(userid, username, password, firstName, lastName);
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
@@ -28,8 +31,9 @@ public class Customer extends User {
         this.isBusinessAccountHolder = isBusinessAccountHolder;
     }
 
-    public Customer(String name, String username, String password, String address, String city, String postalCode, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
-        super(name, username, password);
+    // om customer op te slaan in DB
+    public Customer(String username, String password, String firstName, String lastName, String address, String city, String postalCode, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
+        super(username, password, firstName, lastName);
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
@@ -38,12 +42,13 @@ public class Customer extends User {
         this.isBusinessAccountHolder = isBusinessAccountHolder;
     }
 
+    // wordt gebruikt samen met de backing bean
     public Customer() { }
 
     // METHODS
     public boolean isSocialSecurityNumberUnique(){
-        // TODO: body isSocialSecurityNumberUnique
-        return true;
+        CustomerService cs = new CustomerService();
+        return cs.findBySocialSecurityNumber(this.socialSecurityNumber) == null;
     }
 
     public boolean isSocialSecurityNumberFormatValid(){
@@ -141,7 +146,7 @@ public class Customer extends User {
                 ", accountManager=" + accountManager +
                 ", isBusinessAccountHolder=" + isBusinessAccountHolder +
                 ", userid=" + userid +
-                ", name='" + name + '\'' +
+                ", name='" + firstName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
