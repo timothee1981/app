@@ -1,10 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>openaccounts</title>
+
 </head>
 <body>
+    <form th:action="@{/openaccount}"  method="post" th:object="${account}">
+        <!--twee radio button nodig, een prive rekening een business account -->
+        <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
+        <label for="private">Private account</label>
+        <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
+        <label for="business">Business account</label><br>
+
+        <!--table for business (set on visible if radio button is clicked -->
+        <table id="businessFields" style="visibility:hidden">
+            <tr> <!--Company name -->
+                <td>Company name  </td>
+                <td>
+                    <label>
+                        <input type="text" id="companyName"   th:field="*{companyName}" />
+                    </label>
+                </td>
+            </tr>
+            <!--kvk number-->
+            <tr>
+                <td>Kvk number  </td><td><label>
+                    <input type="text" id="kvkNumber"   th:field="*{kvkNumber}"  />
+            </label></td>
+            </tr>
+            <!--Vat number -->
+            <tr>
+                <td>Vat number  </td><td><label>
+                    <input type="text" id="vatNumber"  th:field="*{vatNumber}"  />
+            </label></td>
+            </tr>
+            <!--Sector drop down menu select multiple -->
+            <tr>
+                <td>Sector </td>
+                <td>
+                    <label for="sector"></label><select id="sector" th:field="*{sector}">
+                    <option value="financial">Financial</option>
+                    <option value="it">IT</option>
+                    <option value="retail">Retail</option>
+                    <option value="agriculture">Agriculture</option>
+                    <option value="education">Education</option>
+                    <option value="logistic">Logistic</option>
+                    <option value="industry">Industry</option>
+                </select>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" name="submitbutton" value="Create account" />
+    </form>
+    <form action="myaccount" method="get">
+        <input type="submit" name="submitbutton" value="Back" />
+    </form>
 
 </body>
 </html>
+
+<script>
+
+    function hideBusinessFields() {
+        document.getElementById("businessFields").style.visibility = "hidden";
+        document.getElementById("companyName").required = "false";
+        document.getElementById("kvkNumber").required = "false";
+        document.getElementById("vatNumber").required = "false";
+    }
+    function showBusinessFields() {
+        document.getElementById("businessFields").style.visibility = "visible";
+        document.getElementById("companyName").required = "true";
+        document.getElementById("kvkNumber").required = "true";
+        document.getElementById("vatNumber").required = "true";
+
+    }
+</script>

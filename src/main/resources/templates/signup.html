@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>signup</title>
 </head>
 <body>
-
+<h1>Sign up</h1>
+<form th:action="@{signup}" method="post">
+    <table>
+        <tr>
+            <td>Username</td><td><input type="text" name="username" th:value="${username}"> <span th:text="${username_error}"/></td>
+        </tr>
+        <tr>
+            <td>Password</td><td><input type="text" name="password" th:value="${password}"> <span th:text="${password_error}"/></td>
+        </tr>
+        <tr>
+            <td>Name</td><td><input type="text" name="name" th:value="${name}"> <span th:text="${name_error}"/></td>
+        </tr>
+        <tr>
+            <td>Address</td><td><input type="text" name="address" th:value="${address}"> <span th:text="${address_error}"/></td>
+        </tr>
+        <tr>
+            <td>City</td><td><input type="text" name="city" th:value="${city}"> <span th:text="${city_error}"/></td>
+        </tr>
+        <tr>
+            <td>Postal code</td><td><input type="text" name="postalCode" th:value="${postalCode}"> <span th:text="${postalCode_error}"/></td>
+        </tr>
+        <tr>
+            <td>SNN code</td><td><input type="text" name="socialSecurityNumber" th:value="${socialSecurityNumber}"> <span th:text="${ssn_error}"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="submitbutton" value="Sign up"></td>
+            <td><a href="/">Homepage</a></td>
+        </tr>
+    </table>
+    <h2><span th:text="${confirmation}"/></h2>
+</form>
 </body>
 </html>
