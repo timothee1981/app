@@ -8,9 +8,9 @@
 <body>
     <form th:action="@{/openaccount}"  method="post" th:object="${account}">
         <!--twee radio button nodig, een prive rekening een business account -->
-        <input type="radio" id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()">
+        <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
         <label for="private">Private account</label>
-        <input type="radio" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
+        <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
         <label for="business">Business account</label><br>
 
         <!--table for business (set on visible if radio button is clicked -->
@@ -19,20 +19,20 @@
                 <td>Company name  </td>
                 <td>
                     <label>
-                        <input type="text" th:field="*{companyName}" />
+                        <input type="text" id="companyName"   th:field="*{companyName}" />
                     </label>
                 </td>
             </tr>
             <!--kvk number-->
             <tr>
                 <td>Kvk number  </td><td><label>
-                <input type="text" th:field="*{kvkNumber}" />
+                    <input type="text" id="kvkNumber"   th:field="*{kvkNumber}"  />
             </label></td>
             </tr>
             <!--Vat number -->
             <tr>
                 <td>Vat number  </td><td><label>
-                <input type="text" th:field="*{vatNumber}" />
+                    <input type="text" id="vatNumber"  th:field="*{vatNumber}"  />
             </label></td>
             </tr>
             <!--Sector drop down menu select multiple -->
@@ -64,8 +64,15 @@
 
     function hideBusinessFields() {
         document.getElementById("businessFields").style.visibility = "hidden";
+        document.getElementById("companyName").required = "false";
+        document.getElementById("kvkNumber").required = "false";
+        document.getElementById("vatNumber").required = "false";
     }
     function showBusinessFields() {
         document.getElementById("businessFields").style.visibility = "visible";
+        document.getElementById("companyName").required = "true";
+        document.getElementById("kvkNumber").required = "true";
+        document.getElementById("vatNumber").required = "true";
+
     }
 </script>

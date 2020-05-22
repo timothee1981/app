@@ -31,14 +31,14 @@ public class OpenAccountBackingBean {
 
 
     public BusinessAccount businessAccount(){
-        accountNumber = generateAccountNumber();
+
         BusinessAccount businessAccount = new BusinessAccount(accountNumber, START_BALANCE, companyName,kvkNumber,vatNumber,sector);
         return businessAccount;
-
     }
 
+
     public PrivateAccount privateAccount(){
-        accountNumber = generateAccountNumber();
+
         PrivateAccount privateAccount = new PrivateAccount(accountNumber,START_BALANCE);
         return privateAccount;
     }
@@ -49,10 +49,7 @@ public class OpenAccountBackingBean {
         return bb;
     }*/
 
-    public String generateAccountNumber(){
-        // TODO: body generateAccountNumber
-        return String.valueOf((int)(Math.random() * 100000));
-    }
+
 
     public String getCompanyName() {
         return companyName;

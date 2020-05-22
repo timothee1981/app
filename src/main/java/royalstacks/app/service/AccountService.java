@@ -27,4 +27,9 @@ public class AccountService {
     }
 
     public void saveBusinessAccount(BusinessAccount businessAccount){businessAccountRepository.save(businessAccount);}
+
+    public String generateAccountNumber(){
+        // TODO: body generateAccountNumber
+        return String.valueOf((int)(Math.random() * 100000));
+    }
 }

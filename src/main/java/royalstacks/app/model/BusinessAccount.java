@@ -60,6 +60,20 @@ public class BusinessAccount extends Account {
         this.sector = sector;
     }
 
+
+
+    public boolean isCompanyNameFormatValid(String companyName){
+        return true;
+    }
+
+    public boolean isKvkNameFormatValid(String companyName){
+        return true;
+    }
+
+    public boolean isVatFormatValid(String vat){
+        return true;
+    }
+
     @Override
     public String toString() {
         return "BusinessAccount{" +
