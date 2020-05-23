@@ -9,9 +9,9 @@
 </head>
 <body>
     <h1>Welkom op de homepage!</h1>
-<!--    <form th:action="@{doLogin}" method="post" th:object="${user}">-->
-<!--    <p>Username:<span><input type="text" th:field="*{username}"></span></p>-->
-<!--    <p>Wachtwoord:<span><input type="text" th:field="*{password}"></span></p>-->
+        <form th:action="@{doLogin}" method="post">
+        <p>Username:<span><input type="text" name="inputUsername"></span></p>
+        <p>Wachtwoord:<span><input type="password" name="inputPassword"></span></p>
     <input type ="submit" name="submitbutton" value="Inloggen">
     </form>
     <input type ="submit" name="signup" onclick="location.href='signup';" value="Klant worden">
