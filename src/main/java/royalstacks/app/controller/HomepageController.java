@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomepageController {
 
-    @GetMapping("/")
+    @GetMapping(value ={ "" , "/", "/doLogin"})
     public ModelAndView startHandler() {
         return new ModelAndView("homepage");
     }

@@ -20,6 +20,5 @@ class HomepageControllerTest {
         //ASSERT
         String expected = "homepage";
         assertEquals(expected , result.getViewName());
-
     }
 }
