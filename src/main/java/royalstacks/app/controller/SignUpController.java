@@ -30,7 +30,9 @@ public class SignUpController {
         if (invalid) {
             mav.addObject("error", "Error: " + error);
         }
-        System.out.println(userService.findById(1));
+
+        // TODO verwerken in isUsernameUnique. Hierin werkt het, daar een NullPointer!
+        System.out.println(userService.findByUsername("WesleyWong"));
         return mav;
     }
 

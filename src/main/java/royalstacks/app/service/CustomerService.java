@@ -5,10 +5,8 @@ import org.springframework.stereotype.Service;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.repository.CustomerRepository;
 
-import java.util.Optional;
-
 @Service
-public class CustomerService implements ICustomerService {
+public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;

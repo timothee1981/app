@@ -1,5 +1,8 @@
 package royalstacks.app.model;
 
+import royalstacks.app.model.repository.UserRepository;
+import royalstacks.app.service.UserService;
+
 import javax.persistence.*;
 
 @Entity
@@ -40,7 +43,7 @@ public abstract class User {
     }
 
     public boolean isUsernameUnique(){
-        // TODO: body isUsernameUnique
+        UserService userService = new UserService();
         return true;
     }
 

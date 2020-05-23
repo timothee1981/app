@@ -9,14 +9,16 @@ import royalstacks.app.model.repository.UserRepository;
 import java.util.Optional;
 
 @Service
-public class UserService implements IUserService{
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-
-    @Override
     public Optional<User> findById(int id) {
         return userRepository.findById(id);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
