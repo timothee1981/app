@@ -33,60 +33,41 @@ public class SignUpController {
     public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
-        boolean save = true;
 
-        if(!customer.isUsernameFormatValid()) {
-            mav.addObject("username_error", "invalid format username");
-            save = false;
-        }
-        if(!customer.isPasswordValid()) {
-            mav.addObject("password_error", "invalid password");
-            save = false;
-        }
-        if(!customer.isFirstNameValid()) {
-            mav.addObject("firstName", "invalid first name");
-            save = false;
-        }
-        if(!customer.isLastNameValid()) {
-            mav.addObject("lastName", "invalid last name");
-            save = false;
-        }
-        if(!customer.isEmailAddressValid()){
-            mav.addObject("emailAddress", "invalid emailAddress");
-        }
-        if(!customer.isPostalCodeValid()) {
-            mav.addObject("postalCode_error", "invalid postalCode");
-            save = false;
-        }
-        if(!customer.isCityValid()) {
-            mav.addObject("city_error", "invalid city");
-            save = false;
-        }
-        if(!customer.isPhoneNumberValid()){
-            mav.addObject("phoneNumber", "invalid phoneNumber");
-        }
-        if(!customer.isSocialSecurityNumberFormatValid()) {
-            mav.addObject("ssn_error", "invalid ssn format");
-            save = false;
-        }
-        if(!customer.isSocialSecurityNumberUnique()) {
-            mav.addObject("ssn_error", "ssn is not unique");
-            save = false;
-        }
-        if(!customer.isAddressValid()) {
-            mav.addObject("address_error", "invalid address");
-            save = false;
-        }
-
-        // als een veld niet goed ingevuld is, vul alle velden met input van gebruiker
-        if(!save) {
-            populateFields(customer, mav);
-        } else {
-            // door alle checks heen gekomen: sla gebruiker op en geef bevestiging
+        // check of alle velden goed ingevuld zijn
+        if(isAllInputValid(customer, mav)) {
             customerService.saveCustomer(customer);
             mav.addObject("confirmation", "Account successfully created");
+        } else {
+            // zo niet, vul alle velden met input van gebruiker
+            populateFields(customer, mav);
         }
         return mav;
+    }
+
+    /**
+     * Checkt alle velden apart en geeft feedback al deze niet goed ingvuld zijn
+     * @param customer
+     * @param mav
+     * @return
+     */
+    private boolean isAllInputValid(Customer customer, ModelAndView mav) {
+        boolean save = true;
+
+        if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("username_error", "invalid format username");}
+        if(!customer.isUsernameUnique()) { save = false; mav.addObject("username_error", "username not unique"); }
+        if(!customer.isPasswordValid()) { save = false; mav.addObject("password_error", "invalid password"); }
+        if(!customer.isFirstNameValid()) { save = false; mav.addObject("firstName", "invalid first name"); }
+        if(!customer.isLastNameValid()) { save = false; mav.addObject("lastName", "invalid last name"); }
+        if(!customer.isEmailAddressValid()){ save = false; mav.addObject("emailAddress", "invalid emailAddress"); }
+        if(!customer.isPostalCodeValid()) { save = false; mav.addObject("postalCode_error", "invalid postalCode"); }
+        if(!customer.isCityValid()) { save = false; mav.addObject("city_error", "invalid city"); }
+        if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("phoneNumber", "invalid phoneNumber"); }
+        if(!customer.isSocialSecurityNumberFormatValid()) { save = false; mav.addObject("ssn_error", "invalid ssn format"); }
+        if(!customer.isSocialSecurityNumberUnique()) { save = false; mav.addObject("ssn_error", "ssn is not unique"); }
+        if(!customer.isAddressValid()) { save = false; mav.addObject("address_error", "invalid address"); }
+
+        return save;
     }
 
     /**
