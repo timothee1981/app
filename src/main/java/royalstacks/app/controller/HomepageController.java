@@ -19,7 +19,7 @@ public class HomepageController {
     @GetMapping("/doLogin")
     public ModelAndView doLoginHandler(){
         String username = "";
-        loginService.findUserByUsername(username);
+/*        loginService.findUserByUsername(username);*/
                 //daar komt wel/niet een user uit
                 //als er een user is, dan kun je de methode gebruiken om password te checken
         //uitvoeren check bestaat username en password in database(getuserbyusername bijv)

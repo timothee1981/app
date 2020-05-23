@@ -1,6 +1,7 @@
 package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -10,12 +11,16 @@ import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
 import royalstacks.app.service.CustomerService;
+import royalstacks.app.service.UserService;
 
 @Controller
 public class SignUpController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/signup")
     // Tijdelijk om verschillende invoerfouten op te vangen. Wordt vervangen door JS
@@ -25,7 +30,7 @@ public class SignUpController {
         if (invalid) {
             mav.addObject("error", "Error: " + error);
         }
-        //System.out.println(customerService.findBySocialSecurityNumber("987654321"));
+        System.out.println(userService.findById(1));
         return mav;
     }
 

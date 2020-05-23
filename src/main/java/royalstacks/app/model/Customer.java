@@ -95,8 +95,9 @@ public class Customer extends User {
 
     public boolean isSocialSecurityNumberUnique(){
         CustomerService cs = new CustomerService();
-/*        return cs.findBySocialSecurityNumber(this.socialSecurityNumber) == null;*/
-        return true;
+/*        System.out.println(cs.findBySocialSecurityNumber(this.socialSecurityNumber).isEmpty());
+        return cs.findBySocialSecurityNumber(this.socialSecurityNumber).isEmpty();*/
+return true;
     }
 
     // GETTERS EN SETTERS
