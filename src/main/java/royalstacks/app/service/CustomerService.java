@@ -26,8 +26,10 @@ public class CustomerService {
         }
     }*/
 
+/*
     public Optional<Customer> findBySocialSecurityNumber(String socialSecurityNumber)  {
         return CustomerRepository.findBySocialSecurityNumber(socialSecurityNumber);
     }
+*/
 
 }

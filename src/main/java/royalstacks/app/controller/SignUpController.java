@@ -51,6 +51,9 @@ public class SignUpController {
             mav.addObject("lastName", "invalid last name");
             save = false;
         }
+        if(!customer.isEmailAddressValid()){
+            mav.addObject("emailAddress", "invalid emailAddress");
+        }
         if(!customer.isPostalCodeValid()) {
             mav.addObject("postalCode_error", "invalid postalCode");
             save = false;
@@ -58,6 +61,9 @@ public class SignUpController {
         if(!customer.isCityValid()) {
             mav.addObject("city_error", "invalid city");
             save = false;
+        }
+        if(!customer.isPhoneNumberValid()){
+            mav.addObject("phoneNumber", "invalid phoneNumber");
         }
         if(!customer.isSocialSecurityNumberFormatValid()) {
             mav.addObject("ssn_error", "invalid ssn format");

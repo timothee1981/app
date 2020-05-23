@@ -8,9 +8,11 @@ import java.util.Set;
 @Entity
 public class Customer extends User {
 
+    private String emailAddress;
     private String address;
     private String city;
     private String postalCode;
+    private String phoneNumber;
     private String socialSecurityNumber;
     private boolean isBusinessAccountHolder;
     @ManyToOne
@@ -21,22 +23,26 @@ public class Customer extends User {
 
     // CONSTRUCTORS
     // all args
-    public Customer(int userid, String username, String password, String firstName, String lastName, String address, String city, String postalCode, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
+    public Customer(int userid, String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
         super(userid, username, password, firstName, lastName);
+        this.emailAddress = emailAddress;
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
         this.socialSecurityNumber = socialSecurityNumber;
         this.accountManager = accountManager;
         this.isBusinessAccountHolder = isBusinessAccountHolder;
     }
 
     // om customer op te slaan in DB
-    public Customer(String username, String password, String firstName, String lastName, String address, String city, String postalCode, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
+    public Customer(String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
         super(username, password, firstName, lastName);
+        this.emailAddress = emailAddress;
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
         this.socialSecurityNumber = socialSecurityNumber;
         this.accountManager = accountManager;
         this.isBusinessAccountHolder = isBusinessAccountHolder;
@@ -46,13 +52,9 @@ public class Customer extends User {
     public Customer() { }
 
     // METHODS
-    public boolean isSocialSecurityNumberUnique(){
-        CustomerService cs = new CustomerService();
-        return cs.findBySocialSecurityNumber(this.socialSecurityNumber) == null;
-    }
 
-    public boolean isSocialSecurityNumberFormatValid(){
-        return this.socialSecurityNumber.matches("\\d{9}");
+    public boolean isEmailAddressValid(){
+        return true;
     }
 
     public boolean isAddressValid(){
@@ -78,8 +80,31 @@ public class Customer extends User {
         return this.city.matches("[A-Z']?[a-zA-Z _']+");
     }
 
+    public boolean isPhoneNumberValid(){
+        return true;
+    }
+
+    public boolean isSocialSecurityNumberUnique(){
+        CustomerService cs = new CustomerService();
+/*        return cs.findBySocialSecurityNumber(this.socialSecurityNumber) == null;*/
+        return true;
+    }
+
+    public boolean isSocialSecurityNumberFormatValid(){
+        return this.socialSecurityNumber.matches("\\d{9}");
+    }
+
+
 
     // GETTERS EN SETTERS
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -102,6 +127,14 @@ public class Customer extends User {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getSocialSecurityNumber() {
@@ -139,16 +172,15 @@ public class Customer extends User {
     @Override
     public String toString() {
         return "Customer{" +
-                "address='" + address + '\'' +
+                "emailAddress='" + emailAddress + '\'' +
+                ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +
-                ", socialSecurityNumber=" + socialSecurityNumber +
-                ", accountManager=" + accountManager +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
                 ", isBusinessAccountHolder=" + isBusinessAccountHolder +
-                ", userid=" + userid +
-                ", name='" + firstName + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", accountManager=" + accountManager +
+                ", account=" + account +
                 '}';
     }
 }
