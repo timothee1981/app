@@ -7,8 +7,11 @@ public class OpenAccountBackingBean {
     public static final int START_BALANCE = 0;
     public static final String EMPTY_STRING = "";
     private String companyName;
+    private String companyNamePlaceholder;
     private String kvkNumber;
+    private String kvkNumberPlaceholder;
     private String vatNumber;
+    private String vatNumberPlaceholder;
     private String sector;
     private String accountNumber;
 
@@ -16,15 +19,25 @@ public class OpenAccountBackingBean {
     private String accountType;
 
     public OpenAccountBackingBean() {
-        this(EMPTY_STRING,EMPTY_STRING,EMPTY_STRING,EMPTY_STRING, EMPTY_STRING);
+        this(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING, EMPTY_STRING,EMPTY_STRING,EMPTY_STRING,EMPTY_STRING, EMPTY_STRING);
     }
 
 
 
-    public OpenAccountBackingBean(String companyName, String kvkNumber, String vatNumber, String sector, String accountType) {
+    public OpenAccountBackingBean(String companyName,
+                                  String companyNamePlaceholder,
+                                  String kvkNumber,
+                                  String kvkNumberPlaceholder,
+                                  String vatNumber,
+                                  String vatNumberPlaceholder,
+                                  String sector,
+                                  String accountType) {
         this.companyName = companyName;
+        this.companyNamePlaceholder = companyNamePlaceholder;
         this.kvkNumber = kvkNumber;
+        this.kvkNumberPlaceholder = kvkNumberPlaceholder;
         this.vatNumber = vatNumber;
+        this.vatNumberPlaceholder = vatNumberPlaceholder;
         this.sector = sector;
         this.accountType = accountType;
     }
@@ -97,5 +110,29 @@ public class OpenAccountBackingBean {
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
+    }
+
+    public String getCompanyNamePlaceholder() {
+        return companyNamePlaceholder;
+    }
+
+    public void setCompanyNamePlaceholder(String companyNamePlaceholder) {
+        this.companyNamePlaceholder = companyNamePlaceholder;
+    }
+
+    public String getKvkNumberPlaceholder() {
+        return kvkNumberPlaceholder;
+    }
+
+    public void setKvkNumberPlaceholder(String kvkNumberPlaceholder) {
+        this.kvkNumberPlaceholder = kvkNumberPlaceholder;
+    }
+
+    public String getVatNumberPlaceholder() {
+        return vatNumberPlaceholder;
+    }
+
+    public void setVatNumberPlaceholder(String vatNumberPlaceholder) {
+        this.vatNumberPlaceholder = vatNumberPlaceholder;
     }
 }
