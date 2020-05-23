@@ -26,6 +26,7 @@ public class OpenAccount {
         ModelAndView mav = new ModelAndView("createAccountConfirmation");
         ModelAndView mav2 = new ModelAndView("openaccount");
         boolean save = false;
+
         if(bb.getAccountType().equals("business")) {
 
             bb.setAccountNumber(accountService.generateAccountNumber());
