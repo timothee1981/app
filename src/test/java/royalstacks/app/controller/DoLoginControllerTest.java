@@ -28,7 +28,43 @@ class DoLoginControllerTest {
     private LogInService service;
 
     @Test
-    void doLoginHandlerTestUsername() throws Exception {
+    void doLoginHandlerUsernameIsEmptyString() throws Exception {
+        //ARRANGE
+        String username = "";
+        String password = "password";
+        Customer customer = new Customer();
+        customer.setUsername("username");
+        customer.setPassword("correct");
+        given(service.findByUsername(username)).willReturn(customer);
+
+        //ACT & ASSERT
+        mvc.perform(
+                post("/doLogin")
+                        .param("inputUsername", username)
+                        .param("inputPassword", password)
+        ).andExpect(status().isOk()).andExpect(view().name("homepage"));
+    }
+
+    @Test
+    void doLoginHandlerPasswordIsEmptyString() throws Exception {
+        //ARRANGE
+        String username = "username";
+        String password = "";
+        Customer customer = new Customer();
+        customer.setUsername("username");
+        customer.setPassword("correct");
+        given(service.findByUsername(username)).willReturn(customer);
+
+        //ACT & ASSERT
+        mvc.perform(
+                post("/doLogin")
+                        .param("inputUsername", username)
+                        .param("inputPassword", password)
+        ).andExpect(status().isOk()).andExpect(view().name("homepage"));
+    }
+
+    @Test
+    void doLoginHandlerUsernameDoesNotExist() throws Exception {
         //ARRANGE
         String username = "nonexistent";
         String password = "password";
@@ -43,7 +79,7 @@ class DoLoginControllerTest {
     }
 
     @Test
-    void doLoginHandlerTestPassword() throws Exception {
+    void doLoginHandlerPasswordNotCorrect() throws Exception {
         //ARRANGE
         String username = "user";
         String password = "notCorrect";
@@ -60,7 +96,7 @@ class DoLoginControllerTest {
     }
 
     @Test
-    void doLoginHandlerTestEmployee() throws Exception {
+    void doLoginHandlerEmployeeLoginCorrect() throws Exception {
         //ARRANGE
         String username = "employee";
         String password = "correct";
@@ -77,7 +113,7 @@ class DoLoginControllerTest {
     }
 
     @Test
-    void doLoginHandlerTestCustomer() throws Exception {
+    void doLoginHandlerCustomerLoginCorrect() throws Exception {
         //ARRANGE
         String username = "customer";
         String password = "correct";
@@ -94,9 +130,9 @@ class DoLoginControllerTest {
     }
 
     @Test
-    void doLoginHandlerTestNotACustomerOrEmployee() throws Exception {
+    void doLoginHandlerNonExistingUserType() throws Exception {
         //ARRANGE
-        String username = "supervisor";
+        String username = "nonExistingUserType";
         String password = "correct";
 
         class Supervisor extends User {

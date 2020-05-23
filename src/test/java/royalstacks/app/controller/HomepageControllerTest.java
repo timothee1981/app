@@ -16,9 +16,10 @@ class HomepageControllerTest {
         //ACT
         ModelAndView result = homepageController.startHandler();
 
+
         //ASSERT
         String expected = "homepage";
-        assertEquals(expected,result.getViewName());
+        assertEquals(expected , result.getViewName());
 
     }
 }

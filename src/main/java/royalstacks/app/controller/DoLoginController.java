@@ -14,12 +14,19 @@ public class DoLoginController {
 
     @Autowired
     private LogInService loginService;
-    private String username;
-    private String password;
 
     @PostMapping("/doLogin")
     @ResponseBody
     public ModelAndView doLoginHandler(@RequestParam String inputUsername, String inputPassword){
+
+        //Check if username and password exist and have a value
+        boolean usernameHasValue = inputUsernameHasValue(inputUsername);
+        boolean passwordHasValue = inputpasswordHasValue(inputPassword);
+        if( ! (usernameHasValue && passwordHasValue ) ){
+            return new ModelAndView("homepage");
+            //TODO nette melding naar gebruiker dat beide velden gevuld moeten worden
+        }
+
         //Check if username exists in database
         User user = loginService.findByUsername(inputUsername);
         if (user == null){
@@ -47,5 +54,24 @@ public class DoLoginController {
             //TODO nette melding naar gebruiker dat hij geen employee of customer is
         }
 
+    }
+
+
+    private boolean inputUsernameHasValue(String inputUsername) {
+        boolean inputUserNameHasValue = true;
+
+        if(inputUsername.trim().equals("")){
+            inputUserNameHasValue = false;
+        }
+        return inputUserNameHasValue;
+    }
+
+    private boolean inputpasswordHasValue(String inputPassword) {
+        boolean inputPasswordHasValue = true;
+
+        if(inputPassword.trim().equals("")){
+            inputPasswordHasValue = false;
+        }
+        return inputPasswordHasValue;
     }
 }
