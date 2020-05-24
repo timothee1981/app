@@ -93,11 +93,10 @@ public class Customer extends User {
         return this.socialSecurityNumber.matches("\\d{9}");
     }
 
+    // TODO wordt in SignUpController geregeld. Deze verwijderen?
     public boolean isSocialSecurityNumberUnique(){
         CustomerService cs = new CustomerService();
-/*        System.out.println(cs.findBySocialSecurityNumber(this.socialSecurityNumber).isEmpty());
-        return cs.findBySocialSecurityNumber(this.socialSecurityNumber).isEmpty();*/
-return true;
+        return true;
     }
 
     // GETTERS EN SETTERS

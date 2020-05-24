@@ -1,6 +1,5 @@
 package royalstacks.app.model;
 
-import royalstacks.app.model.repository.UserRepository;
 import royalstacks.app.service.UserService;
 
 import javax.persistence.*;
@@ -44,7 +43,15 @@ public abstract class User {
 
     public boolean isUsernameUnique(){
         UserService userService = new UserService();
-        return true;
+
+        // TODO geeft hier NPE, niet als userService in Controller gebruikt wordt
+        try{
+            return userService.findByUsername(this.username).isEmpty();
+        } catch(NullPointerException e) {
+            System.out.println(e);
+            return true;
+        }
+
     }
 
     public boolean isPasswordValid(){
