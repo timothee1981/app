@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.User;
 import royalstacks.app.service.CustomerService;
 
 @Controller
 public class SignUpController {
+
+    private String tempPassword;
 
     @Autowired
     private CustomerService customerService;
@@ -29,7 +32,8 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
+    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String password){
+        tempPassword = password;
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
         boolean save = true;
@@ -38,7 +42,7 @@ public class SignUpController {
             mav.addObject("username_error", "invalid format username");
             save = false;
         }
-        if(!customer.isPasswordValid()) {
+        if(!User.isPasswordFormatValid(password)) {
             mav.addObject("password_error", "invalid password");
             save = false;
         }
@@ -85,7 +89,7 @@ public class SignUpController {
      */
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());
-        mav.addObject("password", customer.getPassword());
+        mav.addObject("password", tempPassword); // vullen met tempPassword, echte password = hash
         mav.addObject("name", customer.getName());
         mav.addObject("postalCode", customer.getPostalCode());
         mav.addObject("city", customer.getCity());

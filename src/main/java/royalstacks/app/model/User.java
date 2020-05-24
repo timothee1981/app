@@ -14,18 +14,18 @@ public abstract class User {
     protected String password;
 
     // CONTRUCTORS
-    public User(int userid, String name, String username, String password) {
+    public User(int userid, String name, String username, String inputpassword) {
         this.userid = userid;
         this.name = name;
         this.username = username;
-        this.password = password;
+        this.password = Password.hashPassword(inputpassword);
     }
 
     // userid komt vanuit database
-    public User(String name, String username, String password) {
+    public User(String name, String username, String inputpassword) {
         this.name = name;
         this.username = username;
-        this.password = password;
+        this.password = Password.hashPassword(inputpassword);
     }
 
     public User() { }
@@ -41,9 +41,9 @@ public abstract class User {
         return true;
     }
 
-    public boolean isPasswordValid(){
+    public static boolean isPasswordFormatValid(String password){
         // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 8 karakters lang zijn
-        return this.password.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
+        return password.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
     }
 
     public boolean isNameValid(){
@@ -80,8 +80,11 @@ public abstract class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password_plaintext) {
+
+        String hashedPassword = Password.hashPassword(password_plaintext);
+
+        this.password = hashedPassword;
     }
 
     @Override
@@ -93,6 +96,5 @@ public abstract class User {
                 ", password='" + password + '\'' +
                 '}';
     }
-
 
 }

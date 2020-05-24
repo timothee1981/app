@@ -3,6 +3,7 @@ package royalstacks.app.backingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Employee;
+import royalstacks.app.model.Password;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
