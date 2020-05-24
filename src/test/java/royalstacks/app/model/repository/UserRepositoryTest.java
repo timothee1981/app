@@ -28,7 +28,7 @@ class UserRepositoryIntegrationTest {
 
     @Test
     void saveTest() {
-        Customer customer = new Customer("Testnaam", "TestUsername", "TestPassword", "TestAddress 1", "TestCity", "0000AA", "123456789", null, false);
+        Customer customer = new Customer("Testnaam","Testnaam",  "Testnaam", "Testnaam", "TestUsername", "TestPassword", "TestAddress 1", "TestCity", "0000AA", "123456789", null, false);
         this.entityManager.persist(customer);
         Optional<User> expected = Optional.of(customer);
 
