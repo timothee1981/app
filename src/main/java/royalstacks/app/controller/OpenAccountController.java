@@ -11,12 +11,12 @@ import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.service.AccountService;
 
 @Controller
-public class OpenAccount {
+public class OpenAccountController {
 
     @Autowired
     private AccountService accountService;
 
-    public OpenAccount() { super();
+    public OpenAccountController() { super();
     }
 
     @PostMapping("/openaccount")
@@ -25,6 +25,7 @@ public class OpenAccount {
         ModelAndView mav = new ModelAndView("createAccountConfirmation");
         ModelAndView mav2 = new ModelAndView("openaccount");
         boolean save = false;
+
 
         if(bb.getAccountType().equals("business")) {
 
@@ -42,12 +43,16 @@ public class OpenAccount {
             //if save boolean is false dan ga na openaccounview
 
             // else save in db en ga na confirmation page (of later confirmation popup)
-            accountService.saveBusinessAccount(businessAccount);
+            accountService.saveAccount(businessAccount);
+
         }
         else if (bb.getAccountType().equals("private")) {
+            bb.setAccountNumber(accountService.generateAccountNumber());
             PrivateAccount privateAccount = bb.privateAccount();
-            accountService.savePrivateAccount(privateAccount);
+            accountService.saveAccount(privateAccount);
+
         }
+
         mav.addObject("account", bb);
 
 
