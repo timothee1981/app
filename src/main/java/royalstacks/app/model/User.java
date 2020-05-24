@@ -1,5 +1,7 @@
 package royalstacks.app.model;
 
+import royalstacks.app.service.UserService;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,23 +11,26 @@ public abstract class User {
     @Id
     @GeneratedValue
     protected int userid;
-    protected String name;
     protected String username;
     protected String password;
+    protected String firstName;
+    protected String lastName;
 
-    // CONTRUCTORS
-    public User(int userid, String name, String username, String password) {
+    // CONSTRUCTORS
+    public User(int userid, String username, String password, String firstName, String lastName) {
         this.userid = userid;
-        this.name = name;
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     // userid komt vanuit database
-    public User(String name, String username, String password) {
-        this.name = name;
+    public User(String username, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public User() { }
@@ -37,8 +42,16 @@ public abstract class User {
     }
 
     public boolean isUsernameUnique(){
-        // TODO: body isUsernameUnique
-        return true;
+        UserService userService = new UserService();
+
+        // TODO geeft hier NPE, niet als userService in Controller gebruikt wordt
+        try{
+            return userService.findByUsername(this.username).isEmpty();
+        } catch(NullPointerException e) {
+            System.out.println(e);
+            return true;
+        }
+
     }
 
     public boolean isPasswordValid(){
@@ -46,7 +59,12 @@ public abstract class User {
         return this.password.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
     }
 
-    public boolean isNameValid(){
+    public boolean isFirstNameValid(){
+        // TODO: is name valid. Voornaam Achternaam?
+        return true;
+    }
+
+    public boolean isLastNameValid(){
         // TODO: is name valid. Voornaam Achternaam?
         return true;
     }
@@ -58,14 +76,6 @@ public abstract class User {
 
     public void setUserid(int userid) {
         this.userid = userid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUsername() {
@@ -84,15 +94,30 @@ public abstract class User {
         this.password = password;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userid=" + userid +
-                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
-
-
 }

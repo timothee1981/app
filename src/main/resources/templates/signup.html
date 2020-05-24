@@ -15,7 +15,13 @@
             <td>Password</td><td><input type="text" name="password" th:value="${password}"> <span th:text="${password_error}"/></td>
         </tr>
         <tr>
-            <td>Name</td><td><input type="text" name="name" th:value="${name}"> <span th:text="${name_error}"/></td>
+            <td>First name</td><td><input type="text" name="firstName" th:value="${firstName}"> <span th:text="${firstName_error}"/></td>
+        </tr>
+        <tr>
+            <td>Last name</td><td><input type="text" name="lastName" th:value="${lastName}"> <span th:text="${lastName_error}"/></td>
+        </tr>
+        <tr>
+            <td>Email Address</td><td><input type="text" name="emailAddress" th:value="${emailAddress}"> <span th:text="${emailAddress_error}"/></td>
         </tr>
         <tr>
             <td>Address</td><td><input type="text" name="address" th:value="${address}"> <span th:text="${address_error}"/></td>
@@ -27,7 +33,10 @@
             <td>Postal code</td><td><input type="text" name="postalCode" th:value="${postalCode}"> <span th:text="${postalCode_error}"/></td>
         </tr>
         <tr>
-            <td>SNN code</td><td><input type="text" name="socialSecurityNumber" th:value="${socialSecurityNumber}"> <span th:text="${ssn_error}"/></td>
+            <td>Phone Number</td><td><input type="text" name="phoneNumber" th:value="${phoneNumber}"> <span th:text="${phoneNumber_error}"/></td>
+        </tr>
+        <tr>
+            <td>SSN code</td><td><input type="text" name="socialSecurityNumber" th:value="${socialSecurityNumber}"> <span th:text="${ssn_error}"/></td>
         </tr>
         <tr>
             <td><input type="submit" name="submitbutton" value="Sign up"></td>

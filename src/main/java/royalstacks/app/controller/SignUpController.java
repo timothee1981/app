@@ -5,11 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
 import royalstacks.app.service.CustomerService;
+import royalstacks.app.service.UserService;
 
 @Controller
 public class SignUpController {
@@ -17,14 +17,12 @@ public class SignUpController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/signup")
-    // Tijdelijk om verschillende invoerfouten op te vangen. Wordt vervangen door JS
-    public ModelAndView signUpHandler(@RequestParam(required=false) boolean invalid,
-                                      @RequestParam(required=false) String error){
+    public ModelAndView signUpHandler(){
         ModelAndView mav = new ModelAndView("signup");
-        if (invalid) {
-            mav.addObject("error", "Error: " + error);
-        }
         return mav;
     }
 
@@ -32,50 +30,41 @@ public class SignUpController {
     public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
-        boolean save = true;
 
-        if(!customer.isUsernameFormatValid()) {
-            mav.addObject("username_error", "invalid format username");
-            save = false;
-        }
-        if(!customer.isPasswordValid()) {
-            mav.addObject("password_error", "invalid password");
-            save = false;
-        }
-        if(!customer.isNameValid()) {
-            mav.addObject("name", "invalid name");
-            save = false;
-        }
-        if(!customer.isPostalCodeValid()) {
-            mav.addObject("postalCode_error", "invalid postalCode");
-            save = false;
-        }
-        if(!customer.isCityValid()) {
-            mav.addObject("city_error", "invalid city");
-            save = false;
-        }
-        if(!customer.isSocialSecurityNumberFormatValid()) {
-            mav.addObject("ssn_error", "invalid ssn");
-            save = false;
-        }
-        if(!customer.isSocialSecurityNumberUnique()) {
-            mav.addObject("ssn_error", "invalid ssn");
-            save = false;
-        }
-        if(!customer.isAddressValid()) {
-            mav.addObject("address_error", "invalid address");
-            save = false;
-        }
-
-        // als een veld niet goed ingevuld is, vul alle velden met input van gebruiker
-        if(!save) {
-            populateFields(customer, mav);
-        } else {
-            // door alle checks heen gekomen: sla gebruiker op en geef bevestiging
+        // check of alle velden goed ingevuld zijn
+        if(isAllInputValid(customer, mav)) {
             customerService.saveCustomer(customer);
             mav.addObject("confirmation", "Account successfully created");
+        } else {
+            // zo niet, vul alle velden met input van gebruiker
+            populateFields(customer, mav);
         }
         return mav;
+    }
+
+    /**
+     * Checkt alle velden apart en geeft feedback al deze niet goed ingvuld zijn
+     * @param customer
+     * @param mav
+     * @return
+     */
+    private boolean isAllInputValid(Customer customer, ModelAndView mav) {
+        boolean save = true;
+
+        if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("username_error", "invalid format username");}
+        if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username_error", "username not unique"); }
+        if(!customer.isPasswordValid()) { save = false; mav.addObject("password_error", "invalid password"); }
+        if(!customer.isFirstNameValid()) { save = false; mav.addObject("firstName_error", "invalid first name"); }
+        if(!customer.isLastNameValid()) { save = false; mav.addObject("lastName_error", "invalid last name"); }
+        if(!customer.isEmailAddressValid()){ save = false; mav.addObject("emailAddress_error", "invalid emailAddress"); }
+        if(!customer.isPostalCodeValid()) { save = false; mav.addObject("postalCode_error", "invalid postalCode"); }
+        if(!customer.isCityValid()) { save = false; mav.addObject("city_error", "invalid city"); }
+        if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("phoneNumber", "invalid phoneNumber"); }
+        if(!customer.isSocialSecurityNumberFormatValid()) { save = false; mav.addObject("ssn_error", "invalid ssn format"); }
+        if(customerService.findBySocialSecurityNumber(customer.getSocialSecurityNumber()).isPresent()) { save = false; mav.addObject("ssn_error", "ssn is not unique"); }
+        if(!customer.isAddressValid()) { save = false; mav.addObject("address_error", "invalid address"); }
+
+        return save;
     }
 
     /**
@@ -86,10 +75,14 @@ public class SignUpController {
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());
         mav.addObject("password", customer.getPassword());
-        mav.addObject("name", customer.getName());
+        mav.addObject("firstName", customer.getFirstName());
+        mav.addObject("lastName", customer.getLastName());
+        mav.addObject("emailAddress", customer.getEmailAddress());
         mav.addObject("postalCode", customer.getPostalCode());
         mav.addObject("city", customer.getCity());
+        mav.addObject("phoneNumber", customer.getPhoneNumber());
         mav.addObject("socialSecurityNumber", customer.getSocialSecurityNumber());
         mav.addObject("address", customer.getAddress());
     }
+
 }
