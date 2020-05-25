@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
@@ -30,8 +31,8 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String password){
-        tempPassword = password;
+    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String inputPassword){
+        tempPassword = inputPassword;
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
 
@@ -57,7 +58,7 @@ public class SignUpController {
 
         if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("username_error", "invalid format username");}
         if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username_error", "username not unique"); }
-        if(!customer.isPasswordValid()) { save = false; mav.addObject("password_error", "invalid password"); }
+        if(! User.isPasswordValid(tempPassword) ) { save = false; mav.addObject("password_error", "invalid password"); }
         if(!customer.isFirstNameValid()) { save = false; mav.addObject("firstName_error", "invalid first name"); }
         if(!customer.isLastNameValid()) { save = false; mav.addObject("lastName_error", "invalid last name"); }
         if(!customer.isEmailAddressValid()){ save = false; mav.addObject("emailAddress_error", "invalid emailAddress"); }

@@ -30,10 +30,7 @@ public abstract class User {
 
     // userid komt vanuit database
     public User(String username, String password, String firstName, String lastName) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this(DEFAULT_USER_ID, username, password, firstName, lastName);
     }
 
     public User() { }
@@ -57,9 +54,9 @@ public abstract class User {
 
     }
 
-    public boolean isPasswordValid(){
+    public static boolean isPasswordValid(String inputPassword){
         // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 8 karakters lang zijn
-        return password.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
+        return inputPassword.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
     }
 
     public boolean isFirstNameValid(){
@@ -120,7 +117,8 @@ public abstract class User {
     public String toString() {
         return "User{" +
                 "userid=" + userid +
-                ", name='" + name + '\'' +
+                ", firstname='" + firstName + '\'' +
+                ", lasttname='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
