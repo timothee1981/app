@@ -20,6 +20,12 @@
 
 </head>
 <body>
+
+        <span hidden  id="account" th:text="${accountType}" />
+
+
+
+
     <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
         <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
         <label for="private">Private account</label>
@@ -31,17 +37,20 @@
                 <td>
                     <label>
                         <input type="text" id="companyName"  th:placeholder="*{companyNamePlaceholder}" onfocus="this.placeholder=''" placeholder=""  th:field="*{companyName}" />
+                        <span th:text="${companyName_error}"/>
                     </label>
                 </td>
             </tr>
             <tr>
                 <td>Kvk number  </td><td><label>
                     <input type="text" id="kvkNumber" th:placeholder="*{kvkNumberPlaceholder}" onfocus="this.placeholder=''" placeholder=""   th:field="*{kvkNumber}"  />
+                    <span th:text="${kvkNumber_error}"/>
             </label></td>
             </tr>
             <tr>
                 <td>Vat number  </td><td><label>
                     <input type="text" id="vatNumber" th:placeholder="*{vatNumberPlaceholder}" onfocus="this.placeholder=''" placeholder=""  th:field="*{vatNumber}"  />
+                    <span th:text="${vatNumber_error}"/>
             </label></td>
             </tr>
             <tr>
@@ -61,7 +70,7 @@
                 </td>
             </tr>
         </table>
-        <input type="submit" name="submitbutton" value="Create account" />
+        <input type="submit" name="submitbutton" value="Create account"  />
     </form>
     <form action="myaccount" method="get">
         <input type="submit" name="submitbutton" value="Back" />
@@ -72,21 +81,36 @@
 
 <script>
 
+
+    //if the value accounttype in Backing Bean is business: show business field
+
+
+
+
+
+
+        if (document.getElementById("account").textContent === "business") {
+            showBusinessFields()
+        } else
+            hideBusinessFields();
+
+
+
     function hideBusinessFields() {
         document.getElementById("businessFields").style.visibility = "hidden";
-        document.getElementById("form").noValidate;
+       /* document.getElementById("form").noValidate;
         document.getElementById("companyName").removeAttribute("required");
         document.getElementById("kvkNumber").removeAttribute("required");
         document.getElementById("vatNumber").removeAttribute("required");
-        document.getElementById("sector").removeAttribute("required");
+        document.getElementById("sector").removeAttribute("required");*/
 
     }
     function showBusinessFields() {
         document.getElementById("businessFields").style.visibility = "visible";
-        document.getElementById("companyName").required = "true";
+       /* document.getElementById("companyName").required = "true";
         document.getElementById("kvkNumber").required = "true";
         document.getElementById("vatNumber").required = "true";
-        document.getElementById("sector").required = "true";
+        document.getElementById("sector").required = "true";*/
 
 
     }
