@@ -72,8 +72,10 @@ public class CustomerTest {
         Assert.assertEquals(true,valid1.matches(regex));
         Assert.assertEquals(true,valid2.matches(regex));
         Assert.assertEquals(true,valid3.matches(regex));
+
         //Assert.assertEquals(true,valid4.matches(regex));
         //Assert.assertEquals(true,valid5.matches(regex));
+
         Assert.assertEquals(true,valid6.matches(regex));
         Assert.assertEquals(false,invalid1.matches(regex));
         Assert.assertEquals(false,invalid2.matches(regex));
