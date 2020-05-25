@@ -62,12 +62,14 @@ public class BusinessAccount extends Account {
 
 
 
-    public boolean isCompanyNameFormatValid(String companyName){
-        return true;
+    public boolean isCompanyNameFormatValid(){
+
+        return this.companyName.matches("^[\\w ]*[^\\W_ ][\\w- ]*$");
     }
 
-    public boolean isKvkNameFormatValid(String companyName){
-        return true;
+    public boolean isKvkNameFormatValid(){
+        return this.kvkNumber.matches("^[0-9]{8}$");
+
     }
 
     public boolean isVatFormatValid(String vat){

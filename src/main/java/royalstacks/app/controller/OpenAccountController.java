@@ -33,9 +33,16 @@ public class OpenAccountController {
             BusinessAccount businessAccount = bb.businessAccount();
             //checken als alle velden valid zijn
                 //check company name
-                    //if false save false, full attribuut value
-            //check kvknumber
-                 //if false save false, full attribuut value
+            if(!businessAccount.isCompanyNameFormatValid()) {
+                mav2.addObject("companyName","invalid name");
+                save = false;
+            } //check kvknumber
+            if(!businessAccount.isCompanyNameFormatValid()) { //if false save false, full attribuut value
+                mav2.addObject("kvkNumber","number needs to have 8 digits");
+                save = false;
+            }
+
+
             //check Vat number
                  //if false save false, full attribuut value
 
