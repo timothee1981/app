@@ -29,8 +29,6 @@ class DoLoginControllerTest {
     @MockBean
     private LogInService service;
 
-
-
     @Test
     void doLoginHandlerUsernameIsEmptyString() throws Exception {
         //ARRANGE

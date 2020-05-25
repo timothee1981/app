@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.User;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
 
 @Controller
 public class SignUpController {
+
+    private String tempPassword;
 
     @Autowired
     private CustomerService customerService;
@@ -27,7 +30,8 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
+    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String password){
+        tempPassword = password;
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
 
