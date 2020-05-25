@@ -50,13 +50,14 @@ public class AccountService {
         else {
             lastIban = retrieveLastIban();
         }
-        String newAccountNr = createNewAccountNrFromLastIban(lastIban);
-        String controlNr = createControlNrFromAccountNr(newAccountNr);
-        return  LANDCODE + controlNr + BANKCODE + newAccountNr;
+        String newIban = incrementIbanByOne(lastIban);
+        String accountNr11TestProof = makeIban11TestProof(newIban);
+        String controlNr = createControlNrFromAccountNr(accountNr11TestProof);
+        return  LANDCODE + controlNr + BANKCODE + accountNr11TestProof;
     }
 
-    public String createNewAccountNrFromLastIban(String lastIban){
-        int newAccountNr =  Integer.parseInt(lastIban.substring(8));
+    public String incrementIbanByOne(String iban){
+        int newAccountNr =  Integer.parseInt(iban.substring(8));
         String newAccountNumber = String.format("%010d", ++newAccountNr);
         return newAccountNumber;
     }
@@ -69,5 +70,24 @@ public class AccountService {
     String controlNrString = accountNr + CONTROLNUMBER_HASH;
     controlNrInt = HASH_BASE-(Integer.parseInt(controlNrString)%HASH_MODULUS);
     return String.format("%02d", controlNrInt);
+    }
+
+    public boolean passed11Test(String iban){
+        int testSum = 0;
+        String accountNr = iban.substring(8);
+
+        for (int index = 0; index < accountNr.length(); index++) {
+            int singleDigit = Character.getNumericValue(accountNr.charAt(index));
+            testSum += (singleDigit * (accountNr.length()-index));
+        }
+        return testSum%11 == 0;
+    }
+
+    public String makeIban11TestProof(String newIban){
+        String iban = newIban;
+        while(!passed11Test(iban)){
+           iban = incrementIbanByOne(iban);
+        }
+        return iban;
     }
 }

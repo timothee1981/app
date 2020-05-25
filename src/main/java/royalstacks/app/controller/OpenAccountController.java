@@ -76,8 +76,10 @@ public class OpenAccountController {
             mav.addObject("kvkNumber_error", "number needs to have 8 digits");
             save = false;
         }
-        //check Vat number
-
+        if (!businessAccount.isVatFormatValid()) { //if false save false, full attribuut value
+            mav.addObject("vatNumber_error", "invalid VAT-number");
+            save = false;
+        }
         return save;
     }
 
