@@ -50,15 +50,15 @@ public class OpenAccountController {
             return mav;
         }
         else
-            populateFields(businessAccount,mav2);
+            populateFields(businessAccount,mav2,bb);
             return mav2;
 
     }
 
 
     //populate the field of the view when
-    private void populateFields(BusinessAccount businessAccount, ModelAndView mav2) {
-
+    private void populateFields(BusinessAccount businessAccount, ModelAndView mav2,OpenAccountBackingBean bb) {
+        mav2.addObject("accountType", bb.getAccountType());
         mav2.addObject("companyName",businessAccount.getCompanyName());
         mav2.addObject("kvkNumber",businessAccount.getKvkNumber());
         mav2.addObject("vatNumber", businessAccount.getVatNumber());

@@ -21,7 +21,10 @@
 </head>
 <body>
 
-    <h:inputHidden id="html" value="#{ques.conversiontostring}" />
+        <span hidden  id="account" th:text="${accountType}" />
+
+
+
 
     <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
         <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
@@ -67,7 +70,7 @@
                 </td>
             </tr>
         </table>
-        <input type="submit" name="submitbutton" value="Create account" />
+        <input type="submit" name="submitbutton" value="Create account"  />
     </form>
     <form action="myaccount" method="get">
         <input type="submit" name="submitbutton" value="Back" />
@@ -77,6 +80,20 @@
 </html>
 
 <script>
+
+
+    //if the value accounttype in Backing Bean is business: show business field
+
+
+
+
+
+
+        if (document.getElementById("account").textContent === "business") {
+            showBusinessFields()
+        } else
+            hideBusinessFields();
+
 
 
     function hideBusinessFields() {
