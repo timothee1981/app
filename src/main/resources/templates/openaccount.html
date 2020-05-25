@@ -3,51 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>openaccounts</title>
+    <style>
+        ::placeholder {
+            color: red;
+            opacity: 1; /* Firefox */
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: red;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: red;
+        }
+    </style>
 
 </head>
 <body>
-    <form th:action="@{/openaccount}"  method="post" th:object="${account}">
-        <!--twee radio button nodig, een prive rekening een business account -->
+    <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
         <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
         <label for="private">Private account</label>
         <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
         <label for="business">Business account</label><br>
-
-        <!--table for business (set on visible if radio button is clicked -->
-        <table id="businessFields" style="visibility:hidden">
-            <tr> <!--Company name -->
+        <table id="businessFields" style="visibility:hidden" >
+            <tr>
                 <td>Company name  </td>
                 <td>
                     <label>
-                        <input type="text" id="companyName"   th:field="*{companyName}" />
+                        <input type="text" id="companyName"  th:placeholder="*{companyNamePlaceholder}" onfocus="this.placeholder=''" placeholder=""  th:field="*{companyName}" />
                     </label>
                 </td>
             </tr>
-            <!--kvk number-->
             <tr>
                 <td>Kvk number  </td><td><label>
-                    <input type="text" id="kvkNumber"   th:field="*{kvkNumber}"  />
+                    <input type="text" id="kvkNumber" th:placeholder="*{kvkNumberPlaceholder}" onfocus="this.placeholder=''" placeholder=""   th:field="*{kvkNumber}"  />
             </label></td>
             </tr>
-            <!--Vat number -->
             <tr>
                 <td>Vat number  </td><td><label>
-                    <input type="text" id="vatNumber"  th:field="*{vatNumber}"  />
+                    <input type="text" id="vatNumber" th:placeholder="*{vatNumberPlaceholder}" onfocus="this.placeholder=''" placeholder=""  th:field="*{vatNumber}"  />
             </label></td>
             </tr>
-            <!--Sector drop down menu select multiple -->
             <tr>
                 <td>Sector </td>
                 <td>
-                    <label for="sector"></label><select id="sector" th:field="*{sector}">
-                    <option value="financial">Financial</option>
-                    <option value="it">IT</option>
-                    <option value="retail">Retail</option>
-                    <option value="agriculture">Agriculture</option>
-                    <option value="education">Education</option>
-                    <option value="logistic">Logistic</option>
-                    <option value="industry">Industry</option>
-                </select>
+                    <label for="sector"></label>
+                    <select id="sector"   th:field="*{sector}">
+                        <option disabled selected value="" hidden></option>
+                        <option value="financial">Financial</option>
+                        <option value="it">IT</option>
+                        <option value="retail">Retail</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="education">Education</option>
+                        <option value="logistic">Logistic</option>
+                        <option value="industry">Industry</option>
+                    </select>
                 </td>
             </tr>
         </table>
@@ -64,15 +74,20 @@
 
     function hideBusinessFields() {
         document.getElementById("businessFields").style.visibility = "hidden";
-        document.getElementById("companyName").required = "false";
-        document.getElementById("kvkNumber").required = "false";
-        document.getElementById("vatNumber").required = "false";
+        document.getElementById("form").noValidate;
+        document.getElementById("companyName").removeAttribute("required");
+        document.getElementById("kvkNumber").removeAttribute("required");
+        document.getElementById("vatNumber").removeAttribute("required");
+        document.getElementById("sector").removeAttribute("required");
+
     }
     function showBusinessFields() {
         document.getElementById("businessFields").style.visibility = "visible";
         document.getElementById("companyName").required = "true";
         document.getElementById("kvkNumber").required = "true";
         document.getElementById("vatNumber").required = "true";
+        document.getElementById("sector").required = "true";
+
 
     }
 </script>

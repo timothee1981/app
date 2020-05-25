@@ -5,14 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.User;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
 
 @Controller
 public class SignUpController {
+
+    private String tempPassword;
 
     @Autowired
     private CustomerService customerService;
@@ -27,7 +31,8 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
+    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String password){
+        tempPassword = password;
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
 
@@ -53,7 +58,7 @@ public class SignUpController {
 
         if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("username_error", "invalid format username");}
         if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username_error", "username not unique"); }
-        if(!customer.isPasswordValid()) { save = false; mav.addObject("password_error", "Password must contain 1 lower case letter, 1 upper case letter, 1 numeric character, 1 special character and be at least 10 characters in length"); }
+        if(!User.isPasswordValid(tempPassword)) { save = false; mav.addObject("password_error", "invalid password"); }
         if(!customer.isFirstNameValid()) { save = false; mav.addObject("firstName_error", "invalid first name"); }
         if(!customer.isLastNameValid()) { save = false; mav.addObject("lastName_error", "invalid last name"); }
         if(!customer.isEmailValid()){ save = false; mav.addObject("email_error", "invalid email"); }
@@ -74,7 +79,7 @@ public class SignUpController {
      */
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());
-        mav.addObject("password", customer.getPassword());
+        mav.addObject("password", tempPassword);
         mav.addObject("firstName", customer.getFirstName());
         mav.addObject("lastName", customer.getLastName());
         mav.addObject("email", customer.getEmail());
