@@ -8,13 +8,13 @@
     <title>homepage</title>
 </head>
 <body>
-<h1>Welkom op de homepage!</h1>
-<form th:action="@{doLogin}" method="post">
-    <p>Username:<span><input type="text" name="inputUsername"></span><span th:text="${username_error}"/></p>
-    <p>Wachtwoord:<span><input type="password" name="inputPassword"></span><span th:text="${password_error}"/></p>
-    <input type="submit" name="submitbutton" value="Login">
-    <span th:text="${user_error}"/>
-</form>
-<input type="submit" name="signup" onclick="location.href='signup';" value="Sign up">
+    <h1>Welcome to the homepage!</h1>
+        <form th:action="@{doLogin}" method="post">
+        <p>Username:<span><input type="text" name="inputUsername"></span><span th:text="${username_error}"/></p>
+        <p>Password:<span><input type="password" name="inputPassword"></span><span th:text="${password_error}"/></p>
+    <input type ="submit" name="submitbutton" value="Log in">
+            <span th:text="${user_error}"/>
+        </form>
+    <input type ="submit" name="signup" onclick="location.href='signup';" value="Become a customer">
 </body>
 </html>

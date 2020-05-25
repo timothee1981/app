@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Employee;
+import royalstacks.app.model.Password;
 import royalstacks.app.model.User;
 import royalstacks.app.service.LogInService;
 
@@ -38,7 +39,7 @@ public class DoLoginController {
         }
 
         //Check if password of user matches entered value
-        if (!user.getPassword().equals(inputPassword)) {
+        if ( ! Password.checkPassword( inputPassword, user.getPassword() ) ){
             ModelAndView mav = new ModelAndView("homepage");
             mav.addObject("password_error", "password is not correct, please enter a valid password");
             return mav;

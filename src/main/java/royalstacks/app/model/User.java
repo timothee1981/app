@@ -8,6 +8,8 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
 
+    private final static int DEFAULT_USER_ID = 0;
+
     @Id
     @GeneratedValue
     protected int userid;
@@ -23,14 +25,12 @@ public abstract class User {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = Password.hashPassword(password);
     }
 
     // userid komt vanuit database
     public User(String username, String password, String firstName, String lastName) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this(DEFAULT_USER_ID, username, password, firstName, lastName);
     }
 
     public User() { }
@@ -54,9 +54,9 @@ public abstract class User {
 
     }
 
-    public boolean isPasswordValid(){
+    public static boolean isPasswordValid(String inputPassword){
         // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 8 karakters lang zijn
-        return this.password.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
+        return inputPassword.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
     }
 
     public boolean isFirstNameValid(){
@@ -90,8 +90,11 @@ public abstract class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password_plaintext) {
+
+        String hashedPassword = Password.hashPassword(password_plaintext);
+
+        this.password = hashedPassword;
     }
 
     public String getFirstName() {
@@ -114,10 +117,12 @@ public abstract class User {
     public String toString() {
         return "User{" +
                 "userid=" + userid +
+                ", firstname='" + firstName + '\'' +
+                ", lasttname='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 '}';
     }
+
+
 }
