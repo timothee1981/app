@@ -64,7 +64,7 @@ public class BusinessAccount extends Account {
 
     public boolean isCompanyNameFormatValid(){
 
-        return this.companyName.matches("^[\\w ]*[^\\W_ ][\\w- ]*$");
+        return this.companyName.matches("^[\\w@ ]*[^\\W_ ][\\w- \\@\\ \\&\\ \\+]*$");
     }
 
     public boolean isKvkNameFormatValid(){

@@ -29,6 +29,18 @@ class BusinessAccountTest {
         assertTrue(account.isCompanyNameFormatValid());
         account.setCompanyName("Google-go");
         assertTrue(account.isCompanyNameFormatValid());
+        account.setCompanyName("@google");
+        assertTrue(account.isCompanyNameFormatValid());
+        account.setCompanyName("google&co+");
+        assertTrue(account.isCompanyNameFormatValid());
+        account.setCompanyName("google co-");
+        assertTrue(account.isCompanyNameFormatValid());
+        account.setCompanyName("google@co ");
+        assertTrue(account.isCompanyNameFormatValid());
+        account.setCompanyName("google co @");
+        assertTrue(account.isCompanyNameFormatValid());
+
+
 
 
 
