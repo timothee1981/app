@@ -29,7 +29,7 @@ public class AccountService {
             return null;
         }
     }
-    public String getLastAccountNumber(){
+    public String retrieveLastIban(){
         Optional<String> accountNumber = accountRepository.getLastAccountNumber();
         if (accountNumber.isPresent()) {
             return accountNumber.get();
@@ -38,19 +38,36 @@ public class AccountService {
         }
     }
 
+    public String createNewIban(){
+        final String INITIAL_ACCOUNT = "XX00XXX0000000000";
+        final String LANDCODE = "NL";
+        final String BANKCODE = "ROYA";
+        String lastIban;
 
-    public String generateAccountNumber(){
-        final String FIRST_ACCOUNT = "NL77ROYA0000000000";
-        final String IBAN_START_CODE = "NL77ROYA";
-        String lastAccountNr;
-        if(getLastAccountNumber() == null){
-            lastAccountNr = FIRST_ACCOUNT;
+        if(retrieveLastIban() == null){
+            lastIban = INITIAL_ACCOUNT;
         }
         else {
-            lastAccountNr = getLastAccountNumber();
+            lastIban = retrieveLastIban();
         }
-        int newAccountNr =  Integer.parseInt(lastAccountNr.substring(8));
-        String newAccountNumber = String.format("%s%010d",IBAN_START_CODE, ++newAccountNr);
+        String newAccountNr = createNewAccountNrFromLastIban(lastIban);
+        String controlNr = createControlNrFromAccountNr(newAccountNr);
+        return  LANDCODE + controlNr + BANKCODE + newAccountNr;
+    }
+
+    public String createNewAccountNrFromLastIban(String lastIban){
+        int newAccountNr =  Integer.parseInt(lastIban.substring(8));
+        String newAccountNumber = String.format("%010d", ++newAccountNr);
         return newAccountNumber;
+    }
+
+    public String createControlNrFromAccountNr(String accountNr){
+    final String CONTROLNUMBER_HASH = "232100";
+    final int HASH_BASE = 98;
+    final int HASH_MODULUS = 97;
+    int controlNrInt;
+    String controlNrString = accountNr + CONTROLNUMBER_HASH;
+    controlNrInt = HASH_BASE-(Integer.parseInt(controlNrString)%HASH_MODULUS);
+    return String.format("%02d", controlNrInt);
     }
 }

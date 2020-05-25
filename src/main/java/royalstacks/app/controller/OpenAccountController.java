@@ -29,7 +29,7 @@ public class OpenAccountController {
 
         if(bb.getAccountType().equals("business")) {
 
-            bb.setAccountNumber(accountService.generateAccountNumber());
+            bb.setAccountNumber(accountService.createNewIban());
             BusinessAccount businessAccount = bb.businessAccount();
             //checken als alle velden valid zijn
                 //check company name
@@ -47,7 +47,7 @@ public class OpenAccountController {
 
         }
         else if (bb.getAccountType().equals("private")) {
-            bb.setAccountNumber(accountService.generateAccountNumber());
+            bb.setAccountNumber(accountService.createNewIban());
             PrivateAccount privateAccount = bb.privateAccount();
             accountService.saveAccount(privateAccount);
 
