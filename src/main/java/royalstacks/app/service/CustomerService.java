@@ -17,7 +17,7 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public Optional<Customer> findBySocialSecurityNumber(String socialSecurityNumber) {
-        return customerRepository.findBySocialSecurityNumber(socialSecurityNumber);
+    public Optional<Customer> findCustomerByBSN(String BSN) {
+        return customerRepository.findCustomerByBSN(BSN);
     }
 }

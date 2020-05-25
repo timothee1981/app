@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
-    @Query("SELECT u FROM Customer u WHERE u.socialSecurityNumber = ?1")
-    Optional<Customer> findBySocialSecurityNumber(String socialSecurityNumber);
+    @Query("SELECT u FROM Customer u WHERE u.BSN = ?1")
+    Optional<Customer> findCustomerByBSN(String BSN);
 
 }

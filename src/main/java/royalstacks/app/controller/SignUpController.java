@@ -53,15 +53,15 @@ public class SignUpController {
 
         if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("username_error", "invalid format username");}
         if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username_error", "username not unique"); }
-        if(!customer.isPasswordValid()) { save = false; mav.addObject("password_error", "invalid password"); }
+        if(!customer.isPasswordValid()) { save = false; mav.addObject("password_error", "Password should"); }
         if(!customer.isFirstNameValid()) { save = false; mav.addObject("firstName_error", "invalid first name"); }
         if(!customer.isLastNameValid()) { save = false; mav.addObject("lastName_error", "invalid last name"); }
         if(!customer.isEmailAddressValid()){ save = false; mav.addObject("emailAddress_error", "invalid emailAddress"); }
         if(!customer.isPostalCodeValid()) { save = false; mav.addObject("postalCode_error", "invalid postalCode"); }
         if(!customer.isCityValid()) { save = false; mav.addObject("city_error", "invalid city"); }
         if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("phoneNumber", "invalid phoneNumber"); }
-        if(!customer.isSocialSecurityNumberFormatValid()) { save = false; mav.addObject("ssn_error", "invalid ssn format"); }
-        if(customerService.findBySocialSecurityNumber(customer.getSocialSecurityNumber()).isPresent()) { save = false; mav.addObject("ssn_error", "ssn is not unique"); }
+        if(!customer.isBSNFormatValid()) { save = false; mav.addObject("bsn_error", "BSN should contain 9 numbers"); }
+        if(customerService.findCustomerByBSN(customer.getBSN()).isPresent()) { save = false; mav.addObject("bsn_error", "bsn is not unique"); }
         if(!customer.isAddressValid()) { save = false; mav.addObject("address_error", "invalid address"); }
 
         return save;
@@ -81,7 +81,7 @@ public class SignUpController {
         mav.addObject("postalCode", customer.getPostalCode());
         mav.addObject("city", customer.getCity());
         mav.addObject("phoneNumber", customer.getPhoneNumber());
-        mav.addObject("socialSecurityNumber", customer.getSocialSecurityNumber());
+        mav.addObject("socialSecurityNumber", customer.getBSN());
         mav.addObject("address", customer.getAddress());
     }
 

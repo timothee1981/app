@@ -20,7 +20,7 @@ public class CustomerBackingBean {
     private String city;
     private String postalCode;
     private String phoneNumber;
-    private String socialSecurityNumber;
+    private String BSN;
     // hier motten we nog wat mee
     private boolean isBusinessAccountHolder;
     @ManyToOne
@@ -29,7 +29,7 @@ public class CustomerBackingBean {
     // TODO add mapping after implementing config file hibernate
     private Set<Account> account;
 
-    public CustomerBackingBean(String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber,String socialSecurityNumber) {
+    public CustomerBackingBean(String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber,String BSN) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -39,11 +39,11 @@ public class CustomerBackingBean {
         this.city = city;
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
-        this.socialSecurityNumber = socialSecurityNumber;
+        this.BSN = BSN;
     }
 
     public Customer customer() {
-        Customer customer = new Customer(username, password, firstName, lastName, emailAddress, address, city, postalCode, phoneNumber, socialSecurityNumber, null, false);
+        Customer customer = new Customer(username, password, firstName, lastName, emailAddress, address, city, postalCode, phoneNumber, BSN, null, false);
         return customer;
     }
 
@@ -53,7 +53,7 @@ public class CustomerBackingBean {
     public static CustomerBackingBean createCustomerBackingBean(Customer customer) {
         CustomerBackingBean cbb =
                 new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmailAddress(),
-                        customer.getAddress(), customer.getCity(), customer.getPostalCode(), customer.getPhoneNumber(), customer.getSocialSecurityNumber());
+                        customer.getAddress(), customer.getCity(), customer.getPostalCode(), customer.getPhoneNumber(), customer.getBSN());
                 return cbb;
     }
 
@@ -70,7 +70,7 @@ public class CustomerBackingBean {
                 ", city='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
+                ", BSN='" + BSN + '\'' +
                 ", isBusinessAccountHolder=" + isBusinessAccountHolder +
                 ", accountManager=" + accountManager +
                 ", account=" + account +

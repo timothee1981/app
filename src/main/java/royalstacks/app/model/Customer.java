@@ -13,7 +13,7 @@ public class Customer extends User {
     private String city;
     private String postalCode;
     private String phoneNumber;
-    private String socialSecurityNumber;
+    private String BSN;
     private boolean isBusinessAccountHolder;
     @ManyToOne
     private Employee accountManager;
@@ -23,27 +23,27 @@ public class Customer extends User {
 
     // CONSTRUCTORS
     // all args
-    public Customer(int userid, String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
+    public Customer(int userid, String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
         super(userid, username, password, firstName, lastName);
         this.emailAddress = emailAddress;
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
-        this.socialSecurityNumber = socialSecurityNumber;
+        this.BSN = BSN;
         this.accountManager = accountManager;
         this.isBusinessAccountHolder = isBusinessAccountHolder;
     }
 
     // om customer op te slaan in DB
-    public Customer(String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber, String socialSecurityNumber, Employee accountManager, boolean isBusinessAccountHolder) {
+    public Customer(String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
         super(username, password, firstName, lastName);
         this.emailAddress = emailAddress;
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
-        this.socialSecurityNumber = socialSecurityNumber;
+        this.BSN = BSN;
         this.accountManager = accountManager;
         this.isBusinessAccountHolder = isBusinessAccountHolder;
     }
@@ -89,12 +89,12 @@ public class Customer extends User {
                 || this.phoneNumber.matches("^(((\\+31|0|0031)6)[1-9][0-9]{7})$");
     }
 
-    public boolean isSocialSecurityNumberFormatValid(){
-        return this.socialSecurityNumber.matches("\\d{9}");
+    public boolean isBSNFormatValid(){
+        return this.BSN.matches("\\d{9}");
     }
 
     // TODO wordt in SignUpController geregeld. Deze verwijderen?
-    public boolean isSocialSecurityNumberUnique(){
+    public boolean isBSNUnique(){
         CustomerService cs = new CustomerService();
         return true;
     }
@@ -140,12 +140,12 @@ public class Customer extends User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getSocialSecurityNumber() {
-        return socialSecurityNumber;
+    public String getBSN() {
+        return BSN;
     }
 
-    public void setSocialSecurityNumber(String socialSecurityNumber) {
-        this.socialSecurityNumber = socialSecurityNumber;
+    public void setBSN(String BSN) {
+        this.BSN = BSN;
     }
 
     public boolean isBusinessAccountHolder() {
@@ -180,7 +180,7 @@ public class Customer extends User {
                 ", city='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
+                ", BSN='" + BSN + '\'' +
                 ", isBusinessAccountHolder=" + isBusinessAccountHolder +
                 ", accountManager=" + accountManager +
                 ", account=" + account +
