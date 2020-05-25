@@ -6,6 +6,8 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
 
+    private final static int DEFAULT_USER_ID = 0;
+
     @Id
     @GeneratedValue
     protected int userid;
@@ -23,9 +25,7 @@ public abstract class User {
 
     // userid komt vanuit database
     public User(String name, String username, String inputpassword) {
-        this.name = name;
-        this.username = username;
-        this.password = Password.hashPassword(inputpassword);
+        this(DEFAULT_USER_ID, name, username, inputpassword);
     }
 
     public User() { }
