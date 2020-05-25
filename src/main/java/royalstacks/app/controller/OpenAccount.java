@@ -32,6 +32,11 @@ public class OpenAccount {
             BusinessAccount businessAccount = bb.businessAccount();
             //checken als alle velden valid zijn
                 //check company name
+            if(!businessAccount.isCompanyNameFormatValid()) {
+                mav2.addObject("companyName","invalid name");
+                save = false;
+            }
+
                     //if false save false, full attribuut value
             //check kvknumber
                  //if false save false, full attribuut value
