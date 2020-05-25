@@ -53,10 +53,10 @@ public class SignUpController {
 
         if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("username_error", "invalid format username");}
         if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username_error", "username not unique"); }
-        if(!customer.isPasswordValid()) { save = false; mav.addObject("password_error", "Password should"); }
+        if(!customer.isPasswordValid()) { save = false; mav.addObject("password_error", "Password must contain 1 lower case letter, 1 upper case letter, 1 numeric character, 1 special character and be at least 10 characters in length"); }
         if(!customer.isFirstNameValid()) { save = false; mav.addObject("firstName_error", "invalid first name"); }
         if(!customer.isLastNameValid()) { save = false; mav.addObject("lastName_error", "invalid last name"); }
-        if(!customer.isEmailAddressValid()){ save = false; mav.addObject("emailAddress_error", "invalid emailAddress"); }
+        if(!customer.isEmailValid()){ save = false; mav.addObject("email_error", "invalid email"); }
         if(!customer.isPostalCodeValid()) { save = false; mav.addObject("postalCode_error", "invalid postalCode"); }
         if(!customer.isCityValid()) { save = false; mav.addObject("city_error", "invalid city"); }
         if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("phoneNumber", "invalid phoneNumber"); }
@@ -77,11 +77,11 @@ public class SignUpController {
         mav.addObject("password", customer.getPassword());
         mav.addObject("firstName", customer.getFirstName());
         mav.addObject("lastName", customer.getLastName());
-        mav.addObject("emailAddress", customer.getEmailAddress());
+        mav.addObject("email", customer.getEmail());
         mav.addObject("postalCode", customer.getPostalCode());
         mav.addObject("city", customer.getCity());
         mav.addObject("phoneNumber", customer.getPhoneNumber());
-        mav.addObject("socialSecurityNumber", customer.getBSN());
+        mav.addObject("BSN", customer.getBSN());
         mav.addObject("address", customer.getAddress());
     }
 

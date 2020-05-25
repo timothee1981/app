@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 public class Customer extends User {
 
-    private String emailAddress;
+    private String email;
     private String address;
     private String city;
     private String postalCode;
@@ -23,9 +23,9 @@ public class Customer extends User {
 
     // CONSTRUCTORS
     // all args
-    public Customer(int userid, String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
+    public Customer(int userid, String username, String password, String firstName, String lastName, String email, String address, String city, String postalCode, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
         super(userid, username, password, firstName, lastName);
-        this.emailAddress = emailAddress;
+        this.email = email;
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
@@ -36,9 +36,9 @@ public class Customer extends User {
     }
 
     // om customer op te slaan in DB
-    public Customer(String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
+    public Customer(String username, String password, String firstName, String lastName, String email, String address, String city, String postalCode, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
         super(username, password, firstName, lastName);
-        this.emailAddress = emailAddress;
+        this.email = email;
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
@@ -53,9 +53,9 @@ public class Customer extends User {
 
     // METHODS
 
-    public boolean isEmailAddressValid(){
+    public boolean isEmailValid(){
         // volgt RFC 5322 Official Standard
-        return this.emailAddress.matches(
+        return this.email.matches(
                 "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:" +
                         "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\" +
                         "[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+" +
@@ -100,12 +100,12 @@ public class Customer extends User {
     }
 
     // GETTERS EN SETTERS
-    public String getEmailAddress() {
-        return emailAddress;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAddress() {
@@ -175,7 +175,7 @@ public class Customer extends User {
     @Override
     public String toString() {
         return "Customer{" +
-                "emailAddress='" + emailAddress + '\'' +
+                "emailAddress='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +

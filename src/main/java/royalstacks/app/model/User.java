@@ -55,8 +55,8 @@ public abstract class User {
     }
 
     public boolean isPasswordValid(){
-        // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 8 karakters lang zijn
-        return this.password.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
+        // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter bevatten en minstens 10 karakters lang zijn
+        return this.password.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{10,}");
     }
 
     public boolean isFirstNameValid(){

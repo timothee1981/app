@@ -15,7 +15,7 @@ public class CustomerBackingBean {
     private String password;
     private String firstName;
     private String lastName;
-    private String emailAddress;
+    private String email;
     private String address;
     private String city;
     private String postalCode;
@@ -29,12 +29,12 @@ public class CustomerBackingBean {
     // TODO add mapping after implementing config file hibernate
     private Set<Account> account;
 
-    public CustomerBackingBean(String username, String password, String firstName, String lastName, String emailAddress, String address, String city, String postalCode, String phoneNumber,String BSN) {
+    public CustomerBackingBean(String username, String password, String firstName, String lastName, String email, String address, String city, String postalCode, String phoneNumber, String BSN) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = emailAddress;
+        this.email = email;
         this.address = address;
         this.city = city;
         this.postalCode = postalCode;
@@ -43,7 +43,7 @@ public class CustomerBackingBean {
     }
 
     public Customer customer() {
-        Customer customer = new Customer(username, password, firstName, lastName, emailAddress, address, city, postalCode, phoneNumber, BSN, null, false);
+        Customer customer = new Customer(username, password, firstName, lastName, email, address, city, postalCode, phoneNumber, BSN, null, false);
         return customer;
     }
 
@@ -52,7 +52,7 @@ public class CustomerBackingBean {
     // maakt een backing bean van een customer
     public static CustomerBackingBean createCustomerBackingBean(Customer customer) {
         CustomerBackingBean cbb =
-                new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmailAddress(),
+                new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmail(),
                         customer.getAddress(), customer.getCity(), customer.getPostalCode(), customer.getPhoneNumber(), customer.getBSN());
                 return cbb;
     }
@@ -65,7 +65,7 @@ public class CustomerBackingBean {
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", emailAddress='" + emailAddress + '\'' +
+                ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +
