@@ -24,8 +24,6 @@
         <span hidden  id="account" th:text="${accountType}" />
 
 
-
-
     <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
         <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
         <label for="private">Private account</label>
@@ -83,9 +81,6 @@
 
 
     //if the value accounttype in Backing Bean is business: show business field
-
-
-
 
 
 

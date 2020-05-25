@@ -2,6 +2,7 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +32,7 @@ public class OpenAccountController {
     }
 
     //Do private account method
+
     private ModelAndView createPrivateAccount(OpenAccountBackingBean bb, ModelAndView mav) {
         bb.setAccountNumber(accountService.generateAccountNumber());
         PrivateAccount privateAccount = bb.privateAccount();
@@ -40,6 +42,7 @@ public class OpenAccountController {
     }
 
     //do business account view
+
     private ModelAndView createBusinessAccount(OpenAccountBackingBean bb, ModelAndView mav, ModelAndView mav2) {
         bb.setAccountNumber(accountService.generateAccountNumber());
         BusinessAccount businessAccount = bb.businessAccount();
@@ -69,7 +72,7 @@ public class OpenAccountController {
     private boolean isAllInputValid(BusinessAccount businessAccount, ModelAndView mav) {
         boolean save = true;
         if (!businessAccount.isCompanyNameFormatValid()) {
-            mav.addObject("companyName_error", "invalid name");
+            mav.addObject("companyName_error", "we accept only company names with alphanumerical charcaters and + - @ and &");
             save = false;
         } //check kvknumber
         if (!businessAccount.isKvkNameFormatValid()) { //if false save false, full attribuut value
@@ -81,10 +84,16 @@ public class OpenAccountController {
         return save;
     }
 
+    @GetMapping("/myaccount")
+    public ModelAndView myAccountHandler(){
+        ModelAndView mav = new ModelAndView("myaccounts");
+        return mav;
+    }
 
 
 
-/*        }
+
+/*
 
         @PostMapping("/create_person")
         public ModelAndView createPersonHandler(@ModelAttribute CreatePersonBackingBean bbb) {
@@ -97,6 +106,8 @@ public class OpenAccountController {
             return mav;
         }
     }*/
+
+
 
 
 
