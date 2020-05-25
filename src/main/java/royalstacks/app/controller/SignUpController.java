@@ -31,8 +31,8 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String inputPassword){
-        tempPassword = inputPassword;
+    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String password){
+        tempPassword = password;
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
 
@@ -79,7 +79,7 @@ public class SignUpController {
      */
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());
-        mav.addObject("password", customer.getPassword());
+        mav.addObject("password", tempPassword);
         mav.addObject("firstName", customer.getFirstName());
         mav.addObject("lastName", customer.getLastName());
         mav.addObject("emailAddress", customer.getEmailAddress());
