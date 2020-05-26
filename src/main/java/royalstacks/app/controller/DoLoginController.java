@@ -2,6 +2,8 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.model.Customer;
@@ -11,14 +13,14 @@ import royalstacks.app.model.User;
 import royalstacks.app.service.LogInService;
 
 @Controller
+@SessionAttributes("userid")
 public class DoLoginController {
 
     @Autowired
     private LogInService loginService;
 
     @PostMapping("/doLogin")
-    @ResponseBody
-    public ModelAndView doLoginHandler(@RequestParam String inputUsername, String inputPassword) {
+    public ModelAndView doLoginHandler(@RequestParam String inputUsername, String inputPassword, Model model){
 
         //Check if username and password exist and have a value
         boolean usernameHasValue = inputUsernameHasValue(inputUsername);
@@ -44,6 +46,9 @@ public class DoLoginController {
             mav.addObject("password_error", "password is not correct, please enter a valid password");
             return mav;
         }
+
+        //add userid to modelSession
+        model.addAttribute("input", user.getUserid());
 
         //redirect user to next page
         if (user instanceof Employee) {
