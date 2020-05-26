@@ -32,7 +32,7 @@ class UserRepositoryIntegrationTest {
         this.entityManager.persist(customer);
         Optional<User> expected = Optional.of(customer);
 
-        Optional<User> actual = userRepository.findByUsername("TestUsername");
+        Optional<User> actual = userRepository.findByUsername("Testnaam");
 
         assertThat(actual).isEqualTo(expected);
     }

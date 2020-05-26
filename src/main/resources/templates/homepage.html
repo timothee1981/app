@@ -1,19 +1,70 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org">
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>homepage</title>
+    <style>
+        * {box-sizing: border-box}
+        * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
+        body{
+            align-content: center;
+            background-color: #ebebeb;
+            margin: auto;
+            width: 40%;
+            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+        }
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+        }
+        input[type=text]:focus, input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+        button {
+            background-color: #1E90FF;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+        button:hover {
+            opacity:1;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the homepage!</h1>
-        <form th:action="@{doLogin}" method="post">
-        <p>Username:<span><input type="text" name="inputUsername"></span></p>
-        <p>Password:<span><input type="password" name="inputPassword"></span></p>
-    <input type ="submit" name="submitbutton" value="Log in">
-    </form>
-    <input type ="submit" name="signup" onclick="location.href='signup';" value="Become a customer">
+<h1>Login</h1>
+<form th:action="@{doLogin}" method="post">
+
+    <label><b>Username</b></label>
+    <input
+            type="text"
+            placeholder="Username"
+            name="inputUsername"
+            required
+    >
+    <label><b>Password</b></label>
+    <!--/*@thymesVar id="login_error" type="java.lang.String"*/-->
+    <input
+            type="password"
+            placeholder="Password"
+            name="inputPassword"
+            th:text="${login_error}"
+            required
+    >
+    <td><button type="submit" name="submitbutton" value="Login">Login</button></td>
+    <td><button type="submit" name="signup" onclick="location.href='signup';"value="Become a customer">Signup</button></td>
+    <!--/*@thymesVar id="user_error" type="java.lang.String"*/-->
+    <span th:text="${user_error}"/>
+</form>
 </body>
 </html>

@@ -8,3 +8,4 @@ import org.springframework.stereotype.Controller;
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
 public class Index {
 }
+
