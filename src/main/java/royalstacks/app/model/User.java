@@ -60,13 +60,13 @@ public abstract class User {
     }
 
     public boolean isFirstNameValid(){
-        // TODO: is name valid. Voornaam Achternaam?
-        return true;
+        // Alleen letters, - en tussen 1 en 100 karakters lang
+        return this.firstName.matches("[a-zA-Z-'\\s?]{1,100}");
     }
 
     public boolean isLastNameValid(){
-        // TODO: is name valid. Voornaam Achternaam?
-        return true;
+        // Alleen letters, - en tussen 1 en 100 karakters lang
+        return this.lastName.matches("[a-zA-Z-'\\s?]{1,100}");
     }
 
     // GETTERS SETTERS

@@ -3,46 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <title>signup</title>
+    <style>
+        * {box-sizing: border-box};
+        * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
+
+        body{
+            align-content: center;
+            background-color: #ebebeb;
+            margin: auto;
+            width: 40%;
+            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+
+        }
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+        }
+
+        /* Add a background color when the inputs get focus */
+        input[type=text]:focus, input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+
+        /* Set a style for all buttons */
+        button {
+            background-color: #1E90FF;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+
+        button:hover {
+            opacity:1;
+        }
+
+        /* Style the horizontal ruler */
+        hr {
+            border: 1px solid #f1f1f1;
+            margin-bottom: 25px;
+        }
+
+        /* Change styles for cancel button and signup button on extra small screens */
+        @media screen and (max-width: 300px) {
+            .cancelbtn, .signupbtn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 <h1>Sign up</h1>
 <form th:action="@{signup}" method="post">
-    <table>
-        <tr>
-            <td>Username</td><td><input type="text" name="username" th:value="${username}"> <span th:text="${username_error}"/></td>
-        </tr>
-        <tr>
-            <td>Password</td><td><input type="text" name="password" th:value="${password}"> <span th:text="${password_error}"/></td>
-        </tr>
-        <tr>
-            <td>First name</td><td><input type="text" name="firstName" th:value="${firstName}"> <span th:text="${firstName_error}"/></td>
-        </tr>
-        <tr>
-            <td>Last name</td><td><input type="text" name="lastName" th:value="${lastName}"> <span th:text="${lastName_error}"/></td>
-        </tr>
-        <tr>
-            <td>Email</td><td><input type="text" name="email" th:value="${email}"> <span th:text="${email_error}"/></td>
-        </tr>
-        <tr>
-            <td>Address</td><td><input type="text" name="address" th:value="${address}"> <span th:text="${address_error}"/></td>
-        </tr>
-        <tr>
-            <td>City</td><td><input type="text" name="city" th:value="${city}"> <span th:text="${city_error}"/></td>
-        </tr>
-        <tr>
-            <td>Postal code</td><td><input type="text" name="postalCode" th:value="${postalCode}"> <span th:text="${postalCode_error}"/></td>
-        </tr>
-        <tr>
-            <td>Phone Number</td><td><input type="text" name="phoneNumber" th:value="${phoneNumber}"> <span th:text="${phoneNumber_error}"/></td>
-        </tr>
-        <tr>
-            <td>BSN</td><td><input type="text" name="BSN" th:value="${BSN}"> <span th:text="${bsn_error}"/></td>
-        </tr>
-        <tr>
-            <td><input type="submit" name="submitbutton" value="Sign up"></td>
-            <td><a href="/">Homepage</a></td>
-        </tr>
-    </table>
+
+    <label><b>Username</b></label>
+    <input
+            type="text"
+            placeholder="Username"
+            name="username"
+            pattern="^[a-zA-Z0-9_-]{3,15}"
+            title="Use letters, numbers, - or _ only"
+            th:value="${username}"
+            required
+    >
+
+    <label><b>Password</b></label>
+    <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            pattern="(?=(.*[0-9]))(?=.*[\!@#$%^&*()\[\]{}\-_+=~`|:;"
+            title="Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length"
+            th:value="${password}"
+            required
+    />
+    <label><b>First name</b></label>
+    <input
+            type="text"
+            placeholder="First name"
+            name="firstName"
+            pattern="[a-zA-Z-'\s?]{1,100}"
+            title="Use letters or - only"
+            th:value="${firstName}"
+            required
+    />
+
+    <label><b>Last name</b></label>
+    <input
+            type="text"
+            placeholder="Last name"
+            name="lastName"
+            pattern="[a-zA-Z-'\s?]{1,100}"
+            title="Use letters or - only"
+            th:value="${lastName}"
+            required
+    />
+
+    <label><b>Email</b></label>
+    <input
+            type="text"
+            placeholder="Email"
+            name="email"
+            pattern=""
+            title="Use a valid email"
+            th:value="${email}"
+            required
+    />
+
+    <label><b>Address</b></label>
+    <input type="text" placeholder="Address" name="address"  th:value="${address}" required>
+
+    <label><b>City</b></label>
+    <input type="text" placeholder="City" name="city"  th:value="${city}" required>
+
+    <label><b>Postal code</b></label>
+    <input type="text" placeholder="Postal code" name="postalCode"  th:value="${postalCode}" required>
+
+    <label><b>Phone Number</b></label>
+    <input type="text" placeholder="Phone number" name="phoneNumber"  th:value="${phoneNumber}" required>
+
+    <label><b>BSN</b></label>
+    <label>
+        <input type="text" placeholder="BSN" name="BSN" th:value="${BSN}" required>
+    </label>
+
+    <td><button type="submit" name="submitbutton" value="Sign up">Sign Up</button></td>
+    <td><button onclick="document.location = '/'">Homepage</button></td>
+
     <h2><span th:text="${confirmation}"/></h2>
 </form>
 </body>
