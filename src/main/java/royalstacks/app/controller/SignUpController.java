@@ -16,7 +16,7 @@ import royalstacks.app.service.UserService;
 @Controller
 public class SignUpController {
 
-    private String tempPassword;
+    private String userPassword;
 
     @Autowired
     private CustomerService customerService;
@@ -32,13 +32,15 @@ public class SignUpController {
 
     @PostMapping("/signup")
     public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String password){
-        tempPassword = password;
+        userPassword = password;
         Customer customer = cbb.customer();
+        System.out.println(customer);
         ModelAndView mav = new ModelAndView("signup");
 
         // check of alle velden goed ingevuld zijn
         if(isAllInputValid(customer, mav)) {
             customerService.saveCustomer(customer);
+            populateFields(customer, mav);
             mav.addObject("form", "disabled");
             mav.addObject("confirmation", "Account successfully created");
             System.out.println("**** Customer saved: " + customer);
@@ -58,25 +60,25 @@ public class SignUpController {
     private boolean isAllInputValid(Customer customer, ModelAndView mav) {
         boolean save = true;
 
-        if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("username_error", "invalid format username");}
-        if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username_error", "username not unique"); }
-        if(!User.isPasswordValid(tempPassword)) { save = false; mav.addObject("password_error", "Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length"); }
-        if(!customer.isFirstNameValid()) { save = false; mav.addObject("firstName_error", "invalid first name"); }
-        if(!customer.isLastNameValid()) { save = false; mav.addObject("lastName_error", "invalid last name"); }
-        if(!customer.isEmailValid()){ save = false; mav.addObject("email_error", "invalid email"); }
-        if(!customer.isPostalCodeValid()) { save = false; mav.addObject("postalCode_error", "invalid postalCode"); }
-        if(!customer.isCityValid()) { save = false; mav.addObject("city_error", "invalid city"); }
-        if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("phoneNumber", "invalid phoneNumber"); }
-        if(!customer.isBSNFormatValid()) { save = false; mav.addObject("bsn_error", "BSN should contain 9 numbers"); }
-        if(customerService.findCustomerByBSN(customer.getBSN()).isPresent()) { save = false; mav.addObject("bsn_error", "bsn is not unique"); }
-        if(!customer.isAddressValid()) { save = false; mav.addObject("address_error", "invalid address"); }
+        if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("error", "invalid format username");}
+        if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("error", "username not unique"); }
+        if(!User.isPasswordValid(userPassword)) { save = false; mav.addObject("error", "Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length"); }
+        if(!customer.isFirstNameValid()) { save = false; mav.addObject("error", "invalid first name"); }
+        if(!customer.isLastNameValid()) { save = false; mav.addObject("error", "invalid last name"); }
+        if(!customer.isEmailValid()){ save = false; mav.addObject("error", "invalid email"); }
+        if(!customer.isPostalCodeValid()) { save = false; mav.addObject("error", "invalid postalCode"); }
+        if(!customer.isCityValid()) { save = false; mav.addObject("error", "invalid city"); }
+        if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("error", "invalid phoneNumber"); }
+        if(!customer.isBSNFormatValid()) { save = false; mav.addObject("error", "BSN should contain 9 numbers"); }
+        if(customerService.findCustomerByBSN(customer.getBSN()).isPresent()) { save = false; mav.addObject("error", "bsn is not unique"); }
+        if(!customer.isAddressValid()) { save = false; mav.addObject("error", "invalid address"); }
 
         return save;
     }
 
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());
-        mav.addObject("password", tempPassword);
+        mav.addObject("password", userPassword);
         mav.addObject("firstName", customer.getFirstName());
         mav.addObject("lastName", customer.getLastName());
         mav.addObject("email", customer.getEmail());

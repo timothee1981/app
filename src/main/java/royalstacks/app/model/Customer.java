@@ -91,6 +91,7 @@ public class Customer extends User {
     }
 
     public boolean isBSNFormatValid(){
+        System.out.println(this.BSN);
         return this.BSN.matches("^[0-9]{9}$");
     }
 

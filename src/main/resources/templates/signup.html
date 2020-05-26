@@ -11,9 +11,14 @@
             align-content: center;
             background-color: #ebebeb;
             margin: auto;
-            width: 40%;
+            width: 90%;
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+        }
 
+        form{
+            margin-left: 20px;
+            margin-right: 20px;
+            width: 500px;
         }
 
         fieldset{
@@ -51,10 +56,41 @@
             opacity: 0.9;
         }
 
-        #passRequirements{
-            display: none;
-            font-size: 14px;
+        #passRequirements {
+            width: 100%;
+            overflow: hidden;
+            border: hidden;
+            margin-bottom: 10px
         }
+
+        #passRequirements1of2 {
+            width: 50%;
+            float:left;
+            display: none;
+        }
+        #passRequirements2of2 {
+            float: left;
+            display: none;
+        }
+
+        #names {
+            width: 100%;
+            overflow: hidden;
+            border: 0;
+        }
+
+        #firstName {
+            width: 45%;
+            float:left;
+            margin-right: 5%;
+        }
+        #lastName {
+            width: 45%;
+            float: left;
+            margin-left: 5%
+        }
+
+
 
         button:hover {
             opacity:1;
@@ -78,7 +114,10 @@
 <h1>Sign up</h1>
 <fieldset th:disabled="${form}">
 <form th:action="@{signup}" method="post">
+    <h3><span th:text="${confirmation}"/></h3>
+    <h3><span th:text="${error}"/></h3>
 
+    <div id="formleft">
     <label><b>Username</b></label>
     <input
             type="text"
@@ -107,23 +146,24 @@
             onfocusout="hidePasswordRequirements()"
             required
     />
-
     <div id="passRequirements">
-        <ul>
-            <li>1 lowercase letter</li>
-            <li>1 uppercase letter </li>
-            <li>1 number</li>
-            <li>1 special character</li>
-            <li>At least 10 characters in length</li>
-        </ul>
+        <div id="passRequirements1of2">
+            <ul>
+                <li>One lowercase letter</li>
+                <li>One uppercase letter </li>
+            </ul>
+        </div>
+        <div id="passRequirements2of2">
+            <ul>
+                <li>One special character</li>
+                <li>10 characters minimum</li>
+            </ul>
+        </div>
     </div>
 
     <script>
-    </script>
-
-    <script>
         function showPassword() {
-            var x = document.getElementById("password");
+            const x = document.getElementById("password");
             if (x.type === "password") {
                 x.type = "text";
             } else {
@@ -132,16 +172,22 @@
         }
 
         function showPasswordRequirements() {
-            var x = document.getElementById("passRequirements");
+            const x = document.getElementById("passRequirements1of2");
+            const y = document.getElementById("passRequirements2of2");
             x.style.display = "inline";
+            y.style.display = "inline";
         }
 
         function hidePasswordRequirements() {
-            var x = document.getElementById("passRequirements");
+            const x = document.getElementById("passRequirements1of2");
+            const y = document.getElementById("passRequirements2of2");
             x.style.display = "none";
+            y.style.display = "none";
         }
     </script>
 
+    <div id="names">
+        <div id="firstName">
     <label><b>First name</b></label>
     <input
             type="text"
@@ -150,9 +196,12 @@
             pattern="[a-zA-Z-'\s?]{1,100}"
             title="Use letters or - only"
             th:value="${firstName}"
+            th:errorclass="fieldError"
             required
     />
+        </div>
 
+        <div id="lastName">
     <label><b>Last name</b></label>
     <input
             type="text"
@@ -163,6 +212,8 @@
             th:value="${lastName}"
             required
     />
+            </div>
+    </div>
 
     <label><b>Email</b></label>
     <input
@@ -222,17 +273,18 @@
             type="text"
             placeholder="BSN"
             pattern="^[0-9]{9}$"
-            name="Must consist of 9 numbers"
-            title="BSN must consist of only 9 numbers"
+            name="BSN"
+            title="Must consist of only 9 numbers"
             th:value="${BSN}"
             required
     />
+    </div>
 
 
     <td><button type="submit" name="submit" value="Sign up">Sign Up</button></td>
-    <h2><span th:text="${confirmation}"/></h2>
 </form>
 </fieldset>
+
 <td><button onclick="document.location = '/'">Homepage</button></td>
 </body>
 </html>
