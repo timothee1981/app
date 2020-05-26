@@ -15,7 +15,12 @@
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
 
         }
-        input[type=text], input[type=password] {
+
+        fieldset{
+            border: none;
+        }
+
+        input[type=text], input[type=password], input[type=email], input[type=number] {
             width: 100%;
             padding: 15px;
             margin: 5px 0 22px 0;
@@ -25,9 +30,13 @@
         }
 
         /* Add a background color when the inputs get focus */
-        input[type=text]:focus, input[type=password]:focus {
+        input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=number]:focus{
             background-color: #ddd;
             outline: none;
+        }
+
+        input[type=text]:disabled, input[type=password]:disabled, input[type=email]:disabled, input[type=number]:disabled {
+            background: #dcdcdc;
         }
 
         /* Set a style for all buttons */
@@ -40,6 +49,11 @@
             cursor: pointer;
             width: 100%;
             opacity: 0.9;
+        }
+
+        #passRequirements{
+            display: none;
+            font-size: 14px;
         }
 
         button:hover {
@@ -62,6 +76,7 @@
 </head>
 <body>
 <h1>Sign up</h1>
+<fieldset th:disabled="${form}">
 <form th:action="@{signup}" method="post">
 
     <label><b>Username</b></label>
@@ -72,19 +87,61 @@
             pattern="^[a-zA-Z0-9_-]{3,15}"
             title="Use letters, numbers, - or _ only"
             th:value="${username}"
+            autofocus
             required
-    >
+
+    />
+
 
     <label><b>Password</b></label>
+    <input type="checkbox" onclick="showPassword()">Show Password
     <input
             type="password"
-            placeholder="Password"
+            placeholder="At least 10 characters"
             name="password"
-            pattern="(?=(.*[0-9]))(?=.*[\!@#$%^&*()\[\]{}\-_+=~`|:;"
-            title="Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length"
+            id="password"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$"
+            title="Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and at least 10 characters in length"
             th:value="${password}"
+            onfocusin="showPasswordRequirements()"
+            onfocusout="hidePasswordRequirements()"
             required
     />
+
+    <div id="passRequirements">
+        <ul>
+            <li>1 lowercase letter</li>
+            <li>1 uppercase letter </li>
+            <li>1 number</li>
+            <li>1 special character</li>
+            <li>At least 10 characters in length</li>
+        </ul>
+    </div>
+
+    <script>
+    </script>
+
+    <script>
+        function showPassword() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        function showPasswordRequirements() {
+            var x = document.getElementById("passRequirements");
+            x.style.display = "inline";
+        }
+
+        function hidePasswordRequirements() {
+            var x = document.getElementById("passRequirements");
+            x.style.display = "none";
+        }
+    </script>
+
     <label><b>First name</b></label>
     <input
             type="text"
@@ -109,36 +166,73 @@
 
     <label><b>Email</b></label>
     <input
-            type="text"
+            type="email"
             placeholder="Email"
             name="email"
-            pattern=""
-            title="Use a valid email"
             th:value="${email}"
             required
     />
 
     <label><b>Address</b></label>
-    <input type="text" placeholder="Address" name="address"  th:value="${address}" required>
+    <input
+            type="text"
+            placeholder="Address"
+            name="address"
+            pattern="^([1-9][e][\s])*([a-zA-Z]+(([\.][\s])|([\s]))?)+[1-9][0-9]*(([-][1-9][0-9]*)|([\s]?[a-zA-Z]+))?$"
+            title="Enter a valid address"
+            th:value="${address}"
+            required
+    />
 
     <label><b>City</b></label>
-    <input type="text" placeholder="City" name="city"  th:value="${city}" required>
+    <input
+            type="text"
+            placeholder="City"
+            name="city"
+            pattern="[A-Z']?[a-zA-Z _']+"
+            title="Enter a valid city"
+            th:value="${city}"
+            required
+    />
 
-    <label><b>Postal code</b></label>
-    <input type="text" placeholder="Postal code" name="postalCode"  th:value="${postalCode}" required>
+    <label name="postalCode"><b>Postal code</b></label>
+    <input
+            type="text"
+            placeholder="9999AA"
+            name="postalCode"
+            pattern="^[1-9][0-9]{3} ?(?!sa|SA|Sa|sA|sd|SD|sD|Sd|ss|SS|sS|sS)[a-zA-Z]{2}$"
+            title="Enter a valid postal code"
+            th:value="${postalCode}"
+            required
+    />
 
     <label><b>Phone Number</b></label>
-    <input type="text" placeholder="Phone number" name="phoneNumber"  th:value="${phoneNumber}" required>
+    <input
+            type="text"
+            placeholder="Phone number"
+            name="phoneNumber"
+            pattern="^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$"
+            title="Enter a valid Dutch phone number without country +31"
+            th:value="${phoneNumber}"
+            required
+    />
 
     <label><b>BSN</b></label>
-    <label>
-        <input type="text" placeholder="BSN" name="BSN" th:value="${BSN}" required>
-    </label>
+    <input
+            type="text"
+            placeholder="BSN"
+            pattern="^[0-9]{9}$"
+            name="Must consist of 9 numbers"
+            title="BSN must consist of only 9 numbers"
+            th:value="${BSN}"
+            required
+    />
 
-    <td><button type="submit" name="submitbutton" value="Sign up">Sign Up</button></td>
-    <td><button onclick="document.location = '/'">Homepage</button></td>
 
+    <td><button type="submit" name="submit" value="Sign up">Sign Up</button></td>
     <h2><span th:text="${confirmation}"/></h2>
 </form>
+</fieldset>
+<td><button onclick="document.location = '/'">Homepage</button></td>
 </body>
 </html>

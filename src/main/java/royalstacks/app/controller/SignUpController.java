@@ -39,10 +39,12 @@ public class SignUpController {
         // check of alle velden goed ingevuld zijn
         if(isAllInputValid(customer, mav)) {
             customerService.saveCustomer(customer);
+            mav.addObject("form", "disabled");
             mav.addObject("confirmation", "Account successfully created");
+            System.out.println("**** Customer saved: " + customer);
         } else {
             // zo niet, vul alle velden met input van gebruiker
-            populateFields(customer, mav);
+            System.out.println("**** No customer saved");
         }
         return mav;
     }
@@ -72,11 +74,6 @@ public class SignUpController {
         return save;
     }
 
-    /**
-     * Vult alle velden in met input van gebruiker
-     * @param customer
-     * @param mav
-     */
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());
         mav.addObject("password", tempPassword);
