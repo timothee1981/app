@@ -6,35 +6,35 @@ import org.junit.jupiter.api.Test;
 public class CustomerTest {
 
     @Test
-    void isEmailAddressValid() {
+    void isEmailValid() {
 
         Customer c = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
         // valid email addresses
-        c.setEmailAddress("fiepbakker@hotmail.com");
-        Assert.assertTrue(c.isEmailAddressValid());
-        c.setEmailAddress("email@[123.123.123.123]");
-        Assert.assertTrue(c.isEmailAddressValid());
-        c.setEmailAddress("_______@example.com");
-        Assert.assertTrue(c.isEmailAddressValid());
-        c.setEmailAddress("firstname+lastname@example.com");
-        Assert.assertTrue(c.isEmailAddressValid());
+        c.setEmail("fiepbakker@hotmail.com");
+        Assert.assertTrue(c.isEmailValid());
+        c.setEmail("email@[123.123.123.123]");
+        Assert.assertTrue(c.isEmailValid());
+        c.setEmail("_______@example.com");
+        Assert.assertTrue(c.isEmailValid());
+        c.setEmail("firstname+lastname@example.com");
+        Assert.assertTrue(c.isEmailValid());
         //deze wordt valid met .trim in de methode
-        c.setEmailAddress("  example@example.com  ");
-        Assert.assertTrue(c.isEmailAddressValid());
+        c.setEmail("  example@example.com  ");
+        Assert.assertTrue(c.isEmailValid());
 
         // invalid email addresses
-        c.setEmailAddress("#@%^%#$@#$@#.com");
-        Assert.assertFalse(c.isEmailAddressValid());
-        c.setEmailAddress("plainaddress");
-        Assert.assertFalse(c.isEmailAddressValid());
-        c.setEmailAddress("@example.com");
-        Assert.assertFalse(c.isEmailAddressValid());
-        c.setEmailAddress("Donald Duck <donald@duck.com>");
-        Assert.assertFalse(c.isEmailAddressValid());
-        c.setEmailAddress("just\"not\"right@example.com");
+        c.setEmail("#@%^%#$@#$@#.com");
+        Assert.assertFalse(c.isEmailValid());
+        c.setEmail("plainaddress");
+        Assert.assertFalse(c.isEmailValid());
+        c.setEmail("@example.com");
+        Assert.assertFalse(c.isEmailValid());
+        c.setEmail("Donald Duck <donald@duck.com>");
+        Assert.assertFalse(c.isEmailValid());
+        c.setEmail("just\"not\"right@example.com");
     }
 
 
@@ -166,23 +166,23 @@ public class CustomerTest {
     }
 
     @Test
-    void isSocialSecurityNumberFormatValid() {
+    void isBSNFormatValid() {
 
         Customer c = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
         // valid BSN
-        c.setSocialSecurityNumber("012345678");
-        Assert.assertTrue(c.isSocialSecurityNumberFormatValid());
+        c.setBSN("012345678");
+        Assert.assertTrue(c.isBSNFormatValid());
 
         // invalid BSN
-        c.setSocialSecurityNumber("01234567");
-        Assert.assertFalse(c.isSocialSecurityNumberFormatValid());
-        c.setSocialSecurityNumber("012-34567");
-        Assert.assertFalse(c.isSocialSecurityNumberFormatValid());
-        c.setSocialSecurityNumber("01234567A");
-        Assert.assertFalse(c.isSocialSecurityNumberFormatValid());
+        c.setBSN("01234567");
+        Assert.assertFalse(c.isBSNFormatValid());
+        c.setBSN("012-34567");
+        Assert.assertFalse(c.isBSNFormatValid());
+        c.setBSN("01234567A");
+        Assert.assertFalse(c.isBSNFormatValid());
     }
 
 }
