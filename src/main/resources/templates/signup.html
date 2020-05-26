@@ -7,19 +7,69 @@
         * {box-sizing: border-box};
         * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
 
+        /* Style the navbar */
+        #navbar {
+            overflow: hidden;
+            background-color: #1e90ff;
+        }
+
+        /* Navbar links */
+        #navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px;
+            text-decoration: none;
+        }
+
+        /* Page content */
+        .content {
+            padding: 16px;
+        }
+
+        /* The sticky class is added to the navbar with JS when it reaches its scroll position */
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        /* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+        .sticky + .content {
+            padding-top: 60px;
+        }
+
+        h1{
+            text-align: center;
+        }
         body{
             align-content: center;
             background-color: #ebebeb;
             margin: auto;
-            width: 90%;
+            width: 100%;
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
         }
 
         form{
-            margin-left: 20px;
-            margin-right: 20px;
-            width: 500px;
+            width: 800px;
+            margin: auto;
+            overflow: hidden;
+            border: hidden;
         }
+
+        #formLeft{
+            width: 45%;
+            float:left;
+            margin-right: 5%;
+        }
+
+        #formRight{
+            width: 45%;
+            float:left;
+            margin-left: 5%;
+        }
+
 
         fieldset{
             border: none;
@@ -60,17 +110,19 @@
             width: 100%;
             overflow: hidden;
             border: hidden;
-            margin-bottom: 10px
+            font-size: 12px;
         }
 
         #passRequirements1of2 {
             width: 50%;
             float:left;
             display: none;
+            margin-bottom: 10px;
         }
         #passRequirements2of2 {
             float: left;
             display: none;
+            margin-bottom: 10px;
         }
 
         #names {
@@ -102,22 +154,20 @@
             margin-bottom: 25px;
         }
 
-        /* Change styles for cancel button and signup button on extra small screens */
-        @media screen and (max-width: 300px) {
-            .cancelbtn, .signupbtn {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
-<h1>Sign up</h1>
+<div id="navbar">
+    <a class="active" href="javascript:void(0)">Login</a>
+    <a href="/"></a>
+</div>
+<h1 class="content">Sign up</h1>
 <fieldset th:disabled="${form}">
 <form th:action="@{signup}" method="post">
     <h3><span th:text="${confirmation}"/></h3>
     <h3><span th:text="${error}"/></h3>
 
-    <div id="formleft">
+    <div id="formLeft">
     <label><b>Username</b></label>
     <input
             type="text"
@@ -148,43 +198,14 @@
     />
     <div id="passRequirements">
         <div id="passRequirements1of2">
-            <ul>
                 <li>One lowercase letter</li>
                 <li>One uppercase letter </li>
-            </ul>
         </div>
         <div id="passRequirements2of2">
-            <ul>
                 <li>One special character</li>
                 <li>10 characters minimum</li>
-            </ul>
         </div>
     </div>
-
-    <script>
-        function showPassword() {
-            const x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
-
-        function showPasswordRequirements() {
-            const x = document.getElementById("passRequirements1of2");
-            const y = document.getElementById("passRequirements2of2");
-            x.style.display = "inline";
-            y.style.display = "inline";
-        }
-
-        function hidePasswordRequirements() {
-            const x = document.getElementById("passRequirements1of2");
-            const y = document.getElementById("passRequirements2of2");
-            x.style.display = "none";
-            y.style.display = "none";
-        }
-    </script>
 
     <div id="names">
         <div id="firstName">
@@ -196,7 +217,6 @@
             pattern="[a-zA-Z-'\s?]{1,100}"
             title="Use letters or - only"
             th:value="${firstName}"
-            th:errorclass="fieldError"
             required
     />
         </div>
@@ -223,6 +243,31 @@
             th:value="${email}"
             required
     />
+
+        <label><b>Phone Number</b></label>
+        <input
+                type="text"
+                placeholder="Phone number"
+                name="phoneNumber"
+                pattern="^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$"
+                title="Enter a valid Dutch phone number without country +31"
+                th:value="${phoneNumber}"
+                required
+        />
+    </div>
+    <div id="formRight">
+
+
+        <label><b>BSN</b></label>
+        <input
+                type="text"
+                placeholder="BSN"
+                pattern="^[0-9]{9}$"
+                name="BSN"
+                title="Must consist of only 9 numbers"
+                th:value="${BSN}"
+                required
+        />
 
     <label><b>Address</b></label>
     <input
@@ -256,35 +301,52 @@
             th:value="${postalCode}"
             required
     />
-
-    <label><b>Phone Number</b></label>
-    <input
-            type="text"
-            placeholder="Phone number"
-            name="phoneNumber"
-            pattern="^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$"
-            title="Enter a valid Dutch phone number without country +31"
-            th:value="${phoneNumber}"
-            required
-    />
-
-    <label><b>BSN</b></label>
-    <input
-            type="text"
-            placeholder="BSN"
-            pattern="^[0-9]{9}$"
-            name="BSN"
-            title="Must consist of only 9 numbers"
-            th:value="${BSN}"
-            required
-    />
     </div>
-
-
     <td><button type="submit" name="submit" value="Sign up">Sign Up</button></td>
 </form>
 </fieldset>
 
-<td><button onclick="document.location = '/'">Homepage</button></td>
+<script>
+    function showPassword() {
+        const x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+    function showPasswordRequirements() {
+        const x = document.getElementById("passRequirements1of2");
+        const y = document.getElementById("passRequirements2of2");
+        x.style.display = "inline";
+        y.style.display = "inline";
+    }
+
+    function hidePasswordRequirements() {
+        const x = document.getElementById("passRequirements1of2");
+        const y = document.getElementById("passRequirements2of2");
+        x.style.display = "none";
+        y.style.display = "none";
+    }
+
+    // When the user scrolls the page, execute myFunction
+    window.onscroll = function() {myFunction()};
+
+    // Get the navbar
+    var navbar = document.getElementById("navbar");
+
+    // Get the offset position of the navbar
+    var sticky = navbar.offsetTop;
+
+    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    function myFunction() {
+        if (window.pageYOffset >= sticky) {
+            navbar.classList.add("sticky")
+        } else {
+            navbar.classList.remove("sticky");
+        }
+    }
+</script>
 </body>
 </html>
