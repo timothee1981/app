@@ -42,14 +42,14 @@ public class DoLoginController {
         User user = loginService.findByUsername(inputUsername);
         if (user == null) {
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("username_error", "username does not exist, please enter a valid username");
+            mav.addObject("login_error", "username and/or password is not correct");
             return mav;
         }
 
         //Check if password of user matches entered value
         if ( ! Password.checkPassword( inputPassword, user.getPassword() ) ){
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("password_error", "password is not correct, please enter a valid password");
+            mav.addObject("login_error", "username and/or password is not correct");
             return mav;
         }
 

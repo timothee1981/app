@@ -50,7 +50,6 @@
             type="text"
             placeholder="Username"
             name="inputUsername"
-            th:text="${username_error}"
             required
     >
     <label><b>Password</b></label>
@@ -58,12 +57,12 @@
             type="password"
             placeholder="Password"
             name="inputPassword"
-            th:text="${password_error}"
+            th:text="${login_error}"
             required
     >
     <td><button type="submit" name="submitbutton" value="Login">Login</button></td>
-    <span th:text="${user_error}"/>
     <td><button type="submit" name="signup" onclick="location.href='signup';"value="Become a customer">Signup</button></td>
+    <span th:text="${user_error}"/>
 </form>
 </body>
 </html>
