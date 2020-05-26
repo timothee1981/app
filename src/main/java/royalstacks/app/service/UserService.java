@@ -22,4 +22,14 @@ public class UserService {
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    public User findByUserId(int userId){
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        else {
+            return null;
+        }
+    }
 }

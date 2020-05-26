@@ -2,14 +2,18 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.OpenAccountBackingBean;
 import royalstacks.app.model.BusinessAccount;
+import royalstacks.app.model.Customer;
 import royalstacks.app.model.PrivateAccount;
+import royalstacks.app.model.User;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.UserService;
 
 @Controller
 public class OpenAccountController {
@@ -17,25 +21,31 @@ public class OpenAccountController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private UserService userService;
+
     public OpenAccountController() { super();
     }
 
     @PostMapping("/openaccount")
-    public ModelAndView createAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb) {
-
+    public ModelAndView createAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb, Model model) {
+        Integer userId = (Integer) model.getAttribute("accountid");
         ModelAndView mav = new ModelAndView("createAccountConfirmation");
         ModelAndView mav2 = new ModelAndView("openaccount");
         if (bb.getAccountType().equals("business"))
             return createBusinessAccount(bb,mav,mav2);
         else
-            return createPrivateAccount(bb,mav);
+            return createPrivateAccount(userId, bb,mav);
     }
 
     //Do private account method
 
-    private ModelAndView createPrivateAccount(OpenAccountBackingBean bb, ModelAndView mav) {
+    private ModelAndView createPrivateAccount(Integer userId, OpenAccountBackingBean bb, ModelAndView mav) {
         bb.setAccountNumber(accountService.createNewIban());
         PrivateAccount privateAccount = bb.privateAccount();
+        User user = userService.findByUserId(userId);
+
+        privateAccount.getAccountHolders().add((Customer)user);
         accountService.saveAccount(privateAccount);
         mav.addObject("account", bb);
         return mav;
