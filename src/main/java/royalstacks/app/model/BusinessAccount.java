@@ -62,16 +62,30 @@ public class BusinessAccount extends Account {
 
 
 
-    public boolean isCompanyNameFormatValid(String companyName){
-        return true;
+    public boolean isCompanyNameFormatValid(){
+
+        return this.companyName.matches("^[\\w@ ]*[^\\W_ ][\\w- \\@\\ \\&\\ \\+]*$");
     }
 
-    public boolean isKvkNameFormatValid(String companyName){
-        return true;
+    public boolean isKvkNameFormatValid(){
+        return this.kvkNumber.matches("^[0-9]{8}$");
+
     }
 
-    public boolean isVatFormatValid(String vat){
-        return true;
+    public boolean isVatFormatValid(){
+
+        return this.vatNumber.matches("^[nN][lL][0-9]{9}[bB][0-9]{2}$") && vatPassed11Test() ;
+    }
+    public boolean vatPassed11Test(){
+        String firstNumbers = this.vatNumber.substring(2,11);
+        int testSum = 0;
+
+        for (int index = 0; index < firstNumbers.length()-1 ; index++) {
+            int singleDigit = Character.getNumericValue(firstNumbers.charAt(index));
+            testSum += (singleDigit * (firstNumbers.length()-index));
+        }
+        System.out.println(firstNumbers.length());
+        return (testSum%11 == Character.getNumericValue(firstNumbers.charAt(8)));
     }
 
     @Override
