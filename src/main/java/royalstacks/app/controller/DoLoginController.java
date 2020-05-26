@@ -54,7 +54,7 @@ public class DoLoginController {
         }
 
         //add userid to modelSession
-        model.addAttribute("input", user.getUserid());
+        model.addAttribute("userid", user.getUserid());
 
         //redirect user to next page
         if (user instanceof Employee) {
