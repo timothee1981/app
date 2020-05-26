@@ -22,12 +22,18 @@ public class DoLoginController {
     @PostMapping("/doLogin")
     public ModelAndView doLoginHandler(@RequestParam String inputUsername, String inputPassword, Model model){
 
-        //Check if username and password exist and have a value
+        //Check if username has a value
         boolean usernameHasValue = inputUsernameHasValue(inputUsername);
-        boolean passwordHasValue = inputpasswordHasValue(inputPassword);
-        if (!(usernameHasValue && passwordHasValue)) {
+        if (!usernameHasValue) {
             ModelAndView mav = new ModelAndView("homepage");
             mav.addObject("username_error", "username is required");
+            return mav;
+        }
+
+        //Check if password has a value
+        boolean passwordHasValue = inputpasswordHasValue(inputPassword);
+        if (!passwordHasValue) {
+            ModelAndView mav = new ModelAndView("homepage");
             mav.addObject("password_error", "password is required");
             return mav;
         }
