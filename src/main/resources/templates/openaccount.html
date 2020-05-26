@@ -16,6 +16,14 @@
         ::-ms-input-placeholder { /* Microsoft Edge */
             color: red;
         }
+        input[type=text] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+        }
     </style>
 
 </head>
@@ -34,15 +42,24 @@
                 <td>Company name  </td>
                 <td>
                     <label>
-                        <input type="text" id="companyName"  th:placeholder="*{companyNamePlaceholder}" onfocus="this.placeholder=''" placeholder=""  th:field="*{companyName}" />
-                        <span th:text="${companyName_error}"/>
+                        <input type="text"
+                               id="companyName"
+                               placeholder="companyName"
+                               th:field="*{companyName}"
+                               th:text="${companyName_error}"
+                                />
+                      <!--  <span th:text="${companyName_error}"/>-->
                     </label>
                 </td>
             </tr>
             <tr>
                 <td>Kvk number  </td><td><label>
-                    <input type="text" id="kvkNumber" th:placeholder="*{kvkNumberPlaceholder}" onfocus="this.placeholder=''" placeholder=""   th:field="*{kvkNumber}"  />
-                    <span th:text="${kvkNumber_error}"/>
+                    <input type="text"
+                           id="kvkNumber"
+                           placeholder="kvkNumber"
+                           th:field="*{kvkNumber}"
+                           th:text="${kvkNumber_error}"/>
+
             </label></td>
             </tr>
             <tr>
