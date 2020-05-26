@@ -21,7 +21,6 @@
 </head>
 <body>
 
-        <span hidden  id="account" th:text="${accountType}" />
 
 
     <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
@@ -80,14 +79,11 @@
 <script>
 
 
-    //if the value accounttype in Backing Bean is business: show business field
-
-
-
-        if (document.getElementById("account").textContent === "business") {
-            showBusinessFields()
-        } else
+if (document.getElementById("business").checked){
+            showBusinessFields();
+        } else{
             hideBusinessFields();
+    }
 
 
 
