@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.OpenAccountBackingBean;
 import royalstacks.app.model.BusinessAccount;
@@ -28,24 +29,23 @@ public class OpenAccountController {
     }
 
     @PostMapping("/openaccount")
-    public ModelAndView createAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb, Model model) {
-        Integer userId = (Integer) model.getAttribute("accountid");
+    public ModelAndView createAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb, @SessionAttribute("userid") int userId) {
+        //int userId = (int) model.getAttribute("userid");
         ModelAndView mav = new ModelAndView("createAccountConfirmation");
         ModelAndView mav2 = new ModelAndView("openaccount");
+        Customer accountholder  = (Customer) userService.findByUserId(userId);
         if (bb.getAccountType().equals("business"))
-            return createBusinessAccount(bb,mav,mav2);
+            return createBusinessAccount(accountholder, bb,mav,mav2);
         else
-            return createPrivateAccount(userId, bb,mav);
+            return createPrivateAccount(accountholder, bb,mav);
     }
 
     //Do private account method
 
-    private ModelAndView createPrivateAccount(Integer userId, OpenAccountBackingBean bb, ModelAndView mav) {
+    private ModelAndView createPrivateAccount(Customer accountholder, OpenAccountBackingBean bb, ModelAndView mav) {
         bb.setAccountNumber(accountService.createNewIban());
         PrivateAccount privateAccount = bb.privateAccount();
-        User user = userService.findByUserId(userId);
-
-        privateAccount.getAccountHolders().add((Customer)user);
+        privateAccount.getAccountHolders().add(accountholder);
         accountService.saveAccount(privateAccount);
         mav.addObject("account", bb);
         return mav;
@@ -53,9 +53,10 @@ public class OpenAccountController {
 
     //do business account view
 
-    private ModelAndView createBusinessAccount(OpenAccountBackingBean bb, ModelAndView mav, ModelAndView mav2) {
+    private ModelAndView createBusinessAccount(Customer accountholder, OpenAccountBackingBean bb, ModelAndView mav, ModelAndView mav2) {
         bb.setAccountNumber(accountService.createNewIban());
         BusinessAccount businessAccount = bb.businessAccount();
+        businessAccount.getAccountHolders().add((accountholder));
         //checken als alle velden valid zijn
         if(isAllInputValid(businessAccount, mav2)) {
             accountService.saveAccount(businessAccount);
