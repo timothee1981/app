@@ -1,0 +1,31 @@
+#navbar {
+    overflow: hidden;
+    background-color: #1e90ff;
+}
+
+/* Navbar links */
+#navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+}
+
+/* Zet content op pagina onder navbar */
+.content {
+    padding: 16px;
+}
+
+/* Wordt toegevoegd in JavaScript als er gescrollt wordt */
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+/* Voegt padding toe zodat het bij snel scrollen consistent blijft */
+.sticky + .content {
+    padding-top: 60px;
+}
