@@ -17,6 +17,7 @@ import royalstacks.app.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -53,9 +54,13 @@ public class MyAccounts {
         List<Account> accounts = accountService.getAllAccounts();
         List<Account> myAccounts = new ArrayList<>();
 
+
         for(Account account: accounts){
-            if(account.getAccountHolders().iterator().next().getUserid() == userId){
-                myAccounts.add(account);
+            Iterator<Customer> accountHolders = account.getAccountHolders().iterator();
+            while(accountHolders.hasNext()){
+                 if(accountHolders.next().getUserid() == userId) {
+                     myAccounts.add(account);
+                 }
             }
         }
         model.addAttribute("customer",customer);
