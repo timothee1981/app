@@ -17,4 +17,10 @@ public interface AccountRepository extends CrudRepository<Account,Integer> {
     @Query("SELECT a.accountNumber FROM Account a WHERE a.accountId = (select max(a.accountId) From a)")
     Optional<String> getLastAccountNumber();
 
+    @Query("SELECT p FROM PrivateAccount p")
+    Iterable<Account> findAllPrivateAccounts();
+
+    @Query("SELECT b FROM BusinessAccount b")
+    Iterable<Account> findAllBusinessAccounts();
+
 }

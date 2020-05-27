@@ -7,10 +7,16 @@ import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.service.RecordGenerator;
 
 @Controller
-public class HomepageController {
+public class RecordGeneratorController {
 
-    @GetMapping(value ={ "" , "/", "/doLogin"})
-    public ModelAndView startHandler() {
-        return new ModelAndView("homepage");
+    @Autowired
+    RecordGenerator recordGenerator;
+
+    @GetMapping(value = "/generator")
+    public ModelAndView generateDbRecords() {
+        recordGenerator.generateAllRecords(100, 1, 50);
+        return new ModelAndView("generator");
     }
+
+
 }

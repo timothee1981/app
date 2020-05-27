@@ -13,6 +13,7 @@ import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.model.User;
+import royalstacks.app.model.repository.EmployeeRepository;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;
 
@@ -24,6 +25,8 @@ public class OpenAccountController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     public OpenAccountController() { super();
     }
@@ -57,6 +60,10 @@ public class OpenAccountController {
         bb.setAccountNumber(accountService.createNewIban());
         BusinessAccount businessAccount = bb.businessAccount();
         businessAccount.getAccountHolders().add((accountholder));
+        if(!accountholder.isBusinessAccountHolder()) {
+            accountholder.setBusinessAccountHolder(true);
+            accountholder.setAccountManager(employeeRepository.findAll().iterator().next());
+        }
         //checken als alle velden valid zijn
         if(isAllInputValid(businessAccount, mav2)) {
             accountService.saveAccount(businessAccount);
