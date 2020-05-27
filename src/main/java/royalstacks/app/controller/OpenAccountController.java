@@ -2,7 +2,6 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +11,6 @@ import royalstacks.app.backingBean.OpenAccountBackingBean;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.PrivateAccount;
-import royalstacks.app.model.User;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;
 
@@ -90,7 +88,7 @@ public class OpenAccountController {
             mav.addObject("kvkNumber_error", "number needs to have 8 digits");
             save = false;
         }
-        if (!businessAccount.isVatFormatValid()) { //if false save false, full attribuut value
+        if (!businessAccount.isVatValid()) { //if false save false, full attribuut value
             mav.addObject("vatNumber_error", "invalid VAT-number");
             save = false;
         }

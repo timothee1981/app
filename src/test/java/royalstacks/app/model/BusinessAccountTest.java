@@ -106,9 +106,6 @@ class BusinessAccountTest {
         assertTrue(account.isCompanyNameFormatValid());
         account.setCompanyName("@google");
         assertTrue(account.isCompanyNameFormatValid());
-
-
-
     }
 
     @Test
@@ -154,6 +151,85 @@ class BusinessAccountTest {
         // false: 9 chars of which 1 special char
         account.setKvkNumber("12345678.");
         assertFalse(account.isKvkNameFormatValid());
+    }
 
+    @Test
+    void isVatFormatValid(){
+        BusinessAccount account = new BusinessAccount();
+
+        //true: correct vat number
+        account.setVatNumber("NL123456789B12");
+        assertTrue(account.isVatFormatValid());
+
+        // true: NL-variations NL / nL / Nl / nl
+        account.setVatNumber("Nl123456789B12");
+        assertTrue(account.isVatFormatValid());
+        account.setVatNumber("nL123456789B12");
+        assertTrue(account.isVatFormatValid());
+        account.setVatNumber("nl123456789B12");
+        assertTrue(account.isVatFormatValid());
+
+        // true: B-variation
+        account.setVatNumber("NL123456789b12");
+        assertTrue(account.isVatFormatValid());
+
+        // false: first char is not an N
+        account.setVatNumber("AL123456789B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("L123456789B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("*L123456789B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber(" L123456789B12");
+        assertFalse(account.isVatFormatValid());
+
+        // false: second char is nog an L
+        account.setVatNumber("NA123456789B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("N123456789B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("N*123456789B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("N 123456789B12");
+        assertFalse(account.isVatFormatValid());
+
+        // false: numbers in first numberstring are not numbers
+        account.setVatNumber("NL 12345678B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("NL12345678 B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("NL12345678XB12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("NL1234X6789B12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("NLX2345678 B12");
+        assertFalse(account.isVatFormatValid());
+
+        // false: <9 numbers in first numberstring
+        account.setVatNumber("NL12345678B12");
+        assertFalse(account.isVatFormatValid());
+
+        // false: >9 numbers in first numberstring
+        account.setVatNumber("NL1234567890B12");
+
+        // false: third char is not a B
+        account.setVatNumber("NL123456789A12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("NL123456789a12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("NL123456789*12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("NL123456789 12");
+        assertFalse(account.isVatFormatValid());
+        account.setVatNumber("NL12345678912");
+        assertFalse(account.isVatFormatValid());
+
+        // false: < 2 numbers in last 2 chars
+        account.setVatNumber("NL123456789B1");
+        assertFalse(account.isVatFormatValid());
+
+        // false: > 2 numbers in last 2 chars
+        account.setVatNumber("NL123456789B123");
+        assertFalse(account.isVatFormatValid());
     }
 }
