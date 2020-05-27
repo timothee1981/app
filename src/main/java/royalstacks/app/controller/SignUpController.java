@@ -47,6 +47,7 @@ public class SignUpController {
         } else {
             // zo niet, vul alle velden met input van gebruiker
             System.out.println("**** No customer saved");
+            populateFields(customer, mav);
         }
         return mav;
     }

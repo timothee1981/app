@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>signup</title>
     <style>
-        * {box-sizing: border-box};
+        * {box-sizing: border-box}
         * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
 
         /* Style the navbar */
@@ -59,15 +59,16 @@
         }
 
         #formLeft{
-            width: 45%;
+            width: 40%;
             float:left;
-            margin-right: 5%;
+            margin-right: 4%;
         }
 
         #formRight{
-            width: 45%;
+            width: 40%;
             float:left;
-            margin-left: 5%;
+            margin-left: 4%;
+            border-right: 100px;
         }
 
 
@@ -94,6 +95,7 @@
             background: #dcdcdc;
         }
 
+
         /* Set a style for all buttons */
         button {
             background-color: #1E90FF;
@@ -111,6 +113,8 @@
             overflow: hidden;
             border: hidden;
             font-size: 12px;
+            line-height: 0.4;
+            font-weight: bold;
         }
 
         #passRequirements1of2 {
@@ -125,23 +129,42 @@
             margin-bottom: 10px;
         }
 
+        /* maakt text groen bij juiste invoer */
+        .valid {
+            color: rgba(0, 128, 0, 0.70);
+        }
+
+        .valid:before {
+            position: relative;
+            left: -35px;
+        }
+
+        /* maakt tekst rood bij foute invoer */
+        .invalid {
+            color: rgba(255, 0, 0, 0.70);
+        }
+
+        .invalid:before {
+            position: relative;
+            left: -35px;
+        }
+
         #names {
-            width: 100%;
+            width: 800px;
             overflow: hidden;
             border: 0;
         }
 
         #firstName {
-            width: 45%;
+            width: 140px;
             float:left;
-            margin-right: 5%;
+            margin-right: 20px;
         }
         #lastName {
-            width: 45%;
+            width: 140px;
             float: left;
-            margin-left: 5%
+            margin-left: 20px;
         }
-
 
 
         button:hover {
@@ -154,11 +177,26 @@
             margin-bottom: 25px;
         }
 
+        input + span {
+            position: relative;
+        }
+
+        input + span::before {
+            position: absolute;
+            right: -20px;
+            top: 5px;
+        }
+
+        input:valid + span::before {
+            content: '✓';
+            color: #1E90FF;
+        }
+
     </style>
 </head>
 <body>
 <div id="navbar">
-    <a class="active" href="javascript:void(0)">Login</a>
+    <a class="active" href="/">Login</a>
     <a href="/"></a>
 </div>
 <h1 class="content">Sign up</h1>
@@ -173,17 +211,19 @@
             type="text"
             placeholder="Username"
             name="username"
+            id="username"
             pattern="^[a-zA-Z0-9_-]{3,15}"
             title="Use letters, numbers, - or _ only"
             th:value="${username}"
             autofocus
             required
 
-    />
+    /><span></span>
 
 
     <label><b>Password</b></label>
     <input type="checkbox" onclick="showPassword()">Show Password
+
     <input
             type="password"
             placeholder="At least 10 characters"
@@ -195,17 +235,23 @@
             onfocusin="showPasswordRequirements()"
             onfocusout="hidePasswordRequirements()"
             required
-    />
+    /><span></span>
+
+
+        <!-- Dropdown wanneer password geselecteerd is -->
     <div id="passRequirements">
         <div id="passRequirements1of2">
-                <li>One lowercase letter</li>
-                <li>One uppercase letter </li>
+            <p id="letter" class="invalid">A lowercase letter</p>
+            <p id="capital" class="invalid">A capital (uppercase) letter</p>
+            <p id="number" class="invalid">A number</p>
         </div>
         <div id="passRequirements2of2">
-                <li>One special character</li>
-                <li>10 characters minimum</li>
+            <p id="special" class="invalid">A special character</p>
+            <p id="length" class="invalid">Minimum 10 characters</p>
         </div>
     </div>
+
+
 
     <div id="names">
         <div id="firstName">
@@ -218,7 +264,8 @@
             title="Use letters or - only"
             th:value="${firstName}"
             required
-    />
+            aria-required="true"
+    /><span></span>
         </div>
 
         <div id="lastName">
@@ -231,8 +278,10 @@
             title="Use letters or - only"
             th:value="${lastName}"
             required
-    />
+            aria-required="true"
+    /><span></span>
             </div>
+
     </div>
 
     <label><b>Email</b></label>
@@ -242,7 +291,8 @@
             name="email"
             th:value="${email}"
             required
-    />
+            aria-required="true"
+    /><span></span>
 
         <label><b>Phone Number</b></label>
         <input
@@ -253,7 +303,8 @@
                 title="Enter a valid Dutch phone number without country +31"
                 th:value="${phoneNumber}"
                 required
-        />
+                aria-required="true"
+        /><span></span>
     </div>
     <div id="formRight">
 
@@ -267,7 +318,8 @@
                 title="Must consist of only 9 numbers"
                 th:value="${BSN}"
                 required
-        />
+                aria-required="true"
+        /><span></span>
 
     <label><b>Address</b></label>
     <input
@@ -278,7 +330,8 @@
             title="Enter a valid address"
             th:value="${address}"
             required
-    />
+            aria-required="true"
+    /><span></span>
 
     <label><b>City</b></label>
     <input
@@ -289,7 +342,8 @@
             title="Enter a valid city"
             th:value="${city}"
             required
-    />
+            aria-required="true"
+    /><span></span>
 
     <label name="postalCode"><b>Postal code</b></label>
     <input
@@ -300,13 +354,16 @@
             title="Enter a valid postal code"
             th:value="${postalCode}"
             required
-    />
+            aria-required="true"
+    /><span></span>
     </div>
     <td><button type="submit" name="submit" value="Sign up">Sign Up</button></td>
 </form>
 </fieldset>
 
 <script>
+
+    // Show password button
     function showPassword() {
         const x = document.getElementById("password");
         if (x.type === "password") {
@@ -316,6 +373,7 @@
         }
     }
 
+    // Show password requirements
     function showPasswordRequirements() {
         const x = document.getElementById("passRequirements1of2");
         const y = document.getElementById("passRequirements2of2");
@@ -323,6 +381,7 @@
         y.style.display = "inline";
     }
 
+    // Hide password requirements
     function hidePasswordRequirements() {
         const x = document.getElementById("passRequirements1of2");
         const y = document.getElementById("passRequirements2of2");
@@ -347,6 +406,67 @@
             navbar.classList.remove("sticky");
         }
     }
+
+    // Password validation
+    const myInput = document.getElementById("password");
+    const letter = document.getElementById("letter");
+    const capital = document.getElementById("capital");
+    const number = document.getElementById("number");
+    const special = document.getElementById("special");
+    const length = document.getElementById("length");
+
+    // When the user starts to type something inside the password field
+    myInput.onkeyup = function() {
+        // Validate lowercase letters
+        let lowerCaseLetters = /[a-z]/g;
+        if(myInput.value.match(lowerCaseLetters)) {
+            letter.classList.remove("invalid");
+            letter.classList.add("valid");
+
+        } else {
+            letter.classList.remove("valid");
+            letter.classList.add("invalid");
+        }
+
+        // Validate capital letters
+        let upperCaseLetters = /[A-Z]/g;
+        if(myInput.value.match(upperCaseLetters)) {
+            capital.classList.remove("invalid");
+            capital.classList.add("valid");
+        } else {
+            capital.classList.remove("valid");
+            capital.classList.add("invalid");
+        }
+
+        // Validate numbers
+        let numbers = /[0-9]/g;
+        if(myInput.value.match(numbers)) {
+            number.classList.remove("invalid");
+            number.classList.add("valid");
+        } else {
+            number.classList.remove("valid");
+            number.classList.add("invalid");
+        }
+
+        // Validate special character
+        let specials = /[@$!%*?&]/g;
+        if(myInput.value.match(specials)) {
+            special.classList.remove("invalid");
+            special.classList.add("valid");
+        } else {
+            special.classList.remove("valid");
+            special.classList.add("invalid");
+        }
+
+        // Validate length
+        if(myInput.value.length >= 10) {
+            length.classList.remove("invalid");
+            length.classList.add("valid");
+        } else {
+            length.classList.remove("valid");
+            length.classList.add("invalid");
+        }
+    };
 </script>
 </body>
 </html>
