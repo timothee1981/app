@@ -4,17 +4,44 @@
     <meta charset="UTF-8">
     <title>openaccounts</title>
     <style>
-        ::placeholder {
-            color: red;
-            opacity: 1; /* Firefox */
+        * {box-sizing: border-box}
+        * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
+        body{
+            padding-top: 20px;
+            align-content: center;
+            background-color: #ebebeb;
+            margin: auto;
+            width: 40%;
+            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+        }
+        input[type=text] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
         }
 
-        :-ms-input-placeholder { /* Internet Explorer 10-11 */
-            color: red;
+        input[type=text]:focus{
+            background-color: #ddd;
+            outline: none;
         }
-
-        ::-ms-input-placeholder { /* Microsoft Edge */
-            color: red;
+        button {
+            background-color: #1E90FF;
+            color: white;
+            padding: 14px 20px;
+            margin: 15px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+        button:hover {
+            opacity:1;
+        }
+        #button{
+            margin: 12px;
         }
     </style>
 
@@ -33,22 +60,40 @@
                 <td>Company name  </td>
                 <td>
                     <label>
-                        <input type="text" id="companyName"  th:placeholder="*{companyNamePlaceholder}" onfocus="this.placeholder=''" placeholder=""  th:field="*{companyName}" />
-                        <span th:text="${companyName_error}"/>
+                        <input type="text"
+                               id="companyName"
+                               placeholder="companyName"
+                               th:field="*{companyName}"
+                               th:text="${companyName_error}"
+                                />
+                      <!--  <span th:text="${companyName_error}"/>-->
                     </label>
                 </td>
             </tr>
             <tr>
-                <td>Kvk number  </td><td><label>
-                    <input type="text" id="kvkNumber" th:placeholder="*{kvkNumberPlaceholder}" onfocus="this.placeholder=''" placeholder=""   th:field="*{kvkNumber}"  />
-                    <span th:text="${kvkNumber_error}"/>
-            </label></td>
+                <td>Kvk number  </td>
+                <td>
+                <label>
+                    <input type="text"
+                           id="Kvk Number"
+                           placeholder="kvkNumber"
+                           th:field="*{kvkNumber}"
+                           th:text="${kvkNumber_error}"/>
+                </label>
+                </td>
             </tr>
             <tr>
-                <td>Vat number  </td><td><label>
-                    <input type="text" id="vatNumber" th:placeholder="*{vatNumberPlaceholder}" onfocus="this.placeholder=''" placeholder=""  th:field="*{vatNumber}"  />
-                    <span th:text="${vatNumber_error}"/>
-            </label></td>
+                <td>Vat number  </td>
+                <td>
+                    <label>
+                    <input type="text"
+                           id="vatNumber"
+                           placeholder="Vat number"
+                           th:field="*{vatNumber}"
+                           th:text="${vatNumber_error}"
+                         />
+                    </label>
+                </td>
             </tr>
             <tr>
                 <td>Sector </td>
@@ -67,12 +112,15 @@
                 </td>
             </tr>
         </table>
+        <div id="button">
         <input type="submit" name="submitbutton" value="Create account"  />
+        </div>
     </form>
-    <form action="myaccount" method="get">
+    <div id="button">
+    <form th:action="@{myaccount}" method="get">
         <input type="submit" name="submitbutton" value="Back" />
     </form>
-
+    </div>
 </body>
 </html>
 

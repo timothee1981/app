@@ -6,7 +6,10 @@ import royalstacks.app.model.Account;
 import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AccountService {
@@ -89,4 +92,14 @@ public class AccountService {
         }
         return iban;
     }
+
+    public List<Account> getAllAccounts(){
+        List<Account> accounts = (List<Account>) accountRepository.findAll();
+        return accounts;
+    }
+
+
+
+
+
 }
