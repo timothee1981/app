@@ -63,19 +63,31 @@ public class BusinessAccount extends Account {
 
 
     public boolean isCompanyNameFormatValid(){
-
+        // at least 1 char
+        // may not contain only special chars
+        // chars @ & + _ - are allowed????
         return this.companyName.matches("^[\\w@ ]*[^\\W_ ][\\w- \\@\\ \\&\\ \\+]*$");
     }
 
     public boolean isKvkNameFormatValid(){
+        // 8 numbers
         return this.kvkNumber.matches("^[0-9]{8}$");
 
     }
 
-    public boolean isVatFormatValid(){
+    public boolean isVatValid(){
 
-        return this.vatNumber.matches("^[nN][lL][0-9]{9}[bB][0-9]{2}$") && vatPassed11Test() ;
+        return isVatFormatValid() && vatPassed11Test() ;
     }
+
+    public boolean isVatFormatValid() {
+        // start met nl (of NL)
+        // 9 cijfers
+        // b (of B)
+        // 2 cijfers
+        return this.vatNumber.matches("^[nN][lL][0-9]{9}[bB][0-9]{2}$");
+    }
+
     public boolean vatPassed11Test(){
         String firstNumbers = this.vatNumber.substring(2,11);
         int testSum = 0;
