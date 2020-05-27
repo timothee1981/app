@@ -63,11 +63,14 @@ public class BusinessAccount extends Account {
 
 
     public boolean isCompanyNameFormatValid(){
-
+        // at least 1 char
+        // may not contain only special chars
+        // chars @ & + _ - are allowed????
         return this.companyName.matches("^[\\w@ ]*[^\\W_ ][\\w- \\@\\ \\&\\ \\+]*$");
     }
 
     public boolean isKvkNameFormatValid(){
+        // 8 numbers
         return this.kvkNumber.matches("^[0-9]{8}$");
 
     }
