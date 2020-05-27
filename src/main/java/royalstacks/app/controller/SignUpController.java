@@ -1,11 +1,9 @@
 package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
@@ -52,6 +50,22 @@ public class SignUpController {
         return mav;
     }
 
+    @GetMapping("/signup/u_check")
+    @ResponseBody
+    public String usernameCheckHandler(@RequestParam String username){
+        return String.valueOf(userService.findByUsername(username).isEmpty());
+    }
+
+    @GetMapping("/signup/b_check")
+    @ResponseBody
+    public String BSNCheckHandler(@RequestParam String BSN) {
+        Customer customer = new Customer();
+        customer.setBSN(BSN);
+        return String.valueOf(customer.isBSNFormatValid() && customerService.findCustomerByBSN(BSN).isEmpty());
+
+    }
+
+
     /**
      * Checkt alle velden apart en geeft feedback al deze niet goed ingvuld zijn
      * @param customer
@@ -62,7 +76,7 @@ public class SignUpController {
         boolean save = true;
 
         if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("error", "invalid format username");}
-        if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("error", "username not unique"); }
+        if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username", "showUsernameNotAvailable()"); }
         if(!User.isPasswordValid(userPassword)) { save = false; mav.addObject("error", "Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length"); }
         if(!customer.isFirstNameValid()) { save = false; mav.addObject("error", "invalid first name"); }
         if(!customer.isLastNameValid()) { save = false; mav.addObject("error", "invalid last name"); }
@@ -70,8 +84,7 @@ public class SignUpController {
         if(!customer.isPostalCodeValid()) { save = false; mav.addObject("error", "invalid postalCode"); }
         if(!customer.isCityValid()) { save = false; mav.addObject("error", "invalid city"); }
         if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("error", "invalid phoneNumber"); }
-        if(!customer.isBSNFormatValid()) { save = false; mav.addObject("error", "BSN should contain 9 numbers"); }
-        if(customerService.findCustomerByBSN(customer.getBSN()).isPresent()) { save = false; mav.addObject("error", "bsn is not unique"); }
+        if(!customer.isBSNFormatValid() || customerService.findCustomerByBSN(customer.getBSN()).isPresent() ) { save = false; mav.addObject("BSNNotAvailable", "BSN not available"); }
         if(!customer.isAddressValid()) { save = false; mav.addObject("error", "invalid address"); }
 
         return save;

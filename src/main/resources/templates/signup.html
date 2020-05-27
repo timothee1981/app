@@ -13,19 +13,19 @@
 </div>
 <h1 class="content">Sign up</h1>
 <fieldset th:disabled="${form}">
-<form th:action="@{signup}" method="post">
+<form th:action="@{signup}" method="post" class="form">
     <h3><span th:text="${confirmation}"/></h3>
     <h3><span th:text="${error}"/></h3>
 
     <div id="formLeft">
-    <label><b>Username</b></label>
+    <label><b>Username</b></label><div id="usernameNotAvailable"><span>Username not available</span></div>
     <input
             type="text"
             placeholder="Username"
             name="username"
             id="username"
             pattern="^[a-zA-Z0-9_-]{3,15}"
-            title="Use letters, numbers, - or _ only"
+            title="Use letters, numbers, - or _ only with a maximum of 15 characters"
             th:value="${username}"
             autofocus
             required
@@ -72,11 +72,10 @@
             type="text"
             placeholder="First name"
             name="firstName"
-            pattern="[a-zA-Z-'\s?]{1,100}"
+            pattern="^[^\s].*[a-zA-Z-'\s?]{1,100}"
             title="Use letters or - only"
             th:value="${firstName}"
             required
-            aria-required="true"
     /><span></span>
         </div>
 
@@ -86,11 +85,10 @@
             type="text"
             placeholder="Last name"
             name="lastName"
-            pattern="[a-zA-Z-'\s?]{1,100}"
+            pattern="^[^\s].*[a-zA-Z-'\s?]{1,100}"
             title="Use letters or - only"
             th:value="${lastName}"
             required
-            aria-required="true"
     /><span></span>
             </div>
 
@@ -99,62 +97,59 @@
     <label><b>Email</b></label>
     <input
             type="email"
-            placeholder="Email"
+            placeholder="mail@example.com"
             name="email"
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
             th:value="${email}"
             required
-            aria-required="true"
     /><span></span>
 
         <label><b>Phone Number</b></label>
         <input
                 type="text"
-                placeholder="Phone number"
+                placeholder="06........ or 031........"
                 name="phoneNumber"
                 pattern="^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$"
                 title="Enter a valid Dutch phone number without country +31"
                 th:value="${phoneNumber}"
                 required
-                aria-required="true"
         /><span></span>
     </div>
     <div id="formRight">
 
 
-        <label><b>BSN</b></label>
+        <label><b>BSN</b></label><div id="BSNNotAvailable"><span>BSN invalid</span></div>
         <input
                 type="text"
-                placeholder="BSN"
+                placeholder="123456789"
                 pattern="^[0-9]{9}$"
                 name="BSN"
+                id="BSN"
                 title="Must consist of only 9 numbers"
                 th:value="${BSN}"
                 required
-                aria-required="true"
         /><span></span>
 
     <label><b>Address</b></label>
     <input
             type="text"
-            placeholder="Address"
+            placeholder="Street name and house number"
             name="address"
             pattern="^([1-9][e][\s])*([a-zA-Z]+(([\.][\s])|([\s]))?)+[1-9][0-9]*(([-][1-9][0-9]*)|([\s]?[a-zA-Z]+))?$"
             title="Enter a valid address"
             th:value="${address}"
             required
-            aria-required="true"
     /><span></span>
 
     <label><b>City</b></label>
     <input
             type="text"
-            placeholder="City"
+            placeholder=""
             name="city"
             pattern="[A-Z']?[a-zA-Z _']+"
             title="Enter a valid city"
             th:value="${city}"
             required
-            aria-required="true"
     /><span></span>
 
     <label name="postalCode"><b>Postal code</b></label>
@@ -166,11 +161,10 @@
             title="Enter a valid postal code"
             th:value="${postalCode}"
             required
-            aria-required="true"
     /><span></span>
     </div>
     <div id="signUpButton">
-    <td><button type="submit" name="submit" value="Sign up">Sign Up</button></td>
+    <td><button type="submit" name="submit" id="submit" aria-disabled="true" value="Sign up">Sign Up</button></td>
     </div>
 </form>
 </fieldset>

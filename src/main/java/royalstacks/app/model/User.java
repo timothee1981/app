@@ -60,13 +60,13 @@ public abstract class User {
     }
 
     public boolean isFirstNameValid(){
-        // Alleen letters, - en tussen 1 en 100 karakters lang
-        return this.firstName.matches("[a-zA-Z-'\\s?]{1,100}");
+        this.firstName = this.firstName.trim();
+        return this.firstName.matches("^[^\\s].*[a-zA-Z-'\\s?]{1,100}");
     }
 
     public boolean isLastNameValid(){
-        // Alleen letters, - en tussen 1 en 100 karakters lang
-        return this.lastName.matches("[a-zA-Z-'\\s?]{1,100}");
+        this.lastName = this.lastName.trim();
+        return this.lastName.matches("^[^\\s].*[a-zA-Z-'\\s?]{1,100}");
     }
 
     // GETTERS SETTERS

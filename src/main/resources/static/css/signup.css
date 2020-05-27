@@ -68,10 +68,14 @@ button {
     opacity: 0.9;
     font-size: 16px;
 
-
 }
 button:hover {
     opacity:1;
+}
+
+
+button[disabled]{
+    background-color: #9a9a9a;
 }
 
 #signUpButton{
@@ -103,6 +107,23 @@ button:hover {
     display: none;
     margin-bottom: 10px;
 }
+
+#usernameNotAvailable {
+    float: right;
+    color: rgba(255, 0, 0, 0.70);
+    font-weight: 100;
+    font-style: italic;
+    display: none;
+}
+
+#BSNNotAvailable {
+    float: right;
+    color: rgba(255, 0, 0, 0.70);
+    font-weight: 100;
+    font-style: italic;
+    display: none
+}
+
 
 /* maakt text groen bij juiste invoer */
 .valid {

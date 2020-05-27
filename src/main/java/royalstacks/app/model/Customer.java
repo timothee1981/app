@@ -96,15 +96,16 @@ public class Customer extends User {
             return false;
 
         } else {
-
             // voer 11 proef vor BSN uit
             String firstNumbers = this.BSN.substring(0,8);
+            int lastNumber = Integer.parseInt(this.BSN.substring(8)) * -1;
+
             int sum = 0;
             for (int i = 0; i < firstNumbers.length(); i++) {
                 sum += firstNumbers.charAt(i) * (this.BSN.length() - i);
             }
+            sum += lastNumber;
 
-            sum += (Integer.parseInt(this.BSN.substring(8)) * -1);
             return sum%11 == 0;
         }
     }
