@@ -1,5 +1,6 @@
 package royalstacks.app.model;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import royalstacks.app.service.UserService;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 public abstract class User {
 
     private final static int DEFAULT_USER_ID = 0;
+    private static int passwordWorkload = 12;
 
     @Id
     @GeneratedValue
@@ -25,7 +27,7 @@ public abstract class User {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.password = Password.hashPassword(password);
+        this.password = User.hashPassword(password);
     }
 
     // userid komt vanuit database
@@ -56,17 +58,57 @@ public abstract class User {
 
     public static boolean isPasswordValid(String inputPassword){
         // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 8 karakters lang zijn
-        return inputPassword.matches("(?=(.*[0-9]))(?=.*[\\!@#$%^&*()\\[\\]{}\\-_+=~`|:;\"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}");
+        return inputPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{10,}$");
     }
 
     public boolean isFirstNameValid(){
-        // TODO: is name valid. Voornaam Achternaam?
-        return true;
+        // Alleen letters, - en tussen 1 en 100 karakters lang
+        return this.firstName.matches("[a-zA-Z-'\\s?]{1,100}");
     }
 
     public boolean isLastNameValid(){
-        // TODO: is name valid. Voornaam Achternaam?
-        return true;
+        // Alleen letters, - en tussen 1 en 100 karakters lang
+        return this.lastName.matches("[a-zA-Z-'\\s?]{1,100}");
+    }
+
+
+
+    /**
+     * This method can be used to generate a string representing an account password
+     * suitable for storing in a database. It will be an OpenBSD-style crypt(3) formatted
+     * hash string of length=60
+     * The bcrypt workload is specified in the above static variable, a value from 10 to 31.
+     * A workload of 12 is a very reasonable safe default as of 2013.
+     * This automatically handles secure 128-bit salt generation and storage within the hash.
+     * @param password_plaintext The account's plaintext password as provided during account creation,
+     *			     or when changing an account's password.
+     * @return String - a string of length 60 that is the bcrypt hashed password in crypt(3) format.
+     */
+    public static String hashPassword(String password_plaintext) {
+        String salt = BCrypt.gensalt(passwordWorkload);
+        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
+        return(hashed_password);
+    }
+
+    /**
+     * This method can be used to verify a computed hash from a plaintext (e.g. during a login
+     * request) with that of a stored hash from a database. The password hash from the database
+     * must be passed as the second variable.
+     * @param password_plaintext The account's plaintext password, as provided during a login request
+     * @param stored_hash The account's stored password hash, retrieved from the authorization database
+     * @return boolean - true if the password matches the password of the stored hash, false otherwise
+     */
+    public static boolean checkPassword(String password_plaintext, String stored_hash) {
+        boolean password_verified = false;
+
+        if(null == stored_hash || !stored_hash.startsWith("$2a$")) {
+            throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
+        }
+
+        password_verified = BCrypt.checkpw(password_plaintext, stored_hash);
+
+        return(password_verified);
     }
 
     // GETTERS SETTERS
@@ -92,7 +134,7 @@ public abstract class User {
 
     public void setPassword(String password_plaintext) {
 
-        String hashedPassword = Password.hashPassword(password_plaintext);
+        String hashedPassword = User.hashPassword(password_plaintext);
 
         this.password = hashedPassword;
     }
@@ -117,12 +159,10 @@ public abstract class User {
     public String toString() {
         return "User{" +
                 "userid=" + userid +
-                ", firstname='" + firstName + '\'' +
-                ", lasttname='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
-
-
 }
