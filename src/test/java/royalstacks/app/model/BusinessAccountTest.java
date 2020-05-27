@@ -49,17 +49,29 @@ class BusinessAccountTest {
 
     @Test
     void isKvkNameFormatValid() {
+
         BusinessAccount account = new BusinessAccount();
+        //true: kvk-format (8 numbers)
         account.setKvkNumber("12345678");
         assertTrue(account.isKvkNameFormatValid());
+
+        // false: < 8 numbers
         account.setKvkNumber("1234567");
         assertFalse(account.isKvkNameFormatValid());
+
+        // false: > 8 numbers
         account.setKvkNumber("123456789");
         assertFalse(account.isKvkNameFormatValid());
+
+        // false: empty string
         account.setKvkNumber("");
         assertFalse(account.isKvkNameFormatValid());
+
+        // false: 9 chars of which 1 space
         account.setKvkNumber("1234 5678");
         assertFalse(account.isKvkNameFormatValid());
+
+        // false: 9 chars of which 1 special char
         account.setKvkNumber("12345678.");
         assertFalse(account.isKvkNameFormatValid());
 
