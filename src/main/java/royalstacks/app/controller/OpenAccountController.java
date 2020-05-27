@@ -99,10 +99,9 @@ public class OpenAccountController {
 
     @GetMapping("/myaccount")
     public ModelAndView myAccountHandler(){
-        ModelAndView mav = new ModelAndView("myaccounts");
+        ModelAndView mav = new ModelAndView("redirect:/myaccounts");
         return mav;
     }
-
 
 
 
