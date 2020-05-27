@@ -232,4 +232,43 @@ class BusinessAccountTest {
         account.setVatNumber("NL123456789B123");
         assertFalse(account.isVatFormatValid());
     }
+
+    @Test
+    void vatPassed11Test() {
+        BusinessAccount account = new BusinessAccount();
+
+        //given that format used = correct (checked by isVatFormatValid:
+
+        //true: correct vat number (9 = checksum)
+        account.setVatNumber("NL316393915B12");
+        assertTrue(account.vatPassed11Test());
+
+        // false: wrong checksum-number (+1 till +9)
+        account.setVatNumber("NL316303915B12");
+        assertFalse(account.vatPassed11Test());
+
+        account.setVatNumber("NL316313915B12");
+        assertFalse(account.vatPassed11Test());
+
+        account.setVatNumber("NL316323915B12");
+        assertFalse(account.vatPassed11Test());
+
+        account.setVatNumber("NL316333915B12");
+        assertFalse(account.vatPassed11Test());
+
+        account.setVatNumber("NL316343915B12");
+        assertFalse(account.vatPassed11Test());
+
+        account.setVatNumber("NL316353915B12");
+        assertFalse(account.vatPassed11Test());
+
+        account.setVatNumber("NL316363915B12");
+        assertFalse(account.vatPassed11Test());
+
+        account.setVatNumber("NL316373915B12");
+        assertFalse(account.vatPassed11Test());
+
+        account.setVatNumber("NL316383915B12");
+        assertFalse(account.vatPassed11Test());
+    }
 }
