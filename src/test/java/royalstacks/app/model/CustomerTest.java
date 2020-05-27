@@ -173,8 +173,27 @@ public class CustomerTest {
                 "123456789", null, false);
 
         // valid BSN
-        c.setBSN("012345678");
+        c.setBSN("302110501");
         Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("265478224");
+        Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("429922760");
+        Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("083753321");
+        Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("043003357");
+        Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("039527554");
+        Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("110871042");
+        Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("373736459");
+        Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("352480695");
+        Assert.assertTrue(c.isBSNFormatValid());
+        c.setBSN("672270225");
+        Assert.assertTrue(c.isBSNFormatValid());
+
 
         // invalid BSN
         c.setBSN("01234567");

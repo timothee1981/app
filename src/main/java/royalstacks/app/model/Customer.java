@@ -91,8 +91,22 @@ public class Customer extends User {
     }
 
     public boolean isBSNFormatValid(){
-        System.out.println(this.BSN);
-        return this.BSN.matches("^[0-9]{9}$");
+        // check  of het uit 9 getallen bestaat
+        if(!this.BSN.matches("^[0-9]{9}$")){
+            return false;
+
+        } else {
+
+            // voer 11 proef vor BSN uit
+            String firstNumbers = this.BSN.substring(0,8);
+            int sum = 0;
+            for (int i = 0; i < firstNumbers.length(); i++) {
+                sum += firstNumbers.charAt(i) * (this.BSN.length() - i);
+            }
+
+            sum += (Integer.parseInt(this.BSN.substring(8)) * -1);
+            return sum%11 == 0;
+        }
     }
 
     // TODO wordt in SignUpController geregeld. Deze verwijderen?
