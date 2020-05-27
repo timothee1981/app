@@ -30,6 +30,10 @@ class CustomerRepositoryTest {
         Customer customer = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
                 "753861489", null, false);
+
+/*        customer.setUsername("username1");
+        customer.setBSN("302110501");*/
+
         this.entityManager.persist(customer);
         Optional<Customer> expected = Optional.of(customer);
 
