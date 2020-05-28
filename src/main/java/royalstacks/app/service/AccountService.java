@@ -6,31 +6,20 @@ import royalstacks.app.model.Account;
 import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
 
-import java.util.ArrayList;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class AccountService {
 
+
     @Autowired
     private AccountRepository accountRepository;
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
 
     public <T extends Account> void saveAccount(T account) {
         accountRepository.save(account);}
 
-    public Account findByAccountId(int accountId) {
-        Optional<Account> account = accountRepository.findByAccountId(accountId);
-        if (account.isPresent()) {
-            return account.get();
-        } else {
-            return null;
-        }
-    }
     public String retrieveLastIban(){
         Optional<String> accountNumber = accountRepository.getLastAccountNumber();
         if (accountNumber.isPresent()) {
@@ -52,31 +41,30 @@ public class AccountService {
         else {
             lastIban = retrieveLastIban();
         }
-        String newIban = incrementIbanByOne(lastIban);
-        String accountNr11TestProof = makeIban11TestProof(newIban);
+        String newIban = incrementAccountNrByOne(lastIban.substring(8));
+        String accountNr11TestProof = makeAccountNr11TestProof(newIban);
         String controlNr = createControlNrFromAccountNr(accountNr11TestProof);
         return  LANDCODE + controlNr + BANKCODE + accountNr11TestProof;
     }
 
-    public String incrementIbanByOne(String iban){
-        int newAccountNr =  Integer.parseInt(iban.substring(8));
-        String newAccountNumber = String.format("%010d", ++newAccountNr);
-        return newAccountNumber;
+    public String incrementAccountNrByOne(String accountNr){
+        BigInteger bigInteger = new BigInteger(accountNr).add(BigInteger.ONE);
+        return  String.format("%010d", bigInteger);
     }
 
     public String createControlNrFromAccountNr(String accountNr){
-    final String CONTROLNUMBER_HASH = "232100";
+    final String COUNTRYCODE_NR = "232100";
+    final String BANKCODE_NR = "27243410";
     final int HASH_BASE = 98;
     final int HASH_MODULUS = 97;
-    int controlNrInt;
-    String controlNrString = accountNr + CONTROLNUMBER_HASH;
-    controlNrInt = HASH_BASE-(Integer.parseInt(controlNrString)%HASH_MODULUS);
-    return String.format("%02d", controlNrInt);
+
+    BigInteger bigInteger = new BigInteger(BANKCODE_NR + accountNr + COUNTRYCODE_NR);
+    BigInteger result = BigInteger.valueOf(HASH_BASE).subtract(bigInteger.mod(BigInteger.valueOf(HASH_MODULUS)));
+    return String.format("%02d", result);
     }
 
-    public boolean passed11Test(String iban){
+    public boolean passed11Test(String accountNr){
         int testSum = 0;
-        String accountNr = iban.substring(8);
 
         for (int index = 0; index < accountNr.length(); index++) {
             int singleDigit = Character.getNumericValue(accountNr.charAt(index));
@@ -85,20 +73,13 @@ public class AccountService {
         return testSum%11 == 0;
     }
 
-    public String makeIban11TestProof(String newIban){
-        String iban = newIban;
-        while(!passed11Test(iban)){
-           iban = incrementIbanByOne(iban);
+    public String makeAccountNr11TestProof(String accountNr){
+        String newAccountNr = accountNr;
+        while(!passed11Test(newAccountNr)){
+           newAccountNr = incrementAccountNrByOne(newAccountNr);
         }
-        return iban;
+        return newAccountNr;
     }
-
-    public List<Account> getAllAccounts(){
-        List<Account> accounts = (List<Account>) accountRepository.findAll();
-        return accounts;
-    }
-
-
 
 
 
