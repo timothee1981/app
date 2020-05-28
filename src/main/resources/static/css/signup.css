@@ -56,6 +56,21 @@ input[type=text]:disabled, input[type=password]:disabled, input[type=email]:disa
     background: #dcdcdc;
 }
 
+input + span {
+    position: relative;
+}
+
+input + span::before {
+    position: absolute;
+    right: -20px;
+    top: 5px;
+}
+
+input:valid + span::before {
+    content: '✓';
+    color: #1E90FF;
+}
+
 
 /* Set a style button */
 button {
@@ -166,19 +181,4 @@ button[disabled]{
 hr {
     border: 1px solid #f1f1f1;
     margin-bottom: 25px;
-}
-
-input + span {
-    position: relative;
-}
-
-input + span::before {
-    position: absolute;
-    right: -20px;
-    top: 5px;
-}
-
-input:valid + span::before {
-    content: '✓';
-    color: #1E90FF;
 }

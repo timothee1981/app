@@ -1,7 +1,3 @@
-const disableButton = false; //change this value to false and the button will be clickable
-const button = document.getElementById('submit');
-
-if (disableButton) button.disabled = "disabled";git
 // Show password button
 function showPassword() {
     const x = document.getElementById("password");
@@ -163,7 +159,7 @@ BSNInput.addEventListener("input", function () {
             console.log(data);
             if (data === false && BSN.length === 9) {
                 showUBSNNotAvailable();
-                correctBSN = false;
+                correctBSN = false;ech
             } else if (data === true){
                 hideBSNNotAvailable();
                 correctBSN = true;

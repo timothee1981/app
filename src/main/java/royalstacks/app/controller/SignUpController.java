@@ -53,15 +53,17 @@ public class SignUpController {
     @GetMapping("/signup/u_check")
     @ResponseBody
     public String usernameCheckHandler(@RequestParam String username){
-        return String.valueOf(userService.findByUsername(username).isEmpty());
+        Customer c = new Customer();
+        c.setUsername(username);
+        return String.valueOf(c.isUsernameFormatValid() && userService.findByUsername(username).isEmpty());
     }
 
     @GetMapping("/signup/b_check")
     @ResponseBody
     public String BSNCheckHandler(@RequestParam String BSN) {
-        Customer customer = new Customer();
-        customer.setBSN(BSN);
-        return String.valueOf(customer.isBSNFormatValid() && customerService.findCustomerByBSN(BSN).isEmpty());
+        Customer c = new Customer();
+        c.setBSN(BSN);
+        return String.valueOf(c.isBSNFormatValid() && customerService.findCustomerByBSN(BSN).isEmpty());
 
     }
 
