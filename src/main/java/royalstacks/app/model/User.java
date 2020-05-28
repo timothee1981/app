@@ -23,7 +23,6 @@ public abstract class User {
     public User(int userid, String username, String password, String firstName, String lastName) {
         this.userid = userid;
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = Password.hashPassword(password);

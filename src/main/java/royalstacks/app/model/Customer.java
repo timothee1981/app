@@ -175,24 +175,31 @@ public class Customer extends User {
         this.account = account;
     }
 
-    @Override
+
+        @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return isBusinessAccountHolder == customer.isBusinessAccountHolder &&
-                Objects.equals(email, customer.email) &&
-                Objects.equals(address, customer.address) &&
-                Objects.equals(city, customer.city) &&
-                Objects.equals(postalCode, customer.postalCode) &&
-                Objects.equals(phoneNumber, customer.phoneNumber) &&
-                Objects.equals(BSN, customer.BSN) &&
-                Objects.equals(accountManager, customer.accountManager);
-    }
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Customer customer = (Customer) o;
+            if (!super.equals(o)) {
+                return false;
+            }
+            else {
+                return isBusinessAccountHolder == customer.isBusinessAccountHolder &&
+                        Objects.equals(email, customer.email) &&
+                        Objects.equals(address, customer.address) &&
+                        Objects.equals(city, customer.city) &&
+                        Objects.equals(postalCode, customer.postalCode) &&
+                        Objects.equals(phoneNumber, customer.phoneNumber) &&
+                        Objects.equals(BSN, customer.BSN) &&
+                        Objects.equals(accountManager, customer.accountManager);
+            }
+        }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, address, city, postalCode, phoneNumber, BSN, isBusinessAccountHolder, accountManager, account);
+        int hash = super.hashCode();
+        return hash+Objects.hash(email, address, city, postalCode, phoneNumber, BSN, isBusinessAccountHolder, accountManager, account);
     }
 
     @Override
