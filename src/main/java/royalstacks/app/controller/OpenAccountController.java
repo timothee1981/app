@@ -111,19 +111,7 @@ public class OpenAccountController {
 
 
 
-/*
 
-        @PostMapping("/create_person")
-        public ModelAndView createPersonHandler(@ModelAttribute CreatePersonBackingBean bbb) {
-            ModelAndView mav = new ModelAndView("person_details");
-            Person person = bbb.person();
-            personService.savePerson(person);
-            mav.addObject("name", person.getName());
-            mav.addObject("birth", person.getBirth().getDate().getYear());
-            mav.addObject("death", person.getDeath().getDate().getYear());
-            return mav;
-        }
-    }*/
 
 
 
