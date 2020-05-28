@@ -37,7 +37,7 @@ const password = document.getElementById("password");
 password.addEventListener('input', function () {
     let password = document.getElementById('password');
     let passwordInput = password.value;
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{10,}$/;
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,\-./:;<=>?@^_`{|}~\[\]])[A-Za-z\d!"#$%&'()*+,\-./:;<=>?@^_`{|}~\[\]]{10,100}$/;
 
     if (re.test(passwordInput)) {
         password.classList.add("isValid");
@@ -54,7 +54,7 @@ const firstName = document.getElementById("firstName");
 firstName.addEventListener('input', function () {
     let firstName = document.getElementById('firstName');
     let firstNameInput = firstName.value;
-    const re = /^[^\s].*[a-zA-Z-'\s?]{1,100}/;
+    const re = /^[^\s].*[a-zA-Z-'\s?][^.]{1,100}/;
 
     if (re.test(firstNameInput)) {
         firstName.classList.add("isValid");
@@ -71,7 +71,7 @@ const lastName = document.getElementById("lastName");
 lastName.addEventListener('input', function () {
     let lastName = document.getElementById('lastName');
     let lastNameInput = lastName.value;
-    const re = /^[^\s].*[a-zA-Z-'\s?]{1,100}/;
+    const re = /^[^\s].*[a-zA-Z-'\s?][^.]{1,100}/;
 
     if (re.test(lastNameInput)) {
         lastName.classList.add("isValid");
