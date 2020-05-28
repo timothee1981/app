@@ -120,7 +120,6 @@ public abstract class User {
         User user = (User) o;
         return userid == user.userid &&
                 Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName);
     }

@@ -181,11 +181,9 @@ public class Customer extends User {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Customer customer = (Customer) o;
-            if (!super.equals(o)) {
-                return false;
-            }
-            else {
-                return isBusinessAccountHolder == customer.isBusinessAccountHolder &&
+            boolean eq = super.equals(o);
+            if (eq && o instanceof Customer) {
+                        return isBusinessAccountHolder == customer.isBusinessAccountHolder &&
                         Objects.equals(email, customer.email) &&
                         Objects.equals(address, customer.address) &&
                         Objects.equals(city, customer.city) &&
@@ -193,13 +191,17 @@ public class Customer extends User {
                         Objects.equals(phoneNumber, customer.phoneNumber) &&
                         Objects.equals(BSN, customer.BSN) &&
                         Objects.equals(accountManager, customer.accountManager);
+            } else{
+                return false;
             }
         }
 
+
+
+
     @Override
     public int hashCode() {
-        int hash = super.hashCode();
-        return hash+Objects.hash(email, address, city, postalCode, phoneNumber, BSN, isBusinessAccountHolder, accountManager, account);
+        return Objects.hash(email, address, city, postalCode, phoneNumber, BSN, isBusinessAccountHolder, accountManager, account);
     }
 
     @Override
