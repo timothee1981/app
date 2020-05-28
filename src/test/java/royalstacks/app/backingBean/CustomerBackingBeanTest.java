@@ -11,12 +11,6 @@ class CustomerBackingBeanTest {
     @Test
     void customerCorrectBean() {
 
-        String string1 = "password 1";
-        String hash1 = "123456";
-
-        String string2 = "password 1";
-        String hash2 = "654321";
-
         CustomerBackingBean cbb = new CustomerBackingBean("MiekeG!", "Oli3b@l",
                 "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
                 "Heerlen", "4578 DG", "06789512348", "954786327");
@@ -31,11 +25,6 @@ class CustomerBackingBeanTest {
                 "Heerlen", "4578 DG", "06789512348", "954786327", null, false);
 
         assertEquals(customer, testCustomer);
-
-        //in dit geval worden cbb en testCustomer2 door onze code als gelijk beschouwd omdat de firstName
-        //en lastName attributen van User zijn en buiten beschouwing blijven. Nog niet opgelost.
-        //cbb.setLastName("Mieke");
-        //cbb.setFirstName("Geelen");
     }
 
         @Test
