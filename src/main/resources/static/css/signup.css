@@ -66,9 +66,12 @@ input + span::before {
     top: 5px;
 }
 
-input:valid + span::before {
+.isValid + span::before {
     content: '✓';
     color: #1E90FF;
+}
+
+.isInvalid + span::before {
 }
 
 
@@ -166,12 +169,12 @@ button[disabled]{
     border: 0;
 }
 
-#firstName {
+#firstNameDiv {
     width: 160px;
     float:left;
     margin-right: 20px;
 }
-#lastName {
+#lastNameDiv {
     width: 160px;
     float: left;
     margin-left: 20px;

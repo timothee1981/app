@@ -13,7 +13,7 @@
 </div>
 <h1 class="content">Sign up</h1>
 <fieldset th:disabled="${form}">
-<form th:action="@{signup}" method="post" class="form">
+<form th:action="@{signup}" method="post" class="form" id="form" novalidate>
     <h3><span th:text="${confirmation}"/></h3>
     <h3><span th:text="${error}"/></h3>
 
@@ -21,15 +21,13 @@
     <label><b>Username</b></label><div id="usernameNotAvailable"><span>Username not available</span></div>
     <input
             type="text"
-            placeholder="Username"
+            placeholder="JanJansen88"
             name="username"
             id="username"
-            pattern="^[a-zA-Z0-9_-]{3,15}"
-            title="Use letters, numbers, - or _ only with a maximum of 15 characters"
+            title="Can contain lower case, uppercase, -, _ and must be between 3 and 20 characters in length "
             th:value="${username}"
             autofocus
             required
-
     /><span></span>
 
 
@@ -41,8 +39,7 @@
             placeholder="At least 10 characters"
             name="password"
             id="password"
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$"
-            title="Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and at least 10 characters in length"
+            title="Must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and at least 10 characters in length"
             th:value="${password}"
             onfocusin="showPasswordRequirements()"
             onfocusout="hidePasswordRequirements()"
@@ -66,29 +63,27 @@
 
 
     <div id="names">
-        <div id="firstName">
+        <div id="firstNameDiv">
     <label><b>First name</b></label>
     <input
             type="text"
-            placeholder="First name"
+            placeholder="Jan"
             name="firstName"
-            pattern="^[^\s].*[a-zA-Z-'\s?]{1,100}"
+            id="firstName"
             title="Use letters or - only"
             th:value="${firstName}"
-            required
     /><span></span>
         </div>
 
-        <div id="lastName">
+        <div id="lastNameDiv">
     <label><b>Last name</b></label>
     <input
             type="text"
-            placeholder="Last name"
+            placeholder="Janssen"
             name="lastName"
-            pattern="^[^\s].*[a-zA-Z-'\s?]{1,100}"
+            id="lastName"
             title="Use letters or - only"
             th:value="${lastName}"
-            required
     /><span></span>
             </div>
 
@@ -99,20 +94,19 @@
             type="email"
             placeholder="mail@example.com"
             name="email"
-            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            id="email"
+            class="isInvalid"
             th:value="${email}"
-            required
     /><span></span>
 
         <label><b>Phone Number</b></label>
         <input
                 type="text"
-                placeholder="06........ or 031........"
+                placeholder="0612345678 or 0311234567"
                 name="phoneNumber"
-                pattern="^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$"
-                title="Enter a valid Dutch phone number without country +31"
+                id="phoneNumber"
+                title="Valid Dutch phone number starting with 0"
                 th:value="${phoneNumber}"
-                required
         /><span></span>
     </div>
     <div id="formRight">
@@ -122,34 +116,29 @@
         <input
                 type="text"
                 placeholder="123456789"
-                pattern="^[0-9]{9}$"
                 name="BSN"
                 id="BSN"
-                title="Must consist of only 9 numbers"
                 th:value="${BSN}"
-                required
         /><span></span>
 
     <label><b>Address</b></label>
     <input
             type="text"
-            placeholder="Street name and house number"
+            placeholder="Duindoornstraat 96"
             name="address"
-            pattern="^([1-9][e][\s])*([a-zA-Z]+(([\.][\s])|([\s]))?)+[1-9][0-9]*(([-][1-9][0-9]*)|([\s]?[a-zA-Z]+))?$"
-            title="Enter a valid address"
+            id="address"
+            title="Valid address and house number"
             th:value="${address}"
-            required
     /><span></span>
 
     <label><b>City</b></label>
     <input
             type="text"
-            placeholder=""
+            placeholder="Utrecht"
             name="city"
-            pattern="[A-Z']?[a-zA-Z _']+"
+            id="city"
             title="Enter a valid city"
             th:value="${city}"
-            required
     /><span></span>
 
     <label name="postalCode"><b>Postal code</b></label>
@@ -157,14 +146,13 @@
             type="text"
             placeholder="9999AA"
             name="postalCode"
-            pattern="^[1-9][0-9]{3} ?(?!sa|SA|Sa|sA|sd|SD|sD|Sd|ss|SS|sS|sS)[a-zA-Z]{2}$"
-            title="Enter a valid postal code"
+            id="postalCode"
+            title="Valid postal code"
             th:value="${postalCode}"
-            required
     /><span></span>
     </div>
     <div id="signUpButton">
-    <td><button type="submit" name="submit" id="submit" aria-disabled="true" value="Sign up">Sign Up</button></td>
+    <td><button type="submit" name="submit" id="submitButton" value="Sign up" disabled="disabled">Sign Up</button></td>
     </div>
 </form>
 </fieldset>

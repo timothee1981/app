@@ -67,7 +67,7 @@ public class Customer extends User {
 
     public boolean isAddressValid(){
         this.address = this.address.trim();
-        return this.address.matches("^([1-9][e][\\s])*([a-zA-Z]+(([\\.][\\s])|([\\s]))?)+[1-9][0-9]*(([-][1-9][0-9]*)|([\\s]?[a-zA-Z]+))?$");
+        return this.address.matches("^([1-9][e][\\s])*([a-zA-Z]+(([\\.][\\s])|([\\s]))?)+\\s[1-9][0-9]*(([-][1-9][0-9]*)|([\\s]?[a-zA-Z]+))?$");
     }
 
     public boolean isPostalCodeValid() {
@@ -108,12 +108,6 @@ public class Customer extends User {
 
             return sum%11 == 0;
         }
-    }
-
-    // TODO wordt in SignUpController geregeld. Deze verwijderen?
-    public boolean isBSNUnique(){
-        CustomerService cs = new CustomerService();
-        return true;
     }
 
     // GETTERS EN SETTERS
