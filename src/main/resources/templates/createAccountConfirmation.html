@@ -9,7 +9,7 @@
         <span th:text="*{accountNumber}"/></p>
 
     <form th:action="@{myaccounts}" method="get"><input type="submit" name="submitbutton" value="My Accounts" /></form>
-    <form th:action="@{accountdetails}" method="post" ><input type="submit" name="submitbutton" value="Account details " /></form>
+    <form th:action="@{accountdetails}"  method="post" ><input type="submit" name="submitbutton" value="Account details " hidden/></form>
 
 
 
