@@ -25,11 +25,12 @@ class CustomerBackingBeanTest {
 
         Assert.assertEquals(customer, testCustomer);
 
+        //in dit geval worden cbb en testCustomer2 door onze code als gelijk beschouwd omdat de firstName
+        //en lastName attributen van User zijn en buiten beschouwing blijven. Nog niet opgelost.
 /*        cbb.setLastName("Mieke");
         cbb.setFirstName("Geelen");
         Customer testCustomer2 = cbb.customer();
-
-        Assert.assertNotEquals(customer, testCustomer2);
+        Assert.assertNotEquals(customer, testCustomer2);*/
 
         cbb.setAddress("4578 DG");
         cbb.setPostalCode("Westerlaan 24");
@@ -37,6 +38,6 @@ class CustomerBackingBeanTest {
         customer.setPostalCode("Westerlaan 24");
         Customer testCustomer3 = cbb.customer();
 
-        Assert.assertEquals(customer, testCustomer3);*/
+        Assert.assertEquals(customer, testCustomer3);
     }
 }
