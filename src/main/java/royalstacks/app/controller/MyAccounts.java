@@ -43,25 +43,14 @@ public class MyAccounts {
         return mav;
     }
 
-
-
-
-
     @GetMapping("/myaccounts")
     public void setupMyAccounts(Model model, @SessionAttribute("userid") int userId){
 
         Customer customer =(Customer) userService.findByUserId(userId);
-        List<Account> accounts = accountService.getAllAccounts();
+        Iterator<Account> accounts = customer.getAccount().iterator();
         List<Account> myAccounts = new ArrayList<>();
-
-
-        for(Account account: accounts){
-            Iterator<Customer> accountHolders = account.getAccountHolders().iterator();
-            while(accountHolders.hasNext()){
-                 if(accountHolders.next().getUserid() == userId) {
-                     myAccounts.add(account);
-                 }
-            }
+        while(accounts.hasNext()){
+            myAccounts.add(accounts.next());
         }
         model.addAttribute("customer",customer);
         model.addAttribute("list",myAccounts);
