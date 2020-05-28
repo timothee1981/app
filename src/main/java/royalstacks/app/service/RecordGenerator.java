@@ -28,8 +28,8 @@ public class RecordGenerator {
         headPrivateGenerator(amountEmployees);
         privateAccountGenerator(amountAccounts);
         businessAccountGenerator(amountAccounts);
-        addAccountHoldersToAllPrivatAccounts();
-        addAccountHoldersToAllBusinessAccounts();
+       //addAccountHoldersToAllPrivatAccounts();
+        addAccountHoldersToAllAccounts();
 
 
 
@@ -37,7 +37,7 @@ public class RecordGenerator {
     public void customerGenerator(int amount){
 
         String usernameBase = "customer";
-        String password = "Auto-1234";
+        String password = "Auto!12345";
         String name = "Piet";
         String lastname = "Boot";
         String emailAddress = "email@test.nl";
@@ -56,7 +56,7 @@ public class RecordGenerator {
     }
     public void headBusinessGenerator(int amount) {
         String username = "headbusiness";
-        String password = "Auto-1234";
+        String password = "Auto!12345";
         String name = "Piet";
         String lastname = "Boot";
         String position = "headbusiness";
@@ -69,7 +69,7 @@ public class RecordGenerator {
     }
     public void headPrivateGenerator(int amount) {
         String usernameBase = "headprivate";
-        String password = "Auto-1234";
+        String password = "Auto!12345";
         String name = "Piet";
         String lastname = "Boot";
         String position = "headprivate";
@@ -129,7 +129,7 @@ public class RecordGenerator {
             addAccountHoldersToSingleAccount(account);
         }
     }
-    public void addAccountHoldersToAllBusinessAccounts(){
+    public void addAccountHoldersToAllAccounts(){
         Iterable<Account> iterable = accountRepository.findAll();
         Iterator<Account> businessAccounts = iterable.iterator();
         while (businessAccounts.hasNext()){

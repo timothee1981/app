@@ -40,8 +40,8 @@
         button:hover {
             opacity:1;
         }
-        #button{
-            margin: 12px;
+        #backbutton{
+            margin: 12px 0px;
         }
     </style>
 
@@ -98,17 +98,17 @@
             <tr>
                 <td>Sector </td>
                 <td>
-                    <label for="sector"></label>
-                    <select id="sector"   th:field="*{sector}">
-                        <option disabled selected value="" hidden></option>
-                        <option value="financial">Financial</option>
-                        <option value="it">IT</option>
-                        <option value="retail">Retail</option>
-                        <option value="agriculture">Agriculture</option>
-                        <option value="education">Education</option>
-                        <option value="logistic">Logistic</option>
-                        <option value="industry">Industry</option>
-                    </select>
+
+                    <label for="sector"></label><select id="sector" th:field="*{sector}">
+                            <option disabled value="" hidden></option>
+                            <option value="financial">Financial</option>
+                            <option value="it">IT</option>
+                            <option value="retail">Retail</option>
+                            <option value="agriculture">Agriculture</option>
+                            <option value="education">Education</option>
+                            <option value="logistic">Logistic</option>
+                            <option value="industry">Industry</option>
+                        </select>
                 </td>
             </tr>
         </table>
@@ -116,7 +116,7 @@
         <input type="submit" name="submitbutton" value="Create account"  />
         </div>
     </form>
-    <div id="button">
+    <div id="backbutton">
     <form th:action="@{myaccount}" method="get">
         <input type="submit" name="submitbutton" value="Back" />
     </form>
@@ -137,19 +137,18 @@ if (document.getElementById("business").checked){
 
     function hideBusinessFields() {
         document.getElementById("businessFields").style.visibility = "hidden";
-        document.getElementById("form").noValidate;
         document.getElementById("companyName").removeAttribute("required");
         document.getElementById("kvkNumber").removeAttribute("required");
         document.getElementById("vatNumber").removeAttribute("required");
-        document.getElementById("sector").removeAttribute("required");
+        document.getElementById("sector1").removeAttribute("required");
 
     }
     function showBusinessFields() {
         document.getElementById("businessFields").style.visibility = "visible";
-        document.getElementById("companyName").required = "true";
-        document.getElementById("kvkNumber").required = "true";
-        document.getElementById("vatNumber").required = "true";
-        document.getElementById("sector").required = "true";
+        document.getElementById("companyName").required = true;
+        document.getElementById("kvkNumber").required = true;
+        document.getElementById("vatNumber").required = true;
+        document.getElementById("sector").required = true;
 
 
 
