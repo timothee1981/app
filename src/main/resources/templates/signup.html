@@ -16,7 +16,6 @@
 <form th:action="@{signup}" method="post" class="form" id="form" novalidate>
     <h3><span th:text="${confirmation}"/></h3>
     <h3><span th:text="${error}"/></h3>
-
     <div id="formLeft">
     <label><b>Username</b></label><div id="usernameNotAvailable"><span>Username not available</span></div>
     <input
@@ -88,16 +87,28 @@
             </div>
 
     </div>
+        <label><b>BSN</b></label><div id="BSNNotAvailable"><span>BSN invalid</span></div>
+        <input
+                type="text"
+                placeholder="123456789"
+                name="BSN"
+                id="BSN"
+                th:value="${BSN}"
+        /><span></span>
 
-    <label><b>Email</b></label>
-    <input
-            type="email"
-            placeholder="mail@example.com"
-            name="email"
-            id="email"
-            class="isInvalid"
-            th:value="${email}"
-    /><span></span>
+
+    </div>
+    <div id="formRight">
+        <label><b>Email</b></label>
+        <input
+                type="email"
+                placeholder="mail@example.com"
+                name="email"
+                id="email"
+                th:value="${email}"
+        /><span></span>
+
+
 
         <label><b>Phone Number</b></label>
         <input
@@ -107,18 +118,6 @@
                 id="phoneNumber"
                 title="Valid Dutch phone number starting with 0"
                 th:value="${phoneNumber}"
-        /><span></span>
-    </div>
-    <div id="formRight">
-
-
-        <label><b>BSN</b></label><div id="BSNNotAvailable"><span>BSN invalid</span></div>
-        <input
-                type="text"
-                placeholder="123456789"
-                name="BSN"
-                id="BSN"
-                th:value="${BSN}"
         /><span></span>
 
     <label><b>Address</b></label>
@@ -131,6 +130,8 @@
             th:value="${address}"
     /><span></span>
 
+        <div id="cityAndPostalCode">
+            <div id="cityAndPostalCode1">
     <label><b>City</b></label>
     <input
             type="text"
@@ -140,8 +141,9 @@
             title="Enter a valid city"
             th:value="${city}"
     /><span></span>
-
-    <label name="postalCode"><b>Postal code</b></label>
+            </div>
+        <div id="cityAndPostalCode2">
+            <label name="postalCode"><b>Postal code</b></label>
     <input
             type="text"
             placeholder="9999AA"
@@ -150,6 +152,8 @@
             title="Valid postal code"
             th:value="${postalCode}"
     /><span></span>
+        </div>
+        </div>
     </div>
     <div id="signUpButton">
     <td><button type="submit" name="submit" id="submitButton" value="Sign up" disabled="disabled">Sign Up</button></td>
@@ -159,5 +163,6 @@
 
 <script src="js/navbar.js"></script>
 <script src="js/signup.js"></script>
+<script src="js/validatesignup.js"></script>
 </body>
 </html>

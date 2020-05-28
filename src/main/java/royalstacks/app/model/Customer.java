@@ -81,7 +81,7 @@ public class Customer extends User {
 
     public boolean isCityValid(){
         this.city = city.trim();
-        return this.city.matches("[A-Z']?[a-zA-Z _']+");
+        return this.city.matches("^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$");
     }
 
     public boolean isPhoneNumberValid(){
