@@ -15,11 +15,28 @@ class CustomerBackingBeanTest {
                 "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
                 "Heerlen", "4578 DG", "06789512348", "954786327");
 
+        //actual
         Customer testCustomer = cbb.customer();
 
-        Assert.assertEquals(cbb, testCustomer);
+        //expected
+        Customer customer = new Customer("MiekeG!", "Oli3b@l",
+                "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
+                "Heerlen", "4578 DG", "06789512348", "954786327", null, false);
 
-/*        String expected = testCustomer.getUsername();
-        String actual =*/
+        Assert.assertEquals(customer, testCustomer);
+
+        cbb.setLastName("Mieke");
+        cbb.setFirstName("Geelen");
+        Customer testCustomer2 = cbb.customer();
+
+        Assert.assertNotEquals(customer, testCustomer2);
+
+        cbb.setAddress("4578 DG");
+        cbb.setPostalCode("Westerlaan 24");
+        customer.setAddress("4578 DG");
+        customer.setPostalCode("Westerlaan 24");
+        Customer testCustomer3 = cbb.customer();
+
+        Assert.assertEquals(customer, testCustomer3);
     }
 }

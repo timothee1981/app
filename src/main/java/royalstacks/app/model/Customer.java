@@ -3,6 +3,7 @@ package royalstacks.app.model;
 import royalstacks.app.service.CustomerService;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -172,6 +173,31 @@ public class Customer extends User {
 
     public void setAccount(Set<Account> account) {
         this.account = account;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return userid == customer.userid &&
+                Objects.equals(username, customer.username) &&
+                Objects.equals(password, customer.password) &&
+                Objects.equals(firstName, customer.firstName) &&
+                Objects.equals(lastName, customer.lastName) &&
+                isBusinessAccountHolder == customer.isBusinessAccountHolder &&
+                Objects.equals(email, customer.email) &&
+                Objects.equals(address, customer.address) &&
+                Objects.equals(city, customer.city) &&
+                Objects.equals(postalCode, customer.postalCode) &&
+                Objects.equals(phoneNumber, customer.phoneNumber) &&
+                Objects.equals(BSN, customer.BSN) &&
+                Objects.equals(accountManager, customer.accountManager);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, address, city, postalCode, phoneNumber, BSN, isBusinessAccountHolder, accountManager, account);
     }
 
     @Override
