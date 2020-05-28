@@ -7,13 +7,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.ModelAndView;
+
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Employee;
 import royalstacks.app.model.User;
 import royalstacks.app.service.LogInService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -128,7 +128,7 @@ class DoLoginControllerTest {
                 post("/doLogin")
                         .param("inputUsername", username)
                         .param("inputPassword", password)
-        ).andExpect(status().isOk()).andExpect(view().name("myaccounts"));
+        ).andExpect(status().isMovedTemporarily()).andExpect(view().name("redirect:/myaccounts"));
     }
 
     @Test
