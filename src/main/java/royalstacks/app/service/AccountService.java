@@ -4,19 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.repository.AccountRepository;
+import royalstacks.app.model.repository.EmployeeRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AccountService {
 
-    private AccountRepository accountRepository;
-
     @Autowired
-    public AccountService(AccountRepository accountRepository){
-        super();
-        this.accountRepository = accountRepository;
-    }
+    private AccountRepository accountRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
 
     public <T extends Account> void saveAccount(T account) {
         accountRepository.save(account);}
@@ -90,4 +92,14 @@ public class AccountService {
         }
         return iban;
     }
+
+    public List<Account> getAllAccounts(){
+        List<Account> accounts = (List<Account>) accountRepository.findAll();
+        return accounts;
+    }
+
+
+
+
+
 }

@@ -6,9 +6,7 @@ import royalstacks.app.model.Account;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.User;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 public interface AccountRepository extends CrudRepository<Account,Integer> {
 
@@ -16,5 +14,11 @@ public interface AccountRepository extends CrudRepository<Account,Integer> {
 
     @Query("SELECT a.accountNumber FROM Account a WHERE a.accountId = (select max(a.accountId) From a)")
     Optional<String> getLastAccountNumber();
+
+    @Query("SELECT p FROM PrivateAccount p")
+    Iterable<Account> findAllPrivateAccounts();
+
+    @Query("SELECT b FROM BusinessAccount b")
+    Iterable<Account> findAllBusinessAccounts();
 
 }
