@@ -45,17 +45,17 @@ public abstract class User {
 
     public static boolean isPasswordValid(String inputPassword){
         // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 10 karakters lang zijn
-        return inputPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#@$!%*?&])[A-Za-z\\d#@$!%*?&]{10,}$");
+        return inputPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]])[A-Za-z\\d!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]]{10,100}$");
     }
 
     public boolean isFirstNameValid(){
         this.firstName = this.firstName.trim();
-        return this.firstName.matches("^[^\\s].*[a-zA-Z-'\\s?]{1,100}");
+        return this.firstName.matches("^[^\\s].*[a-zA-Z-'\\s?][^.]{1,100}");
     }
 
     public boolean isLastNameValid(){
         this.lastName = this.lastName.trim();
-        return this.lastName.matches("^[^\\s].*[a-zA-Z-'\\s?]{1,100}");
+        return this.lastName.matches("^[^\\s].*[a-zA-Z-'\\s?][^.]{1,100}");
     }
 
 
