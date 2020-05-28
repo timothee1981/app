@@ -4,6 +4,12 @@
 h1{
     text-align: center;
 }
+
+h3{
+    text-align: center;
+    padding: 5px;
+}
+
 body{
     align-content: center;
     background-color: #ebebeb;
@@ -66,9 +72,14 @@ input + span::before {
     top: 5px;
 }
 
-input:valid + span::before {
+.isValid + span::before {
     content: '✓';
     color: #1E90FF;
+}
+
+.isInvalid + span::before {
+    content: '✗';
+    color: rgba(255, 0, 0, 0.6);
 }
 
 
@@ -95,8 +106,7 @@ button[disabled]{
 
 #signUpButton{
     font-weight: bold;
-
-    padding-top: 100px;
+    padding-top: 20px;
     float: right;
     margin: auto 20px auto auto;
 
@@ -166,13 +176,31 @@ button[disabled]{
     border: 0;
 }
 
-#firstName {
+#firstNameDiv {
     width: 160px;
     float:left;
     margin-right: 20px;
 }
-#lastName {
+#lastNameDiv {
     width: 160px;
+    float: left;
+    margin-left: 20px;
+}
+
+#cityAndPostalCode{
+    width: 400px;
+    overflow: hidden;
+    border: 0;
+}
+
+#cityAndPostalCode1{
+    width: 200px;
+    float:left;
+    margin-right: 20px;
+}
+
+#cityAndPostalCode2{
+    width: 120px;
     float: left;
     margin-left: 20px;
 }

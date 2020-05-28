@@ -40,7 +40,7 @@ public class SignUpController {
             customerService.saveCustomer(customer);
             populateFields(customer, mav);
             mav.addObject("form", "disabled");
-            mav.addObject("confirmation", "Account successfully created");
+            mav.addObject("confirmation", "Congratulations! You can now Login");
             System.out.println("**** Customer saved: " + customer);
         } else {
             // zo niet, vul alle velden met input van gebruiker

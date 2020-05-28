@@ -9,11 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class CustomerBackingBeanTest {
 
     @Test
-    void customer() {
+    void customerCorrectBean() {
 
         CustomerBackingBean cbb = new CustomerBackingBean("MiekeG!", "Oli3b@l",
                 "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
                 "Heerlen", "4578 DG", "06789512348", "954786327");
+
 
         //actual
         Customer testCustomer = cbb.customer();
@@ -23,15 +24,24 @@ class CustomerBackingBeanTest {
                 "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
                 "Heerlen", "4578 DG", "06789512348", "954786327", null, false);
 
-        Assert.assertEquals(customer, testCustomer);
+        assertEquals(customer, testCustomer);
+    }
 
-/*        cbb.setLastName("Mieke");
-        cbb.setFirstName("Geelen");
-        Customer testCustomer2 = cbb.customer();
+        @Test
+        void customerIncorrectBean() {
 
-        Assert.assertNotEquals(customer, testCustomer2);
+        CustomerBackingBean cbb2 = new CustomerBackingBean("MiekeG!", "Oli3b@l",
+                "Geelen", "Mieke", "miekegeelen@gmail.com", "Westerlaan 24",
+                "Heerlen", "4578 DG", "06789512348", "954786327");
 
-        cbb.setAddress("4578 DG");
+        Customer customer2 = new Customer("MiekeG!", "Oli3b@l",
+                "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
+                "Heerlen", "4578 DG", "06789512348", "954786327", null, false);
+
+        Customer testCustomer2 = cbb2.customer();
+        Assert.assertNotEquals(customer2, testCustomer2);
+
+/*        cbb.setAddress("4578 DG");
         cbb.setPostalCode("Westerlaan 24");
         customer.setAddress("4578 DG");
         customer.setPostalCode("Westerlaan 24");

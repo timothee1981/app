@@ -1,3 +1,4 @@
+
 // Show password button
 function showPassword() {
     const x = document.getElementById("password");
@@ -23,7 +24,6 @@ function hidePasswordRequirements() {
     x.style.display = "none";
     y.style.display = "none";
 }
-
 
 // Show & hide UsernameNotAvailable
 function showUsernameNotAvailable() {
@@ -107,69 +107,3 @@ myInput.onkeyup = function() {
         length.classList.add("invalid");
     }
 };
-
-let correctUsername = false;
-let correctBSN = false;
-
-/* Real-time username check in database */
-let userNameInput = document.getElementById("username");
-userNameInput.addEventListener("input", function () {
-    let userName = userNameInput.value;
-    let usernameCheck = window.location.pathname + `/u_check?username=${userName}`;
-
-    fetch(usernameCheck)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Response error");
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-            if (userName.length > 1) {
-                if (data === true) {
-                    hideUsernameNotAvailable();
-                    correctUsername = true;
-                } else {
-                    showUsernameNotAvailable();
-                    correctUsername = false;
-                }
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-});
-
-
-/* Real-time BSN check in database */
-let BSNInput = document.getElementById("BSN");
-BSNInput.addEventListener("input", function () {
-    let BSN = BSNInput.value;
-    let BSNCheck = window.location.pathname + `/b_check?BSN=${BSN}`;
-
-    fetch(BSNCheck)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Response error");
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-            if (data === false && BSN.length === 9) {
-                showUBSNNotAvailable();
-                correctBSN = false;ech
-            } else if (data === true){
-                hideBSNNotAvailable();
-                correctBSN = true;
-            } else {
-                hideBSNNotAvailable();
-               correctBSN = false;
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-});
-

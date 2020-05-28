@@ -43,19 +43,6 @@ public abstract class User {
         return this.username.matches("^[a-zA-Z0-9_-]{3,15}$");
     }
 
-    public boolean isUsernameUnique(){
-        UserService userService = new UserService();
-
-        // TODO geeft hier NPE, niet als userService in Controller gebruikt wordt
-        try{
-            return userService.findByUsername(this.username).isEmpty();
-        } catch(NullPointerException e) {
-            System.out.println(e);
-            return true;
-        }
-
-    }
-
     public static boolean isPasswordValid(String inputPassword){
         // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 10 karakters lang zijn
         return inputPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{10,}$");
@@ -162,7 +149,6 @@ public abstract class User {
         User user = (User) o;
         return userid == user.userid &&
                 Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName);
     }

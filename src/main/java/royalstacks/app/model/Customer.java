@@ -68,7 +68,7 @@ public class Customer extends User {
 
     public boolean isAddressValid(){
         this.address = this.address.trim();
-        return this.address.matches("^([1-9][e][\\s])*([a-zA-Z]+(([\\.][\\s])|([\\s]))?)+[1-9][0-9]*(([-][1-9][0-9]*)|([\\s]?[a-zA-Z]+))?$");
+        return this.address.matches("^([1-][e][\\s])*([a-zA-Z\\-']+(([\\.][\\s])|([\\s]))?)+\\s[1-9][0-9]*(([-][1-9][0-9]*)|([\\s]?[-a-zA-Z0-9]+))*(([-][1-9][0-9]*)|([\\s]?[-a-zA-Z0-9]+))?$");
     }
 
     public boolean isPostalCodeValid() {
@@ -81,7 +81,7 @@ public class Customer extends User {
 
     public boolean isCityValid(){
         this.city = city.trim();
-        return this.city.matches("[A-Z']?[a-zA-Z _']+");
+        return this.city.matches("^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$");
     }
 
     public boolean isPhoneNumberValid(){
@@ -109,12 +109,6 @@ public class Customer extends User {
 
             return sum%11 == 0;
         }
-    }
-
-    // TODO wordt in SignUpController geregeld. Deze verwijderen?
-    public boolean isBSNUnique(){
-        CustomerService cs = new CustomerService();
-        return true;
     }
 
     // GETTERS EN SETTERS
@@ -190,20 +184,29 @@ public class Customer extends User {
         this.account = account;
     }
 
-    @Override
+
+        @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return isBusinessAccountHolder == customer.isBusinessAccountHolder &&
-                Objects.equals(email, customer.email) &&
-                Objects.equals(address, customer.address) &&
-                Objects.equals(city, customer.city) &&
-                Objects.equals(postalCode, customer.postalCode) &&
-                Objects.equals(phoneNumber, customer.phoneNumber) &&
-                Objects.equals(BSN, customer.BSN) &&
-                Objects.equals(accountManager, customer.accountManager);
-    }
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Customer customer = (Customer) o;
+            boolean eq = super.equals(o);
+            if (eq && o instanceof Customer) {
+                        return isBusinessAccountHolder == customer.isBusinessAccountHolder &&
+                        Objects.equals(email, customer.email) &&
+                        Objects.equals(address, customer.address) &&
+                        Objects.equals(city, customer.city) &&
+                        Objects.equals(postalCode, customer.postalCode) &&
+                        Objects.equals(phoneNumber, customer.phoneNumber) &&
+                        Objects.equals(BSN, customer.BSN) &&
+                        Objects.equals(accountManager, customer.accountManager);
+            } else{
+                return false;
+            }
+        }
+
+
+
 
     @Override
     public int hashCode() {
