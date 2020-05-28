@@ -153,7 +153,7 @@ let address = document.getElementById("address");
 address.addEventListener('input', function () {
     let address = document.getElementById('address');
     let addressInput = address.value;
-    const addressRegex = /^([1-9][e][\s])*([a-zA-Z]+(([\.][\s])|([\s]))?)+[\s][1-9][0-9]*(([-][1-9][0-9]*)|([\s]?[a-zA-Z]+))?$/;
+    const addressRegex = /^([1-][e][\s])*([a-zA-Z\-']+(([\.][\s])|([\s]))?)+\s[1-9][0-9]*(([-][1-9][0-9]*)|([\s]?[-a-zA-Z0-9]+))*(([-][1-9][0-9]*)|([\s]?[-a-zA-Z0-9]+))?$/;
 
     if (addressRegex.test(addressInput)) {
         address.classList.add("isValid");

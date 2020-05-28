@@ -67,7 +67,7 @@ public class Customer extends User {
 
     public boolean isAddressValid(){
         this.address = this.address.trim();
-        return this.address.matches("^([1-9][e][\\s])*([a-zA-Z]+(([\\.][\\s])|([\\s]))?)+\\s[1-9][0-9]*(([-][1-9][0-9]*)|([\\s]?[a-zA-Z]+))?$");
+        return this.address.matches("^([1-][e][\\s])*([a-zA-Z\\-']+(([\\.][\\s])|([\\s]))?)+\\s[1-9][0-9]*(([-][1-9][0-9]*)|([\\s]?[-a-zA-Z0-9]+))*(([-][1-9][0-9]*)|([\\s]?[-a-zA-Z0-9]+))?$");
     }
 
     public boolean isPostalCodeValid() {
