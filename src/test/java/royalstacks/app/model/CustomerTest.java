@@ -21,7 +21,6 @@ public class CustomerTest {
         Assert.assertTrue(c.isEmailValid());
         c.setEmail("firstname+lastname@example.com");
         Assert.assertTrue(c.isEmailValid());
-        //deze wordt valid met .trim in de methode
         c.setEmail("  example@example.com  ");
         Assert.assertTrue(c.isEmailValid());
 

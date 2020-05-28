@@ -49,12 +49,54 @@ public class CustomerBackingBean {
 
     //TODO nog een constructor maken voor backing bean met lijst van accounts voor ophalen uit DB?
 
-    // maakt een backing bean van een customer
+    // creates a backing bean from a customer
     public static CustomerBackingBean createCustomerBackingBean(Customer customer) {
         CustomerBackingBean cbb =
                 new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmail(),
                         customer.getAddress(), customer.getCity(), customer.getPostalCode(), customer.getPhoneNumber(), customer.getBSN());
                 return cbb;
+    }
+
+    // setters (for testing purposes)
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setBSN(String BSN) {
+        this.BSN = BSN;
     }
 
     @Override

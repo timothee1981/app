@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import royalstacks.app.service.UserService;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -24,7 +25,6 @@ public abstract class User {
     public User(int userid, String username, String password, String firstName, String lastName) {
         this.userid = userid;
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = User.hashPassword(password);
@@ -140,6 +140,22 @@ public abstract class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userid == user.userid &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userid, username, password, firstName, lastName);
     }
 
     @Override
