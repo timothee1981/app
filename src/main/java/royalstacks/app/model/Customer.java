@@ -180,12 +180,7 @@ public class Customer extends User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return userid == customer.userid &&
-                Objects.equals(username, customer.username) &&
-                Objects.equals(password, customer.password) &&
-                Objects.equals(firstName, customer.firstName) &&
-                Objects.equals(lastName, customer.lastName) &&
-                isBusinessAccountHolder == customer.isBusinessAccountHolder &&
+        return isBusinessAccountHolder == customer.isBusinessAccountHolder &&
                 Objects.equals(email, customer.email) &&
                 Objects.equals(address, customer.address) &&
                 Objects.equals(city, customer.city) &&
