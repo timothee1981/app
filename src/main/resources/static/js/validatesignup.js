@@ -37,7 +37,7 @@ const password = document.getElementById("password");
 password.addEventListener('input', function () {
     let password = document.getElementById('password');
     let passwordInput = password.value;
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{10,}$/;
 
     if (re.test(passwordInput)) {
         password.classList.add("isValid");
