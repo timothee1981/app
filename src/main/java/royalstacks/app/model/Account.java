@@ -33,18 +33,30 @@ public abstract class Account {
     }
 
     //METHODS
-    public void addAmount(double addedAmount){
+    public boolean addAmount(double addedAmount){
 
         // add amounts
         double result = balance + addedAmount;
 
         // check for overflow-exception
         if(Double.isInfinite(result) || Double.isNaN(result)){
-            throw new ArithmeticException("overflow");
+            return false;
         }
 
         // all is correct, set new amount to balance
         setBalance(result);
+        return true;
+    }
+
+    public boolean subtractAmount(double subtractedAmount){
+        if(subtractedAmount > balance){
+            return false;
+        }
+        else{
+            setBalance(balance - subtractedAmount);
+            return true;
+        }
+
     }
 
     //Getters and Setters
