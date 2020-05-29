@@ -32,6 +32,21 @@ public abstract class Account {
         this("",0);
     }
 
+    //METHODS
+    public void addAmount(double addedAmount){
+
+        // add amounts
+        double result = balance + addedAmount;
+
+        // check for overflow-exception
+        if(Double.isInfinite(result) || Double.isNaN(result)){
+            throw new ArithmeticException("overflow");
+        }
+
+        // all is correct, set new amount to balance
+        setBalance(result);
+    }
+
     //Getters and Setters
     public static double getStartingBalance() {
         return STARTING_BALANCE;
