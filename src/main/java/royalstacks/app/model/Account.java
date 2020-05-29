@@ -56,7 +56,13 @@ public abstract class Account {
             setBalance(balance - subtractedAmount);
             return true;
         }
+    }
 
+    public void addAccountHolder(Customer accountHolderToAdd){
+        // als accountholder nog niet bestaat, voeg toe
+        if(! (accountHolders.contains(accountHolderToAdd))){
+            accountHolders.add(accountHolderToAdd);
+        }
     }
 
     //Getters and Setters
