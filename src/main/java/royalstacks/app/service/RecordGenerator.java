@@ -41,7 +41,8 @@ public class RecordGenerator {
         String name = "Piet";
         String lastname = "Boot";
         String emailAddress = "email@test.nl";
-        String adress = "Schoolstraat 22";
+        String houseNumber = "22";
+        String suffix = "a";
         String city = "Ede";
         String postalCode = "1337GG";
         String phone = "0656475656";
@@ -50,7 +51,7 @@ public class RecordGenerator {
         for (int index = 1; index <= amount ; index++) {
             String username = usernameBase + index;
             socialSecurityNumber = String.valueOf(Integer.parseInt(socialSecurityNumber)+1);
-            Customer customer = new Customer(username, password, name, lastname, emailAddress, adress, city, postalCode, phone, socialSecurityNumber, null, false);
+            Customer customer = new Customer(username, password, name, lastname, emailAddress, postalCode, houseNumber, suffix, city, phone, socialSecurityNumber, null, false);
             customerRepository.save(customer);
         }
     }
@@ -120,7 +121,7 @@ public class RecordGenerator {
         accountRepository.save(account);
 
     }
-    public void addAccountHoldersToAllPrivatAccounts(){
+    public void addAccountHoldersToAllPrivateAccounts(){
         Iterable<Account> iterable = accountRepository.findAll();
         Iterator<Account> privateAccounts = iterable.iterator();
 

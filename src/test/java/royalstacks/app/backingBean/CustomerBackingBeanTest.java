@@ -12,8 +12,8 @@ class CustomerBackingBeanTest {
     void customerCorrectBean() {
 
         CustomerBackingBean cbb = new CustomerBackingBean("MiekeG!", "Oli3b@l",
-                "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
-                "Heerlen", "4578 DG", "06789512348", "954786327");
+                "Mieke", "Geelen", "miekegeelen@gmail.com", "4578 DG",
+                "24", "a", "Heerlen", "06789512348", "954786327");
 
 
         //actual
@@ -21,8 +21,8 @@ class CustomerBackingBeanTest {
 
         //expected
         Customer customer = new Customer("MiekeG!", "Oli3b@l",
-                "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
-                "Heerlen", "4578 DG", "06789512348", "954786327", null, false);
+                "Mieke", "Geelen", "miekegeelen@gmail.com", "4578 DG","24", "a",
+                "Heerlen", "06789512348", "954786327", null, false);
 
         assertEquals(customer, testCustomer);
     }
@@ -31,19 +31,19 @@ class CustomerBackingBeanTest {
         void customerIncorrectBean() {
 
         CustomerBackingBean cbb2 = new CustomerBackingBean("MiekeG!", "Oli3b@l",
-                "Geelen", "Mieke", "miekegeelen@gmail.com", "Westerlaan 24",
-                "Heerlen", "4578 DG", "06789512348", "954786327");
+                "Geelen", "Mieke", "miekegeelen@gmail.com","4578 DG", "24", "a",
+                "Heerlen", "06789512348", "954786327");
 
         Customer customer2 = new Customer("MiekeG!", "Oli3b@l",
-                "Mieke", "Geelen", "miekegeelen@gmail.com", "Westerlaan 24",
-                "Heerlen", "4578 DG", "06789512348", "954786327", null, false);
+                "Mieke", "Geelen", "miekegeelen@gmail.com", "4578 DG", "24", "a",
+                "Heerlen", "06789512348", "954786327", null, false);
 
         Customer testCustomer2 = cbb2.customer();
         Assert.assertNotEquals(customer2, testCustomer2);
 
-/*        cbb.setAddress("4578 DG");
+/*        cbb.setHouseNumber("4578 DG");
         cbb.setPostalCode("Westerlaan 24");
-        customer.setAddress("4578 DG");
+        customer.setHouseNumber("4578 DG");
         customer.setPostalCode("Westerlaan 24");
         Customer testCustomer3 = cbb.customer();
 

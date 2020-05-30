@@ -25,21 +25,25 @@ function hidePasswordRequirements() {
     y.style.display = "none";
 }
 
-// Show & hide UsernameNotAvailable
-function showUsernameNotAvailable() {
+// Set & hide UsernameNotAvailable
+
+function setUsernameNotAvailable(String) {
     const x = document.getElementById("usernameNotAvailable");
     x.style.display = "inline";
+    x.innerHTML = String;
 }
 
-function hideUsernameNotAvailable() {
+function hideUsernameNotAvailable(String) {
     const x = document.getElementById("usernameNotAvailable");
     x.style.display = "none";
+    x.innerHTML = String;
 }
 
 // Show & hide BSNNotAvailable
-function showUBSNNotAvailable() {
+function setUBSNNotAvailable(String) {
     const x = document.getElementById("BSNNotAvailable");
     x.style.display = "inline";
+    x.innerHTML = String;
 }
 
 function hideBSNNotAvailable() {

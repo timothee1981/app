@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>homepage</title>
+    <title>Welcome to Royal Stacks</title>
     <style>
         * {box-sizing: border-box}
         * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
@@ -11,7 +11,7 @@
             align-content: center;
             background-color: #ebebeb;
             margin: auto;
-            width: 40%;
+            width: 100%;
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
         }
         input[type=text], input[type=password] {
@@ -26,6 +26,19 @@
             background-color: #ddd;
             outline: none;
         }
+
+        #wrapper{
+            width: 600px;
+            margin: auto;
+        }
+
+        h1{
+            text-align: center;
+        }
+
+        #buttons{
+            float: right;
+        }
         button {
             background-color: #1E90FF;
             color: white;
@@ -33,15 +46,32 @@
             margin: 8px 0;
             border: none;
             cursor: pointer;
-            width: 100%;
+            width: 200px;
             opacity: 0.9;
         }
         button:hover {
             opacity:1;
         }
+
+        .invalidInputPopup {
+            float: left;
+            overflow: hidden;
+            font-size: 12px;
+            font-weight: bold;
+            color: rgba(255, 0, 0, 0.70);
+            font-style: italic;
+            display: inline;
+        }
+
     </style>
+    <link type="text/css" href="css/navbar.css" rel="stylesheet" />
 </head>
 <body>
+<div id="navbar">
+    <a href="/signup">Sign Up</a>
+    <span id="logoNavbar"></span>
+</div>
+<div id="wrapper" class="content">
 <h1>Login</h1>
 <form th:action="@{doLogin}" method="post">
 
@@ -58,13 +88,16 @@
             type="password"
             placeholder="Password"
             name="inputPassword"
-            th:text="${login_error}"
             required
     >
+    <div id="buttons">
     <td><button type="submit" name="submitbutton" value="Login">Login</button></td>
-    <td><button type="button" name="signup" onclick="location.href='signup';"value="Become a customer">Signup</button></td>
+    </div>
     <!--/*@thymesVar id="user_error" type="java.lang.String"*/-->
-    <span th:text="${user_error}"/>
+    <span class="invalidInputPopup" th:text="${login_error}"></span>
+    <span class="invalidInputPopup" th:text="${user_error}"/>
+</div>
 </form>
+<script src="js/navbar.js"></script>
 </body>
 </html>

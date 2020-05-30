@@ -6,20 +6,31 @@
 /* Navbar links */
 #navbar a {
     float: left;
-    display: block;
+    display: inline;
     color: #f2f2f2;
     text-align: center;
     padding: 14px;
     text-decoration: none;
 }
 
-.royalStacksNavbar{
-    font-weight: bold;
-    float: right;
-    display: block;
-    color: rgb(255, 246, 196);
+#navbar a:hover {
+    float: left;
+    display: inline;
+    color: #1e90ff;
+    background: #ebebeb;
     text-align: center;
     padding: 14px;
+    text-decoration: none;
+}
+
+#logoNavbar{
+    font-family: 'DejaVu Sans', Arial, Helvetica, serif;
+    font-weight: bolder;
+    text-align: right;
+    display: block;
+    font-size: 13px;
+    padding: 14px;
+    color: #fffcde;
     text-decoration: none;
 }
 

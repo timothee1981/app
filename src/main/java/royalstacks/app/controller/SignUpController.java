@@ -1,7 +1,6 @@
 package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -87,7 +86,7 @@ public class SignUpController {
         if(!customer.isCityValid()) { save = false; mav.addObject("error", "invalid city"); }
         if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("error", "invalid phoneNumber"); }
         if(!customer.isBSNFormatValid() || customerService.findCustomerByBSN(customer.getBSN()).isPresent() ) { save = false; mav.addObject("BSNNotAvailable", "BSN not available"); }
-        if(!customer.isAddressValid()) { save = false; mav.addObject("error", "invalid address"); }
+        if(!customer.isHouseNumber()) { save = false; mav.addObject("error", "invalid houseNumber"); }
 
         return save;
     }
@@ -102,7 +101,7 @@ public class SignUpController {
         mav.addObject("city", customer.getCity());
         mav.addObject("phoneNumber", customer.getPhoneNumber());
         mav.addObject("BSN", customer.getBSN());
-        mav.addObject("address", customer.getAddress());
+        mav.addObject("address", customer.getHouseNumber());
     }
 
 }

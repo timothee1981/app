@@ -9,7 +9,7 @@ public class CustomerTest {
     void isEmailValid() {
 
         Customer c = new Customer("username", "password", "Fiep", "Bakker",
-                "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
+                "emailaddress", "1234AB", "12", "a", "Hoorn" , "0612345678",
                 "123456789", null, false);
 
         // valid email addresses
@@ -39,45 +39,41 @@ public class CustomerTest {
 
 
     @Test
-    void isAddressValid() {
+    void isHouseNumberValid() {
 
         Customer c = new Customer("username", "password", "Fiep", "Bakker",
-                "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
+                "emailaddress", "1234AB", "12", "a", "Hoorn" , "0612345678",
                 "123456789", null, false);
 
         // valid addresses
-        c.setAddress("  Barack Obamastraat 1  ");
-        Assert.assertTrue(c.isAddressValid());
-        c.setAddress("Barack Obamastraat 1");
-        Assert.assertTrue(c.isAddressValid());
+        c.setHouseNumber("   1  ");
+        Assert.assertTrue(c.isHouseNumber());
+        c.setHouseNumber(" 1");
+        Assert.assertTrue(c.isHouseNumber());
 
         //adressen die bestaan en dus valide moeten zijn als we alles helemaal officieel willen doen:
-        c.setAddress("Laan van Duiven-Westervoort 100");
-        Assert.assertTrue(c.isAddressValid());
-        c.setAddress("Gondel 26-95");
-        Assert.assertTrue(c.isAddressValid());
-        c.setAddress("Kagerstraat 5-F 4");
-        Assert.assertTrue(c.isAddressValid());
+        c.setHouseNumber(" 100");
+        Assert.assertTrue(c.isHouseNumber());
+        c.setHouseNumber(" 26-95");
+        Assert.assertTrue(c.isHouseNumber());
+        // wordt opgeslagen als 4
+        c.setHouseNumber("   4");
+        Assert.assertTrue(c.isHouseNumber());
 
-        //invalid addresses
 
-        //deze willen we valid maken door zelf voor de gebruiker een spatie in te voegen(?)
-        c.setAddress("Straatnaam4");
-        Assert.assertFalse(c.isAddressValid());
-
-        c.setAddress("Straatnaam");
-        Assert.assertFalse(c.isAddressValid());
-        c.setAddress("1934 24");
-        Assert.assertFalse(c.isAddressValid());
-        c.setAddress("20");
-        Assert.assertFalse(c.isAddressValid());
+        c.setHouseNumber("");
+        Assert.assertFalse(c.isHouseNumber());
+        c.setHouseNumber("1934 24");
+        Assert.assertFalse(c.isHouseNumber());
+        c.setHouseNumber("1933434");
+        Assert.assertFalse(c.isHouseNumber());
     }
 
     @Test
     void isPostalCodeValid() {
 
         Customer c = new Customer("username", "password", "Fiep", "Bakker",
-                "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
+                "emailaddress", "12", "a", "Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
         // valid postal codes
@@ -110,7 +106,7 @@ public class CustomerTest {
     @Test
     void isCityValid() {
         Customer c = new Customer("username", "password", "Fiep", "Bakker",
-                "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
+                "emailaddress", "12", "a","Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
         // valid cities
@@ -136,7 +132,7 @@ public class CustomerTest {
     void isPhoneNumberValid() {
 
         Customer c = new Customer("username", "password", "Fiep", "Bakker",
-                "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
+                "emailaddress", "12", "a", "Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
         // valid phone numbers
@@ -146,9 +142,6 @@ public class CustomerTest {
         Assert.assertTrue(c.isPhoneNumberValid());
         c.setPhoneNumber("075-6357878");
         Assert.assertTrue(c.isPhoneNumberValid());
-        // deze test faalt (vanwege streepje na 06). willen we dit fiksen in de regex?
-        //c.setPhoneNumber("06-12345678");
-        //Assert.assertTrue(c.isPhoneNumberValid());
 
         //invalid phone numbers
         c.setPhoneNumber("075.6357878");
@@ -159,15 +152,13 @@ public class CustomerTest {
         Assert.assertFalse(c.isPhoneNumberValid());
         c.setPhoneNumber("027563578@");
         Assert.assertFalse(c.isPhoneNumberValid());
-        c.setPhoneNumber("075635-7878");
-        Assert.assertFalse(c.isPhoneNumberValid());
     }
 
     @Test
     void isBSNFormatValid() {
 
         Customer c = new Customer("username", "password", "Fiep", "Bakker",
-                "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
+                "emailaddress", "12", "a", "Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
         // valid BSN

@@ -3,8 +3,10 @@ const username = document.getElementById("username");
 username.addEventListener("input", function () {
     let usernameInput = username.value;
     let usernameCheck = window.location.pathname + `/u_check?username=${usernameInput}`;
-    if(usernameInput.length < 3) {
-        hideUsernameNotAvailable();
+    const re = /^[a-zA-Z0-9_-]{3,15}$/
+    if(!re.test(usernameInput)) {
+        console.log("komt ie hier dan");
+        setUsernameNotAvailable("Between 3 and 15 numbers and letters");
         username.classList.add("isInvalid");
         username.classList.remove("isValid");
     } else {
@@ -21,7 +23,7 @@ username.addEventListener("input", function () {
                     username.classList.add("isValid");
                     username.classList.remove("isInvalid");
                 } else {
-                    showUsernameNotAvailable();
+                    setUsernameNotAvailable("Choose another username");
                     username.classList.add("isInvalid");
                     username.classList.remove("isValid");
                 }
@@ -91,9 +93,11 @@ email.addEventListener('input', function () {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     if (re.test(emailInput)) {
+        document.getElementById("InvalidEmail").style.display = "none";
         email.classList.add("isValid");
         email.classList.remove("isInvalid")
     } else {
+        document.getElementById("InvalidEmail").style.display = "inline";
         email.classList.add("isInvalid");
         email.classList.remove("isValid")
     }
@@ -105,13 +109,15 @@ const phoneNumber = document.getElementById("phoneNumber");
 phoneNumber.addEventListener('input', function () {
     let phoneNumber = document.getElementById('phoneNumber');
     let phoneNumberInput = phoneNumber.value;
+    console.log("input :" + phoneNumberInput);
     const re = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$/;
-    console.log(re.test(phoneNumberInput));
-
+    phoneNumberInput.replace(/ /g,'');
     if (re.test(phoneNumberInput)) {
+        document.getElementById("InvalidPhoneNumber").style.display = "none";
         phoneNumber.classList.add("isValid");
         phoneNumber.classList.remove("isInvalid");
     } else {
+        document.getElementById("InvalidPhoneNumber").style.display = "inline";
         phoneNumber.classList.add("isInvalid");
         phoneNumber.classList.remove("isValid");
     }
@@ -123,47 +129,52 @@ const BSN = document.getElementById("BSN");
 BSN.addEventListener("input", function () {
     let BSNInput = BSN.value;
     let BSNCheck = window.location.pathname + `/b_check?BSN=${BSNInput}`;
-    fetch(BSNCheck)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Response error");
-            }
-            return response.json();
-        })
-        .then((data) => {
-            if (data === true) {
-                hideBSNNotAvailable();
-                BSN.classList.add("isValid");
-                BSN.classList.remove("isInvalid")
-            } else if (BSNInput.length === 9){
-                showUBSNNotAvailable();
-                BSN.classList.add("isInvalid");
-                BSN.classList.remove("isValid")
-            } else {
-                hideBSNNotAvailable();
-                BSN.classList.add("isInvalid");
-                BSN.classList.remove("isValid")
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+    const re = /^[0-9]{9}$/
+
+    if(!re.test(BSNInput)){
+        setUBSNNotAvailable("Must be 9 numbers")
+        BSN.classList.add("isInvalid");
+        BSN.classList.remove("isValid")
+
+    } else {
+        fetch(BSNCheck)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Response error");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (data === true) {
+                    hideBSNNotAvailable();
+                    BSN.classList.add("isValid");
+                    BSN.classList.remove("isInvalid")
+                } else {
+                    setUBSNNotAvailable("Invalid BSN number");
+                    BSN.classList.add("isInvalid");
+                    BSN.classList.remove("isValid")
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 });
 
 
-/* Check Address */
-const address = document.getElementById("address");
-address.addEventListener('input', function () {
-    let address = document.getElementById('address');
-    let addressInput = address.value;
-    const re = /^([1-][e][\s])*([a-zA-Z\-']+(([\.][\s])|([\s]))?)+\s[1-9][0-9]*(([-][1-9][0-9]*)|([\s]?[-a-zA-Z0-9]+))*(([-][1-9][0-9]*)|([\s]?[-a-zA-Z0-9]+))?$/;
+/* Check huisnummer */
+const houseNumber = document.getElementById("houseNumber");
+houseNumber.addEventListener('input', function () {
+    let houseNumber = document.getElementById('houseNumber');
+    let houseNumberInput = houseNumber.value;
+    const re = /^[0-9]{1,6}([-]\d{1,5})?$/;
 
-    if (re.test(addressInput)) {
-        address.classList.add("isValid");
-        address.classList.remove("isInvalid");
+    if (re.test(houseNumberInput)) {
+        houseNumber.classList.add("isValid");
+        houseNumber.classList.remove("isInvalid");
     } else {
-        address.classList.add("isInvalid");
-        address.classList.remove("isValid");
+        houseNumber.classList.add("isInvalid");
+        houseNumber.classList.remove("isValid");
     }
 });
 
@@ -211,7 +222,7 @@ form.addEventListener('keyup', function () {
         lastName.classList.contains("isValid") &&
         email.classList.contains("isValid") &&
         phoneNumber.classList.contains("isValid") &&
-        address.classList.contains("isValid") &&
+        houseNumber.classList.contains("isValid") &&
         city.classList.contains("isValid") &&
         postalCode.classList.contains("isValid") &&
         username.classList.contains("isValid") &&

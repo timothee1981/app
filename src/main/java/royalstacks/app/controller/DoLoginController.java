@@ -25,7 +25,7 @@ public class DoLoginController {
         boolean usernameHasValue = inputUsernameHasValue(inputUsername);
         if (!usernameHasValue) {
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("username_error", "username is required");
+            mav.addObject("username_error", "Username is required");
             return mav;
         }
 
@@ -33,7 +33,7 @@ public class DoLoginController {
         boolean passwordHasValue = inputpasswordHasValue(inputPassword);
         if (!passwordHasValue) {
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("password_error", "password is required");
+            mav.addObject("password_error", "Password is required");
             return mav;
         }
 
@@ -41,14 +41,14 @@ public class DoLoginController {
         User user = loginService.findByUsername(inputUsername);
         if (user == null) {
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("login_error", "username and/or password is not correct");
+            mav.addObject("login_error", "Username and/or password is incorrect");
             return mav;
         }
 
         //Check if password of user matches entered value
         if ( ! User.checkPassword( inputPassword, user.getPassword() ) ){
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("login_error", "username and/or password is not correct");
+            mav.addObject("login_error", "Username and/or password is incorrect");
             return mav;
         }
 
@@ -66,7 +66,7 @@ public class DoLoginController {
             return mav.addObject(customer);
         } else {
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("user_error", "you are neither a customer or employee of Royal Stacks Bank");
+            mav.addObject("user_error", "You are neither a customer or employee of Royal Stacks Bank");
             return mav;
         }
 

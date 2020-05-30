@@ -16,9 +16,10 @@ public class CustomerBackingBean {
     private String firstName;
     private String lastName;
     private String email;
-    private String address;
-    private String city;
     private String postalCode;
+    private String houseNumber;
+    private String suffix;
+    private String city;
     private String phoneNumber;
     private String BSN;
     // hier motten we nog wat mee
@@ -29,21 +30,22 @@ public class CustomerBackingBean {
     // TODO add mapping after implementing config file hibernate
     private Set<Account> account;
 
-    public CustomerBackingBean(String username, String password, String firstName, String lastName, String email, String address, String city, String postalCode, String phoneNumber, String BSN) {
+    public CustomerBackingBean(String username, String password, String firstName, String lastName, String email, String postalCode, String houseNumber, String suffix, String city, String phoneNumber, String BSN) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.address = address;
-        this.city = city;
         this.postalCode = postalCode;
+        this.houseNumber = houseNumber;
+        this.suffix = suffix;
+        this.city = city;
         this.phoneNumber = phoneNumber;
         this.BSN = BSN;
     }
 
     public Customer customer() {
-        Customer customer = new Customer(username, password, firstName, lastName, email, address, city, postalCode, phoneNumber, BSN, null, false);
+        Customer customer = new Customer(username, password, firstName, lastName, email, postalCode, houseNumber, suffix, city, phoneNumber, BSN, null, false);
         return customer;
     }
 
@@ -53,7 +55,7 @@ public class CustomerBackingBean {
     public static CustomerBackingBean createCustomerBackingBean(Customer customer) {
         CustomerBackingBean cbb =
                 new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmail(),
-                        customer.getAddress(), customer.getCity(), customer.getPostalCode(), customer.getPhoneNumber(), customer.getBSN());
+                        customer.getPostalCode(), customer.getHouseNumber(), customer.getSuffix(), customer.getCity(), customer.getPhoneNumber(), customer.getBSN());
                 return cbb;
     }
 
@@ -79,8 +81,8 @@ public class CustomerBackingBean {
         this.email = email;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 
     public void setCity(String city) {
@@ -99,6 +101,14 @@ public class CustomerBackingBean {
         this.BSN = BSN;
     }
 
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
     @Override
     public String toString() {
         return "CustomerBackingBean{" +
@@ -108,9 +118,10 @@ public class CustomerBackingBean {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", suffix='" + suffix + '\'' +
+                ", city='" + city + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", BSN='" + BSN + '\'' +
                 ", isBusinessAccountHolder=" + isBusinessAccountHolder +

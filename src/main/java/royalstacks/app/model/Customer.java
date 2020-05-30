@@ -1,7 +1,5 @@
 package royalstacks.app.model;
 
-import royalstacks.app.service.CustomerService;
-
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -10,12 +8,14 @@ import java.util.Set;
 public class Customer extends User {
 
     private String email;
-    private String address;
-    private String city;
     private String postalCode;
+    private String houseNumber;
+    private String suffix;
+    private String city;
     private String phoneNumber;
     private String BSN;
     private boolean isBusinessAccountHolder;
+
     @ManyToOne
     private Employee accountManager;
     @ManyToMany(mappedBy = "accountHolders")
@@ -24,10 +24,11 @@ public class Customer extends User {
 
     // CONSTRUCTORS
     // all args
-    public Customer(int userid, String username, String password, String firstName, String lastName, String email, String address, String city, String postalCode, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
+    public Customer(int userid, String username, String password, String firstName, String lastName, String email, String postalCode, String houseNumber, String suffix, String city, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
         super(userid, username, password, firstName, lastName);
         this.email = email;
-        this.address = address;
+        this.houseNumber = houseNumber;
+        this.suffix = suffix;
         this.city = city;
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
@@ -37,10 +38,11 @@ public class Customer extends User {
     }
 
     // om customer op te slaan in DB
-    public Customer(String username, String password, String firstName, String lastName, String email, String address, String city, String postalCode, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
+    public Customer(String username, String password, String firstName, String lastName, String email, String postalCode, String houseNumber, String suffix, String city, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
         super(username, password, firstName, lastName);
         this.email = email;
-        this.address = address;
+        this.houseNumber = houseNumber;
+        this.suffix = suffix;
         this.city = city;
         this.postalCode = postalCode;
         this.phoneNumber = phoneNumber;
@@ -66,9 +68,9 @@ public class Customer extends User {
                         "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])");
     }
 
-    public boolean isAddressValid(){
-        this.address = this.address.trim();
-        return this.address.matches("^([1-][e][\\s])*([a-zA-Z\\-']+(([\\.][\\s])|([\\s]))?)+\\s[1-9][0-9]*(([-][1-9][0-9]*)|([\\s]?[-a-zA-Z0-9]+))*(([-][1-9][0-9]*)|([\\s]?[-a-zA-Z0-9]+))?$");
+    public boolean isHouseNumber(){
+        this.houseNumber = this.houseNumber.trim();
+        return this.houseNumber.matches("^[0-9]{1,6}+([-]\\d{1,5})?$");
     }
 
     public boolean isPostalCodeValid() {
@@ -85,6 +87,8 @@ public class Customer extends User {
     }
 
     public boolean isPhoneNumberValid(){
+        // verwijder eventuele - en spaties
+        this.phoneNumber = this.phoneNumber.replace(" ", "");
         return  // vast nummer zonder +31
                 this.phoneNumber.matches("^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$")
                 // of mobiel nummber zonder +31
@@ -120,12 +124,20 @@ public class Customer extends User {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setHouseNumber(String address) {
+        this.houseNumber = address;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 
     public String getCity() {
@@ -194,7 +206,8 @@ public class Customer extends User {
             if (eq && o instanceof Customer) {
                         return isBusinessAccountHolder == customer.isBusinessAccountHolder &&
                         Objects.equals(email, customer.email) &&
-                        Objects.equals(address, customer.address) &&
+                        Objects.equals(houseNumber, customer.houseNumber) &&
+                        Objects.equals(suffix, customer.suffix) &&
                         Objects.equals(city, customer.city) &&
                         Objects.equals(postalCode, customer.postalCode) &&
                         Objects.equals(phoneNumber, customer.phoneNumber) &&
@@ -210,16 +223,17 @@ public class Customer extends User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, address, city, postalCode, phoneNumber, BSN, isBusinessAccountHolder, accountManager, account);
+        return Objects.hash(email, postalCode, houseNumber, suffix, city, phoneNumber, BSN, isBusinessAccountHolder, accountManager, account);
     }
 
     @Override
     public String toString() {
         return "Customer{" +
-                "emailAddress='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
+                "email='" + email + '\'' +
                 ", postalCode='" + postalCode + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", suffix='" + suffix + '\'' +
+                ", city='" + city + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", BSN='" + BSN + '\'' +
                 ", isBusinessAccountHolder=" + isBusinessAccountHolder +

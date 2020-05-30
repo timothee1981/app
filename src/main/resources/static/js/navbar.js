@@ -13,3 +13,5 @@ function navBarFunction() {
         navbar.classList.remove("sticky");
     }
 }
+
+document.getElementById("logoNavbar").innerHTML = "ROYAL STACKS ♔";

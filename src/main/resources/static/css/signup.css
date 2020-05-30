@@ -52,6 +52,17 @@ input[type=text], input[type=password], input[type=email], input[type=number] {
     background: #f1f1f1;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 /* Add a background color when the inputs get focus */
 input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=number]:focus{
     background-color: #ddd;
@@ -128,25 +139,20 @@ button[disabled]{
     margin-bottom: 10px;
 }
 #passRequirements2of2 {
+    width: 50%;
     float: left;
     display: none;
     margin-bottom: 10px;
 }
 
-#usernameNotAvailable {
+.invalidInputPopup {
     float: right;
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: bold;
     color: rgba(255, 0, 0, 0.70);
-    font-weight: 100;
     font-style: italic;
     display: none;
-}
-
-#BSNNotAvailable {
-    float: right;
-    color: rgba(255, 0, 0, 0.70);
-    font-weight: 100;
-    font-style: italic;
-    display: none
 }
 
 
@@ -194,23 +200,22 @@ button[disabled]{
 }
 
 #cityAndPostalCode1{
-    width: 200px;
+    width: 120px;
     float:left;
-    margin-right: 20px;
+    margin-right: 40px;
 }
 
 #cityAndPostalCode2{
-    width: 120px;
+    width: 80px;
     float: left;
-    margin-left: 20px;
+    margin-right: 40px;
+}
+
+#cityAndPostalCode3{
+    width: 80px;
+    float: left;
 }
 
 #showPassword{
     float:right;
-}
-
-/* Style the horizontal ruler */
-hr {
-    border: 1px solid #f1f1f1;
-    margin-bottom: 25px;
 }
