@@ -15,7 +15,7 @@ public class RecordGeneratorController {
     @GetMapping(value = "/generator")
     public ModelAndView generateDbRecords() {
         recordGenerator.generateAllRecords(100, 1, 50);
-        return new ModelAndView("generator");
+        return new ModelAndView("homepage");
     }
 
 

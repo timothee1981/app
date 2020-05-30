@@ -43,7 +43,7 @@ public class RecordGenerator {
         String emailAddress = "email@test.nl";
         String adress = "Schoolstraat 22";
         String city = "Ede";
-        String postalCode = "1111GD";
+        String postalCode = "1337GG";
         String phone = "0656475656";
         String socialSecurityNumber = "199887878";
 
