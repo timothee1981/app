@@ -83,7 +83,7 @@ public class RecordGenerator {
     }
     public void privateAccountGenerator(int amount){
         for (int index = 0; index < amount; index++) {
-            PrivateAccount privateAccount = new PrivateAccount(accountService.createNewIban(), 0);
+            PrivateAccount privateAccount = new PrivateAccount(accountService.createNewIban(), Account.getStartingBalance());
             accountRepository.save(privateAccount);
         }
 
@@ -97,7 +97,7 @@ public class RecordGenerator {
          String sector = "IT";
 
         for (int index = 0; index < amount; index++) {
-            BusinessAccount businessAccount = new BusinessAccount(accountService.createNewIban(), 0, companyName, kvkNumber, vatNumber, sector);
+            BusinessAccount businessAccount = new BusinessAccount(accountService.createNewIban(), Account.getStartingBalance(), companyName, kvkNumber, vatNumber, sector);
             accountRepository.save(businessAccount);
         }
 
