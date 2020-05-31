@@ -3,64 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>openaccounts</title>
-    <style>
-        * {box-sizing: border-box}
-        * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
-        ::placeholder {
-           text-align: left;
-
-        }
-        body{
-            padding-top: 20px;
-            align-content: center;
-            background-color: #ebebeb;
-            margin: auto;
-            width: 40%;
-            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
-        }
-        input[type=text] {
-            width: 100%;
-            padding: 15px;
-            margin: 5px 0 22px 0;
-            display: inline-block;
-            border: none;
-            background: #f1f1f1;
-        }
-
-        input[type=text]:focus{
-            background-color: #ddd;
-            outline: none;
-        }
-       input[type=submit] {
-            background-color: #1E90FF;
-            color: white;
-            padding: 14px 20px;
-            margin: 15px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            opacity: 0.9;
-        }
-        button:hover {
-            opacity:1;
-        }
-        #backbutton{
-            margin: 12px 0px;
-        }
-        td{
-            padding: 10px;
-            align-content: center;
-        }
-        #tablefields{
-            padding:10px ;
-        }
-    </style>
-
+    <link type="text/css" href="css/openaccount.css" rel="stylesheet" />
+    <link type="text/css" href="css/navbar.css" rel="stylesheet"/>
 </head>
 <body>
+<div id="navbar" class="crown">
+    <a class="active" href="/"></a>
+    <a href="/"></a>
+    <span class="royalStacksNavbar">ROYAL STACKS ♔</span>
+</div>
 
 
-
+<fieldset th:disabled = ${form}>
     <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
         <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
         <label for="private">Private account</label>
@@ -110,7 +64,7 @@
                 <td>Sector </td>
                 <td>
 
-                    <label for="sector"></label><select id="sector" th:field="*{sector}">
+                    <label for="sector"></label><select id="sector" th:field="*{sector}" >
                             <option disabled value="" hidden></option>
                             <option value="financial">Financial</option>
                             <option value="it">IT</option>
@@ -123,45 +77,33 @@
                 </td>
             </tr>
         </table>
-        <div id="button">
-        <input type="submit" name="submitbutton" value="Create account"  />
+        <div>
+        <button type="submit" name="submitbutton" value="Create account">Create account</button>
         </div>
     </form>
-    <div id="backbutton">
+    <div>
     <form th:action="@{myaccount}" method="get">
-        <input type="submit" name="submitbutton" value="Back" />
+        <button type="submit" name="submitbutton" value="Back">Back</button>
     </form>
+
     </div>
+</fieldset>
+    <!-- The Modal -->
+    <!--<div id="myModal" class="modal">
+
+        &lt;!&ndash; Modal content &ndash;&gt;
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Some text in the Modal..</p>
+        </div>
+
+    </div>-->
 </body>
 </html>
 
-<script>
-
-
-if (document.getElementById("business").checked){
-            showBusinessFields();
-        } else{
-            hideBusinessFields();
-    }
+<script src="js/navbar.js"></script>
+<script src="js/accountValidation.js" ></script>
 
 
 
-    function hideBusinessFields() {
-        document.getElementById("businessFields").style.visibility = "hidden";
-        document.getElementById("companyName").removeAttribute("required");
-        document.getElementById("kvkNumber").removeAttribute("required");
-        document.getElementById("vatNumber").removeAttribute("required");
-        document.getElementById("sector1").removeAttribute("required");
 
-    }
-    function showBusinessFields() {
-        document.getElementById("businessFields").style.visibility = "visible";
-        document.getElementById("companyName").required = true;
-        document.getElementById("kvkNumber").required = true;
-        document.getElementById("vatNumber").required = true;
-        document.getElementById("sector").required = true;
-
-
-
-    }
-</script>
