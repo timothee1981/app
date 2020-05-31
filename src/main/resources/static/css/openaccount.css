@@ -51,6 +51,9 @@ button:hover {
     opacity:1;
 }
 
+button[disabled]{
+    background-color: #9a9a9a;
+}
 
 
 td{
@@ -62,4 +65,18 @@ td{
 
 fieldset{
     border: none;
+}
+
+input[type=text]:disabled {
+    background: #dcdcdc;
+}
+
+.isValid + span::before {
+    content: '✓';
+    color: #1E90FF;
+}
+
+.isInvalid + span::before {
+    content: '✗';
+    color: rgba(255, 0, 0, 0.6);
 }

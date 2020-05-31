@@ -65,7 +65,7 @@ public class BusinessAccount extends Account {
     public boolean isCompanyNameFormatValid(){
         // at least 1 char
         // may not contain only special chars
-        // chars @ & + _ - are allowed????
+        // chars @ & + _ - are allowed???? yes they are
         return this.companyName.matches("^[\\w@ ]*[^\\W_ ][\\w- \\@\\ \\&\\ \\+]*$");
     }
 

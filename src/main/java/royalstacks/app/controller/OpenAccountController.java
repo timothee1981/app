@@ -50,7 +50,7 @@ public class OpenAccountController {
         privateAccount.getAccountHolders().add(accountholder);
         accountService.saveAccount(privateAccount);
         mav.addObject("account", bb);
-        mav.addObject("form", "disabled");
+      //  mav.addObject("form", "disabled");
         return mav;
     }
 
@@ -68,6 +68,7 @@ public class OpenAccountController {
         if(isAllInputValid(businessAccount, mav2)) {
             accountService.saveAccount(businessAccount);
             mav.addObject("account", bb);
+            mav.addObject("form", "disabled");
             return mav;
         }
         else
