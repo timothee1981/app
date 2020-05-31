@@ -41,6 +41,7 @@
                 <td>Kvk number  </td>
                 <td>
                 <label>
+                    <div id="InvalidKvkNumber" class="invalidInputPopup"><span>Kvk number needs to have 8 digits</span></div>
                     <input type="text"
                            id="Kvk Number"
                            placeholder="kvkNumber"
@@ -53,10 +54,10 @@
                 <td>Vat number  </td>
                 <td>
                     <label>
-                        <div id="vatNumberNotAvailable" class="invalidInputPopup"><span>no</span></div>
+                        <div id="invalidVatNumber" class="invalidInputPopup"><span></span></div>
                     <input type="text"
                            id="vatNumber"
-                           placeholder="Vat number"
+                           placeholder="NL123456789B00"
                            th:field="*{vatNumber}"
                            th:text="${vatNumber_error}"
                          />

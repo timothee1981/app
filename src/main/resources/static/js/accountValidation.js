@@ -31,9 +31,11 @@ kvknumber.addEventListener('input',function(){
     let kvknumberInput = kvknumber.value;
     const re = /^[0-9]{8}$/;
     if(re.test(kvknumberInput)){
+        document.getElementById("InvalidKvkNumber").style.display = "none";
         kvknumber.classList.add("isValid");
         kvknumber.classList.remove("isInvalid");
     }else{
+        document.getElementById("InvalidKvkNumber").style.display = "inline";
         kvknumber.classList.add("isInvalid");
         kvknumber.classList.remove("isValid");
     }
@@ -47,10 +49,12 @@ vatnumber.addEventListener('input', function () {
     const re = /^[nN][lL][0-9]{9}[bB][0-9]{2}$/;
 
     if(re.test(vatnumberInput)) {
+        hideVatNumberNotCorrect();
         vatnumber.classList.add("isValid");
-        vatnumber.classList.remove("isInvalid")
+        vatnumber.classList.remove("isInvalid");
 
     } else {
+        setVatNumberNotCorrect("Vat number not valid");
         vatnumber.classList.add("isInvalid");
         vatnumber.classList.remove("isValid");
     }
@@ -59,45 +63,69 @@ vatnumber.addEventListener('input', function () {
 
 
 
+
 /* check which button is checked */
-const form = document.getElementById("form");
-form.addEventListener('keyup', function () {
 
     //CHECK WHICH BUTTON IS CHECKED
 
+const form = document.getElementById("form");
+
+form.addEventListener('mouseout',function () {
     if (document.getElementById("business").checked){
-        showBusinessFields();
+        document.getElementById("businessFields").style.visibility = "visible";
+        if(companyname.classList.contains("isValid")&&
+            kvknumber.classList.contains("isValid")/*&&
+            vatnumber.classList.contains("isValid")*/&&
+            sector.value !== ""){
+            document.getElementById("submitButton").disabled = false;
+        }else{
+            document.getElementById("submitButton").disabled = true;
+        }
+
     } else {
         hideBusinessFields();
-
     }
-
 });
+
+
 
 /* hide or show fields according to which button is checked */
 
 
 
+
 function showBusinessFields() {
 
-
-    document.getElementById("submitButton").disabled = true;
-    if (companyname.classList.contains("isValid") &&
-        kvknumber.classList.contains("isValid")&&
-        vatnumber.classList.contains("isValid")&&
-        sector.value !== "" ) {
-        document.getElementById("submitButton").disabled = false;
+    /*form.addEventListener('keyup ',function () {
+        if (companyname.classList.contains("isValid") &&
+            kvknumber.classList.contains("isValid")/!*&&
+            vatnumber.classList.contains("isValid")*!/&&
+            sector.value !== "") {
+            document.getElementById("submitButton").disabled = false;
         } else {
-        document.getElementById("submitButton").disabled = true;
+            document.getElementById("submitButton").disabled = true;
         }
 
-
-
+    });
+*/
+   /* document.getElementById("submitButton").disabled = true;
     document.getElementById("businessFields").style.visibility = "visible";
     document.getElementById("companyName").required = true;
     document.getElementById("kvkNumber").required = true;
     document.getElementById("vatNumber").required = true;
-    document.getElementById("sector").required = true;
+    document.getElementById("sector").required = true;*/
+
+
+   /* const companyId = document.getElementById("companyName");
+    companyId.addEventListener('input',function () {
+        if(companyname.classList.contains("isValid")){
+            document.getElementById("submitButton").disabled = false;
+        }
+    });*/
+
+
+
+
 
 }
 
@@ -113,14 +141,32 @@ function hideBusinessFields() {
 }
 
 
+/*const form = document.getElementById("form");
+function change() {
+    document.getElementById("submitButton").disabled = true;
+    form.addEventListener('keyup ', function () {
+        if (companyname.classList.contains("isValid") &&
+            kvknumber.classList.contains("isValid") &&
+            vatnumber.classList.contains("isValid") &&
+            sector.value !== "") {
+            document.getElementById("submitButton").disabled = false;
+        } else {
+            document.getElementById("submitButton").disabled = true;
+        }
+
+    });
+}*/
+
+
+
 function setVatNumberNotCorrect(String) {
-    const x = document.getElementById("vatNumberNotAvailable");
+    const x = document.getElementById("invalidVatNumber");
     x.style.display = "inline";
     x.innerHTML = String;
 }
 
 function hideVatNumberNotCorrect() {
-    const x = document.getElementById("vatNumberNotAvailable");
+    const x = document.getElementById("invalidVatNumber");
     x.style.display = "none";
 }
 
