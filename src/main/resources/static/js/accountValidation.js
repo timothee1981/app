@@ -11,9 +11,11 @@ companyname.addEventListener("input",function () {
     let companynameInput = companyname.value;
     const re = /^[\w@ ]*[^\W_ ][\w- @ & +]*$/;
     if(re.test(companynameInput)) {
+        document.getElementById("InvalidCompanyName").style.display = "none";
         companyname.classList.add("isValid");
         companyname.classList.remove("isInvalid");
     }else{
+        document.getElementById("InvalidCompanyName").style.display = "inline";
         companyname.classList.add("isInvalid");
         companyname.classList.remove("isValid");
     }
@@ -59,7 +61,7 @@ vatnumber.addEventListener('input', function () {
 
 /* check which button is checked */
 const form = document.getElementById("form");
-form.addEventListener('click', function () {
+form.addEventListener('keyup', function () {
 
     //CHECK WHICH BUTTON IS CHECKED
 
