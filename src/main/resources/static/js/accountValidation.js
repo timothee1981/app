@@ -1,50 +1,15 @@
-/* check which button is checked */
 
 
 
 
-
-
-/* hide or show fields according to which button is checked */
-
-function hideBusinessFields() {
-    document.getElementById("submitButton").disabled = false;
-    document.getElementById("businessFields").style.visibility = "hidden";
-    document.getElementById("companyName").removeAttribute("required");
-    document.getElementById("kvkNumber").removeAttribute("required");
-    document.getElementById("vatNumber").removeAttribute("required");
-    document.getElementById("sector").removeAttribute("required");
-
-
-}
-
-function showBusinessFields() {
-
-    document.getElementById("submitButton").disabled = true;
-    if((companyname.classList.contains("isValid")&&
-        kvknumber.classList.contains("isValid"))
-    ){
-        document.getElementById("submitButton").disabled = false;
-    } else {
-        document.getElementById("submitButton").disabled = true;
-    }
-
-
-    document.getElementById("businessFields").style.visibility = "visible";
-    document.getElementById("companyName").required = true;
-    document.getElementById("kvkNumber").required = true;
-    document.getElementById("vatNumber").required = true;
-    document.getElementById("sector").required = true;
-
-}
 
 /* check companyname */
-
+const sector = document.getElementById("sector");
 const companyname = document.getElementById("companyName");
 companyname.addEventListener("input",function () {
     let companyname = document.getElementById("companyName");
     let companynameInput = companyname.value;
-    const re = /^[\w@ ]*[^\W_ ][\w- \@\ &\ \+]*$/;
+    const re = /^[\w@ ]*[^\W_ ][\w- @ & +]*$/;
     if(re.test(companynameInput)) {
         companyname.classList.add("isValid");
         companyname.classList.remove("isInvalid");
@@ -74,16 +39,27 @@ kvknumber.addEventListener('input',function(){
 
 
 /*check if VAT valid*/
+const vatnumber = document.getElementById("vatNumber");
+vatnumber.addEventListener('input', function () {
+    let vatnumberInput = vatnumber.value;
+    const re = /^[nN][lL][0-9]{9}[bB][0-9]{2}$/;
+
+    if(re.test(vatnumberInput)) {
+        vatnumber.classList.add("isValid");
+        vatnumber.classList.remove("isInvalid")
+
+    } else {
+        vatnumber.classList.add("isInvalid");
+        vatnumber.classList.remove("isValid");
+    }
+});
 
 
-/*check if sector has value*/
 
 
-
-/* enable/disable submit button */
-
+/* check which button is checked */
 const form = document.getElementById("form");
-form.addEventListener('keyup', function () {
+form.addEventListener('click', function () {
 
     //CHECK WHICH BUTTON IS CHECKED
 
@@ -94,11 +70,60 @@ form.addEventListener('keyup', function () {
 
     }
 
-
-
-
-
 });
+
+/* hide or show fields according to which button is checked */
+
+
+
+function showBusinessFields() {
+
+
+    document.getElementById("submitButton").disabled = true;
+    if (companyname.classList.contains("isValid") &&
+        kvknumber.classList.contains("isValid")&&
+        vatnumber.classList.contains("isValid")&&
+        sector.value !== "" ) {
+        document.getElementById("submitButton").disabled = false;
+        } else {
+        document.getElementById("submitButton").disabled = true;
+        }
+
+
+
+    document.getElementById("businessFields").style.visibility = "visible";
+    document.getElementById("companyName").required = true;
+    document.getElementById("kvkNumber").required = true;
+    document.getElementById("vatNumber").required = true;
+    document.getElementById("sector").required = true;
+
+}
+
+function hideBusinessFields() {
+    document.getElementById("submitButton").disabled = false;
+    document.getElementById("businessFields").style.visibility = "hidden";
+    document.getElementById("companyName").removeAttribute("required");
+    document.getElementById("kvkNumber").removeAttribute("required");
+    document.getElementById("vatNumber").removeAttribute("required");
+    document.getElementById("sector").removeAttribute("required");
+
+
+}
+
+
+function setVatNumberNotCorrect(String) {
+    const x = document.getElementById("vatNumberNotAvailable");
+    x.style.display = "inline";
+    x.innerHTML = String;
+}
+
+function hideVatNumberNotCorrect() {
+    const x = document.getElementById("vatNumberNotAvailable");
+    x.style.display = "none";
+}
+
+
+
 
 
 

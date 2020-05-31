@@ -71,6 +71,16 @@ input[type=text]:disabled {
     background: #dcdcdc;
 }
 
+.invalidInputPopup {
+    float: right;
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(255, 0, 0, 0.70);
+    font-style: italic;
+    display: none;
+}
+
 .isValid + span::before {
     content: '✓';
     color: #1E90FF;
@@ -80,3 +90,4 @@ input[type=text]:disabled {
     content: '✗';
     color: rgba(255, 0, 0, 0.6);
 }
+

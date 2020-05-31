@@ -105,6 +105,14 @@ public class OpenAccountController {
         return save;
     }
 
+    @GetMapping("/openaccount/v_check")
+    @ResponseBody
+    public String vatNumberCheckHandler(@RequestParam String vatnumber){
+        BusinessAccount businessAccount =  new BusinessAccount();
+        businessAccount.setVatNumber(vatnumber);
+        return String.valueOf(businessAccount.isVatValid());
+    }
+
     @GetMapping("/myaccount")
     public ModelAndView myAccountHandler(){
         ModelAndView mav = new ModelAndView("redirect:/myaccounts");
