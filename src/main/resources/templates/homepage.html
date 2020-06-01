@@ -71,6 +71,7 @@
     <a href="/signup">Become a customer</a>
     <span id="logoNavbar"></span>
 </div>
+
 <div id="wrapper" class="content">
 <h1>Login</h1>
 <form th:action="@{doLogin}" method="post">
@@ -96,8 +97,10 @@
     <!--/*@thymesVar id="user_error" type="java.lang.String"*/-->
     <span class="invalidInputPopup" th:text="${login_error}"></span>
     <span class="invalidInputPopup" th:text="${user_error}"/>
-</div>
 </form>
+</div>
+
+
 <script src="js/navbar.js"></script>
 </body>
 </html>

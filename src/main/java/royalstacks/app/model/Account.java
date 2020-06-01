@@ -9,7 +9,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account {
 
-    protected final static double STARTING_BALANCE = 0.00;
+    protected final static double STARTING_BALANCE = 1337.00;
 
     @Id
     @GeneratedValue
@@ -29,7 +29,7 @@ public abstract class Account {
 
     // generates new account
     public Account() {
-        this("",0);
+        this("",STARTING_BALANCE);
     }
 
     //METHODS

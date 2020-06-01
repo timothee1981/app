@@ -2,10 +2,7 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.OpenAccountBackingBean;
 import royalstacks.app.model.BusinessAccount;
@@ -30,6 +27,9 @@ public class OpenAccountController {
     public OpenAccountController() { super();
     }
 
+
+
+
     @PostMapping("/openaccount")
     public ModelAndView createAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb, @SessionAttribute("userid") int userId) {
         //int userId = (int) model.getAttribute("userid");
@@ -50,6 +50,7 @@ public class OpenAccountController {
         privateAccount.getAccountHolders().add(accountholder);
         accountService.saveAccount(privateAccount);
         mav.addObject("account", bb);
+      //  mav.addObject("form", "disabled");
         return mav;
     }
 
@@ -67,6 +68,7 @@ public class OpenAccountController {
         if(isAllInputValid(businessAccount, mav2)) {
             accountService.saveAccount(businessAccount);
             mav.addObject("account", bb);
+            mav.addObject("form", "disabled");
             return mav;
         }
         else
@@ -101,6 +103,14 @@ public class OpenAccountController {
             save = false;
         }
         return save;
+    }
+
+    @GetMapping("/openaccount/v_check")
+    @ResponseBody
+    public String vatNumberCheckHandler(@RequestParam String vatnumber){
+        BusinessAccount businessAccount =  new BusinessAccount();
+        businessAccount.setVatNumber(vatnumber);
+        return String.valueOf(businessAccount.isVatValid());
     }
 
     @GetMapping("/myaccount")

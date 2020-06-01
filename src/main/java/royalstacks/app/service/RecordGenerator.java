@@ -8,7 +8,9 @@ import royalstacks.app.model.repository.CustomerRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class RecordGenerator {
@@ -21,6 +23,9 @@ public class RecordGenerator {
     private AccountRepository accountRepository;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private UserService userService;
+
 
     public void generateAllRecords(int amountCustomers, int amountEmployees, int amountAccounts){
         customerGenerator(amountCustomers);
@@ -52,7 +57,11 @@ public class RecordGenerator {
             String username = usernameBase + index;
             socialSecurityNumber = String.valueOf(Integer.parseInt(socialSecurityNumber)+1);
             Customer customer = new Customer(username, password, name, lastname, emailAddress, postalCode, houseNumber, suffix, city, phone, socialSecurityNumber, null, false);
-            customerRepository.save(customer);
+
+            // only save this user if username does not exist yet
+            if(userService.findByUsername(username).isEmpty()) {
+                customerRepository.save(customer);
+            }
         }
     }
     public void headBusinessGenerator(int amount) {
@@ -65,7 +74,10 @@ public class RecordGenerator {
         for (int index = 1; index <= amount; index++) {
             username = username + index;
             Employee employee = new Employee(username, password, name, lastname, position);
-            employeeRepository.save(employee);
+            // only save this user if username does not exist yet
+            if(userService.findByUsername(username).isEmpty()) {
+                employeeRepository.save(employee);
+            }
         }
     }
     public void headPrivateGenerator(int amount) {
@@ -78,12 +90,15 @@ public class RecordGenerator {
         for (int index = 1; index <= amount; index++) {
             String username = usernameBase + index;
             Employee employee = new Employee(username, password, name, lastname, position);
-            employeeRepository.save(employee);
+            // only save this user if username does not exist yet
+            if(userService.findByUsername(username).isEmpty()) {
+                employeeRepository.save(employee);
+            }
         }
     }
     public void privateAccountGenerator(int amount){
         for (int index = 0; index < amount; index++) {
-            PrivateAccount privateAccount = new PrivateAccount(accountService.createNewIban(), 0);
+            PrivateAccount privateAccount = new PrivateAccount(accountService.createNewIban(), Account.getStartingBalance());
             accountRepository.save(privateAccount);
         }
 
@@ -97,7 +112,7 @@ public class RecordGenerator {
          String sector = "IT";
 
         for (int index = 0; index < amount; index++) {
-            BusinessAccount businessAccount = new BusinessAccount(accountService.createNewIban(), 0, companyName, kvkNumber, vatNumber, sector);
+            BusinessAccount businessAccount = new BusinessAccount(accountService.createNewIban(), Account.getStartingBalance(), companyName, kvkNumber, vatNumber, sector);
             accountRepository.save(businessAccount);
         }
 
@@ -109,11 +124,23 @@ public class RecordGenerator {
             int randomId = (int) ((Math.random() * countCustomers) + 1);
             Optional<Customer> customer = customerRepository.findById(randomId);
             if (customer.isPresent()) {
-                account.getAccountHolders().add(customer.get());
-                if(account instanceof BusinessAccount){
-                    if(!customer.get().isBusinessAccountHolder()){
-                        customer.get().setBusinessAccountHolder(true);
-                        customer.get().setAccountManager(employeeRepository.findAll().iterator().next());
+
+                // check of deze klant al accountholder is van deze rekening, zo niet, voeg toe:
+                boolean customerIsAllreadyAccountHolder = false;
+                Set<Customer> accountHoldersList = account.getAccountHolders();
+                for (Customer accountHolder: accountHoldersList) {
+                    if(customer.equals(accountHolder)){
+                        customerIsAllreadyAccountHolder = true;
+                        break;
+                    }
+                }
+                if(! customerIsAllreadyAccountHolder){
+                    account.getAccountHolders().add(customer.get());
+                    if(account instanceof BusinessAccount){
+                        if(!customer.get().isBusinessAccountHolder()){
+                            customer.get().setBusinessAccountHolder(true);
+                            customer.get().setAccountManager(employeeRepository.findAll().iterator().next());
+                        }
                     }
                 }
             }
@@ -121,20 +148,12 @@ public class RecordGenerator {
         accountRepository.save(account);
 
     }
-    public void addAccountHoldersToAllPrivateAccounts(){
-        Iterable<Account> iterable = accountRepository.findAll();
-        Iterator<Account> privateAccounts = iterable.iterator();
 
-        while (privateAccounts.hasNext()){
-            Account account = privateAccounts.next();
-            addAccountHoldersToSingleAccount(account);
-        }
-    }
     public void addAccountHoldersToAllAccounts(){
         Iterable<Account> iterable = accountRepository.findAll();
-        Iterator<Account> businessAccounts = iterable.iterator();
-        while (businessAccounts.hasNext()){
-            Account account = businessAccounts.next();
+        Iterator<Account> accounts = iterable.iterator();
+        while (accounts.hasNext()){
+            Account account = accounts.next();
             addAccountHoldersToSingleAccount(account);
         }
     }
