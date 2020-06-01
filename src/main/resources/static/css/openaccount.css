@@ -4,6 +4,10 @@
     text-align: left;
 
 }
+
+h1{
+    text-align: center;
+}
 body{
 
     align-content: center;
@@ -64,6 +68,39 @@ button[disabled]{
 input[type=text]:disabled {
     background: #dcdcdc;
 }
+
+/* Add a background color when the inputs get focus */
+input[type=text]:focus{
+    background-color: #ddd;
+    outline: none;
+}
+
+input[type=text]:disabled {
+    background: #dcdcdc;
+}
+
+input + span {
+    position: relative;
+}
+
+
+input + span::before {
+    position: absolute;
+    right: -20px;
+    top: 5px;
+}
+
+
+.isValid + span::before {
+    content: '✓';
+    color: #1E90FF;
+}
+
+.isInvalid + span::before {
+    content: '✗';
+    color: rgba(255, 0, 0, 0.6);
+}
+
 
 td{
     padding: 10px;

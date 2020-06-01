@@ -7,12 +7,13 @@
     <link type="text/css" href="css/navbar.css" rel="stylesheet"/>
 </head>
 <body>
-<div id="navbar" class="crown">
+<div id="navbar" >
     <a class="active" href="/"></a>
     <a href="/"></a>
-    <span class="royalStacksNavbar">ROYAL STACKS ♔</span>
+    <span id="logoNavbar"></span>
 </div>
 
+<h1>Open an account</h1>
 
 <fieldset th:disabled = ${form}>
     <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
@@ -22,7 +23,7 @@
         <label for="business">Business account</label><br>
         <table id="businessFields" class="businessFieldsClass" style="visibility:hidden" >
             <tr>
-                <td>Company name  </td>
+                <td><b>Company name </b></td>
                 <td>
                     <label>
                         <div id="InvalidCompanyName" class="invalidInputPopup"><span>Only alphanumerical characters and + - @ and & accepted</span></div>
@@ -32,13 +33,13 @@
                                placeholder="companyName"
                                th:field="*{companyName}"
                                th:text="${companyName_error}"
-                                />
+                                /><span></span>
                       <!--  <span th:text="${companyName_error}"/>-->
                     </label>
                 </td>
             </tr>
             <tr>
-                <td>Kvk number  </td>
+                <td><b>Kvk number </b> </td>
                 <td>
                 <label>
                     <div id="InvalidKvkNumber" class="invalidInputPopup"><span>Kvk number needs to have 8 digits</span></div>
@@ -46,12 +47,12 @@
                            id="Kvk Number"
                            placeholder="kvkNumber"
                            th:field="*{kvkNumber}"
-                           th:text="${kvkNumber_error}"/>
+                           th:text="${kvkNumber_error}"/><span></span>
                 </label>
                 </td>
             </tr>
             <tr>
-                <td>Vat number  </td>
+                <td><b>Vat number</b>  </td>
                 <td>
                     <label>
                         <div id="invalidVatNumber" class="invalidInputPopup"><span></span></div>
@@ -61,12 +62,12 @@
                            placeholder="NL123456789B00"
                            th:field="*{vatNumber}"
                            th:text="${vatNumber_error}"
-                         />
+                         /><span></span>
                     </label>
                 </td>
             </tr>
             <tr>
-                <td>Sector </td>
+                <td><b>Sector</b></td>
                 <td>
 
                     <label for="sector"></label><select id="sector" th:field="*{sector}" >
@@ -78,7 +79,7 @@
                             <option value="education">Education</option>
                             <option value="logistic">Logistic</option>
                             <option value="industry">Industry</option>
-                        </select>
+                        </select><span></span>
                 </td>
             </tr>
         </table>

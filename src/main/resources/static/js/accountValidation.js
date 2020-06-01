@@ -4,7 +4,7 @@
 
 
 /* check companyname */
-const sector = document.getElementById("sector");
+
 const companyname = document.getElementById("companyName");
 companyname.addEventListener("input",function () {
     let companyname = document.getElementById("companyName");
@@ -88,6 +88,11 @@ vatnumber.addEventListener('input', function () {
 
 });
 
+//check sector valid
+
+
+
+
 
 /* check which button is checked */
 const form = document.getElementById("form");
@@ -104,7 +109,9 @@ form.addEventListener('mousemove',function () {
 
 
 
+
 /* SHOW BUSINESS FIELD METHOD */
+const sector = document.getElementById("sector");
 
 function showBusinessFields(){
 
