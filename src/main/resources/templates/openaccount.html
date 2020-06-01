@@ -8,8 +8,7 @@
 </head>
 <body>
 <div id="navbar" >
-    <a class="active" href="/"></a>
-    <a href="/"></a>
+    <a href="/myaccounts">Accounts overview</a>
     <span id="logoNavbar"></span>
 </div>
 
@@ -17,11 +16,11 @@
 
 <fieldset th:disabled = ${form}>
     <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
-        <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
+        <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private"  required>
         <label for="private">Private account</label>
-        <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
+        <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business"/>
         <label for="business">Business account</label><br>
-        <table id="businessFields" class="businessFieldsClass" style="visibility:hidden" >
+        <table id="businessFields" class="businessFieldsClass" >
             <tr>
                 <td><b>Company name </b></td>
                 <td>
@@ -44,7 +43,7 @@
                 <label>
                     <div id="InvalidKvkNumber" class="invalidInputPopup"><span>Kvk number needs to have 8 digits</span></div>
                     <input type="text"
-                           id="Kvk Number"
+                           id="kvkNumber"
                            placeholder="kvkNumber"
                            th:field="*{kvkNumber}"
                            th:text="${kvkNumber_error}"/><span></span>
@@ -87,12 +86,7 @@
         <button type="submit" id="submitButton" name="submitbutton" value="Create account" disabled="disabled">Create account</button>
         </div>
     </form>
-    <div>
-    <form th:action="@{myaccount}" method="get">
-        <button type="submit" name="submitbutton" value="Back">Back</button>
-    </form>
 
-    </div>
 </fieldset>
     <!-- The Modal -->
     <!--<div id="myModal" class="modal">
