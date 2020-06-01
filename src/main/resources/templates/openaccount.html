@@ -6,7 +6,7 @@
     <link type="text/css" href="css/openaccount.css" rel="stylesheet" />
     <link type="text/css" href="css/navbar.css" rel="stylesheet"/>
 </head>
-<body>
+<body th:object="${account}">
 <div id="navbar" >
     <a href="/myaccounts">Accounts overview</a>
     <span id="logoNavbar"></span>
@@ -15,12 +15,15 @@
 <h1>Open an account</h1>
 
 <fieldset th:disabled = ${form}>
-    <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
+    <h4><span th:text="${confirmation}"/> <span th:text="*{accountNumber}"/> </h4>
 
-        <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" required>
+    <div id="radiobutton">
+        <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
         <label for="private">Private account</label>
-        <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" />
+        <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
         <label for="business">Business account</label><br>
+    </div>
+    <form th:action="@{/openaccount}" id="form" class="form" method="post" >
         <table id="businessFields" class="businessFieldsClass" >
             <tr>
                 <td><b>Company name </b></td>
@@ -84,7 +87,7 @@
             </tr>
         </table>
         <div>
-        <button type="submit" id="submitButton" name="submitbutton" value="Create account" disabled="disabled">Create account</button>
+        <button type="submit" id="submitButton"  value="Create account" disabled="disabled">Create account</button>
         </div>
     </form>
 
@@ -94,7 +97,7 @@
 </html>
 
 <script src="js/navbar.js"></script>
-<script src="js/accountValidation.js" ></script>
+<script src="js/accountValidation.js"></script>
 
 
 

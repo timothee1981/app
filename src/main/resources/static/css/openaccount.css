@@ -8,6 +8,10 @@
 h1{
     text-align: center;
 }
+
+h4{
+    text-align: center;
+}
 body{
 
     align-content: center;
@@ -37,6 +41,11 @@ input[type=text] {
 input[type=text]:focus{
     background-color: #ddd;
     outline: none;
+}
+
+#radiobutton{
+
+    margin-left: 349px;
 }
 
 

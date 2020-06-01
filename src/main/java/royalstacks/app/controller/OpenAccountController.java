@@ -33,13 +33,12 @@ public class OpenAccountController {
     @PostMapping("/openaccount")
     public ModelAndView createAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb, @SessionAttribute("userid") int userId) {
         //int userId = (int) model.getAttribute("userid");
-        ModelAndView mav = new ModelAndView("createAccountConfirmation");
         ModelAndView mav2 = new ModelAndView("openaccount");
         Customer accountholder  = (Customer) userService.findByUserId(userId);
         if (bb.getAccountType().equals("business"))
-            return createBusinessAccount(accountholder, bb,mav,mav2);
+            return createBusinessAccount(accountholder, bb,mav2);
         else
-            return createPrivateAccount(accountholder, bb,mav);
+            return createPrivateAccount(accountholder, bb,mav2);
     }
 
     //Do private account method
@@ -50,13 +49,14 @@ public class OpenAccountController {
         privateAccount.getAccountHolders().add(accountholder);
         accountService.saveAccount(privateAccount);
         mav.addObject("account", bb);
-      //  mav.addObject("form", "disabled");
+        mav.addObject("form", "disabled");
+        mav.addObject("confirmation","Your account is created successfully and your account number is: ");
         return mav;
     }
 
     //do business account view
 
-    private ModelAndView createBusinessAccount(Customer accountholder, OpenAccountBackingBean bb, ModelAndView mav, ModelAndView mav2) {
+    private ModelAndView createBusinessAccount(Customer accountholder, OpenAccountBackingBean bb, ModelAndView mav2) {
         bb.setAccountNumber(accountService.createNewIban());
         BusinessAccount businessAccount = bb.businessAccount();
         businessAccount.getAccountHolders().add((accountholder));
@@ -67,9 +67,11 @@ public class OpenAccountController {
         //checken als alle velden valid zijn
         if(isAllInputValid(businessAccount, mav2)) {
             accountService.saveAccount(businessAccount);
-            mav.addObject("account", bb);
-            mav.addObject("form", "disabled");
-            return mav;
+            mav2.addObject("account", bb);
+            mav2.addObject("form", "disabled");
+            mav2.addObject("confirmation","Your account is created successfully and your account number is: ");
+
+            return mav2;
         }
         else
             populateFields(businessAccount,mav2,bb);

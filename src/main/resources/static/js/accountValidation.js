@@ -81,32 +81,46 @@ vatnumber.addEventListener('input', function () {
 
 });
 
-const form = document.getElementById("form");
+
 //CHECK WHICH BUTTON CLICKED
-form.addEventListener('click',function () {
+
+
+/*const radioButton = document.getElementById('radiobutton');*/
+/*document.getElementById("businessFields").style.display = "none";*/
+/*radioButton.addEventListener('click',function () {
     if (document.getElementById("business").checked) {
         showBusinessFields();
     } else
         hideBusinessFields();
-})
-
+})*/
 document.getElementById("businessFields").style.display = "none";
 const sector = document.getElementById("sector");
-
-form.addEventListener('keyup',function () {
-    if (companyname.classList.contains("isValid") &&
+const form = document.getElementById("form");
+form.addEventListener('click', function () {
+    if(companyname.classList.contains("isValid") &&
         kvknumber.classList.contains("isValid") &&
-        vatnumber.classList.contains("isValid") &&
-        sector.value !== "") {
+        vatnumber.classList.contains("isValid")&&
+        sector.value !== "")
+    {
         document.getElementById("submitButton").disabled = false;
-        } else {
+    } else {
         document.getElementById("submitButton").disabled = true;
     }
 });
 
 
 
-
+form.addEventListener('keyup', function () {
+    if(companyname.classList.contains("isValid") &&
+        kvknumber.classList.contains("isValid") &&
+        vatnumber.classList.contains("isValid")&&
+        sector.value !== "")
+    {
+        document.getElementById("submitButton").disabled = false;
+    } else {
+        document.getElementById("submitButton").disabled = true;
+    }
+});
 
 
 
@@ -115,6 +129,7 @@ form.addEventListener('keyup',function () {
 function showBusinessFields() {
 
     document.getElementById("businessFields").style.display = "inline";
+    document.getElementById("submitButton").disabled = true;
     document.getElementById("companyName").required = true;
     document.getElementById("kvkNumber").required = true;
     document.getElementById("vatNumber").required = true;
