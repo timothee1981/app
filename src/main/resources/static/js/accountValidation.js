@@ -82,17 +82,9 @@ vatnumber.addEventListener('input', function () {
 });
 
 
-//CHECK WHICH BUTTON CLICKED
+/* enable/disable submit button met click nb: kan waarschijnlijk in een methode maar weet niet hoe */
 
 
-/*const radioButton = document.getElementById('radiobutton');*/
-/*document.getElementById("businessFields").style.display = "none";*/
-/*radioButton.addEventListener('click',function () {
-    if (document.getElementById("business").checked) {
-        showBusinessFields();
-    } else
-        hideBusinessFields();
-})*/
 document.getElementById("businessFields").style.display = "none";
 const sector = document.getElementById("sector");
 const form = document.getElementById("form");
@@ -108,7 +100,7 @@ form.addEventListener('click', function () {
     }
 });
 
-
+/* enable/disable submit button met keyup*/
 
 form.addEventListener('keyup', function () {
     if(companyname.classList.contains("isValid") &&
