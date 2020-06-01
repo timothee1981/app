@@ -83,6 +83,19 @@ input + span::before {
     top: 5px;
 }
 
+input[id=password]{
+    width: 85%;
+    padding-right: 0px;
+
+}
+
+#showPasswordButton{
+    height: 45px;
+    width: 15%;
+    background: #f1f1f1;
+    border: #f1f1f1;
+}
+
 .isValid + span::before {
     content: '✓';
     color: #1E90FF;
@@ -110,7 +123,6 @@ button:hover {
     opacity:1;
 }
 
-
 button[disabled]{
     background-color: #9a9a9a;
 }
@@ -122,6 +134,8 @@ button[disabled]{
     margin: auto 20px auto auto;
 
 }
+
+
 
 #passRequirements {
     width: 100%;
@@ -219,3 +233,4 @@ button[disabled]{
 #showPassword{
     float:right;
 }
+
