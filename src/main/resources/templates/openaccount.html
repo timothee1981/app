@@ -16,9 +16,10 @@
 
 <fieldset th:disabled = ${form}>
     <form th:action="@{/openaccount}" id="form" method="post" th:object="${account}">
-        <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private"  required>
+
+        <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" required>
         <label for="private">Private account</label>
-        <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business"/>
+        <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" />
         <label for="business">Business account</label><br>
         <table id="businessFields" class="businessFieldsClass" >
             <tr>
@@ -88,16 +89,7 @@
     </form>
 
 </fieldset>
-    <!-- The Modal -->
-    <!--<div id="myModal" class="modal">
 
-        &lt;!&ndash; Modal content &ndash;&gt;
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Some text in the Modal..</p>
-        </div>
-
-    </div>-->
 </body>
 </html>
 

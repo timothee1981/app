@@ -81,21 +81,32 @@ vatnumber.addEventListener('input', function () {
 
 });
 
-
+const form = document.getElementById("form");
 //CHECK WHICH BUTTON CLICKED
-
+form.addEventListener('click',function () {
+    if (document.getElementById("business").checked) {
+        showBusinessFields();
+    } else
+        hideBusinessFields();
+})
 
 document.getElementById("businessFields").style.display = "none";
 const sector = document.getElementById("sector");
-const form = document.getElementById("form");
-form.addEventListener('mousemove',function () {
-    if (document.getElementById("business").checked){
-        showBusinessFields()
 
-    }else{
-        hideBusinessFields();
+form.addEventListener('keyup',function () {
+    if (companyname.classList.contains("isValid") &&
+        kvknumber.classList.contains("isValid") &&
+        vatnumber.classList.contains("isValid") &&
+        sector.value !== "") {
+        document.getElementById("submitButton").disabled = false;
+        } else {
+        document.getElementById("submitButton").disabled = true;
     }
 });
+
+
+
+
 
 
 
@@ -108,16 +119,6 @@ function showBusinessFields() {
     document.getElementById("kvkNumber").required = true;
     document.getElementById("vatNumber").required = true;
     document.getElementById("sector").required = true;
-
-    document.getElementById("submitButton").disabled = true;
-    if (companyname.classList.contains("isValid") &&
-        kvknumber.classList.contains("isValid") &&
-        vatnumber.classList.contains("isValid") &&
-        sector.value !== "") {
-            document.getElementById("submitButton").disabled = false;
-        } else {
-            document.getElementById("submitButton").disabled = true;
-        }
 
 
 

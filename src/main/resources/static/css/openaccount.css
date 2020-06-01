@@ -63,7 +63,11 @@ button[disabled]{
     background-color: #9a9a9a;
 }
 
-/*button disabled color*/
+button[type=submit]:disabled {
+    background-color: #9a9a9a;
+}
+
+
 
 input[type=text]:disabled {
     background: #dcdcdc;
@@ -75,9 +79,6 @@ input[type=text]:focus{
     outline: none;
 }
 
-input[type=text]:disabled {
-    background: #dcdcdc;
-}
 
 input + span {
     position: relative;
