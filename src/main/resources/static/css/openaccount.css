@@ -34,6 +34,10 @@ input[type=text]:focus{
     background-color: #ddd;
     outline: none;
 }
+
+
+/*style button */
+
 button {
     background-color: #1E90FF;
     color: white;
@@ -55,6 +59,11 @@ button[disabled]{
     background-color: #9a9a9a;
 }
 
+/*button disabled color*/
+
+input[type=text]:disabled {
+    background: #dcdcdc;
+}
 
 td{
     padding: 10px;
@@ -67,9 +76,7 @@ fieldset{
     border: none;
 }
 
-input[type=text]:disabled {
-    background: #dcdcdc;
-}
+/*invalid popup style */
 
 .invalidInputPopup {
     float: right;

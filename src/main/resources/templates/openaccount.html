@@ -20,7 +20,7 @@
         <label for="private">Private account</label>
         <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
         <label for="business">Business account</label><br>
-        <table id="businessFields" style="visibility:hidden" >
+        <table id="businessFields" class="businessFieldsClass" style="visibility:hidden" >
             <tr>
                 <td>Company name  </td>
                 <td>
@@ -56,6 +56,7 @@
                     <label>
                         <div id="invalidVatNumber" class="invalidInputPopup"><span></span></div>
                     <input type="text"
+                           name="VAT"
                            id="vatNumber"
                            placeholder="NL123456789B00"
                            th:field="*{vatNumber}"
