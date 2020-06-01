@@ -113,11 +113,7 @@ public class OpenAccountController {
         return String.valueOf(businessAccount.isVatValid());
     }
 
-    @GetMapping("/myaccount")
-    public ModelAndView myAccountHandler(){
-        ModelAndView mav = new ModelAndView("redirect:/myaccounts");
-        return mav;
-    }
+
 
 
 
