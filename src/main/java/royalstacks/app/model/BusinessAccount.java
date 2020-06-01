@@ -77,7 +77,7 @@ public class BusinessAccount extends Account {
 
     public boolean isVatValid(){
 
-        return isVatFormatValid() && vatPassed11Test() ;
+        return isVatFormatValid() ;
     }
 
     public boolean isVatFormatValid() {
