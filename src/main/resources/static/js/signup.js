@@ -93,7 +93,7 @@ myInput.onkeyup = function() {
     }
 
     // Validate special character
-    let specials = /[@$!%*?&]/g;
+    let specials = /[!"#$%&'()*+,\-./:;<=>?@^_`{|}~\[\]]/g;
     if(myInput.value.match(specials)) {
         special.classList.remove("invalid");
         special.classList.add("valid");

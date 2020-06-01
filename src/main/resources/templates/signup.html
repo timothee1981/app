@@ -18,7 +18,7 @@
     <h3><span th:text="${confirmation}"/></h3>
     <h3><span th:text="${error}"/></h3>
     <div id="formLeft">
-    <label><b>Username</b></label>
+    <label for="username"><b>Username</b></label>
         <div id="usernameNotAvailable" class="invalidInputPopup"><span>Username not available</span></div>
     <input
             type="text"
@@ -32,7 +32,7 @@
     /><span></span>
 
 
-    <label><b>Password</b></label>
+    <label for="password"><b>Password</b></label>
    <input type="checkbox" onclick="showPassword()">
         <input
             type="password"
@@ -51,12 +51,12 @@
     <div id="passRequirements">
         <div id="passRequirements1of2">
             <p id="letter" class="invalid">A lowercase letter</p>
-            <p id="capital" class="invalid">A capital (uppercase) letter</p>
+            <p id="capital" class="invalid">A uppercase letter</p>
             <p id="number" class="invalid">A number</p>
         </div>
         <div id="passRequirements2of2">
             <p id="length" class="invalid">Minimum 10 characters</p>
-            <p id="special" class="invalid">A special character: !"#$%&'()*+,-./:;<=>?@^_`{|}~[]</p>
+            <p id="special" class="invalid">A special character</p>
         </div>
     </div>
 
@@ -64,10 +64,10 @@
 
     <div id="names">
         <div id="firstNameDiv">
-    <label><b>First name</b></label>
+    <label for="firstName"><b>First name</b></label>
     <input
             type="text"
-            placeholder="Jan"
+            placeholder="First name"
             name="firstName"
             id="firstName"
             title="Use letters or - only"
@@ -76,10 +76,10 @@
         </div>
 
         <div id="lastNameDiv">
-    <label><b>Last name</b></label>
+    <label for="lastName"><b>Last name</b></label>
     <input
             type="text"
-            placeholder="Janssen"
+            placeholder="Last name"
             name="lastName"
             id="lastName"
             title="Use letters or - only"
@@ -88,7 +88,7 @@
             </div>
 
     </div>
-        <label><b>BSN</b></label><div id="BSNNotAvailable" class="invalidInputPopup"><span>BSN invalid</span></div>
+        <label for="BSN"><b>BSN</b></label><div id="BSNNotAvailable" class="invalidInputPopup"><span>BSN invalid</span></div>
         <input
                 type="number"
                 placeholder="123456789"
@@ -100,7 +100,7 @@
 
     </div>
     <div id="formRight">
-        <label><b>Email</b></label>
+        <label for="email"><b>Email</b></label>
         <div id="InvalidEmail" class="invalidInputPopup"><span>Enter a valid email address</span></div>
         <input
                 type="email"
@@ -112,7 +112,7 @@
 
 
 
-        <label><b>Phone Number</b></label>
+        <label for="phoneNumber"><b>Phone Number</b></label>
         <div id="InvalidPhoneNumber" class="invalidInputPopup"><span>Must be 9 numbers starting with 0</span></div>
         <input
                 type="number"
@@ -138,7 +138,7 @@
                 /><span></span>
             </div>
         <div id="cityAndPostalCode2">
-            <label><b>Number</b></label><span></span>
+            <label for="houseNumber"><b>Number</b></label><span></span>
             <input
                     type="text"
                     placeholder="120"
@@ -151,7 +151,7 @@
 
         </div>
             <div id="cityAndPostalCode3">
-                <label>suffix</label>
+                <label for="suffix">suffix</label>
                 <input
                         type="text"
                         placeholder=""
@@ -164,7 +164,7 @@
 
             </div>
         </div>
-        <label><b>City</b></label>
+        <label for="city"><b>City</b></label>
         <input
                 type="text"
                 placeholder="Utrecht"
