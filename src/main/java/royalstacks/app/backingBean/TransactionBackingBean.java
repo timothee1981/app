@@ -1,7 +1,6 @@
 package royalstacks.app.backingBean;
 
 import royalstacks.app.model.Account;
-import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
 
@@ -10,17 +9,19 @@ import java.util.Date;
 public class TransactionBackingBean {
 
     private int transactionId;
+    private String fromAccountNumber;
+    private String toAccountNumber;
     private Account fromAccount;
     private Account toAccount;
-    private double amount;
+    private Double amount;
     private String description;
     private Date date;
 
     AccountService as = new AccountService();
 
-    public TransactionBackingBean(String fromAccount, String toAccount, double amount, String description) {
-         this.fromAccount = as.getAccountByAccountNumber(fromAccount).get();
-         this.toAccount = as.getAccountByAccountNumber(toAccount).get();
+    public TransactionBackingBean(String fromAccountNumber, String toAccountNumber, Double amount, String description) {
+         this.fromAccountNumber = fromAccountNumber;
+         this.toAccountNumber = toAccountNumber;
          this.amount = amount;
          this.description = description;
          this.date = new Date();
@@ -28,6 +29,22 @@ public class TransactionBackingBean {
 
     public Transaction Transaction(){
         return new Transaction(fromAccount, toAccount, amount, description, date);
+    }
+
+    public String getFromAccountNumber() {
+        return fromAccountNumber;
+    }
+
+    public void setFromAccountNumber(String fromAccountNumber) {
+        this.fromAccountNumber = fromAccountNumber;
+    }
+
+    public String getToAccountNumber() {
+        return toAccountNumber;
+    }
+
+    public void setToAccountNumber(String toAccountNumber) {
+        this.toAccountNumber = toAccountNumber;
     }
 
     public Account getFromAccount() {
@@ -46,7 +63,7 @@ public class TransactionBackingBean {
         this.toAccount = toAccount;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
@@ -74,8 +91,8 @@ public class TransactionBackingBean {
     public String toString() {
         return "TransactionBackingBean{" +
                 "transactionId=" + transactionId +
-                ", fromAccount=" + fromAccount +
-                ", toAccount=" + toAccount +
+                ", fromAccountNumber=" + fromAccountNumber +
+                ", toAccountNumber=" + toAccountNumber +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
                 ", date=" + date +

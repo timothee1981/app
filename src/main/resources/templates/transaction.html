@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Start a transaction!</title>
+    <title>Send Money</title>
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/transaction.css" rel="stylesheet" />
 </head>
@@ -12,28 +12,29 @@
     <span id="logoNavbar"></span>
 </div>
 <h1 class="content">Send Money</h1>
+<h3><span th:text="${notification}"/></h3>
 <form id="form" method="post" class="form">
 
     <!-- Deze wordt automatisch geselecteerd. Later eventueel een dropdown -->
-    <label for="fromAccount">From Account</label>
+    <label for="fromAccountNumber">From Account</label>
     <input
             type="text"
             placeholder="NL27ABNA433706589"
-            name="fromAccount"
-            id="fromAccount"
+            name="fromAccountNumber"
+            id="fromAccountNumber"
             title="A valid account number"
-            th:value="${fromAccount}"
+            th:value="${fromAccountNumber}"
             autofocus
             required
     />
-    <label for="toAccount">To Account</label>
+    <label for="toAccountNumber">To Account</label>
     <input
             type="text"
             placeholder="NL27ABNA433706589"
-            name="toAccount"
-            id="toAccount"
+            name="toAccountNumber"
+            id="toAccountNumber"
             title="A valid account number"
-            th:value="${toAccount}"
+            th:value="${toAccountNumber}"
             required
     />
 
@@ -45,6 +46,7 @@
             id="amount"
             title="Enter a valid amount"
             th:value="${amount}"
+            step=".01"
             required
     />
 
@@ -52,10 +54,10 @@
     <input
             type="text"
             placeholder="Sending all the moneys to yooouuu"
-            name="descrption"
+            name="description"
             id="description"
             title="Enter a valid description"
-            th:value="${amount}"
+            th:value="${description}"
     />
         <td><button type="submit" name="submit" id="submitButton" value="Send Money">Send Money</button></td>
 </form>

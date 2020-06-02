@@ -33,29 +33,16 @@ public abstract class Account {
     }
 
     //METHODS
-    public boolean addAmount(double addedAmount){
-
-        // add amounts
-        double result = balance + addedAmount;
-
-        // check for overflow-exception
-        if(Double.isInfinite(result) || Double.isNaN(result)){
-            return false;
-        }
-
-        // all is correct, set new amount to balance
-        setBalance(result);
-        return true;
+    public boolean hasSufficientBalance(double sentAmount){
+    return this.balance >= sentAmount;
     }
 
-    public boolean subtractAmount(double subtractedAmount){
-        if(subtractedAmount > balance){
-            return false;
-        }
-        else{
-            setBalance(balance - subtractedAmount);
-            return true;
-        }
+    public void subtractAmount(double subtractAmount){
+        this.setBalance(this.getBalance() - subtractAmount);
+    }
+
+    public void addAmount(double addAmount){
+        this.setBalance(this.getBalance() + addAmount);
     }
 
     public void addAccountHolder(Customer accountHolderToAdd){
