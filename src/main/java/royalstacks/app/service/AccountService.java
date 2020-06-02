@@ -81,6 +81,15 @@ public class AccountService {
         return newAccountNr;
     }
 
+    public Account getAccountById(int accountId){
+
+        Optional<Account> account =   accountRepository.findById(accountId);
+        if(account.isPresent()){
+            return account.get();
+        }else
+            return null;
+    }
+
 
 
 }
