@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Start a transaction!</title>
+    <title>Send Money</title>
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/transaction.css" rel="stylesheet" />
 </head>
@@ -11,10 +11,57 @@
     <a class="active" href="/myaccounts">My accounts</a>
     <span id="logoNavbar"></span>
 </div>
+<h1 class="content">Send Money</h1>
+<h3><span th:text="${notification}"/></h3>
+<form id="form" method="post" class="form">
 
+    <!-- Deze wordt automatisch geselecteerd. Later eventueel een dropdown -->
+    <label for="fromAccountNumber">From Account</label>
+    <input
+            type="text"
+            placeholder="NL27ABNA433706589"
+            name="fromAccountNumber"
+            id="fromAccountNumber"
+            title="A valid account number"
+            th:value="${fromAccountNumber}"
+            autofocus
+            required
+    />
+    <label for="toAccountNumber">To Account</label>
+    <input
+            type="text"
+            placeholder="NL27ABNA433706589"
+            name="toAccountNumber"
+            id="toAccountNumber"
+            title="A valid account number"
+            th:value="${toAccountNumber}"
+            required
+    />
 
+    <label for="amount">Amount</label>
+    <input
+            type="number"
+            placeholder="100.00"
+            name="amount"
+            id="amount"
+            title="Enter a valid amount"
+            th:value="${amount}"
+            step=".01"
+            min="0"
+            required
+    />
 
-</div>
+    <label for="description">Description</label>
+    <input
+            type="text"
+            placeholder="Sending all the moneys to yooouuu"
+            name="description"
+            id="description"
+            title="Enter a valid description"
+            th:value="${description}"
+    />
+        <td><button type="submit" name="submit" id="submitButton" value="Send Money">Send Money</button></td>
+</form>
 
 <script src="js/navbar.js"></script>
 </body>

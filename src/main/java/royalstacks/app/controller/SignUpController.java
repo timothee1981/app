@@ -10,6 +10,10 @@ import royalstacks.app.model.User;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
 
+/**
+ * @author Suzanne & Wesley
+ */
+
 @Controller
 public class SignUpController {
 

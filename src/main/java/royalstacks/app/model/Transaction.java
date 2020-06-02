@@ -5,62 +5,44 @@ import java.util.Date;
 
 public class Transaction {
     private int transactionId;
-    private Date timestamp;
-    private double amount;
     private Account fromAccount;
     private Account toAccount;
+    private double amount;
     private String description;
+    private Date date;
+
 
     // CONSTRUCTORS
     // all args
-    public Transaction(int transactionId, Date timestamp, double amount, Account fromAccount, Account toAccount, String description) {
+    public Transaction(int transactionId, Account fromAccount, Account toAccount, double amount, String description, Date date) {
         this.transactionId = transactionId;
-        this.timestamp = timestamp;
-        this.amount = amount;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
+        this.amount = amount;
         this.description = description;
+        this.date = date;
     }
 
-    // om op te slaan in database
-    public Transaction(Date timestamp, double amount, Account fromAccount, Account toAccount, String description) {
-        this.timestamp = timestamp;
-        this.amount = amount;
+    // zonder id
+    public Transaction(Account fromAccount, Account toAccount, double amount, String description, Date date) {
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
+        this.amount = amount;
         this.description = description;
+        this.date = date;
     }
 
-    //default
-    public Transaction(){}
+    // default
+    public Transaction() {
+    }
 
-    // METHODS
-
-
-    // GETTERS EN SETTERS
-
+    // GETTERS & SETTERS
     public int getTransactionId() {
         return transactionId;
     }
 
     public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 
     public Account getFromAccount() {
@@ -79,6 +61,14 @@ public class Transaction {
         this.toAccount = toAccount;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -86,4 +76,32 @@ public class Transaction {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", fromAccount=" + fromAccount +
+                ", toAccount=" + toAccount +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                ", timestamp=" + date +
+                '}';
+    }
 }
+
+
+
+
+
+
+
