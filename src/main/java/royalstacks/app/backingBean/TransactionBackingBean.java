@@ -13,13 +13,13 @@ public class TransactionBackingBean {
     private String toAccountNumber;
     private Account fromAccount;
     private Account toAccount;
-    private Double amount;
+    private double amount;
     private String description;
     private Date date;
 
     AccountService as = new AccountService();
 
-    public TransactionBackingBean(String fromAccountNumber, String toAccountNumber, Double amount, String description) {
+    public TransactionBackingBean(String fromAccountNumber, String toAccountNumber, double amount, String description) {
          this.fromAccountNumber = fromAccountNumber;
          this.toAccountNumber = toAccountNumber;
          this.amount = amount;
@@ -63,7 +63,7 @@ public class TransactionBackingBean {
         this.toAccount = toAccount;
     }
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 
