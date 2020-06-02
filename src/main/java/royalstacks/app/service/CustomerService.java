@@ -23,7 +23,5 @@ public class CustomerService {
         return customerRepository.findCustomerByBSN(BSN);
     }
 
-    public List<Customer> findCustomersByAccount(Account account){
-            return findCustomersByAccount(account);
-    }
+
 }
