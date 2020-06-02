@@ -89,14 +89,17 @@ document.getElementById("businessFields").style.display = "none";
 const sector = document.getElementById("sector");
 const form = document.getElementById("form");
 form.addEventListener('click', function () {
-    if(companyname.classList.contains("isValid") &&
-        kvknumber.classList.contains("isValid") &&
-        vatnumber.classList.contains("isValid")&&
-        sector.value !== "")
-    {
-        document.getElementById("submitButton").disabled = false;
-    } else {
-        document.getElementById("submitButton").disabled = true;
+    if(document.getElementById("business").checked) {
+        if (companyname.classList.contains("isValid") &&
+            kvknumber.classList.contains("isValid") &&
+            vatnumber.classList.contains("isValid") &&
+            sector.value !== "") {
+            document.getElementById("submitButton").disabled = false;
+        } else {
+            document.getElementById("submitButton").disabled = true;
+        }
+    }else{
+        hideBusinessFields();
     }
 });
 

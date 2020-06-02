@@ -1,10 +1,11 @@
 package royalstacks.app.backingBean;
 
+import royalstacks.app.model.Account;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.PrivateAccount;
 
 public class OpenAccountBackingBean {
-    public static final int START_BALANCE = 0;
+    public static final double START_BALANCE = Account.getStartingBalance();
     public static final String EMPTY_STRING = "";
     private String companyName;
     private String companyNamePlaceholder;

@@ -16,14 +16,14 @@
 
 <fieldset th:disabled = ${form}>
     <h4><span th:text="${confirmation}"/> <span th:text="*{accountNumber}"/> </h4>
-
+    <form th:action="@{/openaccount}" id="form" class="form" method="post" >
     <div id="radiobutton">
         <input type="radio" name="accountType"  id="private" th:field="*{accountType}" value="private" onclick="hideBusinessFields()" required>
         <label for="private">Private account</label>
         <input type="radio" name="accountType" id="business" th:field="*{accountType}" value="business" onclick="showBusinessFields()"/>
         <label for="business">Business account</label><br>
     </div>
-    <form th:action="@{/openaccount}" id="form" class="form" method="post" >
+
         <table id="businessFields" class="businessFieldsClass" >
             <tr>
                 <td><b>Company name </b></td>
