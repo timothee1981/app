@@ -96,7 +96,6 @@ public class BusinessAccount extends Account {
             int singleDigit = Character.getNumericValue(firstNumbers.charAt(index));
             testSum += (singleDigit * (firstNumbers.length()-index));
         }
-        System.out.println(firstNumbers.length());
         return (testSum%11 == Character.getNumericValue(firstNumbers.charAt(8)));
     }
 
