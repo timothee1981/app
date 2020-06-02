@@ -62,7 +62,9 @@ public class OpenAccountController {
         businessAccount.getAccountHolders().add((accountholder));
         if(!accountholder.isBusinessAccountHolder()) {
             accountholder.setBusinessAccountHolder(true);
-            accountholder.setAccountManager(employeeRepository.findAll().iterator().next());
+            if(employeeRepository.findAll().iterator().hasNext()) {
+                accountholder.setAccountManager(employeeRepository.findAll().iterator().next());
+            }
         }
         //checken als alle velden valid zijn
         if(isAllInputValid(businessAccount, mav2)) {
