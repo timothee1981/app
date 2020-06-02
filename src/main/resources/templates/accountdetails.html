@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://java.sun.com/JSP/Page">
 <head>
     <meta charset="UTF-8">
     <title>accountdetails</title>
 </head>
-<body>
-
+<body th:object="${account}">
+    <h1>Account details</h1>
+    <h4>Account holders: </h4><span>This will be a list of account holders</span><br>
+    <span th:text="*{accountNumber}">Iban comes here</span><br>
+    <span th:text="*{balance}">Saldo will be there</span><br>
+    <h2>Transaction</h2>
+    <span>List of last ten transaction</span><br>
+    <button type="submit" id="submitButton"  value="DoTransfer">New money transfer</button>
 </body>
 </html>
