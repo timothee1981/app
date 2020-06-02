@@ -2,15 +2,22 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.Account;
+import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.UserService;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -19,10 +26,22 @@ public class TransactionController {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    UserService userService;
+
 
     @GetMapping("/transaction")
-    public ModelAndView transactionHandler(){
+    public ModelAndView transactionHandler(Model model, @SessionAttribute("userid") int userId){
         ModelAndView mav = new ModelAndView("transaction");
+
+        Customer customer =(Customer) userService.findByUserId(userId);
+        Iterator<Account> accounts = customer.getAccount().iterator();
+        List<Account> myAccounts = new ArrayList<>();
+        while(accounts.hasNext()){
+            myAccounts.add(accounts.next());
+        }
+        System.out.println(myAccounts.toString());
+        model.addAttribute("account", myAccounts);
         return mav;
     }
 
@@ -34,6 +53,8 @@ public class TransactionController {
         Optional<Account> toAccount = accountService.getAccountByAccountNumber(tbb.getToAccountNumber());
 
         ModelAndView mav = new ModelAndView("transaction");
+
+        System.out.println("tbb: " + tbb.getFromAccountNumber());
 
         // Check of amount groter dan 0 is
         if (tbb.getAmount() <= 0){
@@ -73,7 +94,6 @@ public class TransactionController {
     }
 
     private void populateFields(@ModelAttribute TransactionBackingBean tbb, ModelAndView mav) {
-        mav.addObject("fromAccountNumber", tbb.getFromAccountNumber());
         mav.addObject("toAccountNumber", tbb.getToAccountNumber());
         mav.addObject("amount", tbb.getAmount());
         mav.addObject("description", tbb.getDescription());
@@ -82,12 +102,6 @@ public class TransactionController {
     /**
      * Haalt Accounts op die horen bij de AccountNumbers van fromAccountNumber en toAccountNumber.
      * Zet daarna de accounts in de BackingBean zodat ervan een Transaction BackingBean gemaakt kan worden
-     *
-     * @param tbb
-     * @param fromAccountOptional
-     * @param toAccountOptional
-     * @param mav
-     * @return
      */
     private boolean getAccountsByAccountNumbers(@ModelAttribute Optional<Account> fromAccountOptional, Optional<Account> toAccountOptional,
                                                 TransactionBackingBean tbb, ModelAndView mav) {
