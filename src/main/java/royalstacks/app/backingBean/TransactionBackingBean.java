@@ -1,9 +1,14 @@
-package royalstacks.app.model;
+package royalstacks.app.backingBean;
 
+import royalstacks.app.model.Account;
+import royalstacks.app.model.Customer;
+import royalstacks.app.model.Transaction;
+import royalstacks.app.service.AccountService;
 
 import java.util.Date;
 
-public class Transaction {
+public class TransactionBackingBean {
+
     private int transactionId;
     private Account fromAccount;
     private Account toAccount;
@@ -11,38 +16,18 @@ public class Transaction {
     private String description;
     private Date date;
 
+    AccountService as = new AccountService();
 
-    // CONSTRUCTORS
-    // all args
-    public Transaction(int transactionId, Account fromAccount, Account toAccount, double amount, String description, Date date) {
-        this.transactionId = transactionId;
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
-        this.amount = amount;
-        this.description = description;
-        this.date = date;
+    public TransactionBackingBean(String fromAccount, String toAccount, double amount, String description) {
+         this.fromAccount = as.getAccountByAccountNumber(fromAccount).get();
+         this.toAccount = as.getAccountByAccountNumber(toAccount).get();
+         this.amount = amount;
+         this.description = description;
+         this.date = new Date();
     }
 
-    // zonder id
-    public Transaction(Account fromAccount, Account toAccount, double amount, String description, Date date) {
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
-        this.amount = amount;
-        this.description = description;
-        this.date = date;
-    }
-
-    // default
-    public Transaction() {
-    }
-
-    // GETTERS & SETTERS
-    public int getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public Transaction Transaction(){
+        return new Transaction(fromAccount, toAccount, amount, description, date);
     }
 
     public Account getFromAccount() {
@@ -85,23 +70,15 @@ public class Transaction {
         this.date = date;
     }
 
-
     @Override
     public String toString() {
-        return "Transaction{" +
+        return "TransactionBackingBean{" +
                 "transactionId=" + transactionId +
                 ", fromAccount=" + fromAccount +
                 ", toAccount=" + toAccount +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
-                ", timestamp=" + date +
+                ", date=" + date +
                 '}';
     }
 }
-
-
-
-
-
-
-

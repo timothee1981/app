@@ -20,6 +20,10 @@ public class AccountService {
     public <T extends Account> void saveAccount(T account) {
         accountRepository.save(account);}
 
+    public Optional<Account> getAccountByAccountNumber (String accountNumber){
+        return accountRepository.getAccountByAccountNumber(accountNumber);
+    }
+
     public String retrieveLastIban(){
         Optional<String> accountNumber = accountRepository.getLastAccountNumber();
         if (accountNumber.isPresent()) {

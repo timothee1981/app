@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Start a transaction!</title>
@@ -11,10 +11,54 @@
     <a class="active" href="/myaccounts">My accounts</a>
     <span id="logoNavbar"></span>
 </div>
+<h1 class="content">Send Money</h1>
+<form id="form" method="post" class="form">
 
+    <!-- Deze wordt automatisch geselecteerd. Later eventueel een dropdown -->
+    <label for="fromAccount">From Account</label>
+    <input
+            type="text"
+            placeholder="NL27ABNA433706589"
+            name="fromAccount"
+            id="fromAccount"
+            title="A valid account number"
+            th:value="${fromAccount}"
+            autofocus
+            required
+    />
+    <label for="toAccount">To Account</label>
+    <input
+            type="text"
+            placeholder="NL27ABNA433706589"
+            name="toAccount"
+            id="toAccount"
+            title="A valid account number"
+            th:value="${toAccount}"
+            required
+    />
 
+    <label for="amount">Amount</label>
+    <input
+            type="number"
+            placeholder="100.00"
+            name="amount"
+            id="amount"
+            title="Enter a valid amount"
+            th:value="${amount}"
+            required
+    />
 
-</div>
+    <label for="description">Description</label>
+    <input
+            type="text"
+            placeholder="Sending all the moneys to yooouuu"
+            name="descrption"
+            id="description"
+            title="Enter a valid description"
+            th:value="${amount}"
+    />
+        <td><button type="submit" name="submit" id="submitButton" value="Send Money">Send Money</button></td>
+</form>
 
 <script src="js/navbar.js"></script>
 </body>
