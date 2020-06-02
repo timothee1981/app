@@ -66,7 +66,7 @@ public class BusinessAccount extends Account {
         // at least 1 char
         // may not contain only special chars
         // chars @ & + _ - are allowed???? yes they are
-        return this.companyName.matches("^[\\w@ ]*[^\\W_ ][\\w- \\@\\ \\&\\ \\+]*$");
+        return this.companyName.matches("^[\\w@ ]*[^\\W_ ][\\w- @ & +]*$");
     }
 
     public boolean isKvkNameFormatValid(){
