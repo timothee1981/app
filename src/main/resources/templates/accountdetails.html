@@ -16,15 +16,16 @@
         <button type="submit" id="submitButton"  value="DoTransfer">choose account</button>
     </form>
     <h4>Account holders: </h4>
-    <li th:each="customer : ${AccountHolderlist}">
+    <li th:each="customer : ${list}">
         <div>
             <tr><span th:text="${customer.lastName}"/></tr>
         </div><br>
     </li>
-   <!-- <span th:text="*{accountType}"></span>-->
- <!--   <span th:text="${formatDateTime}"/>-->
-    <span th:text="${accountNumber}">Iban comes here</span><br>
-    <span th:text="${balance}">Saldo will be there</span><br>
+    <span th:text="${accountType}"></span>
+    <span th:text="*{accountNumber}">Iban comes here</span><br>
+    <span th:text="*{balance}">Saldo will be there</span><br>
+    <h2>Transaction</h2>
+    <span>List of last ten transaction</span><br>
     <h2>Transaction</h2>
     <span>List of last ten transaction</span><br>
     <form th:action="@{transaction}"  method="get">
