@@ -18,19 +18,8 @@
     <!-- Deze wordt automatisch geselecteerd. Later eventueel een dropdown -->
     <label for="fromAccountNumber">From Account</label>
     <select id="fromAccountNumber" name="fromAccountNumber" th:value="${fromAccountNumber}">
-        <option th:each="account : ${account}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
-        </option>
+        <option th:each="account : ${account}" th:value="${account.accountNumber}" th:text="${account.accountNumber} + '        Balance: €' + ${account.balance}"></option>
     </select>
-<!--    <input
-            type="text"
-            placeholder="NL27ABNA433706589"
-            name="fromAccountNumber"
-            id="fromAccountNumber"
-            title="A valid account number"
-            th:value="${fromAccountNumber}"
-            autofocus
-            required
-    />-->
     <label for="toAccountNumber">To Account</label>
     <input
             type="text"
@@ -51,7 +40,7 @@
             title="Enter a valid amount"
             th:value="${amount}"
             step=".01"
-            min="0"
+            min="0.01"
             required
     />
 
