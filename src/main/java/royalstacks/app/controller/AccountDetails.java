@@ -40,12 +40,14 @@ public class AccountDetails {
         if(account.isPresent())
             myAccount = account.get();
         Set<Customer> accountholders =  myAccount.getAccountHolders();
-        accountholders.iterator()
+
+
 
 
 
         //TODO: get transactions corresponding to this account from nosql DB en show only ten last transactio
         mav.addObject("account",myAccount);
+        mav.addObject("AccountHolderlist",accountholders);
 
         return mav;
 
