@@ -12,31 +12,31 @@ import java.time.LocalDateTime;
 public class Transaction {
     @Id
     private String transactionId;
-    @Indexed(direction = IndexDirection.DESCENDING)
-    private LocalDateTime date;
-    private double amount;
     private Account fromAccount;
     private Account toAccount;
+    private double amount;
     private String description;
+    @Indexed(direction = IndexDirection.DESCENDING)
+    private LocalDateTime date;
 
     // CONSTRUCTORS
     // all args
-    public Transaction(String transactionId, LocalDateTime date, double amount, Account fromAccount, Account toAccount, String description) {
+    public Transaction(String transactionId, Account fromAccount, Account toAccount, double amount, String description, LocalDateTime date) {
         this.transactionId = transactionId;
-        this.date = date;
-        this.amount = amount;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
+        this.amount = amount;
         this.description = description;
+        this.date = date;
     }
 
     // om op te slaan in database
-    public Transaction(LocalDateTime date, double amount, Account fromAccount, Account toAccount, String description) {
-        this.date = date;
-        this.amount = amount;
+    public Transaction(Account fromAccount, Account toAccount, double amount, String description, LocalDateTime date) {
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
+        this.amount = amount;
         this.description = description;
+        this.date = date;
     }
 
     //default

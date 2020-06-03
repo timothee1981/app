@@ -33,14 +33,14 @@ public class TransactionSeeder implements CommandLineRunner {
         Account accountFrom = new PrivateAccount(accountService.createNewIban(), 1500);
         Account accountTo = new PrivateAccount(accountService.createNewIban(), 0);
         String description = "First transaction test";
-        Transaction transaction1 = new Transaction(timestamp, amount, accountFrom, accountTo, description);
+        Transaction transaction1 = new Transaction(accountFrom, accountTo, amount, description, timestamp);
 
         LocalDateTime timestamp2 = LocalDateTime.now().minusMonths(1);
         double amount2 = 99;
         Account accountFrom2 = new PrivateAccount(accountService.createNewIban(), 999);
         Account accountTo2 = new PrivateAccount(accountService.createNewIban(), 99);
         String description2 = "Second transaction test";
-        Transaction transaction2 = new Transaction(timestamp2, amount2, accountFrom2, accountTo2, description2);
+        Transaction transaction2 = new Transaction(accountFrom2, accountTo2, amount2, description2, timestamp2);
 
         //drop all transactions
         transactionRepository.deleteAll();
