@@ -91,5 +91,14 @@ public class AccountService {
     }
 
 
+    public Account getAccountByIban(String accountNumber){
+        Optional<Account> account = accountRepository.getAccountByAccountNumber(accountNumber);
+        if(account.isPresent()){
+            return account.get();
+        }else
+            return null;
+    }
+
+
 
 }

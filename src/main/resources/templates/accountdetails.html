@@ -9,8 +9,10 @@
     <h4>Account holders: </h4>
     <li th:each="customer : ${list}">
         <div>
-            <tr><span th:text="${customer.surname}"/></tr>
+            <tr><span th:text="${customer.lastName}"/></tr>
         </div><br>
+    </li>
+    <span th:text="${accountType}"></span>
     <span th:text="*{accountNumber}">Iban comes here</span><br>
     <span th:text="*{balance}">Saldo will be there</span><br>
     <h2>Transaction</h2>
