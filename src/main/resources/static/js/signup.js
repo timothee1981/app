@@ -7,7 +7,7 @@
 const username = document.getElementById("username");
 username.addEventListener("input", function () {
     let usernameInput = username.value;
-    let usernameCheck = window.location.hostname + `/api/username?username=${usernameInput}`;
+    let usernameCheck = `/api/username?username=${usernameInput}`;
     console.log(usernameCheck);
     const re = /^[a-zA-Z0-9_-]{3,15}$/;
 
@@ -26,6 +26,7 @@ username.addEventListener("input", function () {
                 return response.json();
             })
             .then((data) => {
+                console.log("data : " + data)
                 if (data) {
                     // als hij niet in de database voorkomt
                     document.getElementById("usernameNotAvailable").style.display = "none";
@@ -261,7 +262,9 @@ phoneNumber.addEventListener('input', function () {
 const BSN = document.getElementById("BSN");
 BSN.addEventListener("input", function () {
     let BSNInput = BSN.value;
-    let BSNCheck = window.location.hostname + `/api/bsn?BSN=${BSNInput}`;
+    let BSNCheck = `/api/bsn?BSN=${BSNInput}`;
+
+    console.log(BSNCheck);
 
     // check of input 9 getallen bevat
     if (BSNInput.length !== 9) {

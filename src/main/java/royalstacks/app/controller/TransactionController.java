@@ -66,41 +66,27 @@ public class TransactionController {
 
         ModelAndView mav = new ModelAndView("transaction");
 
-        // Check of amount groter dan 0 is
-        if (tbb.getAmount() <= 0) {
-            mav.addObject("notification", "Invalid amount");
-            populateFields(tbb, mav);
-            return mav;
-        }
-
-        tbb.Transaction()
-
-/*        Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
+        // TODO in BackingBean kunnen verwerken
+        Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
         Optional<Account> toAccountOptional = accountService.getAccountByAccountNumber(tbb.getToAccountNumber());
 
-        // Check of accounts bestaan
-        if (fromAccountOptional.isPresent()) {
-            Account fromAccount = fromAccountOptional.get();
-            tbb.setFromAccount(fromAccount);
-        } else {
-            mav.addObject("notification", "fromAccountNumber is unknown");
-            populateFields(tbb, mav);
-            return mav;
-        }
-        if (toAccountOptional.isPresent()) {
-            Account toAccount = toAccountOptional.get();
-            tbb.setToAccount(toAccount);
-        } else {
-            mav.addObject("notification", "toAccountNumber is unknown");
-            populateFields(tbb, mav);
-            return mav;
-        }
+        tbb.setFromAccount(fromAccountOptional);
+        tbb.setToAccount(toAccountOptional);
 
-        // maak een transactie object van de BackingBean
-        Transaction t = tbb.Transaction();*/
+        if(tbb.Transaction().isPresent()){
+            Transaction t = tbb.Transaction().get();
 
-        // check of er genoeg geld op staat, zo ja maak het geld over.
-        executeTransaction(tbb, t, mav);
+            t.getFromAccount().subtractAmount(t.getAmount());
+            accountService.saveAccount(t.getFromAccount());
+
+            t.getToAccount().addAmount(t.getAmount());
+            accountService.saveAccount(t.getToAccount());
+
+            mav.addObject("notification", "Money successfully sent");
+        } else {
+            mav.addObject("notification", "Invalid Transaction");
+            populateFields(tbb, mav);
+        }
 
         // TODO sla transactie op
 
@@ -115,19 +101,7 @@ public class TransactionController {
      * @param mav
      */
     private void executeTransaction(@ModelAttribute TransactionBackingBean tbb, Transaction t, ModelAndView mav) {
-        if (t.getFromAccount().hasSufficientBalance(t.getAmount())) {
 
-            t.getFromAccount().subtractAmount(t.getAmount());
-            accountService.saveAccount(t.getFromAccount());
-
-            t.getToAccount().addAmount(t.getAmount());
-            accountService.saveAccount(t.getToAccount());
-
-            mav.addObject("notification", "Money successfully sent");
-        } else {
-            mav.addObject("notification", "Not enough money brah");
-            populateFields(tbb, mav);
-        }
     }
 
     private void populateFields(TransactionBackingBean tbb, ModelAndView mav) {

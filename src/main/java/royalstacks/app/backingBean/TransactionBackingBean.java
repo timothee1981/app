@@ -4,20 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
-
 import java.util.Date;
 import java.util.Optional;
 
 public class TransactionBackingBean {
 
     @Autowired
-    private AccountService accountService;
+    AccountService accountService;
 
     private int transactionId;
     private String fromAccountNumber;
     private String toAccountNumber;
-    private Account fromAccount;
-    private Account toAccount;
+    private Optional<Account> fromAccount;
+    private Optional<Account> toAccount;
     private double amount;
     private String description;
     private Date date;
@@ -31,21 +30,30 @@ public class TransactionBackingBean {
     }
 
     public Optional<Transaction> Transaction(){
-        Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(fromAccountNumber);
-        Optional<Account> toAccountOptional = accountService.getAccountByAccountNumber(toAccountNumber);
-
         Account fromAccount;
         Account toAccount;
 
-        if (fromAccountOptional.isPresent()) {
-            fromAccount = fromAccountOptional.get();
+        // check of fromAccount bestaat
+        if (this.fromAccount.isPresent()) {
+            fromAccount = this.fromAccount.get();
         } else {
             return Optional.empty();
         }
 
-        if (toAccountOptional.isPresent()) {
-            toAccount = toAccountOptional.get();
+        // check of toAccount bestaat
+        if (this.toAccount.isPresent()) {
+            toAccount = this.toAccount.get();
         } else {
+            return Optional.empty();
+        }
+
+        // check of amount valide is
+        if (amount <= 0){
+            return Optional.empty();
+        }
+
+        // check of fromAccount genoeg geld heeft
+        if (!fromAccount.hasSufficientBalance(amount)){
             return Optional.empty();
         }
 
@@ -68,19 +76,19 @@ public class TransactionBackingBean {
         this.toAccountNumber = toAccountNumber;
     }
 
-    public Account getFromAccount() {
+    public Optional<Account>getFromAccount() {
         return fromAccount;
     }
 
-    public void setFromAccount(Account fromAccount) {
+    public void setFromAccount(Optional<Account> fromAccount) {
         this.fromAccount = fromAccount;
     }
 
-    public Account getToAccount() {
+    public Optional<Account> getToAccount() {
         return toAccount;
     }
 
-    public void setToAccount(Account toAccount) {
+    public void setToAccount(Optional<Account> toAccount) {
         this.toAccount = toAccount;
     }
 

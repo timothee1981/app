@@ -1,16 +1,16 @@
 package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
 
-@RestController
+@Controller
 public class ApiController {
 
     @Autowired
