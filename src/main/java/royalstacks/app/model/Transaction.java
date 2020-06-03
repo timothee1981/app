@@ -1,11 +1,19 @@
 package royalstacks.app.model;
 
 
-import java.util.Date;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+
+@Document(collection = "Transactions")
 public class Transaction {
-    private int transactionId;
-    private Date timestamp;
+    @Id
+    private String transactionId;
+    @Indexed(direction = IndexDirection.DESCENDING)
+    private LocalDate timestamp;
     private double amount;
     private Account fromAccount;
     private Account toAccount;
@@ -13,7 +21,7 @@ public class Transaction {
 
     // CONSTRUCTORS
     // all args
-    public Transaction(int transactionId, Date timestamp, double amount, Account fromAccount, Account toAccount, String description) {
+    public Transaction(String transactionId, LocalDate timestamp, double amount, Account fromAccount, Account toAccount, String description) {
         this.transactionId = transactionId;
         this.timestamp = timestamp;
         this.amount = amount;
@@ -23,7 +31,7 @@ public class Transaction {
     }
 
     // om op te slaan in database
-    public Transaction(Date timestamp, double amount, Account fromAccount, Account toAccount, String description) {
+    public Transaction(LocalDate timestamp, double amount, Account fromAccount, Account toAccount, String description) {
         this.timestamp = timestamp;
         this.amount = amount;
         this.fromAccount = fromAccount;
@@ -39,19 +47,19 @@ public class Transaction {
 
     // GETTERS EN SETTERS
 
-    public int getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(int transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
-    public Date getTimestamp() {
+    public LocalDate getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDate timestamp) {
         this.timestamp = timestamp;
     }
 
