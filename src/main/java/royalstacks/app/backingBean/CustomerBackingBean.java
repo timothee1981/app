@@ -22,12 +22,10 @@ public class CustomerBackingBean {
     private String city;
     private String phoneNumber;
     private String BSN;
-    // hier motten we nog wat mee
     private boolean isBusinessAccountHolder;
     @ManyToOne
     private Employee accountManager;
     @ManyToMany
-    // TODO add mapping after implementing config file hibernate
     private Set<Account> account;
 
     public CustomerBackingBean(String username, String password, String firstName, String lastName, String email, String postalCode, String houseNumber, String suffix, String city, String phoneNumber, String BSN) {

@@ -19,6 +19,7 @@ import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.model.repository.AccountRepository;
 
 
+import javax.validation.constraints.AssertTrue;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,13 +47,13 @@ public class AccountServiceTest {
         assertEquals(expectedBusinessAccount, businessAccount);
     }*/
 
-     @Test
+    @Test
     public void retrieveLastIban() {
         PrivateAccount privateAccount1 = new PrivateAccount("NL79ROYA1111111111", 111);
         Optional<String> optionalAccount1 = Optional.of(privateAccount1.getAccountNumber());
         Mockito.when(accountRepository.getLastAccountNumber()).thenReturn(optionalAccount1);
         String lastIban = accountService.retrieveLastIban();
-        assertEquals(privateAccount1.getAccountNumber(),lastIban);
+        assertEquals(privateAccount1.getAccountNumber(), lastIban);
     }
 
 
@@ -68,7 +69,7 @@ public class AccountServiceTest {
 
 
     @Test
-    public void incrementIbanByOne(){
+    public void incrementIbanByOne() {
         String iban1 = "0000000000";
         String iban2 = "0000000009";
         String iban3 = "0000000099";
@@ -148,5 +149,17 @@ public class AccountServiceTest {
 
     @Test
     public void getAllAccounts() {
+    }
+
+
+    @Test
+    public void getAccountByAccountNumber() {
+        if (accountService.getAccountByAccountNumber("NL85ROYA0000000035").isPresent()) {
+            Account actual = accountService.getAccountByAccountNumber("NL85ROYA0000000035").get();
+            String expected = "NL85ROYA0000000035";
+            assertEquals(actual.getAccountNumber(), expected);
+        } else {
+            fail();
+        }
     }
 }

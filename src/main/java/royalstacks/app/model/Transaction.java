@@ -87,6 +87,8 @@ public class Transaction {
         this.toAccount = toAccount;
     }
 
+
+
     public String getDescription() {
         return description;
     }
@@ -95,3 +97,24 @@ public class Transaction {
         this.description = description;
     }
 }
+
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", fromAccount=" + fromAccount +
+                ", toAccount=" + toAccount +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                ", timestamp=" + date +
+                '}';
+    }
+}
+
+
+
+
+
+
+
