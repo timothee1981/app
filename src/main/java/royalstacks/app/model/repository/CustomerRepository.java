@@ -15,6 +15,5 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
     Optional<Customer> findCustomerByBSN(String BSN);
 
 
-    Iterable<Customer> findCustomersByAccount(Account account);
 
 }
