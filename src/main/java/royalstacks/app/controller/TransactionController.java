@@ -1,25 +1,19 @@
 package royalstacks.app.controller;
 
+import org.apache.commons.collections.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class TransactionController {
@@ -30,113 +24,109 @@ public class TransactionController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    TransactionService transactionService;
 
+
+    /**
+     * GetMapping
+     * Account van de accountId zal als eerst getoond worden als deze meegegeven wordt
+     */
     @GetMapping("/transaction")
-    public ModelAndView transactionHandler(Model model, @SessionAttribute("userid") int userId){
-        ModelAndView mav = new ModelAndView("transaction");
+    public ModelAndView transactionHandler(@RequestParam (required = false) Integer accountId,
+                                           @SessionAttribute("userid") int userId,
+                                           Model model) {
 
-        List<Account> myAccounts = getAccountsFromUserId(userId);
-        model.addAttribute("account", myAccounts);
+        ModelAndView mav = new ModelAndView("transaction");
+        showAccountsOfUserId(model, userId, accountId);
         return mav;
     }
 
+
     /**
-     * Haalt alle accounts die horen bij de userId
-     * @param userId
-     * @return
+     * PostMapping
      */
-    private List<Account> getAccountsFromUserId(int userId) {
-        Customer customer = (Customer) userService.findByUserId(userId);
-        Iterator<Account> accounts = customer.getAccount().iterator();
-        List<Account> myAccounts = new ArrayList<>();
-        while(accounts.hasNext()){
-            myAccounts.add(accounts.next());
-        }
-        return myAccounts;
-    }
-
-
     @PostMapping("/transaction")
-    public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean tbb){
-
-        Optional<Account> fromAccount = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
-        Optional<Account> toAccount = accountService.getAccountByAccountNumber(tbb.getToAccountNumber());
+    public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean tbb,
+                                           @RequestParam (required = false) Integer accountId,
+                                           @SessionAttribute("userid") int userId,
+                                           Model model) {
 
         ModelAndView mav = new ModelAndView("transaction");
+        showAccountsOfUserId(model, userId, accountId);
 
-        System.out.println("tbb: " + tbb.getFromAccountNumber());
+        Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
+        Optional<Account> toAccountOptional = accountService.getAccountByAccountNumber(tbb.getToAccountNumber());
 
-        // Check of amount groter dan 0 is
-        if (tbb.getAmount() <= 0){
-            mav.addObject("notification", "Invalid amount");
+        // Check of alle velden correct ingevuld zijn
+        if (fromAccountOptional.isPresent() && toAccountOptional.isPresent() && tbb.getAmount() > 0) {
+
+            // Als alles goed ingevuld is, zet in backing bean
+            tbb.setFromAccountId(fromAccountOptional.get().getAccountId());
+            tbb.setToAccountId(toAccountOptional.get().getAccountId());
+        } else {
+
+            // Zo niet, geef error terug
+            showNotification("Transaction failed: invalid input", mav);
             populateFields(tbb, mav);
             return mav;
         }
 
-        // Check of bankrekeningnummers bestaan en haal bijbehordende Accounts op
-        if (getAccountsByAccountNumbers (fromAccount, toAccount, tbb, mav)){
-            // als onbekend, geef error
-            return mav;
-        }
-
-        // maak een transactie object van de BackingBean
         Transaction t = tbb.Transaction();
 
-        // check of er genoeg geld op staat, zo ja maak het geld over.
-        executeTransaction(tbb, t, mav);
+        // voer transactie uit
+        if (transactionService.executeTransaction(t)) {
+            showNotification("Money successfully sent", mav);
+            // TODO sla transactie op
+        } else {
+            showNotification("Transaction failed: failed to execute", mav);
+            populateFields(tbb, mav);
+        }
         return mav;
     }
 
     /**
-     * Voert transa
-     * @param tbb
-     * @param t
-     * @param mav
+     * Haalt alle Accounts van userId op
+     * Als accountId meegegeven wordt wordt de bijbehorende Account bovenaan gezet
      */
-    private void executeTransaction(@ModelAttribute TransactionBackingBean tbb, Transaction t, ModelAndView mav) {
-        if(t.getFromAccount().hasSufficientBalance(t.getAmount())){
+    private void showAccountsOfUserId(Model model, int userId, Integer accountId) {
+        Customer customer = (Customer) userService.findByUserId(userId);
 
-            t.getFromAccount().subtractAmount(t.getAmount());
-            accountService.saveAccount(t.getFromAccount());
+        List<Account> myAccounts = IteratorUtils.toList(customer.getAccount().iterator());
 
-            t.getToAccount().addAmount(t.getAmount());
-            accountService.saveAccount(t.getToAccount());
+        // check of een accountId meegegeven wordt
+        if (accountId != null) {
+            Account account = accountService.getAccountById(accountId);
 
-            mav.addObject("notification", "Money successfully sent");
-        } else {
-            mav.addObject("notification", "Not enough money brah");
-            populateFields(tbb, mav);
+            // check of deze account bestaat
+            if(account != null){
+                Customer c = (Customer) userService.findByUserId(userId);
+
+                // check of userId holder is van account
+                if(account.getAccountHolders().contains(c)){
+
+                    // zet account boven aan en haal duplicaat uit lijst
+                    myAccounts.remove(accountService.getAccountById(accountId));
+                    myAccounts.add(0, accountService.getAccountById(accountId));
+                }
+            }
         }
+
+        model.addAttribute("account", myAccounts);
     }
 
+    /**
+     * Vul de velden met de ingevoerde waardes. Wordt gebruikt wanneer een error getoond wodt
+     * @param tbb
+     * @param mav
+     */
     private void populateFields(TransactionBackingBean tbb, ModelAndView mav) {
         mav.addObject("toAccountNumber", tbb.getToAccountNumber());
         mav.addObject("amount", tbb.getAmount());
         mav.addObject("description", tbb.getDescription());
     }
 
-    /**
-     * Haalt Accounts op die horen bij de AccountNumbers van fromAccountNumber en toAccountNumber.
-     * Zet daarna de accounts in de BackingBean zodat ervan een Transaction BackingBean gemaakt kan worden
-     */
-    private boolean getAccountsByAccountNumbers(Optional<Account> fromAccountOptional, Optional<Account> toAccountOptional,
-                                                TransactionBackingBean tbb, ModelAndView mav) {
-        if(fromAccountOptional.isEmpty()){
-            mav.addObject("notification", "fromAccountNumber is unknown");
-            populateFields(tbb, mav);
-            return true;
-        } else {
-            Account fromAccount = fromAccountOptional.get();
-            tbb.setFromAccount(fromAccount);
-        }
-        if(toAccountOptional.isEmpty()){
-            mav.addObject("notification", "toAccountNumber is unknown");
-            populateFields(tbb, mav);
-            return true;
-        } else {
-            Account toAccount = toAccountOptional.get();
-            tbb.setToAccount(toAccount);
-        }
-        return false;
+    private void showNotification(String notification, ModelAndView mav){
+        mav.addObject("notification", notification);
     }
 }

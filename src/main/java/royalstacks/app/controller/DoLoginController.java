@@ -58,7 +58,12 @@ public class DoLoginController {
         //redirect user to next page
         if (user instanceof Employee) {
             Employee employee = (Employee) user;
-            ModelAndView mav = new ModelAndView("headprivateoverview");
+            ModelAndView mav;
+            if (employee.getPosition().equals("headbusiness")){
+                mav = new ModelAndView("redirect:/headbusiness");
+            } else {
+                mav = new ModelAndView("redirect:/headprivate");
+            }
             return mav.addObject(employee);
         } else if (user instanceof Customer) {
             Customer customer = (Customer) user;

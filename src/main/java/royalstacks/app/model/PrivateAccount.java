@@ -3,7 +3,7 @@ package royalstacks.app.model;
 import javax.persistence.Entity;
 
 @Entity
-public class PrivateAccount extends Account {
+public class PrivateAccount extends Account  {
 
     // CONSTRUCTORS
     public PrivateAccount(String accountNumber, double balance) {

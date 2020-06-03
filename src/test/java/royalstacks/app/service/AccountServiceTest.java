@@ -150,16 +150,4 @@ public class AccountServiceTest {
     @Test
     public void getAllAccounts() {
     }
-
-
-    @Test
-    public void getAccountByAccountNumber() {
-        if (accountService.getAccountByAccountNumber("NL85ROYA0000000035").isPresent()) {
-            Account actual = accountService.getAccountByAccountNumber("NL85ROYA0000000035").get();
-            String expected = "NL85ROYA0000000035";
-            assertEquals(actual.getAccountNumber(), expected);
-        } else {
-            fail();
-        }
-    }
 }

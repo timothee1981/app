@@ -1,24 +1,27 @@
 package royalstacks.app.backingBean;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 
 public class TransactionBackingBean {
+
+    @Autowired
+    AccountService accountService;
 
     private int transactionId;
     private String fromAccountNumber;
     private String toAccountNumber;
-    private Account fromAccount;
-    private Account toAccount;
+    private int fromAccountId;
+    private int toAccountId;
     private double amount;
     private String description;
     private LocalDateTime date;
-
-    AccountService as = new AccountService();
 
     public TransactionBackingBean(String fromAccountNumber, String toAccountNumber, double amount, String description) {
          this.fromAccountNumber = fromAccountNumber;
@@ -29,7 +32,16 @@ public class TransactionBackingBean {
     }
 
     public Transaction Transaction(){
-        return new Transaction(date, amount, fromAccount, toAccount, description);
+        return new Transaction(fromAccountId, toAccountId, amount, description, date);
+    }
+
+    // GETTERS & SETTERS
+    public int getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
     }
 
     public String getFromAccountNumber() {
@@ -48,20 +60,20 @@ public class TransactionBackingBean {
         this.toAccountNumber = toAccountNumber;
     }
 
-    public Account getFromAccount() {
-        return fromAccount;
+    public int getFromAccountId() {
+        return fromAccountId;
     }
 
-    public void setFromAccount(Account fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setFromAccountId(int fromAccountId) {
+        this.fromAccountId = fromAccountId;
     }
 
-    public Account getToAccount() {
-        return toAccount;
+    public int getToAccountId() {
+        return toAccountId;
     }
 
-    public void setToAccount(Account toAccount) {
-        this.toAccount = toAccount;
+    public void setToAccountId(int toAccountId) {
+        this.toAccountId = toAccountId;
     }
 
     public double getAmount() {
