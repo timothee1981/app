@@ -25,6 +25,10 @@ public class Employee extends User {
         return position;
     }
 
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +

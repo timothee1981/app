@@ -97,12 +97,13 @@ class DoLoginControllerTest {
         ).andExpect(status().isOk()).andExpect(view().name("homepage"));
     }
 
-/*    @Test
-    void doLoginHandlerEmployeeLoginCorrect() throws Exception {
+    @Test
+    void doLoginHandlerHeadBusinessLoginCorrect() throws Exception {
         //ARRANGE
-        String username = "employee";
+        String username = "headbusiness";
         String password = "correct";
         Employee employee = new Employee();
+        employee.setPosition("headbusiness");
         employee.setPassword("correct");
         given(service.findByUsername(username)).willReturn(employee);
 
@@ -111,8 +112,26 @@ class DoLoginControllerTest {
                 post("/doLogin")
                         .param("inputUsername", username)
                         .param("inputPassword", password)
-        ).andExpect(status().isOk()).andExpect(view().name("headprivateoverview"));
-    }*/
+        ).andExpect(status().isMovedTemporarily()).andExpect(view().name("redirect:/headbusiness"));
+    }
+
+    @Test
+    void doLoginHandlerHeadPrivateLoginCorrect() throws Exception {
+        //ARRANGE
+        String username = "headprivate";
+        String password = "correct";
+        Employee employee = new Employee();
+        employee.setPosition("headprivate");
+        employee.setPassword("correct");
+        given(service.findByUsername(username)).willReturn(employee);
+
+        //ACT & ASSERT
+        mvc.perform(
+                post("/doLogin")
+                        .param("inputUsername", username)
+                        .param("inputPassword", password)
+        ).andExpect(status().isMovedTemporarily()).andExpect(view().name("redirect:/headprivate"));
+    }
 
     @Test
     void doLoginHandlerCustomerLoginCorrect() throws Exception {
