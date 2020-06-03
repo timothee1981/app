@@ -1,11 +1,19 @@
 package royalstacks.app.model;
 
 
-import java.util.Date;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
+@Document(collection = "Transactions")
 public class Transaction {
-    private int transactionId;
-    private Date timestamp;
+    @Id
+    private String transactionId;
+    @Indexed(direction = IndexDirection.DESCENDING)
+    private LocalDateTime date;
     private double amount;
     private Account fromAccount;
     private Account toAccount;
@@ -13,9 +21,9 @@ public class Transaction {
 
     // CONSTRUCTORS
     // all args
-    public Transaction(int transactionId, Date timestamp, double amount, Account fromAccount, Account toAccount, String description) {
+    public Transaction(String transactionId, LocalDateTime date, double amount, Account fromAccount, Account toAccount, String description) {
         this.transactionId = transactionId;
-        this.timestamp = timestamp;
+        this.date = date;
         this.amount = amount;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
@@ -23,8 +31,8 @@ public class Transaction {
     }
 
     // om op te slaan in database
-    public Transaction(Date timestamp, double amount, Account fromAccount, Account toAccount, String description) {
-        this.timestamp = timestamp;
+    public Transaction(LocalDateTime date, double amount, Account fromAccount, Account toAccount, String description) {
+        this.date = date;
         this.amount = amount;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
@@ -39,20 +47,20 @@ public class Transaction {
 
     // GETTERS EN SETTERS
 
-    public int getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(int transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public double getAmount() {
@@ -79,6 +87,8 @@ public class Transaction {
         this.toAccount = toAccount;
     }
 
+
+
     public String getDescription() {
         return description;
     }
@@ -86,4 +96,24 @@ public class Transaction {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", fromAccount=" + fromAccount +
+                ", toAccount=" + toAccount +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
+
+
+
+
+
+
+

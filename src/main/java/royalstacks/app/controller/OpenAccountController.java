@@ -63,6 +63,7 @@ public class OpenAccountController {
         if(!accountholder.isBusinessAccountHolder()) {
             accountholder.setBusinessAccountHolder(true);
             if(employeeRepository.findAll().iterator().hasNext()) {
+                //Er moet geen Account Manager aangemaakt kunnen worden als er geen account manager is.
                 accountholder.setAccountManager(employeeRepository.findAll().iterator().next());
             }
         }

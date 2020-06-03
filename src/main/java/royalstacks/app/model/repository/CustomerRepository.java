@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.CustomerAndTotalBalance;
 
