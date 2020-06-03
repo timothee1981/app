@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>myaccounts</title>
+
+    <link type="text/css" href="css/navbar.css" rel="stylesheet" />
+
+
     <style>
         body{
             padding-top: 20px;
@@ -11,11 +15,6 @@
             margin: auto;
             width: 100%;
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
-        }
-
-        #Account_overview{
-            width: 40%;
-            margin-left: 30%;
         }
 
         li{
@@ -34,37 +33,48 @@
         input[type=submit]:focus{
             background-color: #ddd;
             outline: none;
-
         }
 
+        #Account_overview{
+            width: 40%;
+            margin-left: 30%;
+        }
     </style>
-    <link type="text/css" href="css/navbar.css" rel="stylesheet" />
+
+
+
 </head>
 <body th:object="${customer}">
 
-<div id="navbar">
-    <a href="/logout">logout</a>
-    <span id="logoNavbar"></span>
-</div>
+    <div id="navbar" >
+        <span id="logoNavbar"></span>
+    </div>
 
 
-<div id="Account_overview">
 
-    <h1>Account overview</h1>
-    <h2>Hello <span th:text="${customer.username}"/></h2>
-    <ul>
-        <li th:each="account : ${list}">
-            <div>
-            <tr>Iban Account:<span th:text="${account.accountNumber}"/></tr>
-            <tr>Account Balance:     <span th:text="${account.balance}"/></tr>
-            </div>
-    </ul>
+    <div id="Account_overview">
 
-    <form th:action="@{openaccount}"  method="get">
-        <input type="submit" name="submitbutton" value="Create a new account" />
-    </form>
-</div>
+        <h1>Account overview</h1>
+        <h2>Hello <span th:text="${customer.username}"/></h2>
 
-<script src="js/navbar.js"></script>
+        <ul>
+            <li th:each="account : ${list}">
+                <div>
+                <tr>Iban Account:<span th:text="${account.accountNumber}"/></tr>
+                <tr>Account Balance:     <span th:text="${account.balance}"/></tr>
+                </div>
+        </ul>
+
+        <form th:action="@{openaccount}" method="get">
+            <input type="submit" name="submitbutton" value="Create a new account" />
+        </form>
+
+        <form th:action="@{logoutAction}" method="post">
+            <input type="submit" name="submitbutton" value="Logout"/>
+        </form>
+
+    </div>
+
+    <script src="js/navbar.js"></script>
 </body>
 </html>
