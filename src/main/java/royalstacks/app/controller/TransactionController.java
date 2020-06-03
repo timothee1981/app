@@ -10,14 +10,10 @@ import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
-import royalstacks.app.model.User;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
-
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.StreamSupport;
 
 @Controller
 public class TransactionController {
@@ -64,12 +60,14 @@ public class TransactionController {
 
         // Check of alle velden correct ingevuld zijn
         if (fromAccountOptional.isPresent() && toAccountOptional.isPresent() && tbb.getAmount() > 0) {
+
             // Als alles goed ingevuld is, zet in backing bean
             tbb.setFromAccountId(fromAccountOptional.get().getAccountId());
             tbb.setToAccountId(toAccountOptional.get().getAccountId());
         } else {
+
             // Zo niet, geef error terug
-            mav.addObject("notification", "Transaction failed: invalid input");
+            showNotification("Transaction failed: invalid input", mav);
             populateFields(tbb, mav);
             return mav;
         }
@@ -78,16 +76,20 @@ public class TransactionController {
 
         // voer transactie uit
         if (transactionService.executeTransaction(t)) {
-            mav.addObject("notification", "Money successfully sent");
+            showNotification("Money successfully sent", mav);
             // TODO sla transactie op
         } else {
-            mav.addObject("notification", "Transaction failed: failed to execute");
+            showNotification("Transaction failed: failed to execute", mav);
             populateFields(tbb, mav);
         }
         return mav;
     }
 
-    private void showAccountsOfUserId(Model model, @SessionAttribute("userid") int userId, Integer accountId) {
+    /**
+     * Haalt alle Accounts van userId op
+     * Als accountId meegegeven wordt wordt de bijbehorende Account bovenaan gezet
+     */
+    private void showAccountsOfUserId(Model model, int userId, Integer accountId) {
         Customer customer = (Customer) userService.findByUserId(userId);
 
         List<Account> myAccounts = IteratorUtils.toList(customer.getAccount().iterator());
@@ -104,8 +106,8 @@ public class TransactionController {
                 if(account.getAccountHolders().contains(c)){
 
                     // zet account boven aan en haal duplicaat uit lijst
-                    myAccounts.add(0, accountService.getAccountById(accountId));
                     myAccounts.remove(accountService.getAccountById(accountId));
+                    myAccounts.add(0, accountService.getAccountById(accountId));
                 }
             }
         }
@@ -113,9 +115,18 @@ public class TransactionController {
         model.addAttribute("account", myAccounts);
     }
 
+    /**
+     * Vul de velden met de ingevoerde waardes. Wordt gebruikt wanneer een error getoond wodt
+     * @param tbb
+     * @param mav
+     */
     private void populateFields(TransactionBackingBean tbb, ModelAndView mav) {
         mav.addObject("toAccountNumber", tbb.getToAccountNumber());
         mav.addObject("amount", tbb.getAmount());
         mav.addObject("description", tbb.getDescription());
+    }
+
+    private void showNotification(String notification, ModelAndView mav){
+        mav.addObject("notification", notification);
     }
 }
