@@ -3,6 +3,7 @@ package royalstacks.app.model;
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity

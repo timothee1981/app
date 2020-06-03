@@ -1,26 +1,22 @@
 package royalstacks.app.controller;
 
+import org.apache.commons.collections.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
+import royalstacks.app.model.User;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.StreamSupport;
 
 @Controller
@@ -36,40 +32,32 @@ public class TransactionController {
     TransactionService transactionService;
 
 
+    /**
+     * GetMapping
+     * Account van de accountId zal als eerst getoond worden als deze meegegeven wordt
+     */
     @GetMapping("/transaction")
-    public ModelAndView transactionHandler(Model model, @SessionAttribute("userid") int userId) {
-        ModelAndView mav = new ModelAndView("transaction");
+    public ModelAndView transactionHandler(@RequestParam (required = false) Integer accountId,
+                                           @SessionAttribute("userid") int userId,
+                                           Model model) {
 
-        List<Account> myAccounts = getAccountsFromUserId(userId);
-        model.addAttribute("account", myAccounts);
+        ModelAndView mav = new ModelAndView("transaction");
+        showAccountsOfUserId(model, userId, accountId);
         return mav;
     }
 
-    /**
-     * Haalt alle accounts die horen bij de userId
-     *
-     * @param userId
-     * @return
-     */
-    private List<Account> getAccountsFromUserId(int userId) {
-        Customer customer = (Customer) userService.findByUserId(userId);
-        Iterator<Account> accounts = customer.getAccount().iterator();
-        List<Account> myAccounts = new ArrayList<>();
-        while (accounts.hasNext()) {
-            myAccounts.add(accounts.next());
-        }
-        return myAccounts;
-    }
 
     /**
      * PostMapping
-     *
-     * @param tbb
-     * @return
      */
     @PostMapping("/transaction")
-    public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean tbb, @SessionAttribute("userid") int userId) {
+    public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean tbb,
+                                           @RequestParam (required = false) Integer accountId,
+                                           @SessionAttribute("userid") int userId,
+                                           Model model) {
+
         ModelAndView mav = new ModelAndView("transaction");
+        showAccountsOfUserId(model, userId, accountId);
 
         Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
         Optional<Account> toAccountOptional = accountService.getAccountByAccountNumber(tbb.getToAccountNumber());
@@ -99,6 +87,31 @@ public class TransactionController {
         return mav;
     }
 
+    private void showAccountsOfUserId(Model model, @SessionAttribute("userid") int userId, Integer accountId) {
+        Customer customer = (Customer) userService.findByUserId(userId);
+
+        List<Account> myAccounts = IteratorUtils.toList(customer.getAccount().iterator());
+
+        // check of een accountId meegegeven wordt
+        if (accountId != null) {
+            Account account = accountService.getAccountById(accountId);
+
+            // check of deze account bestaat
+            if(account != null){
+                Customer c = (Customer) userService.findByUserId(userId);
+
+                // check of userId holder is van account
+                if(account.getAccountHolders().contains(c)){
+
+                    // zet account boven aan en haal duplicaat uit lijst
+                    myAccounts.add(0, accountService.getAccountById(accountId));
+                    myAccounts.remove(accountService.getAccountById(accountId));
+                }
+            }
+        }
+
+        model.addAttribute("account", myAccounts);
+    }
 
     private void populateFields(TransactionBackingBean tbb, ModelAndView mav) {
         mav.addObject("toAccountNumber", tbb.getToAccountNumber());
