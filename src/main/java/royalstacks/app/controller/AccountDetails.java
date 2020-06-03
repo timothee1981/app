@@ -3,16 +3,14 @@ package royalstacks.app.controller;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountDetailsBackingBean;
 import royalstacks.app.backingBean.TransactionBackingBean;
-import royalstacks.app.model.Account;
-import royalstacks.app.model.BusinessAccount;
-import royalstacks.app.model.Customer;
-import royalstacks.app.model.PrivateAccount;
+import royalstacks.app.model.*;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
@@ -31,31 +29,29 @@ public class AccountDetails {
     }
 
     @GetMapping("/accountdetails")
-    public ModelAndView accountDetailsHandler(Model model,  @SessionAttribute("userid") int userId) {
+    public ModelAndView accountDetailsHandler( @SessionAttribute("userid") int userId, @RequestParam(value = "accountNumber",required = false)String accountNumber) {
 
         ModelAndView mav = new ModelAndView("/accountdetails");
-        String accountNummer =  "NL31ROYA0000001201";
-        Optional<Account> account = accountService.getAccountByAccountNumber(accountNummer);
-        Account myAccount = null;
-        if(account.isPresent())
-            myAccount = account.get();
-        Iterator<Customer> customerIterator = myAccount.getAccountHolders().iterator();
-        List<Customer> accountholders = new ArrayList<>();
-        while(customerIterator.hasNext()){
-            accountholders.add(customerIterator.next());
+        Customer customer = (Customer) userService.findByUserId(userId);
+        Iterator<Account> accounts = customer.getAccount().iterator();
+        List<Account> myAccounts = new ArrayList<>();
+        while(accounts.hasNext()){
+            myAccounts.add(accounts.next());
         }
 
 
-
-
         //TODO: get transactions corresponding to this account from nosql DB en show only ten last transactio
-        mav.addObject("account",myAccount);
-        mav.addObject("AccountHolderlist",accountholders);
+        mav.addObject("accounts",myAccounts);
 
         return mav;
 
 
     }
+
+    //maak een post mappingkk
+
+
+
 
 
 
