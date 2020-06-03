@@ -39,8 +39,11 @@ public class AccountDetails {
         Account myAccount = null;
         if(account.isPresent())
             myAccount = account.get();
-        Set<Customer> accountholders =  myAccount.getAccountHolders();
-
+        Iterator<Customer> customerIterator = myAccount.getAccountHolders().iterator();
+        List<Customer> accountholders = new ArrayList<>();
+        while(customerIterator.hasNext()){
+            accountholders.add(customerIterator.next());
+        }
 
 
 
