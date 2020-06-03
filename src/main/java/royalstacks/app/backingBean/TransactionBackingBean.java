@@ -4,6 +4,7 @@ import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TransactionBackingBean {
@@ -15,7 +16,7 @@ public class TransactionBackingBean {
     private Account toAccount;
     private double amount;
     private String description;
-    private Date date;
+    private LocalDateTime date;
 
     AccountService as = new AccountService();
 
@@ -24,11 +25,11 @@ public class TransactionBackingBean {
          this.toAccountNumber = toAccountNumber;
          this.amount = amount;
          this.description = description;
-         this.date = new Date();
+         this.date = LocalDateTime.now();
     }
 
     public Transaction Transaction(){
-        return new Transaction(fromAccount, toAccount, amount, description, date);
+        return new Transaction(date, amount, fromAccount, toAccount, description);
     }
 
     public String getFromAccountNumber() {
@@ -79,11 +80,11 @@ public class TransactionBackingBean {
         this.description = description;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

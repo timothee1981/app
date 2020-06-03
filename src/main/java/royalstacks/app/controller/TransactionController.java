@@ -15,6 +15,7 @@ import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,15 +35,24 @@ public class TransactionController {
     public ModelAndView transactionHandler(Model model, @SessionAttribute("userid") int userId){
         ModelAndView mav = new ModelAndView("transaction");
 
-        Customer customer =(Customer) userService.findByUserId(userId);
+        List<Account> myAccounts = getAccountsFromUserId(userId);
+        model.addAttribute("account", myAccounts);
+        return mav;
+    }
+
+    /**
+     * Haalt alle accounts die horen bij de userId
+     * @param userId
+     * @return
+     */
+    private List<Account> getAccountsFromUserId(int userId) {
+        Customer customer = (Customer) userService.findByUserId(userId);
         Iterator<Account> accounts = customer.getAccount().iterator();
         List<Account> myAccounts = new ArrayList<>();
         while(accounts.hasNext()){
             myAccounts.add(accounts.next());
         }
-        System.out.println(myAccounts.toString());
-        model.addAttribute("account", myAccounts);
-        return mav;
+        return myAccounts;
     }
 
 
@@ -77,6 +87,12 @@ public class TransactionController {
         return mav;
     }
 
+    /**
+     * Voert transa
+     * @param tbb
+     * @param t
+     * @param mav
+     */
     private void executeTransaction(@ModelAttribute TransactionBackingBean tbb, Transaction t, ModelAndView mav) {
         if(t.getFromAccount().hasSufficientBalance(t.getAmount())){
 
@@ -93,7 +109,7 @@ public class TransactionController {
         }
     }
 
-    private void populateFields(@ModelAttribute TransactionBackingBean tbb, ModelAndView mav) {
+    private void populateFields(TransactionBackingBean tbb, ModelAndView mav) {
         mav.addObject("toAccountNumber", tbb.getToAccountNumber());
         mav.addObject("amount", tbb.getAmount());
         mav.addObject("description", tbb.getDescription());
@@ -103,7 +119,7 @@ public class TransactionController {
      * Haalt Accounts op die horen bij de AccountNumbers van fromAccountNumber en toAccountNumber.
      * Zet daarna de accounts in de BackingBean zodat ervan een Transaction BackingBean gemaakt kan worden
      */
-    private boolean getAccountsByAccountNumbers(@ModelAttribute Optional<Account> fromAccountOptional, Optional<Account> toAccountOptional,
+    private boolean getAccountsByAccountNumbers(Optional<Account> fromAccountOptional, Optional<Account> toAccountOptional,
                                                 TransactionBackingBean tbb, ModelAndView mav) {
         if(fromAccountOptional.isEmpty()){
             mav.addObject("notification", "fromAccountNumber is unknown");

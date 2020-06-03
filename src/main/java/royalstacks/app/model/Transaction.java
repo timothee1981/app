@@ -1,48 +1,74 @@
 package royalstacks.app.model;
 
 
-import java.util.Date;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
+@Document(collection = "Transactions")
 public class Transaction {
-    private int transactionId;
+    @Id
+    private String transactionId;
+    @Indexed(direction = IndexDirection.DESCENDING)
+    private LocalDateTime date;
+    private double amount;
     private Account fromAccount;
     private Account toAccount;
-    private double amount;
     private String description;
-    private Date date;
-
 
     // CONSTRUCTORS
     // all args
-    public Transaction(int transactionId, Account fromAccount, Account toAccount, double amount, String description, Date date) {
+    public Transaction(String transactionId, LocalDateTime date, double amount, Account fromAccount, Account toAccount, String description) {
         this.transactionId = transactionId;
+        this.date = date;
+        this.amount = amount;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
-        this.amount = amount;
         this.description = description;
-        this.date = date;
     }
 
-    // zonder id
-    public Transaction(Account fromAccount, Account toAccount, double amount, String description, Date date) {
+    // om op te slaan in database
+    public Transaction(LocalDateTime date, double amount, Account fromAccount, Account toAccount, String description) {
+        this.date = date;
+        this.amount = amount;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
-        this.amount = amount;
         this.description = description;
-        this.date = date;
     }
 
-    // default
-    public Transaction() {
-    }
+    //default
+    public Transaction(){}
 
-    // GETTERS & SETTERS
-    public int getTransactionId() {
+    // METHODS
+
+
+    // GETTERS EN SETTERS
+
+    public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(int transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public Account getFromAccount() {
@@ -61,13 +87,7 @@ public class Transaction {
         this.toAccount = toAccount;
     }
 
-    public double getAmount() {
-        return amount;
-    }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
 
     public String getDescription() {
         return description;
@@ -75,14 +95,6 @@ public class Transaction {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
 
@@ -94,7 +106,7 @@ public class Transaction {
                 ", toAccount=" + toAccount +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
-                ", timestamp=" + date +
+                ", date=" + date +
                 '}';
     }
 }
