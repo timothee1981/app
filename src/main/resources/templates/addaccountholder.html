@@ -19,15 +19,16 @@
 
 
     <!-- label accountNumber -->
-    <label for="accountNumber">Account number</label>
+    <label for="accountNumber">Account to which new account holder will be added </label>
     <!-- maakt veld voor accountNumber -->
     <select id="accountNumber" name="accountNumber" th:value="${accountNumber}">
         <!-- vult veld met rekeningnummer? -->
         <option th:each="account : ${account}" th:value="${account.accountNumber}" th:text="${account.accountNumber}"></option>
     </select>
+    <br>
 
 
-    <label for="inviteeUsername">Username of the new accountholder</label>
+    <label for="inviteeUsername">New accountholder's username</label>
     <input
             type="text"
             name="inviteeUsername"
@@ -36,8 +37,9 @@
             th:value="${inviteeUsername}"
             required
     />
+    <br>
 
-    <label for="verificationCode">Verification code</label>
+    <label for="verificationCode">Your verification code</label>
     <input
             type="number"
             placeholder="12345"
@@ -49,6 +51,7 @@
             min="0"
             required
     />
+    <br>
 
     <td><button type="submit" name="submit" id="submitButton" value="Send invitation">Send invitation</button></td>
 </form>
