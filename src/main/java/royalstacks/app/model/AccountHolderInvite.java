@@ -1,6 +1,8 @@
 package royalstacks.app.model;
 
 public class AccountHolderInvite {
+
+    // TODO annotaties kardinaliteit?
     private Customer invitee;
     private Account account;
     private String verificationCode;
@@ -41,5 +43,14 @@ public class AccountHolderInvite {
 
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountHolderInvite{" +
+                "invitee=" + invitee +
+                ", account=" + account +
+                ", verificationCode='" + verificationCode + '\'' +
+                '}';
     }
 }

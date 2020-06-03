@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
@@ -19,14 +21,14 @@ public class TransactionBackingBean {
     private Optional<Account> toAccount;
     private double amount;
     private String description;
-    private Date date;
+    private LocalDateTime date;
 
     public TransactionBackingBean(String fromAccountNumber, String toAccountNumber, double amount, String description) {
          this.fromAccountNumber = fromAccountNumber;
          this.toAccountNumber = toAccountNumber;
          this.amount = amount;
          this.description = description;
-         this.date = new Date();
+         this.date = LocalDateTime.now();
     }
 
     public Optional<Transaction> Transaction(){
@@ -54,7 +56,6 @@ public class TransactionBackingBean {
 
         return Optional.of(new Transaction(fromAccount, toAccount, amount, description, date));
     }
-
 
     public String getFromAccountNumber() {
         return fromAccountNumber;
@@ -104,11 +105,11 @@ public class TransactionBackingBean {
         this.description = description;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
