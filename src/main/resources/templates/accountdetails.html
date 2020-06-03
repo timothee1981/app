@@ -20,8 +20,8 @@
     </li>
    <!-- <span th:text="*{accountType}"></span>-->
     <span th:text="${dateTime}"/>
-    <span th:text="${accountNumber}">Iban comes here</span><br>
-    <span th:text="${balance}">Saldo will be there</span><br>
+    <span th:text="*{accountNumber}">Iban comes here</span><br>
+    <span th:text="*{balance}">Saldo will be there</span><br>
     <h2>Transaction</h2>
     <span>List of last ten transaction</span><br>
     <form th:action="@{transaction}"  method="get">
