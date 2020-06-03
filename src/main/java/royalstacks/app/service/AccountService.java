@@ -24,6 +24,10 @@ public class AccountService {
         return accountRepository.getAccountByAccountNumber(accountNumber);
     }
 
+    public Optional<Integer> getAccountIdByAccountNumber(String accountNumber){
+        return accountRepository.getAccountIdByAccountNumber(accountNumber);
+    }
+
     public String retrieveLastIban(){
         Optional<String> accountNumber = accountRepository.getLastAccountNumber();
         if (accountNumber.isPresent()) {
