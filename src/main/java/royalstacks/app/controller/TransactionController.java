@@ -13,6 +13,7 @@ import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,9 @@ public class TransactionController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    TransactionService transactionService;
 
 
     @GetMapping("/transaction")
@@ -65,51 +69,36 @@ public class TransactionController {
      */
     @PostMapping("/transaction")
     public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean tbb, @SessionAttribute("userid") int userId) {
-
         ModelAndView mav = new ModelAndView("transaction");
 
-        // maak Optional<Account> van ingevoerde accountNummers en geef deze terug aan de BackingBean
-        tbb.setFromAccount(accountService.getAccountByAccountNumber(tbb.getFromAccountNumber()));
-        tbb.setToAccount(accountService.getAccountByAccountNumber(tbb.getToAccountNumber()));
+        Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
+        Optional<Account> toAccountOptional = accountService.getAccountByAccountNumber(tbb.getToAccountNumber());
 
-        // Check of Transaction valid is, als dat niet zo is is de backingbean leeg
-        if(tbb.Transaction().isEmpty()) {
-            mav.addObject("notification", "Invalid Transaction");
+        // Check of alle velden correct ingevuld zijn
+        if (fromAccountOptional.isPresent() && toAccountOptional.isPresent() && tbb.getAmount() > 0) {
+            // Als alles goed ingevuld is, zet in backing bean
+            tbb.setFromAccountId(fromAccountOptional.get().getAccountId());
+            tbb.setToAccountId(toAccountOptional.get().getAccountId());
+        } else {
+            // Zo niet, geef error terug
+            mav.addObject("notification", "Transaction failed: invalid input");
             populateFields(tbb, mav);
             return mav;
         }
 
-        // Check of fromAccount daadwerkelijk van de ingelogde gebruiker is
-        if(!tbb.Transaction().get().getFromAccount().getAccountHolders().contains(userService.findByUserId(userId))){
-            mav.addObject("notification", "YOU'RE STEALING MONEY! WE'RE CALLING THE POLICE!");
+        Transaction t = tbb.Transaction();
+
+        // voer transactie uit
+        if (transactionService.executeTransaction(t)) {
+            mav.addObject("notification", "Money successfully sent");
+            // TODO sla transactie op
+        } else {
+            mav.addObject("notification", "Transaction failed: failed to execute");
             populateFields(tbb, mav);
-            return mav;
         }
-
-        Transaction t = tbb.Transaction().get();
-
-        t.getFromAccount().subtractAmount(t.getAmount());
-        accountService.saveAccount(t.getFromAccount());
-
-        t.getToAccount().addAmount(t.getAmount());
-        accountService.saveAccount(t.getToAccount());
-
-        mav.addObject("notification", "Money successfully sent");
-        // TODO sla transactie op
-
         return mav;
     }
 
-    /**
-     * Voert transa
-     *
-     * @param tbb
-     * @param t
-     * @param mav
-     */
-    private void executeTransaction(@ModelAttribute TransactionBackingBean tbb, Transaction t, ModelAndView mav) {
-
-    }
 
     private void populateFields(TransactionBackingBean tbb, ModelAndView mav) {
         mav.addObject("toAccountNumber", tbb.getToAccountNumber());

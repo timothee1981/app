@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 public class Transaction {
     @Id
     private String transactionId;
-    private Account fromAccount;
-    private Account toAccount;
+    private int fromAccountId;
+    private int toAccountId;
     private double amount;
     private String description;
     @Indexed(direction = IndexDirection.DESCENDING)
@@ -21,19 +21,19 @@ public class Transaction {
 
     // CONSTRUCTORS
     // all args
-    public Transaction(String transactionId, Account fromAccount, Account toAccount, double amount, String description, LocalDateTime date) {
+    public Transaction(String transactionId, int fromAccountId, int toAccountId, double amount, String description, LocalDateTime date) {
         this.transactionId = transactionId;
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
+        this.fromAccountId = fromAccountId;
+        this.toAccountId = toAccountId;
         this.amount = amount;
         this.description = description;
         this.date = date;
     }
 
     // om op te slaan in database
-    public Transaction(Account fromAccount, Account toAccount, double amount, String description, LocalDateTime date) {
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
+    public Transaction(int fromAccountId, int toAccountId, double amount, String description, LocalDateTime date) {
+        this.fromAccountId = fromAccountId;
+        this.toAccountId = toAccountId;
         this.amount = amount;
         this.description = description;
         this.date = date;
@@ -47,6 +47,7 @@ public class Transaction {
 
     // GETTERS EN SETTERS
 
+
     public String getTransactionId() {
         return transactionId;
     }
@@ -55,12 +56,20 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public int getFromAccountId() {
+        return fromAccountId;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setFromAccountId(int fromAccountId) {
+        this.fromAccountId = fromAccountId;
+    }
+
+    public int getToAccountId() {
+        return toAccountId;
+    }
+
+    public void setToAccountId(int toAccountId) {
+        this.toAccountId = toAccountId;
     }
 
     public double getAmount() {
@@ -71,24 +80,6 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Account getFromAccount() {
-        return fromAccount;
-    }
-
-    public void setFromAccount(Account fromAccount) {
-        this.fromAccount = fromAccount;
-    }
-
-    public Account getToAccount() {
-        return toAccount;
-    }
-
-    public void setToAccount(Account toAccount) {
-        this.toAccount = toAccount;
-    }
-
-
-
     public String getDescription() {
         return description;
     }
@@ -97,13 +88,20 @@ public class Transaction {
         this.description = description;
     }
 
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 
     @Override
     public String toString() {
         return "Transaction{" +
-                "transactionId=" + transactionId +
-                ", fromAccount=" + fromAccount +
-                ", toAccount=" + toAccount +
+                "transactionId='" + transactionId + '\'' +
+                ", fromAccountId=" + fromAccountId +
+                ", toAccountId=" + toAccountId +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
                 ", date=" + date +

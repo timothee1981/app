@@ -17,8 +17,8 @@ public class TransactionBackingBean {
     private int transactionId;
     private String fromAccountNumber;
     private String toAccountNumber;
-    private Optional<Account> fromAccount;
-    private Optional<Account> toAccount;
+    private int fromAccountId;
+    private int toAccountId;
     private double amount;
     private String description;
     private LocalDateTime date;
@@ -31,30 +31,17 @@ public class TransactionBackingBean {
          this.date = LocalDateTime.now();
     }
 
-    public Optional<Transaction> Transaction(){
+    public Transaction Transaction(){
+        return new Transaction(fromAccountId, toAccountId, amount, description, date);
+    }
 
-        Account fromAccount;
-        Account toAccount;
+    // GETTERS & SETTERS
+    public int getTransactionId() {
+        return transactionId;
+    }
 
-        // check of beide accounts bestaan
-        if (this.fromAccount.isPresent() && this.toAccount.isPresent()) {
-            fromAccount = this.fromAccount.get();
-            toAccount = this.toAccount.get();
-        } else {
-            return Optional.empty();
-        }
-
-        // check of Account niet naar zichzelf stuurt
-        if (toAccount == fromAccount){
-            return Optional.empty();
-        }
-
-        // check of amount valide is en fromAccount genoeg geld heeft
-        if (amount <= 0 && !fromAccount.hasSufficientBalance(amount)){
-            return Optional.empty();
-        }
-
-        return Optional.of(new Transaction(fromAccount, toAccount, amount, description, date));
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
     }
 
     public String getFromAccountNumber() {
@@ -73,20 +60,20 @@ public class TransactionBackingBean {
         this.toAccountNumber = toAccountNumber;
     }
 
-    public Optional<Account>getFromAccount() {
-        return fromAccount;
+    public int getFromAccountId() {
+        return fromAccountId;
     }
 
-    public void setFromAccount(Optional<Account> fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setFromAccountId(int fromAccountId) {
+        this.fromAccountId = fromAccountId;
     }
 
-    public Optional<Account> getToAccount() {
-        return toAccount;
+    public int getToAccountId() {
+        return toAccountId;
     }
 
-    public void setToAccount(Optional<Account> toAccount) {
-        this.toAccount = toAccount;
+    public void setToAccountId(int toAccountId) {
+        this.toAccountId = toAccountId;
     }
 
     public double getAmount() {
