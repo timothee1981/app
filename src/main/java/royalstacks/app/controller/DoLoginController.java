@@ -60,9 +60,9 @@ public class DoLoginController {
             Employee employee = (Employee) user;
             ModelAndView mav;
             if (employee.getPosition().equals("headbusiness")){
-                mav = new ModelAndView("headbusinessoverview");
+                mav = new ModelAndView("redirect:/headbusiness");
             } else {
-                mav = new ModelAndView("headprivateoverview");
+                mav = new ModelAndView("redirect:/headprivate");
             }
             return mav.addObject(employee);
         } else if (user instanceof Customer) {
