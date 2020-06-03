@@ -10,7 +10,9 @@ import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
+import royalstacks.app.model.User;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
 import java.util.*;
@@ -26,6 +28,9 @@ public class TransactionController {
 
     @Autowired
     TransactionService transactionService;
+
+    @Autowired
+    CustomerService customerService;
 
 
     /**
@@ -89,36 +94,35 @@ public class TransactionController {
      * Haalt alle Accounts van userId op
      * Als accountId meegegeven wordt wordt de bijbehorende Account bovenaan gezet
      */
+    @SuppressWarnings("unchecked")
     private void showAccountsOfUserId(Model model, int userId, Integer accountId) {
-        Customer customer = (Customer) userService.findByUserId(userId);
+        Optional<Customer> customerOptional = customerService.findCustomerByUserId(userId);
+        if(customerOptional.isPresent()) {
+            Customer currentUser = customerOptional.get();
+            List<Account> myAccounts = IteratorUtils.toList(currentUser.getAccount().iterator());
 
-        List<Account> myAccounts = IteratorUtils.toList(customer.getAccount().iterator());
+            // check of een accountId meegegeven wordt
+            if (accountId != null) {
+                Account account = accountService.getAccountById(accountId);
 
-        // check of een accountId meegegeven wordt
-        if (accountId != null) {
-            Account account = accountService.getAccountById(accountId);
+                // check of deze account bestaat
+                if (account != null) {
 
-            // check of deze account bestaat
-            if(account != null){
-                Customer c = (Customer) userService.findByUserId(userId);
+                    // check of userId daadwerkelijk holder is van account
+                    if (account.getAccountHolders().contains(currentUser)) {
 
-                // check of userId holder is van account
-                if(account.getAccountHolders().contains(c)){
-
-                    // zet account boven aan en haal duplicaat uit lijst
-                    myAccounts.remove(accountService.getAccountById(accountId));
-                    myAccounts.add(0, accountService.getAccountById(accountId));
+                        // zet account boven aan en haal duplicaat uit lijst
+                        myAccounts.remove(accountService.getAccountById(accountId));
+                        myAccounts.add(0, accountService.getAccountById(accountId));
+                    }
                 }
             }
+            model.addAttribute("account", myAccounts);
         }
-
-        model.addAttribute("account", myAccounts);
     }
 
     /**
      * Vul de velden met de ingevoerde waardes. Wordt gebruikt wanneer een error getoond wodt
-     * @param tbb
-     * @param mav
      */
     private void populateFields(TransactionBackingBean tbb, ModelAndView mav) {
         mav.addObject("toAccountNumber", tbb.getToAccountNumber());
