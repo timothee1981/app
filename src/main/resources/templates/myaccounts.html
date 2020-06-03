@@ -36,10 +36,12 @@
 <body th:object="${customer}">
 <h1>Account overview</h1>
 <h2>Hello <span th:text="${customer.username}"/></h2>
+<form th:action="@{/accountdetails}">
 <ul>
     <li th:each="account : ${list}">
+
         <div>
-        <tr>Iban Account:<span th:text="${account.accountNumber}"/></tr>
+        <tr>Iban Account:<button type="submit" th:name="accountNumber" th:value="${account.accountNumber}"> <span th:text="${account.accountNumber}"/></button></tr>
         <tr>Account Balance:     <span th:text="${account.balance}"/></tr>
         </div>
 </ul>
