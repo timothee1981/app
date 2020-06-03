@@ -53,23 +53,6 @@ public class SignUpController {
         return mav;
     }
 
-    @GetMapping("/signup/u_check")
-    @ResponseBody
-    public String usernameCheckHandler(@RequestParam String username){
-        Customer c = new Customer();
-        c.setUsername(username);
-        return String.valueOf(c.isUsernameFormatValid() && userService.findByUsername(username).isEmpty());
-    }
-
-    @GetMapping("/signup/b_check")
-    @ResponseBody
-    public String BSNCheckHandler(@RequestParam String BSN) {
-        Customer c = new Customer();
-        c.setBSN(BSN);
-        return String.valueOf(c.isBSNFormatValid() && customerService.findCustomerByBSN(BSN).isEmpty());
-
-    }
-
 
     /**
      * Checkt alle velden apart en geeft feedback al deze niet goed ingvuld zijn

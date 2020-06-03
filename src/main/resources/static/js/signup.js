@@ -7,7 +7,8 @@
 const username = document.getElementById("username");
 username.addEventListener("input", function () {
     let usernameInput = username.value;
-    let usernameCheck = window.location.pathname + `/u_check?username=${usernameInput}`;
+    let usernameCheck = window.location.hostname + `/api/username?username=${usernameInput}`;
+    console.log(usernameCheck);
     const re = /^[a-zA-Z0-9_-]{3,15}$/;
 
     // check username input met regex zodat de server niet onnodig opgeroepen wordt
@@ -260,7 +261,7 @@ phoneNumber.addEventListener('input', function () {
 const BSN = document.getElementById("BSN");
 BSN.addEventListener("input", function () {
     let BSNInput = BSN.value;
-    let BSNCheck = window.location.pathname + `/b_check?BSN=${BSNInput}`;
+    let BSNCheck = window.location.hostname + `/api/bsn?BSN=${BSNInput}`;
 
     // check of input 9 getallen bevat
     if (BSNInput.length !== 9) {

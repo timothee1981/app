@@ -1,12 +1,17 @@
 package royalstacks.app.backingBean;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
 
 import java.util.Date;
+import java.util.Optional;
 
 public class TransactionBackingBean {
+
+    @Autowired
+    private AccountService accountService;
 
     private int transactionId;
     private String fromAccountNumber;
@@ -17,8 +22,6 @@ public class TransactionBackingBean {
     private String description;
     private Date date;
 
-    AccountService as = new AccountService();
-
     public TransactionBackingBean(String fromAccountNumber, String toAccountNumber, double amount, String description) {
          this.fromAccountNumber = fromAccountNumber;
          this.toAccountNumber = toAccountNumber;
@@ -27,8 +30,26 @@ public class TransactionBackingBean {
          this.date = new Date();
     }
 
-    public Transaction Transaction(){
-        return new Transaction(fromAccount, toAccount, amount, description, date);
+    public Optional<Transaction> Transaction(){
+        Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(fromAccountNumber);
+        Optional<Account> toAccountOptional = accountService.getAccountByAccountNumber(toAccountNumber);
+
+        Account fromAccount;
+        Account toAccount;
+
+        if (fromAccountOptional.isPresent()) {
+            fromAccount = fromAccountOptional.get();
+        } else {
+            return Optional.empty();
+        }
+
+        if (toAccountOptional.isPresent()) {
+            toAccount = toAccountOptional.get();
+        } else {
+            return Optional.empty();
+        }
+
+        return Optional.of(new Transaction(fromAccount, toAccount, amount, description, date));
     }
 
     public String getFromAccountNumber() {
