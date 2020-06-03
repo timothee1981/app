@@ -30,35 +30,31 @@ public class TransactionBackingBean {
     }
 
     public Optional<Transaction> Transaction(){
+
         Account fromAccount;
         Account toAccount;
 
-        // check of fromAccount bestaat
-        if (this.fromAccount.isPresent()) {
+        // check of beide accounts bestaan
+        if (this.fromAccount.isPresent() && this.toAccount.isPresent()) {
             fromAccount = this.fromAccount.get();
-        } else {
-            return Optional.empty();
-        }
-
-        // check of toAccount bestaat
-        if (this.toAccount.isPresent()) {
             toAccount = this.toAccount.get();
         } else {
             return Optional.empty();
         }
 
-        // check of amount valide is
-        if (amount <= 0){
+        // check of Account niet naar zichzelf stuurt
+        if (toAccount == fromAccount){
             return Optional.empty();
         }
 
-        // check of fromAccount genoeg geld heeft
-        if (!fromAccount.hasSufficientBalance(amount)){
+        // check of amount valide is en fromAccount genoeg geld heeft
+        if (amount <= 0 && !fromAccount.hasSufficientBalance(amount)){
             return Optional.empty();
         }
 
         return Optional.of(new Transaction(fromAccount, toAccount, amount, description, date));
     }
+
 
     public String getFromAccountNumber() {
         return fromAccountNumber;

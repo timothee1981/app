@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class TransactionController {
@@ -62,32 +63,37 @@ public class TransactionController {
      * @return
      */
     @PostMapping("/transaction")
-    public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean tbb) {
+    public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean tbb, @SessionAttribute("userid") int userId) {
 
         ModelAndView mav = new ModelAndView("transaction");
 
-        // TODO in BackingBean kunnen verwerken
-        Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
-        Optional<Account> toAccountOptional = accountService.getAccountByAccountNumber(tbb.getToAccountNumber());
+        // maak Optional<Account> van ingevoerde accountNummers en geef deze terug aan de BackingBean
+        tbb.setFromAccount(accountService.getAccountByAccountNumber(tbb.getFromAccountNumber()));
+        tbb.setToAccount(accountService.getAccountByAccountNumber(tbb.getToAccountNumber()));
 
-        tbb.setFromAccount(fromAccountOptional);
-        tbb.setToAccount(toAccountOptional);
-
-        if(tbb.Transaction().isPresent()){
-            Transaction t = tbb.Transaction().get();
-
-            t.getFromAccount().subtractAmount(t.getAmount());
-            accountService.saveAccount(t.getFromAccount());
-
-            t.getToAccount().addAmount(t.getAmount());
-            accountService.saveAccount(t.getToAccount());
-
-            mav.addObject("notification", "Money successfully sent");
-        } else {
+        // Check of Transaction valid is, als dat niet zo is is de backingbean leeg
+        if(tbb.Transaction().isEmpty()) {
             mav.addObject("notification", "Invalid Transaction");
             populateFields(tbb, mav);
+            return mav;
         }
 
+        // Check of fromAccount daadwerkelijk van de ingelogde gebruiker is
+        if(!tbb.Transaction().get().getFromAccount().getAccountHolders().contains(userService.findByUserId(userId))){
+            mav.addObject("notification", "YOU'RE STEALING MONEY! WE'RE CALLING THE POLICE!");
+            populateFields(tbb, mav);
+            return mav;
+        }
+
+        Transaction t = tbb.Transaction().get();
+
+        t.getFromAccount().subtractAmount(t.getAmount());
+        accountService.saveAccount(t.getFromAccount());
+
+        t.getToAccount().addAmount(t.getAmount());
+        accountService.saveAccount(t.getToAccount());
+
+        mav.addObject("notification", "Money successfully sent");
         // TODO sla transactie op
 
         return mav;
