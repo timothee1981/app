@@ -1,21 +1,23 @@
 package royalstacks.app.controller;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import royalstacks.app.backingBean.AccountDetailsBackingBean;
+import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
+import royalstacks.app.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class AccountDetails {
@@ -23,55 +25,44 @@ public class AccountDetails {
     AccountService accountService;
 
     @Autowired
-    CustomerService customerService;
+    UserService userService;
 
     public AccountDetails() {
     }
 
     @GetMapping("/accountdetails")
-    public ModelAndView accountDetailsHandler(){
-
-
-        //TODO:get account from DB with account ID
-        Account account = accountService.getAccountById(354);   //for now dummy account
-        //get accounttype so it can be shown which account which accounttype
-        String accountType = getAccountType(account);
-        //TODO: get current Date and Time
-
-
-        Iterator<Customer> customerIterator = account.getAccountHolders().iterator();
-        List<Customer> accountholders = new ArrayList<>();
-        while(customerIterator.hasNext()){
-            accountholders.add(customerIterator.next());
-        }
-        //each accountholder should be shown in html
-
-       //TODO: get transactions corresponding to this account from nosql DB en show only ten last transaction
+    public ModelAndView accountDetailsHandler(Model model,  @SessionAttribute("userid") int userId) {
 
         ModelAndView mav = new ModelAndView("/accountdetails");
-        mav.addObject("accountType",accountType);
-        mav.addObject("account",account);
-        mav.addObject("list",accountholders);
+        String accountNummer =  "NL31ROYA0000001201";
+        Optional<Account> account = accountService.getAccountByAccountNumber(accountNummer);
+        Account myAccount = null;
+        if(account.isPresent())
+            myAccount = account.get();
+        Set<Customer> accountholders =  myAccount.getAccountHolders();
+        accountholders.iterator()
+
+
+
+        //TODO: get transactions corresponding to this account from nosql DB en show only ten last transactio
+        mav.addObject("account",myAccount);
 
         return mav;
+
+
     }
 
-    private String getAccountType(Account account) {
-        String accountType;
-        if(account instanceof BusinessAccount)
-           return accountType =  "Business Account";
+
+
+    private String getAccountType (Account account){
+        String accountType = null;
+        if (account instanceof BusinessAccount)
+            return accountType = "Business Account";
         else
-           return accountType = "Private Account";
-    }
-
-    //TODO works, now has to be tested that it actually give what we want
+            return accountType = "Private Account";
+        }
 
 
-   /* @GetMapping("transaction")
-    public ModelAndView goToTransactionHandler(){
-        ModelAndView mav = new ModelAndView("transaction");
-        mav.addObject("account");
-        return mav;
 
-    }*/
 }
+
