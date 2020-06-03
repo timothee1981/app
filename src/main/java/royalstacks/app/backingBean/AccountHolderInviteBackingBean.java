@@ -8,7 +8,6 @@ import java.util.Objects;
 
 public class AccountHolderInviteBackingBean {
 
-    // TODO annotaties kardinaliteit
     private Customer invitee;
     private String inviteeUsername;
     private Account account;
@@ -21,12 +20,13 @@ public class AccountHolderInviteBackingBean {
         this.verificationCode = verificationCode;
     }
 
+    //aanpassen met Optional etc
     public AccountHolderInvite accountHolderInvite() {
         AccountHolderInvite accountHolderInvite = new AccountHolderInvite(invitee, account, verificationCode);
         return accountHolderInvite;
     }
 
-    // creates a backing bean from accountHolderInvite
+    // creates a backing bean from accountHolderInvite (heb ik deze nodig?)
     public static AccountHolderInviteBackingBean createAccountHolderInviteBackingBean(AccountHolderInvite accountHolderInvite) {
         AccountHolderInviteBackingBean ahibb =
                 new AccountHolderInviteBackingBean(accountHolderInvite.getInvitee().getUsername(), accountHolderInvite.getAccount().getAccountNumber(), accountHolderInvite.getVerificationCode());
