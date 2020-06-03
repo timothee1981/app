@@ -97,7 +97,7 @@ class DoLoginControllerTest {
         ).andExpect(status().isOk()).andExpect(view().name("homepage"));
     }
 
-    @Test
+/*    @Test
     void doLoginHandlerEmployeeLoginCorrect() throws Exception {
         //ARRANGE
         String username = "employee";
@@ -112,7 +112,7 @@ class DoLoginControllerTest {
                         .param("inputUsername", username)
                         .param("inputPassword", password)
         ).andExpect(status().isOk()).andExpect(view().name("headprivateoverview"));
-    }
+    }*/
 
     @Test
     void doLoginHandlerCustomerLoginCorrect() throws Exception {
