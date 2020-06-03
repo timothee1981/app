@@ -67,11 +67,11 @@ public class AccountDetails {
     //TODO works, now has to be tested that it actually give what we want
 
 
-    @GetMapping("transaction")
+   /* @GetMapping("transaction")
     public ModelAndView goToTransactionHandler(){
         ModelAndView mav = new ModelAndView("transaction");
         mav.addObject("account");
         return mav;
 
-    }
+    }*/
 }
