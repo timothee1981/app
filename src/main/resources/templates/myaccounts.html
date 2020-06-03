@@ -9,7 +9,6 @@
 
     <style>
         body{
-            padding-top: 20px;
             align-content: center;
             background-color: #ebebeb;
             margin: auto;
@@ -35,6 +34,12 @@
             outline: none;
         }
 
+        #logoutbutton{
+            padding: 0;
+            margin: 0;
+
+        }
+
         #Account_overview{
             width: 40%;
             margin-left: 30%;
@@ -47,6 +52,11 @@
 <body th:object="${customer}">
 
     <div id="navbar" >
+        <a>
+            <form th:action="@{logoutAction}" method="post">
+                <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
+            </form>
+        </a>
         <span id="logoNavbar"></span>
     </div>
 
@@ -69,9 +79,7 @@
             <input type="submit" name="submitbutton" value="Create a new account" />
         </form>
 
-        <form th:action="@{logoutAction}" method="post">
-            <input type="submit" name="submitbutton" value="Logout"/>
-        </form>
+
 
     </div>
 
