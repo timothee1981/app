@@ -10,8 +10,9 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
 
-    private final static int DEFAULT_USER_ID = 0;
-    private static int passwordWorkload = 12;
+    private static final int DEFAULT_USER_ID = 0;
+    private static final int passwordWorkload = 12;
+
 
     @Id
     @GeneratedValue
@@ -38,25 +39,9 @@ public abstract class User {
     public User() { }
 
     // METHODS
-    public boolean isUsernameFormatValid(){
-        // username mag kleine letters, grote letters, getallen, en - of _ bevatten en moet tussen 3 en 20 characters lang zijn.
-        return this.username.matches("^[a-zA-Z0-9_-]{3,15}$");
-    }
 
-    public static boolean isPasswordValid(String inputPassword){
-        // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 10 karakters lang zijn
-        return inputPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]])[A-Za-z\\d!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]]{10,100}$");
-    }
 
-    public boolean isFirstNameValid(){
-        this.firstName = this.firstName.trim();
-        return this.firstName.matches("^[^\\s].*[a-zA-Z-'\\s?][^.]{1,100}");
-    }
 
-    public boolean isLastNameValid(){
-        this.lastName = this.lastName.trim();
-        return this.lastName.matches("^[^\\s].*[a-zA-Z-'\\s?][^.]{1,100}");
-    }
 
 
 
