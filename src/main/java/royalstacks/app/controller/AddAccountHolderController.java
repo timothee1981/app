@@ -45,11 +45,11 @@ public class AddAccountHolderController {
         ModelAndView mav = new ModelAndView("addaccountholder");
 
         //haal user op uit DB met behulp van backing bean
-        Optional<User> OptionalUser = userService.findByUsername(ibb.getInviteeUsername());
-        //check of user bestaat én een employee is (geen customer)
+        Optional<User> optionalUser = userService.findByUsername(ibb.getInviteeUsername());
+        //check of user bestaat én een employee is (geen customer) én de verificatiecode klopt
 
 
-        if (userIsPresent && userIsCustomer && ibb.getVerificationCode().matches("\\d{5}")){
+        if (optionalUser.isPresent() && isUserCustomer && ibb.getVerificationCode().matches("\\d{5}")){
 
         }
     }
@@ -58,6 +58,10 @@ public class AddAccountHolderController {
         this.verificationCode = this.verificationCode.trim();
         return this.verificationCode.matches("\\d{5}");
     }*/
+
+    public boolean isUserCustomer(String inviteeUsername){
+        return false;
+    }
 
 
 }
