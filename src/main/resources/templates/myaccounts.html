@@ -12,6 +12,12 @@
             width: 40%;
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
         }
+        #logoutbutton{
+            padding: 0;
+            margin: 0;
+
+        }
+
         li{
             margin: 15px;
         }
@@ -34,6 +40,17 @@
     </style>
 </head>
 <body th:object="${customer}">
+
+<div id="navbar" >
+    <a>
+        <form th:action="@{logoutAction}" method="post">
+            <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
+        </form>
+    </a>
+    <span id="logoNavbar"></span>
+</div>
+
+
 <h1>Account overview</h1>
 <h2>Hello <span th:text="${customer.username}"/></h2>
 
