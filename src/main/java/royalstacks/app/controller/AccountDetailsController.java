@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.model.*;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
 
 import java.util.*;
@@ -17,6 +18,9 @@ public class AccountDetailsController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    TransactionService transactionService;
 
     public AccountDetailsController() {
     }
@@ -33,9 +37,11 @@ public class AccountDetailsController {
 
          Account myAccount = getAccountFromAccountNumber(accountNumber);
 
+
          populatefields(mav,myAccount);
 
         //TODO: get transactions corresponding to this account from nosql DB en show only ten last transaction
+
         mav.addObject("accounts",myAccounts);
 
 
@@ -50,10 +56,26 @@ public class AccountDetailsController {
         //check als My account heeft waarde
         if(myAccount != null){
             List<Customer> accountholders = getAccountHolders(myAccount);
+            List<Transaction> tenLatestTransactions = getTenLastTransaction(myAccount);
             mav.addObject("accountNumber",myAccount.getAccountNumber());
             mav.addObject("balance", myAccount.getBalance());
             mav.addObject("list",accountholders);
         }
+    }
+
+
+    //METHODE DIE DE TIEN LAATSTE TRANSACTIES OPHAALD
+
+    private List<Transaction> getTenLastTransaction(Account myAccount) {
+        List<Transaction> getTenLastTransaction = new ArrayList<>();
+        getTenLastTransaction = transactionService.getTenLastTransaction(myAccount.getAccountId());
+        if(!getTenLastTransaction.isEmpty()) {
+            for (Transaction transaction : getTenLastTransaction) {
+                System.out.println(transaction);
+            }
+            return getTenLastTransaction;
+        }else
+            return null;
     }
 
     //METHODE DIE LIJST MET ACCOUNT HOLDERS TERUG GEEFT

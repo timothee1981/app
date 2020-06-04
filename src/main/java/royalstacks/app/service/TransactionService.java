@@ -52,7 +52,7 @@ public class TransactionService {
 
         List<Transaction> transactions = transactionRepository.getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc(accountId,accountId);
         List<Transaction> tenLastTransactions = new ArrayList<>();
-        for(int index =0; index < 10; index++){
+        for(int index =0; index < 10 && index < transactions.size(); index++){
             tenLastTransactions.add(transactions.get(index));
         }
 

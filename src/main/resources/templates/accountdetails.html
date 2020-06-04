@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>accountdetails</title>
+    <link type="text/css" href="css/openaccount.css" rel="stylesheet" />
 </head>
 <body th:object="${account}">
     <h1>Account details</h1>
@@ -27,6 +28,11 @@
     <span>List of last ten transaction</span><br>
     <h2>Transaction</h2>
     <span>List of last ten transaction</span><br>
+    <li th:each="customer : ${transactionList}">
+        <div>
+            <tr><p>Account Holders:  <span th:text="${customer.lastName}"/></tr>
+        </div><br>
+    </li>
     <form th:action="@{transaction}"  method="get">
     <button type="submit" id="submitButton"   value="DoTransfer">New money transfer</button>
     </form>
