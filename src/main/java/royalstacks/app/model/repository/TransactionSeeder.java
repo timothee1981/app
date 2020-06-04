@@ -53,7 +53,5 @@ public class TransactionSeeder implements CommandLineRunner {
 
 
 
-
-
     }
 }
