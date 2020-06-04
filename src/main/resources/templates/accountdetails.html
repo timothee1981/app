@@ -6,15 +6,25 @@
 </head>
 <body th:object="${account}">
     <h1>Account details</h1>
+    <span></span>
+    <!--<THAT'S THE DROPDOWN SELECT. DIFFICULT MAYBE, LETS SEE IF I HAVE TIME LEFT-->
+    <!--<label for="accountnumber">AccountList</label>
+        <select id="accountNumber" name="accountNumber" th:value="${accountnumber}">
+            <option th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
+            </option>
+        </select>
+        <button type="submit" id="submitButton"  value="DoTransfer">choose account</button>-->
     <h4>Account holders: </h4>
     <li th:each="customer : ${list}">
         <div>
-            <tr><span th:text="${customer.lastName}"/></tr>
+            <tr><p>Account Holders:  <span th:text="${customer.lastName}"/></tr>
         </div><br>
     </li>
-    <span th:text="${accountType}"></span>
-    <span th:text="*{accountNumber}">Iban comes here</span><br>
-    <span th:text="*{balance}">Saldo will be there</span><br>
+  <!--  <span th:text="${accountType}"></span>-->
+    <p>Iban</p><span th:text="${accountNumber}"></span><br>
+    <p>Balance</p><span th:text="${balance}"></span><br>
+    <h2>Transaction</h2>
+    <span>List of last ten transaction</span><br>
     <h2>Transaction</h2>
     <span>List of last ten transaction</span><br>
     <form th:action="@{transaction}"  method="get">

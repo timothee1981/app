@@ -10,7 +10,6 @@ import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
-import royalstacks.app.model.User;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.TransactionService;
@@ -101,20 +100,14 @@ public class TransactionController {
             Customer currentUser = customerOptional.get();
             List<Account> myAccounts = IteratorUtils.toList(currentUser.getAccount().iterator());
 
-            // check of een accountId meegegeven wordt
+            // accountId wordt meegegeven als de gebruiker vanuit AccountDetails komt
             if (accountId != null) {
                 Account account = accountService.getAccountById(accountId);
 
-                // check of deze account bestaat
-                if (account != null) {
+                if (account != null && account.getAccountHolders().contains(currentUser)) {
 
-                    // check of userId daadwerkelijk holder is van account
-                    if (account.getAccountHolders().contains(currentUser)) {
-
-                        // zet account boven aan en haal duplicaat uit lijst
-                        myAccounts.remove(accountService.getAccountById(accountId));
-                        myAccounts.add(0, accountService.getAccountById(accountId));
-                    }
+                    myAccounts.remove(accountService.getAccountById(accountId));
+                    myAccounts.add(0, accountService.getAccountById(accountId));
                 }
             }
             model.addAttribute("account", myAccounts);

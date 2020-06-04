@@ -4,12 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
+import royalstacks.app.model.repository.TransactionRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    TransactionRepository transactionRepository;
+
+
 
     public boolean executeTransaction(Transaction t){
         // maak van accountId's die in de transaction staat Accounts
@@ -34,5 +44,19 @@ public class TransactionService {
         accountService.saveAccount(toAccount);
 
         return true;
+    }
+
+
+    //MOET GETEST WORDEN
+    public List<Transaction> getTenLastTransaction(int accountId){
+
+        List<Transaction> transactions = transactionRepository.getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc(accountId,accountId);
+        List<Transaction> tenLastTransactions = new ArrayList<>();
+        for(int index =0; index < 10; index++){
+            tenLastTransactions.add(transactions.get(index));
+        }
+
+       return  transactions;
+
     }
 }
