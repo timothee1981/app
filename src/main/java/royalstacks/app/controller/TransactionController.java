@@ -100,16 +100,14 @@ public class TransactionController {
             Customer currentUser = customerOptional.get();
             List<Account> myAccounts = IteratorUtils.toList(currentUser.getAccount().iterator());
 
-            // check of een accountId meegegeven wordt
+            // accountId wordt meegegeven als de gebruiker vanuit AccountDetails komt
             if (accountId != null) {
                 Account account = accountService.getAccountById(accountId);
 
-                // check of deze account bestaat & of userId daadwerkelijk holder is van account
                 if (account != null && account.getAccountHolders().contains(currentUser)) {
 
                     myAccounts.remove(accountService.getAccountById(accountId));
                     myAccounts.add(0, accountService.getAccountById(accountId));
-                    // check of userId daadwerkelijk holder is van account
                 }
             }
             model.addAttribute("account", myAccounts);
