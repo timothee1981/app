@@ -11,31 +11,33 @@ import royalstacks.app.service.UserService;
 import java.util.*;
 
 @Controller
-public class AccountDetails {
+public class AccountDetailsController {
     @Autowired
     AccountService accountService;
 
     @Autowired
     UserService userService;
 
-    public AccountDetails() {
+    public AccountDetailsController() {
     }
 
     @GetMapping("/accountdetails")
     public ModelAndView accountDetailsHandler( @SessionAttribute("userid") int userId, @RequestParam(value = "accountNumber",required = false) String accountNumber) {
 
         ModelAndView mav = new ModelAndView("/accountdetails");
+
+        //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
         List<Account> myAccounts = getAccountsFromUserId(userId);
 
-        //TODO DONT YOU FORGET ABOUT DATE AND TIME
+        //TODO DONT YOU FORGET ABOUT DATE AND TIME: BAAACCCKING BEAAAAANNN
 
          Account myAccount = getAccountFromAccountNumber(accountNumber);
 
          populatefields(mav,myAccount);
 
-        //TODO: get transactions corresponding to this account from nosql DB en show only ten last transactio
+        //TODO: get transactions corresponding to this account from nosql DB en show only ten last transaction
         mav.addObject("accounts",myAccounts);
-       // mav.addObject("accountNumber", accountNumber);
+
 
         return mav;
 
@@ -87,7 +89,7 @@ public class AccountDetails {
     }
 
 
-    //METHODE DIE ACCOUNT TYPE TERUG GEEFT, MAAR DIE IS WAARSCHIJNLIJK NIET NODIG
+    //METHODE DIE ACCOUNT TYPE TERUG GEEFT, MAAR DIE IS WAARSCHIJNLIJK NIET NODIG ALS BACKING BEAN WERKT LETS SEE
 
 
     private String getAccountType (Account account){
