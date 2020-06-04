@@ -16,6 +16,7 @@ import java.util.Optional;
 public class CustomerService {
 
     private static final int BUSINESS_ACCOUNT_SIZE = 10;
+    private static final int BSN_LENGTH = 9;
 
     @Autowired
     private CustomerRepository customerRepository;
