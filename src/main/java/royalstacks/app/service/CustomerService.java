@@ -15,6 +15,8 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
+    private static final int BUSINESS_ACCOUNT_SIZE = 10;
+
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -31,7 +33,7 @@ public class CustomerService {
     }
 
     public List<CustomerAndTotalBalance> findTop10BusinessAccounts() {
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, BUSINESS_ACCOUNT_SIZE);
         List<Object[]> results = customerRepository.findCustomersAndBusinessAccountBalance(pageable);
         List<CustomerAndTotalBalance> customersAndTotalBalance = new ArrayList<>();
 
