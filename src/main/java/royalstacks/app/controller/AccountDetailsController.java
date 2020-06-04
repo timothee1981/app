@@ -47,7 +47,8 @@ public class AccountDetailsController {
 
     @PostMapping("/addaccountholder")
     //ModelAttribute of RequestParam gebruiken?
-    public ModelAndView addAccountHolderHandler(@ModelAttribute String accountNumber, Model model) {
+    // Hier de dropdown vullen met lijstje Account no's?
+    public ModelAndView addAccountHolderHandler(@ModelAttribute String accountNumber, @SessionAttribute("userid") int userId, Model model) {
         ModelAndView mav = new ModelAndView("/addaccountholder");
         Account accountForInvite = getAccountFromAccountNumber(accountNumber);
         if (accountForInvite != null) {
