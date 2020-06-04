@@ -5,10 +5,8 @@ import org.springframework.stereotype.Service;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.TransactionRepository;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -19,29 +17,31 @@ public class TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
 
-
+    public void saveTransaction(Transaction t){
+        transactionRepository.save(t);
+        System.out.println("**** Saved: " + t);
+    }
 
     public boolean executeTransaction(Transaction t){
         // maak van accountId's die in de transaction staat Accounts
         Account fromAccount = accountService.getAccountById(t.getFromAccountId());
         Account toAccount = accountService.getAccountById(t.getToAccountId());
 
-        // check of geld niet verstuurd wordt naar zichzelf
         if(fromAccount.equals(toAccount)){
             return false;
         }
 
-        // check of er genoeg geld op de rekening staat
         if(fromAccount.getBalance() < t.getAmount()){
             return false;
         }
 
-        // muteer balances & sla op
         fromAccount.subtractAmount(t.getAmount());
         accountService.saveAccount(fromAccount);
 
         toAccount.addAmount(t.getAmount());
         accountService.saveAccount(toAccount);
+
+        saveTransaction(t);
 
         return true;
     }

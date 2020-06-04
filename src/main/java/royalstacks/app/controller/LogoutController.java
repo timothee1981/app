@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class LogoutController {
 
-    @PostMapping("/logoutAction")
+    @RequestMapping("/logoutAction")
     public ModelAndView logout(HttpServletRequest request,
                                SessionStatus session,
                                Model model) {
