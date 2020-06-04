@@ -52,10 +52,10 @@ public class DoLoginController {
             return mav;
         }
 
-        //add userid to modelSession
+        //Add userid to modelSession
         model.addAttribute("userid", user.getUserid());
 
-        //redirect user to next page
+        //Redirect user to next page
         if (user instanceof Employee) {
             Employee employee = (Employee) user;
             ModelAndView mav;
@@ -74,7 +74,6 @@ public class DoLoginController {
             mav.addObject("user_error", "You are neither a customer or employee of Royal Stacks Bank");
             return mav;
         }
-
     }
 
 
