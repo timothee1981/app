@@ -155,18 +155,20 @@ myInput.onkeyup = function () {
 
 // Wanneer alle checks zijn voldaan, zet veld op valid
 const password = document.getElementById("password");
+const showPasswordButton = document.getElementById("showPasswordButton")
 password.addEventListener('keyup', function () {
+    console.log("letter classlist: " + letter.classList.contains("valid"))
     if (letter.classList.contains("valid") &&
         capital.classList.contains("valid") &&
         number.classList.contains("valid") &&
         special.classList.contains("valid") &&
         length.classList.contains("valid")
     ) {
-        password.classList.add("isValid");
-        password.classList.remove("isInvalid")
+        showPasswordButton.classList.add("isValid");
+        showPasswordButton.classList.remove("isInvalid")
     } else {
-        password.classList.add("isInvalid");
-        password.classList.remove("isValid")
+        showPasswordButton.classList.add("isInvalid");
+        showPasswordButton.classList.remove("isValid")
     }
 });
 
