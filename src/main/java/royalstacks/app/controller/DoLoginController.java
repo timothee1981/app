@@ -21,7 +21,7 @@ public class DoLoginController {
     @PostMapping("/doLogin")
     public ModelAndView doLoginHandler(@RequestParam String inputUsername, String inputPassword, Model model){
 
-        //Check if usernameField has a value
+        //Check if username has a value
         boolean usernameHasValue = inputUsernameHasValue(inputUsername);
         if (!usernameHasValue) {
             ModelAndView mav = new ModelAndView("homepage");
@@ -29,7 +29,7 @@ public class DoLoginController {
             return mav;
         }
 
-        //Check if passwordField has a value
+        //Check if password has a value
         boolean passwordHasValue = inputpasswordHasValue(inputPassword);
         if (!passwordHasValue) {
             ModelAndView mav = new ModelAndView("homepage");
@@ -37,18 +37,18 @@ public class DoLoginController {
             return mav;
         }
 
-        //Check if usernameField exists in database
+        //Check if username exists in database
         User user = loginService.findByUsername(inputUsername);
         if (user == null) {
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("login_error", "Username and/or passwordField is incorrect");
+            mav.addObject("login_error", "Username and/or password is incorrect");
             return mav;
         }
 
-        //Check if passwordField of user matches entered value
+        //Check if password of user matches entered value
         if ( ! User.checkPassword( inputPassword, user.getPassword() ) ){
             ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("login_error", "Username and/or passwordField is incorrect");
+            mav.addObject("login_error", "Username and/or password is incorrect");
             return mav;
         }
 

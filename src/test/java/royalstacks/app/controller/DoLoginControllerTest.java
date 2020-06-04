@@ -33,9 +33,9 @@ class DoLoginControllerTest {
     void doLoginHandlerUsernameIsEmptyString() throws Exception {
         //ARRANGE
         String username = "";
-        String password = "passwordField";
+        String password = "password";
         Customer customer = new Customer();
-        customer.setUsername("usernameField");
+        customer.setUsername("username");
         customer.setPassword("correct");
         given(service.findByUsername(username)).willReturn(customer);
 
@@ -50,10 +50,10 @@ class DoLoginControllerTest {
     @Test
     void doLoginHandlerPasswordIsEmptyString() throws Exception {
         //ARRANGE
-        String username = "usernameField";
+        String username = "username";
         String password = "";
         Customer customer = new Customer();
-        customer.setUsername("usernameField");
+        customer.setUsername("username");
         customer.setPassword("correct");
         given(service.findByUsername(username)).willReturn(customer);
 
@@ -69,7 +69,7 @@ class DoLoginControllerTest {
     void doLoginHandlerUsernameDoesNotExist() throws Exception {
         //ARRANGE
         String username = "nonexistent";
-        String password = "passwordField";
+        String password = "password";
         given(service.findByUsername(username)).willReturn(null);
 
         //ACT & ASSERT

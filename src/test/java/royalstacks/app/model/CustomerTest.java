@@ -8,14 +8,14 @@ public class CustomerTest {
     @Test
     void isEmailValid() {
 
-        Customer c = new Customer("usernameField", "passwordField", "Fiep", "Bakker",
+        Customer c = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "1234AB", "12", "a", "Hoorn" , "0612345678",
                 "123456789", null, false);
 
-        // valid emailField addresses
+        // valid email addresses
         c.setEmail("fiepbakker@hotmail.com");
         Assert.assertTrue(c.isEmailValid());
-        c.setEmail("emailField@[123.123.123.123]");
+        c.setEmail("email@[123.123.123.123]");
         Assert.assertTrue(c.isEmailValid());
         c.setEmail("_______@example.com");
         Assert.assertTrue(c.isEmailValid());
@@ -25,7 +25,7 @@ public class CustomerTest {
         c.setEmail("  example@example.com  ");
         Assert.assertTrue(c.isEmailValid());
 
-        // invalid emailField addresses
+        // invalid email addresses
         c.setEmail("#@%^%#$@#$@#.com");
         Assert.assertFalse(c.isEmailValid());
         c.setEmail("plainaddress");
@@ -41,7 +41,7 @@ public class CustomerTest {
     @Test
     void isHouseNumberValid() {
 
-        Customer c = new Customer("usernameField", "passwordField", "Fiep", "Bakker",
+        Customer c = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "1234AB", "12", "a", "Hoorn" , "0612345678",
                 "123456789", null, false);
 
@@ -72,7 +72,7 @@ public class CustomerTest {
     @Test
     void isPostalCodeValid() {
 
-        Customer c = new Customer("usernameField", "passwordField", "Fiep", "Bakker",
+        Customer c = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "12", "a", "Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
@@ -105,7 +105,7 @@ public class CustomerTest {
 
     @Test
     void isCityValid() {
-        Customer c = new Customer("usernameField", "passwordField", "Fiep", "Bakker",
+        Customer c = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "12", "a","Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
@@ -131,7 +131,7 @@ public class CustomerTest {
     @Test
     void isPhoneNumberValid() {
 
-        Customer c = new Customer("usernameField", "passwordField", "Fiep", "Bakker",
+        Customer c = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "12", "a", "Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
@@ -157,11 +157,11 @@ public class CustomerTest {
     @Test
     void isBSNFormatValid() {
 
-        Customer c = new Customer("usernameField", "passwordField", "Fiep", "Bakker",
+        Customer c = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "12", "a", "Hoorn" , "1234AB", "0612345678",
                 "123456789", null, false);
 
-        // valid BSNField
+        // valid BSN
         c.setBSN("302110501");
         Assert.assertTrue(c.isBSNFormatValid());
         c.setBSN("265478224");
@@ -184,7 +184,7 @@ public class CustomerTest {
         Assert.assertTrue(c.isBSNFormatValid());
 
 
-        // invalid BSNField
+        // invalid BSN
         c.setBSN("01234567");
         Assert.assertFalse(c.isBSNFormatValid());
         c.setBSN("123456789");

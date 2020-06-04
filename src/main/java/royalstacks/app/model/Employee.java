@@ -33,10 +33,10 @@ public class Employee extends User {
     public String toString() {
         return "Employee{" +
                 "userid=" + userid +
-                ", usernameField='" + username + '\'' +
-                ", passwordField='" + password + '\'' +
-                ", firstNameField='" + firstName + '\'' +
-                ", lastNameField='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
 }

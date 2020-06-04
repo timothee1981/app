@@ -45,7 +45,7 @@ public class RecordGenerator {
         String password = "Auto!12345";
         String name = "Piet";
         String lastname = "Boot";
-        String emailAddress = "emailField@test.nl";
+        String emailAddress = "email@test.nl";
         String houseNumber = "22";
         String suffix = "a";
         String city = "Ede";
@@ -58,7 +58,7 @@ public class RecordGenerator {
             socialSecurityNumber = String.valueOf(Integer.parseInt(socialSecurityNumber)+1);
             Customer customer = new Customer(username, password, name, lastname, emailAddress, postalCode, houseNumber, suffix, city, phone, socialSecurityNumber, null, false);
 
-            // only save this user if usernameField does not exist yet
+            // only save this user if username does not exist yet
             if(userService.findByUsername(username).isEmpty()) {
                 customerRepository.save(customer);
             }
@@ -74,7 +74,7 @@ public class RecordGenerator {
         for (int index = 1; index <= amount; index++) {
             username = username + index;
             Employee employee = new Employee(username, password, name, lastname, position);
-            // only save this user if usernameField does not exist yet
+            // only save this user if username does not exist yet
             if(userService.findByUsername(username).isEmpty()) {
                 employeeRepository.save(employee);
             }
@@ -90,7 +90,7 @@ public class RecordGenerator {
         for (int index = 1; index <= amount; index++) {
             String username = usernameBase + index;
             Employee employee = new Employee(username, password, name, lastname, position);
-            // only save this user if usernameField does not exist yet
+            // only save this user if username does not exist yet
             if(userService.findByUsername(username).isEmpty()) {
                 employeeRepository.save(employee);
             }

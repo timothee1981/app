@@ -27,7 +27,7 @@ class CustomerRepositoryTest {
 
 //    @Test
 //    void findCustomerByBSNTest() {
-//        Customer customer = new Customer("usernameField", "passwordField", "Fiep", "Bakker",
+//        Customer customer = new Customer("username", "password", "Fiep", "Bakker",
 //                "emailaddress", "Hoogstraat 12", "Hoorn" , "1234AB", "0612345678",
 //                "753861489", null, false);
 //
