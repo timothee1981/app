@@ -87,7 +87,7 @@ vatnumber.addEventListener('input', function () {
 
 document.getElementById("businessFields").style.display = "none";
 const sector = document.getElementById("sector");
-const form = document.getElementById("form");
+const form = document.getElementById("formButton");
 form.addEventListener('click', function () {
     if(document.getElementById("business").checked) {
         if (companyname.classList.contains("isValid") &&

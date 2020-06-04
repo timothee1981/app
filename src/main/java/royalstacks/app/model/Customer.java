@@ -101,7 +101,7 @@ public class Customer extends User {
             return false;
 
         } else {
-            // voer 11 proef vor BSN uit
+            // voer 11 proef vor BSNField uit
             String firstNumbers = this.BSN.substring(0,8);
             int lastNumber = Integer.parseInt(this.BSN.substring(8)) * -1;
 
@@ -229,13 +229,13 @@ public class Customer extends User {
     @Override
     public String toString() {
         return "Customer{" +
-                "email='" + email + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", houseNumber='" + houseNumber + '\'' +
+                "emailField='" + email + '\'' +
+                ", postalCodeField='" + postalCode + '\'' +
+                ", houseNumberField='" + houseNumber + '\'' +
                 ", suffix='" + suffix + '\'' +
-                ", city='" + city + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", BSN='" + BSN + '\'' +
+                ", cityField='" + city + '\'' +
+                ", phoneNumberField='" + phoneNumber + '\'' +
+                ", BSNField='" + BSN + '\'' +
                 ", isBusinessAccountHolder=" + isBusinessAccountHolder +
                 ", accountManager=" + accountManager +
                 ", account=" + account +

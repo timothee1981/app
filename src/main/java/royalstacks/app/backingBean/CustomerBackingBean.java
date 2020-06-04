@@ -111,17 +111,17 @@ public class CustomerBackingBean {
     public String toString() {
         return "CustomerBackingBean{" +
                 "userid=" + userid +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", houseNumber='" + houseNumber + '\'' +
+                ", usernameField='" + username + '\'' +
+                ", passwordField='" + password + '\'' +
+                ", firstNameField='" + firstName + '\'' +
+                ", lastNameField='" + lastName + '\'' +
+                ", emailField='" + email + '\'' +
+                ", postalCodeField='" + postalCode + '\'' +
+                ", houseNumberField='" + houseNumber + '\'' +
                 ", suffix='" + suffix + '\'' +
-                ", city='" + city + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", BSN='" + BSN + '\'' +
+                ", cityField='" + city + '\'' +
+                ", phoneNumberField='" + phoneNumber + '\'' +
+                ", BSNField='" + BSN + '\'' +
                 ", isBusinessAccountHolder=" + isBusinessAccountHolder +
                 ", accountManager=" + accountManager +
                 ", account=" + account +
