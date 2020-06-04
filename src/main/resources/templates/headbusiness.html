@@ -5,27 +5,43 @@
     <meta charset="UTF-8">
     <title>Head Business Overview</title>
     <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
+        * {box-sizing: border-box}
+        * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
+        body{
+            align-content: center;
+            background-color: #ebebeb;
+            margin: auto;
             width: 100%;
+            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
         }
-
+        h1, h2{
+            text-align: center;
+        }
+        table {
+            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+        }
         td, th {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
-
         tr:nth-child(even) {
             background-color: #dddddd;
         }
     </style>
+    <link type="text/css" href="css/navbar.css" rel="stylesheet" />
 </head>
 <body>
-<h1>Top 10 customers with the highest balance on their business account</h1>
-<h2>Welcome <span th:text="${employee.firstName}"/></h2>
-<table style="width:100%">
+<div id="navbar">
+    <a href="/logout">Logout</a>
+    <span id="logoNavbar"></span>
+</div>
+<h1>Welcome <span th:text="${employee.firstName}"/></h1>
+<h2>Top 10 customers with the highest balance on their business account:</h2>
+<table style="width:65%">
     <tr>
         <th>First name</th>
         <th>Last name</th>
@@ -37,5 +53,6 @@
         <td th:text="${topBusinessAccount.totalBalance}" />
     </tr>
 </table>
+<script src="js/navbar.js"></script>
 </body>
 </html>
