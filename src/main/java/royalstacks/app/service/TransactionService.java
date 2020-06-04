@@ -46,6 +46,8 @@ public class TransactionService {
         return true;
     }
 
+
+    //MOET GETEST WORDEN
     public List<Transaction> getTenLastTransaction(int accountId){
 
         List<Transaction> transactions = transactionRepository.getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc(accountId,accountId);
