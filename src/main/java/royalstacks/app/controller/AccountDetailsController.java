@@ -4,11 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import royalstacks.app.backingBean.AccountDetailsBackingBean;
+import royalstacks.app.backingBean.LastTenTransactionBackingBean;
 import royalstacks.app.model.*;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static org.springframework.core.annotation.MergedAnnotations.from;
 
 @Controller
 public class AccountDetailsController {
@@ -17,6 +23,9 @@ public class AccountDetailsController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    TransactionService transactionService;
 
     public AccountDetailsController() {
     }
@@ -28,15 +37,19 @@ public class AccountDetailsController {
 
         //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
         List<Account> myAccounts = getAccountsFromUserId(userId);
+        mav.addObject("accounts",myAccounts);
+
 
         //TODO DONT YOU FORGET ABOUT DATE AND TIME: BAAACCCKING BEAAAAANNN
 
          Account myAccount = getAccountFromAccountNumber(accountNumber);
 
+
          populatefields(mav,myAccount);
 
         //TODO: get transactions corresponding to this account from nosql DB en show only ten last transaction
-        mav.addObject("accounts",myAccounts);
+
+
 
 
         return mav;
@@ -50,11 +63,97 @@ public class AccountDetailsController {
         //check als My account heeft waarde
         if(myAccount != null){
             List<Customer> accountholders = getAccountHolders(myAccount);
-            mav.addObject("accountNumber",myAccount.getAccountNumber());
-            mav.addObject("balance", myAccount.getBalance());
+            AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
+            List<Transaction> tenLatestTransactions = getTenLastTransaction(myAccount);
+            if (tenLatestTransactions != null && !tenLatestTransactions.isEmpty()) {
+                List<LastTenTransactionBackingBean> lttb = setupListLastTenTransaction(tenLatestTransactions, myAccount);
+                mav.addObject("transactionList", lttb);
+            }
+            mav.addObject("account",accountDetailsBackingBean);
             mav.addObject("list",accountholders);
         }
     }
+
+    //CREATE ACCOUNT DETAILS BACKING BEAN
+    private AccountDetailsBackingBean getAccountdetailsbb(Account myAccount) {
+        AccountDetailsBackingBean accountDetailsBackingBean = null;
+        if(myAccount instanceof PrivateAccount){
+            accountDetailsBackingBean = AccountDetailsBackingBean.createBeanPrivate((PrivateAccount) myAccount);
+        }else if (myAccount instanceof BusinessAccount)
+            accountDetailsBackingBean = AccountDetailsBackingBean.createBeanBusiness((BusinessAccount) myAccount);
+        return accountDetailsBackingBean;
+    }
+
+    //CREATE LIST TRANSACTION BACKING BEAN
+    private List<LastTenTransactionBackingBean> setupListLastTenTransaction(List<Transaction> tenLatestTransactions, Account account) {
+        List<LastTenTransactionBackingBean> lttb = new ArrayList<>();
+
+
+        for (Transaction transaction : tenLatestTransactions) {
+            LastTenTransactionBackingBean lasttentbt = getTransactionBackingBean(transaction, account);
+                lttb.add(lasttentbt);
+            }
+
+            return lttb;
+
+    }
+
+    //CREATE ONE TRANSACTION BACKING BEAN
+
+    private LastTenTransactionBackingBean getTransactionBackingBean(Transaction transaction, Account account) {
+        LastTenTransactionBackingBean lasttentbt = null;
+        Account accountFrom;
+
+
+        //ACCOUNT DEBITET
+        if(transaction.getFromAccountId() == account.getAccountId()) {
+            accountFrom = accountService.getAccountById(transaction.getToAccountId());
+            lasttentbt = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
+            lasttentbt.setAmount(" - " + transaction.getAmount());
+
+         //ACCOUNT CREDITET
+
+        }else if((transaction.getToAccountId() == account.getAccountId())){
+            accountFrom = accountService.getAccountById(transaction.getFromAccountId());
+            lasttentbt = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
+            lasttentbt.setAmount(" + " + transaction.getAmount());
+
+        }
+        return lasttentbt;
+    }
+
+    //FILL OBJECT BB WITH CORRECT VALUES
+
+    private LastTenTransactionBackingBean fillBackingBeanWithCorrectCalue(Account accountFrom, Transaction transaction) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String datetime = transaction.getDate().format(formatter);
+        String name = getAccountHolders(accountFrom).get(0).getLastName();
+        String bankaccount = accountFrom.getAccountNumber();
+        String description = transaction.getDescription();
+
+
+        return new LastTenTransactionBackingBean(datetime,name,bankaccount,description,null);
+    }
+
+
+    //METHODE DIE DE TIEN LAATSTE TRANSACTIES OPHAALD
+
+    private List<Transaction> getTenLastTransaction(Account myAccount) {
+        List<Transaction> getTenLastTransaction;
+        getTenLastTransaction = transactionService.getTenLastTransaction(myAccount.getAccountId());
+        if(!getTenLastTransaction.isEmpty()) {
+            for (Transaction transaction : getTenLastTransaction) {
+                System.out.println(transaction);
+            }
+            return getTenLastTransaction;
+
+        }else
+            return null;
+    }
+
+
+    //Use the transaction backing bean
+
 
     //METHODE DIE LIJST MET ACCOUNT HOLDERS TERUG GEEFT
 

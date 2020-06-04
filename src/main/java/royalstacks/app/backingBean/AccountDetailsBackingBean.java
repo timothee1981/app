@@ -21,6 +21,13 @@ public class AccountDetailsBackingBean {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 
+    public AccountDetailsBackingBean(String accountNumber, double balance) {
+        this(null,accountNumber,balance);
+        this.formatDateTime =  now.format(formatter);
+
+    }
+
+
     public AccountDetailsBackingBean(String accountType, String accountNumber, double balance) {
         this.formatDateTime =  now.format(formatter);
         this.accountType = accountType;
@@ -30,11 +37,7 @@ public class AccountDetailsBackingBean {
 
     }
 
-    public AccountDetailsBackingBean(String accountNumber, double balance) {
-        this.formatDateTime =  now.format(formatter);
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-    }
+
 
     public PrivateAccount privateAccount(){
         return new PrivateAccount(accountNumber,balance);
@@ -48,6 +51,7 @@ public class AccountDetailsBackingBean {
     public static AccountDetailsBackingBean createBeanPrivate(PrivateAccount account){
         AccountDetailsBackingBean bb =
                 new AccountDetailsBackingBean(account.getAccountNumber(),account.getBalance());
+        bb.setAccountType("Private Account");
 
         return bb;
 
@@ -64,7 +68,7 @@ public class AccountDetailsBackingBean {
     public static AccountDetailsBackingBean createBeanBusiness(BusinessAccount account){
         AccountDetailsBackingBean bb =
                 new AccountDetailsBackingBean(account.getAccountNumber(),account.getBalance());
-
+        bb.setAccountType("Business Account");
         return bb;
 
     }

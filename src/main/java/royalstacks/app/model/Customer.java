@@ -4,8 +4,14 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * @author Suzanne & Wesley
+ */
+
 @Entity
 public class Customer extends User {
+
+
 
     private String email;
     private String postalCode;
@@ -56,64 +62,8 @@ public class Customer extends User {
 
     // METHODS
 
-    public boolean isEmailValid(){
-        this.email = this.email.trim();
-        // volgt RFC 5322 Official Standard
-        return this.email.matches(
-                "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:" +
-                        "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\" +
-                        "[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+" +
-                        "[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}" +
-                        "(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:" +
-                        "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])");
-    }
 
-    public boolean isHouseNumber(){
-        this.houseNumber = this.houseNumber.trim();
-        return this.houseNumber.matches("^[0-9]{1,6}+([-]\\d{1,5})?$");
-    }
 
-    public boolean isPostalCodeValid() {
-        this.postalCode = this.postalCode.replace(" ", "");
-        this.postalCode = this.postalCode.toUpperCase();
-
-        // Postcode bestaat uit 4 getallen en 2 letters. Begint nooit met een 0 en bevat nooit SS, SA of SD
-        return this.postalCode.matches("^[1-9][0-9]{3} ?(?!SA|SD|SS)[A-Z]{2}$");
-    }
-
-    public boolean isCityValid(){
-        this.city = city.trim();
-        return this.city.matches("^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$");
-    }
-
-    public boolean isPhoneNumberValid(){
-        // verwijder eventuele - en spaties
-        this.phoneNumber = this.phoneNumber.replace(" ", "");
-        return  // vast nummer zonder +31
-                this.phoneNumber.matches("^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$")
-                // of mobiel nummber zonder +31
-                || this.phoneNumber.matches("^(((\\+31|0|0031)6)[1-9][0-9]{7})$");
-    }
-
-    public boolean isBSNFormatValid(){
-        // check  of het uit 9 getallen bestaat
-        if(!this.BSN.matches("^[0-9]{9}$")){
-            return false;
-
-        } else {
-            // voer 11 proef vor BSN uit
-            String firstNumbers = this.BSN.substring(0,8);
-            int lastNumber = Integer.parseInt(this.BSN.substring(8)) * -1;
-
-            int sum = 0;
-            for (int i = 0; i < firstNumbers.length(); i++) {
-                sum += firstNumbers.charAt(i) * (this.BSN.length() - i);
-            }
-            sum += lastNumber;
-
-            return sum%11 == 0;
-        }
-    }
 
     // GETTERS EN SETTERS
     public String getEmail() {

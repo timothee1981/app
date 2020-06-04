@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>accountdetails</title>
+    <link type="text/css" href="css/accountdetails.css" rel="stylesheet" />
 </head>
 <body th:object="${account}">
     <h1>Account details</h1>
@@ -14,21 +15,59 @@
             </option>
         </select>
         <button type="submit" id="submitButton"  value="DoTransfer">choose account</button>-->
-    <h4>Account holders: </h4>
-    <li th:each="customer : ${list}">
-        <div>
-            <tr><p>Account Holders:  <span th:text="${customer.lastName}"/></tr>
+
+    <!--TABLE HOUDT INFORMATIE OVER REKENING HOUDER -->
+
+
+        <h4>Account holders: </h4>
+        <li th:each="customer : ${list}">
+            <div>
+                <tr><p>Account Holders:  <span th:text="${customer.lastName}"></span></tr>
+            </div><br>
+        </li>
+  <!--  <span th:text="${accountType}"></span>-->
+    <table>
+        <tr>
+            </label><span th:text="${account.formatDateTime}"></span><br>
+        </tr>
+        <tr>
+            <label>account type  </label><span th:text="${account.accountType}"></span><br>
+        </tr>
+
+        <tr>
+        <label>IBAN  </label><span th:text="${account.accountNumber}"></span><br>
+        </tr>
+
+        <tr>
+            <label>Balance  </label><span th:text="${account.balance}"></span>
+        </tr>
+    </table>
+    <!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
+    <table>
+        <h2>Transaction</h2>
+        <li th:each="transaction : ${transactionList}">
+            <div>
+                <td>
+                    <tr> <span th:text="${transaction.dateTime}"></span></tr>
+                </td>
+                <td>
+                    <tr> <span th:text="${transaction.bankAccountNumber}"></span></tr>
+                </td>
+                <td>
+                    <tr> <span th:text="${transaction.customerName}"></span></tr>
+                </td>
+                <td>
+                        <tr> <span th:text="${transaction.description}"></span></tr>
+                </td>
+                <td>
+                    <tr> <span th:text="${transaction.amount}"></span></tr>
+            </td>
+
         </div><br>
     </li>
-  <!--  <span th:text="${accountType}"></span>-->
-    <p>Iban</p><span th:text="${accountNumber}"></span><br>
-    <p>Balance</p><span th:text="${balance}"></span><br>
-    <h2>Transaction</h2>
-    <span>List of last ten transaction</span><br>
-    <h2>Transaction</h2>
-    <span>List of last ten transaction</span><br>
+    </table>
     <form th:action="@{transaction}"  method="get">
-    <button type="submit" id="submitButton"  value="DoTransfer">New money transfer</button>
+    <button type="submit" id="submitButton"   value="DoTransfer">New money transfer</button>
     </form>
 </body>
 </html>
