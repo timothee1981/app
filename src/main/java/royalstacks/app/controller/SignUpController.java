@@ -27,15 +27,13 @@ public class SignUpController {
 
     @GetMapping("/signup")
     public ModelAndView signUpHandler(){
-        ModelAndView mav = new ModelAndView("signup");
-        return mav;
+        return new ModelAndView("signup");
     }
 
     @PostMapping("/signup")
     public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String password){
         userPassword = password;
         Customer customer = cbb.customer();
-        System.out.println(customer);
         ModelAndView mav = new ModelAndView("signup");
 
         // check of alle velden goed ingevuld zijn
@@ -53,23 +51,6 @@ public class SignUpController {
         return mav;
     }
 
-    @GetMapping("/signup/u_check")
-    @ResponseBody
-    public String usernameCheckHandler(@RequestParam String username){
-        Customer c = new Customer();
-        c.setUsername(username);
-        return String.valueOf(c.isUsernameFormatValid() && userService.findByUsername(username).isEmpty());
-    }
-
-    @GetMapping("/signup/b_check")
-    @ResponseBody
-    public String BSNCheckHandler(@RequestParam String BSN) {
-        Customer c = new Customer();
-        c.setBSN(BSN);
-        return String.valueOf(c.isBSNFormatValid() && customerService.findCustomerByBSN(BSN).isEmpty());
-
-    }
-
 
     /**
      * Checkt alle velden apart en geeft feedback al deze niet goed ingvuld zijn
@@ -80,19 +61,23 @@ public class SignUpController {
     private boolean isAllInputValid(Customer customer, ModelAndView mav) {
         boolean save = true;
 
-        if(!customer.isUsernameFormatValid()) { save = false; mav.addObject("error", "invalid format username");}
+        if(!customer.isUsernameFormatValid()) { save = false; showError("invalid format username", mav); }
         if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username", "showUsernameNotAvailable()"); }
-        if(!User.isPasswordValid(userPassword)) { save = false; mav.addObject("error", "Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length"); }
-        if(!customer.isFirstNameValid()) { save = false; mav.addObject("error", "invalid first name"); }
-        if(!customer.isLastNameValid()) { save = false; mav.addObject("error", "invalid last name"); }
-        if(!customer.isEmailValid()){ save = false; mav.addObject("error", "invalid email"); }
-        if(!customer.isPostalCodeValid()) { save = false; mav.addObject("error", "invalid postalCode"); }
-        if(!customer.isCityValid()) { save = false; mav.addObject("error", "invalid city"); }
-        if(!customer.isPhoneNumberValid()){ save = false;mav.addObject("error", "invalid phoneNumber"); }
-        if(!customer.isBSNFormatValid() || customerService.findCustomerByBSN(customer.getBSN()).isPresent() ) { save = false; mav.addObject("BSNNotAvailable", "BSN not available"); }
-        if(!customer.isHouseNumber()) { save = false; mav.addObject("error", "invalid houseNumber"); }
+        if(!User.isPasswordValid(userPassword)) { save = false; showError("Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length", mav); }
+        if(!customer.isFirstNameValid()) { save = false; showError("invalid first name", mav);}
+        if(!customer.isLastNameValid()) { save = false; showError("invalid last name", mav); }
+        if(!customer.isEmailValid()){ save = false; showError("invalid email", mav); }
+        if(!customer.isPostalCodeValid()) { save = false; showError("invalid postalCode", mav); }
+        if(!customer.isCityValid()) { save = false; showError("invalid city", mav); }
+        if(!customer.isPhoneNumberValid()){ save = false; showError("invalid phoneNumber", mav); }
+        if(!customer.isBSNFormatValid() || customerService.findCustomerByBSN(customer.getBSN()).isPresent() ) { save = false; showError("BSN not available", mav); }
+        if(!customer.isHouseNumber()) { save = false; showError("invalid houseNumber", mav); }
 
         return save;
+    }
+
+    private void showError(String error, ModelAndView mav){
+        mav.addObject("error", error);
     }
 
     private void populateFields(Customer customer, ModelAndView mav) {
