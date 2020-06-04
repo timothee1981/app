@@ -28,7 +28,7 @@ class UserRepositoryIntegrationTest {
     private UserRepository userRepository;
 
     @Test
-    void saveTest() {
+    void findUserByUsername() {
 
         Customer customer = new Customer("username","password",  "firstName", "LastName", "email", "postcode", "housenumber", "suffix", "city", "phonenumber","BSN", null, false);
         this.entityManager.persist(customer);

@@ -183,7 +183,6 @@ public class CustomerTest {
         c.setBSN("672270225");
         Assert.assertTrue(c.isBSNFormatValid());
 
-
         // invalid BSN
         c.setBSN("01234567");
         Assert.assertFalse(c.isBSNFormatValid());
@@ -194,7 +193,4 @@ public class CustomerTest {
         c.setBSN("01234567A");
         Assert.assertFalse(c.isBSNFormatValid());
     }
-
-
-
 }
