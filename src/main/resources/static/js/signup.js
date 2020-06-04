@@ -29,7 +29,7 @@ const MAX_PASSWORD_LENGTH = 100;
 const MIN_USERNAME_LENGTH = 3;
 const MAX_USERNAME_LENGTH = 15;
 
-// global functies
+// globale functies
 function setFieldValid(field){
     field.classList.add("isValid");
     field.classList.remove("isInvalid")
@@ -96,17 +96,11 @@ usernameField.addEventListener("input", function () {
 
     const re = /^[a-zA-Z0-9_-]$/;
 
-    if(!re.test(usernameInput) && usernameInput.length >= MIN_USERNAME_LENGTH && usernameInput.length <= MAX_USERNAME_LENGTH) {
+    if(!re.test(usernameInput) && usernameInput.length < MIN_USERNAME_LENGTH && usernameInput.length > MAX_USERNAME_LENGTH) {
         showElementAndSetText("usernameNotAvailable", "Between " + MIN_USERNAME_LENGTH + " and " + MAX_USERNAME_LENGTH + " numbers and letters");
         setFieldInvalid(usernameField);
     } else {
-        if(isUsernameUnique()){
-            setFieldValid(usernameField);
-            hideElement("usernameNotAvailable");
-        } else{
-            setFieldInvalid(usernameField)
-            showElementAndSetText("usernameNotAvailable", "Choose another username");
-        }
+        isUsernameUnique();
     }
 
     // check met API of gebruikersnaam uniek is
@@ -120,7 +114,13 @@ usernameField.addEventListener("input", function () {
                 return response.json();
             })
             .then((data) => {
-                return data;
+                if (data){
+                    setFieldValid(usernameField);
+                    hideElement("usernameNotAvailable");
+                } else{
+                    setFieldInvalid(usernameField)
+                    showElementAndSetText("usernameNotAvailable", "Choose another username");
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -241,14 +241,10 @@ BSNField.addEventListener("input", function () {
         setFieldInvalid(BSNField);
         showElementAndSetText("BSNNotAvailable", "Enter a valid BSN");
 
-    } else if (isBSNUnique()){
-        setFieldValid(BSNField);
-
-        hideElement("BSNNotAvailable");
     } else {
-        setFieldInvalid(BSNField);
-        showElementAndSetText("BSNNotAvailable", "Enter a valid BSN");
+        isBSNUnique();
     }
+
 
 
     // NESTED FUNCTIONS
@@ -264,6 +260,13 @@ BSNField.addEventListener("input", function () {
             })
 
             .then((data) => {
+            if (data){
+                setFieldValid(BSNField);
+                hideElement("BSNNotAvailable");
+            } else {
+                setFieldInvalid(BSNField);
+                showElementAndSetText("BSNNotAvailable", "Enter a valid BSN");
+            }
                 return data
             })
 
