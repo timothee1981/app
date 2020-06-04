@@ -2,6 +2,7 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.model.*;
@@ -43,6 +44,21 @@ public class AccountDetailsController {
 
 
     }
+
+/*    @PostMapping("/addaccountholder")
+    public ModelAndView addAccountHolderHandler(@RequestParam String accountNumber, Model model)*/
+
+    @PostMapping("/doLogin")
+    public ModelAndView doLoginHandler(@RequestParam String inputUsername, String inputPassword, Model model){
+
+        //Check if username has a value
+        boolean usernameHasValue = inputUsernameHasValue(inputUsername);
+        if (!usernameHasValue) {
+            ModelAndView mav = new ModelAndView("homepage");
+            mav.addObject("username_error", "Username is required");
+            return mav;
+        }
+
 
     //METHODE DIE VELDEN VULLEN
     private void populatefields(ModelAndView mav,Account myAccount) {
