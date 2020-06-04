@@ -96,12 +96,12 @@ input[id=password]{
     border: #f1f1f1;
 }
 
-.isValid + span::before {
+.isValid + input ::before {
     content: '✓';
     color: #1E90FF;
 }
 
-.isInvalid + span::before {
+.isInvalid + input::before {
     content: '✗';
     color: rgba(255, 0, 0, 0.6);
 }

@@ -41,31 +41,31 @@
 </head>
 <body th:object="${customer}">
 
-<div id="navbar" >
-    <a>
-        <form th:action="@{logoutAction}" method="post">
-            <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
-        </form>
-    </a>
-    <span id="logoNavbar"></span>
-</div>
+    <div id="navbar" >
+        <a>
+            <form th:action="@{logoutAction}" method="post">
+                <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
+            </form>
+        </a>
+        <span id="logoNavbar"></span>
+    </div>
 
 
-<h1>Account overview</h1>
-<h2>Hello <span th:text="${customer.username}"/></h2>
+    <h1>Account overview</h1>
+    <h2>Hello <span th:text="${customer.username}"/></h2>
 
-<ul>
-    <li th:each="account : ${list}">
+    <ul>
+        <li th:each="account : ${list}">
 
-        <div>
-        <tr>Iban Account: <span th:text="${account.accountNumber}"/></tr>
-        <tr>Account Balance:     <span th:text="${account.balance}"/></tr>
-        </div>
-</ul>
+            <div>
+            <tr>Iban Account: <span th:text="${account.accountNumber}"/></tr>
+            <tr>Account Balance:     <span th:text="${account.balance}"/></tr>
+            </div>
+    </ul>
 
 
-<form th:action="@{openaccount}"  method="get">
-    <input type="submit" name="submitbutton" value="Create a new account" />
-</form>
+    <form th:action="@{openaccount}"  method="get">
+        <input type="submit" name="submitbutton" value="Create a new account" />
+    </form>
 </body>
 </html>
