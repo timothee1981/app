@@ -53,6 +53,17 @@
         <td th:text="${topBusinessAccount.totalBalance}" />
     </tr>
 </table>
+<h3>Total balances by sector:</h3>
+<table style="width:65%">
+    <tr>
+        <th>Sector</th>
+        <th>Total balance</th>
+    </tr>
+    <tr th:each="sectorAndTotalBalance: ${sectorAndTotalBalances}">
+        <td th:text="${sectorAndTotalBalance.sector}" />
+        <td th:text="${sectorAndTotalBalance.totalBalance}" />
+    </tr>
+</table>
 <script src="js/navbar.js"></script>
 </body>
 </html>
