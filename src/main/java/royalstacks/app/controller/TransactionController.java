@@ -57,6 +57,7 @@ public class TransactionController {
                                            Model model) {
 
         ModelAndView mav = new ModelAndView("transaction");
+
         showAccountsOfUserId(model, userId, accountId);
 
         Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
@@ -65,12 +66,11 @@ public class TransactionController {
         // Check of alle velden correct ingevuld zijn
         if (fromAccountOptional.isPresent() && toAccountOptional.isPresent() && tbb.getAmount() > 0) {
 
-            // Als alles goed ingevuld is, zet in backing bean
+            // Zet in backingbean zodat een Transaction gemaakt kan worden
             tbb.setFromAccountId(fromAccountOptional.get().getAccountId());
             tbb.setToAccountId(toAccountOptional.get().getAccountId());
         } else {
 
-            // Zo niet, geef error terug
             showNotification("Transaction failed: invalid input", mav);
             populateFields(tbb, mav);
             return mav;
@@ -78,7 +78,7 @@ public class TransactionController {
 
         Transaction t = tbb.Transaction();
 
-        // voer transactie uit
+
         if (transactionService.executeTransaction(t)) {
             showNotification("Money successfully sent", mav);
             // TODO sla transactie op
