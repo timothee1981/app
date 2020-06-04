@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.CustomerAndTotalBalance;
+import royalstacks.app.model.User;
 
 import javax.persistence.OrderBy;
 import java.util.List;
@@ -20,4 +21,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
     @Query("SELECT c.firstName, c.lastName, SUM(ba.balance) AS totalBalance FROM Customer c JOIN c.account ba GROUP BY c.userid ORDER BY totalBalance DESC")
     List<Object[]> findCustomersAndBusinessAccountBalance(Pageable pageable);
+
+    @Query("SELECT c FROM Customer c WHERE c.userid = ?1")
+    Optional<Customer> findCustomerByUserId(int userid);
 }
