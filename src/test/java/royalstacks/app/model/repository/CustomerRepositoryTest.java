@@ -27,7 +27,6 @@ class CustomerRepositoryTest {
 
     @Test
     void findCustomerByBSNTest() {
-        //public Customer( String postalCode, String houseNumber, String suffix, String city, String phoneNumber, String BSN, Employee accountManager, boolean isBusinessAccountHolder) {
         Customer customer = new Customer("username", "password", "Fiep", "Bakker",
                 "emailaddress", "AAAA12", "12", "A", "Hoorn" , "0612345678",
                 "753861489", null, false);
