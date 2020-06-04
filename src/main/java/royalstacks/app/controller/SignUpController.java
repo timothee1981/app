@@ -61,17 +61,17 @@ public class SignUpController {
     private boolean isAllInputValid(Customer customer, ModelAndView mav) {
         boolean save = true;
 
-        if(!customer.isUsernameFormatValid()) { save = false; showError("invalid format username", mav); }
+        if(!customer.isUsernameFormatValid()) { save = false; showError("invalid format usernameField", mav); }
         if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username", "showUsernameNotAvailable()"); }
         if(!User.isPasswordValid(userPassword)) { save = false; showError("Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length", mav); }
         if(!customer.isFirstNameValid()) { save = false; showError("invalid first name", mav);}
         if(!customer.isLastNameValid()) { save = false; showError("invalid last name", mav); }
-        if(!customer.isEmailValid()){ save = false; showError("invalid email", mav); }
-        if(!customer.isPostalCodeValid()) { save = false; showError("invalid postalCode", mav); }
-        if(!customer.isCityValid()) { save = false; showError("invalid city", mav); }
-        if(!customer.isPhoneNumberValid()){ save = false; showError("invalid phoneNumber", mav); }
-        if(!customer.isBSNFormatValid() || customerService.findCustomerByBSN(customer.getBSN()).isPresent() ) { save = false; showError("BSN not available", mav); }
-        if(!customer.isHouseNumber()) { save = false; showError("invalid houseNumber", mav); }
+        if(!customer.isEmailValid()){ save = false; showError("invalid emailField", mav); }
+        if(!customer.isPostalCodeValid()) { save = false; showError("invalid postalCodeField", mav); }
+        if(!customer.isCityValid()) { save = false; showError("invalid cityField", mav); }
+        if(!customer.isPhoneNumberValid()){ save = false; showError("invalid phoneNumberField", mav); }
+        if(!customer.isBSNFormatValid() || customerService.findCustomerByBSN(customer.getBSN()).isPresent() ) { save = false; showError("BSNField not available", mav); }
+        if(!customer.isHouseNumber()) { save = false; showError("invalid houseNumberField", mav); }
 
         return save;
     }
