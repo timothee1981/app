@@ -65,10 +65,10 @@ public class AccountDetailsController {
             List<Customer> accountholders = getAccountHolders(myAccount);
             AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
             List<Transaction> tenLatestTransactions = getTenLastTransaction(myAccount);
-            List<LastTenTransactionBackingBean> lttb = setupListLastTenTransaction(tenLatestTransactions, myAccount);
-
-
-            mav.addObject("transactionList",lttb);
+            if (tenLatestTransactions != null && !tenLatestTransactions.isEmpty()) {
+                List<LastTenTransactionBackingBean> lttb = setupListLastTenTransaction(tenLatestTransactions, myAccount);
+                mav.addObject("transactionList", lttb);
+            }
             mav.addObject("account",accountDetailsBackingBean);
             mav.addObject("list",accountholders);
         }
@@ -87,13 +87,15 @@ public class AccountDetailsController {
     //CREATE LIST TRANSACTION BACKING BEAN
     private List<LastTenTransactionBackingBean> setupListLastTenTransaction(List<Transaction> tenLatestTransactions, Account account) {
         List<LastTenTransactionBackingBean> lttb = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        for(Transaction transaction: tenLatestTransactions){
-            LastTenTransactionBackingBean lasttentbt = getTransactionBackingBean(transaction,account);
-            lttb.add(lasttentbt);
-        }
 
-        return lttb;
+
+        for (Transaction transaction : tenLatestTransactions) {
+            LastTenTransactionBackingBean lasttentbt = getTransactionBackingBean(transaction, account);
+                lttb.add(lasttentbt);
+            }
+
+            return lttb;
+
     }
 
     //CREATE ONE TRANSACTION BACKING BEAN
@@ -137,7 +139,7 @@ public class AccountDetailsController {
     //METHODE DIE DE TIEN LAATSTE TRANSACTIES OPHAALD
 
     private List<Transaction> getTenLastTransaction(Account myAccount) {
-        List<Transaction> getTenLastTransaction = new ArrayList<>();
+        List<Transaction> getTenLastTransaction;
         getTenLastTransaction = transactionService.getTenLastTransaction(myAccount.getAccountId());
         if(!getTenLastTransaction.isEmpty()) {
             for (Transaction transaction : getTenLastTransaction) {
