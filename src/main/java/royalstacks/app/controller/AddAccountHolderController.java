@@ -7,10 +7,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountHolderInviteBackingBean;
 import royalstacks.app.model.Account;
+import royalstacks.app.model.BusinessAccount;
+import royalstacks.app.model.Customer;
 import royalstacks.app.model.User;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,43 +29,18 @@ public class AddAccountHolderController {
 
 
     @GetMapping("/addaccountholder")
-    public ModelAndView addAccountHolderHandler(@RequestParam(value = "accountNumber", required = false) String accountNumber,
-                                                @SessionAttribute("userid") int userId, Model model) {
+    public ModelAndView addAccountHolderHandler(@SessionAttribute("userid") int userId,
+                                                @RequestParam(value = "accountNumber", required = false) String accountNumber) {
+        // http://localhost/addaccountholder?accountNumber=NL32ROYA0000000019
+        // System.out.println(accountNumber);
+        ModelAndView mav = new ModelAndView("/addaccountholder");
 
-        ModelAndView mav = new ModelAndView("addaccountholder");
-
-        Account anAccount = null;
-        Optional<Account> account = accountService.getAccountByAccountNumber(accountNumber);
-        if (account.isPresent()) {
-            anAccount = account.get();
+        Optional<Account> OptionalAccount = accountService.getAccountByAccountNumber(accountNumber);
+        if (OptionalAccount.isPresent()) {
+            Account anAccount = OptionalAccount.get();
             mav.addObject("accountNumber", anAccount.getAccountNumber());
         }
         return mav;
-    }
-
-    @PostMapping("/addaccountholder")
-    public ModelAndView addAccountHolderHandler(@ModelAttribute AccountHolderInviteBackingBean ibb,
-                                                @SessionAttribute("userid") int userId,
-                                                Model model) {
-        ModelAndView mav = new ModelAndView("addaccountholder");
-
-        //haal user op uit DB met behulp van backing bean
-        Optional<User> optionalUser = userService.findByUsername(ibb.getInviteeUsername());
-        //check of user bestaat én een employee is (geen customer) én de verificatiecode klopt
-
-
-        if (optionalUser.isPresent() && isUserCustomer && ibb.getVerificationCode().matches("\\d{5}")){
-
-        }
-    }
-
-/*    public boolean isVerificationCodeValid(){
-        this.verificationCode = this.verificationCode.trim();
-        return this.verificationCode.matches("\\d{5}");
-    }*/
-
-    public boolean isUserCustomer(String inviteeUsername){
-        return false;
     }
 
 

@@ -14,20 +14,9 @@
 </div>
 
 <h1 class="content">Add accountholder</h1>
-<h2 class="content"> Enter the username of the person you want to add as an accountholder <br> and choose a verification code.</h2>
+<h2 class="content"> Enter the username of the person you want to add as <br>an accountholder for account number <span th:text="${accountNumber}"/> <br>and choose a verification code.</h2>
 <h3><span th:text="${error}"/></h3>
 <form id="form" method="post" class="form">
-
-
-    <!-- label accountNumber -->
-    <label for="accountNumber">Account number </label>
-    <!-- maakt veld voor accountNumber -->
-    <select id="accountNumber" name="accountNumber" th:value="${accountNumber}">
-        <!-- vult veld met rekeningnummer? Hier een dropdown?-->
-        <!-- <option th:each="account : ${account}" th:value="${account.accountNumber}" th:text="${account.accountNumber}"></option> -->
-    </select>
-    <br>
-
 
     <label for="inviteeUsername">Username </label>
     <input
