@@ -57,7 +57,7 @@
         </tr><br>
 
     <form th:action="@{transaction}"  method="get">
-        <button type="submit" id="submitButton" name="accountNumber"   value="DoTransfer">New money transfer</button>
+        <button type="submit" id="submitButton" name="accountId" th:value="${account.accountId=10}"   value="DoTransfer">New money transfer</button>
     </form>
     </table>
 
