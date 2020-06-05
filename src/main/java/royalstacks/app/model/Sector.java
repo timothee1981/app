@@ -2,7 +2,6 @@ package royalstacks.app.model;
 
 public enum Sector {
 
-    EMPTY (" "),
     AGRICULTURE ("Agriculture"),
     BUSINESS_SERVICES ("Business services"),
     CONSTRUCTION ("Construction"),
