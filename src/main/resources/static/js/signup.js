@@ -96,6 +96,7 @@ usernameField.addEventListener("input", function () {
 
     const re = /^[a-zA-Z0-9_-]$/;
 
+    console.log(isUsernameUnique());
     if(!re.test(usernameInput) && usernameInput.length < MIN_USERNAME_LENGTH && usernameInput.length > MAX_USERNAME_LENGTH) {
         showElementAndSetText("usernameNotAvailable", "Between " + MIN_USERNAME_LENGTH + " and " + MAX_USERNAME_LENGTH + " numbers and letters");
         setFieldInvalid(usernameField);
@@ -111,7 +112,7 @@ usernameField.addEventListener("input", function () {
                 if (!response.ok) {
                     throw new Error("Response error");
                 }
-                return response.json();
+               // return response.json();
             })
             .then((data) => {
                 if (data){
@@ -124,7 +125,7 @@ usernameField.addEventListener("input", function () {
             })
             .catch((error) => {
                 console.log(error);
-            })
+            });
     }
 });
 

@@ -26,13 +26,13 @@ public class ApiController {
     @GetMapping("/api/username")
     @ResponseBody
     public String isUsernameUniqueHandler(@RequestParam String username){
-        return String.valueOf(userService.isUsernameFormatValid(username) && userService.findByUsername(username).isEmpty());
+        return String.valueOf(userService.findByUsername(username).isEmpty());
     }
 
     @GetMapping("/api/bsn")
     @ResponseBody
     public String isBSNUniqueHandler(@RequestParam String BSN) {
-        return String.valueOf(customerService.isBSNFormatValid(BSN) && customerService.findCustomerByBSN(BSN).isEmpty());
+        return String.valueOf(customerService.findCustomerByBSN(BSN).isEmpty());
 
     }
 }
