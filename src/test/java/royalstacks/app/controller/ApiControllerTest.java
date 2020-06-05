@@ -46,11 +46,6 @@ class ApiControllerTest {
     WebApplicationContext webApplicationContext;
 
 
-    @Before
-    protected void setUp() {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
-
     @Test
     void UsernameIsUnique() throws Exception {
 
@@ -114,7 +109,6 @@ class ApiControllerTest {
         customer.setBSN(BSN);
 
 
-
         given(customerService.findCustomerByBSN(BSN)).willReturn(Optional.of(customer));
         MvcResult mvcResult = mvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
@@ -126,4 +120,21 @@ class ApiControllerTest {
         assertFalse(Boolean.parseBoolean(content));
     }
 
+    @Test
+    void ApiDoesNotExist404() throws Exception {
+
+        String BSN = "663046129";
+        String url = "/api/bsm?BSN=" + BSN;
+
+        Customer customer = new Customer();
+        customer.setBSN(BSN);
+
+        given(customerService.findCustomerByBSN(BSN)).willReturn(Optional.of(customer));
+        MvcResult mvcResult = mvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+
+        assertEquals(404, status);
+
+    }
 }
