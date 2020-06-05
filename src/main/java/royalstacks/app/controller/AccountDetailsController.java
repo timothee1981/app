@@ -39,12 +39,20 @@ public class AccountDetailsController {
         List<Account> myAccounts = getAccountsFromUserId(userId);
         mav.addObject("accounts",myAccounts);
 
-        //IF ACCOUNT accountnumber  not in the my account list:
-            //HACKER//be warned/////////
-         Account myAccount = getAccountFromAccountNumber(accountNumber);
-         populatefields(mav,myAccount);
+        //check if accountnumber belongs to user:
+        for(Account account: myAccounts){
+            if(accountNumber.matches(account.getAccountNumber())){
 
-        return mav;
+            Account myAccount = getAccountFromAccountNumber(accountNumber);
+
+            populatefields(mav,myAccount);
+
+            return mav;
+            }
+        }
+        //else redirect the user to homepage
+
+        return new ModelAndView("homepage");
 
 
     }
