@@ -39,20 +39,20 @@ public class AccountDetailsController {
         List<Account> myAccounts = getAccountsFromUserId(userId);
         mav.addObject("accounts",myAccounts);
 
+        //check if accountnumber belongs to user:
+        for(Account account: myAccounts){
+            if(accountNumber.matches(account.getAccountNumber())){
 
-        //TODO DONT YOU FORGET ABOUT DATE AND TIME: BAAACCCKING BEAAAAANNN
+            Account myAccount = getAccountFromAccountNumber(accountNumber);
 
-         Account myAccount = getAccountFromAccountNumber(accountNumber);
+            populatefields(mav,myAccount);
 
+            return mav;
+            }
+        }
+        //else redirect the user to homepage
 
-         populatefields(mav,myAccount);
-
-        //TODO: get transactions corresponding to this account from nosql DB en show only ten last transaction
-
-
-
-
-        return mav;
+        return new ModelAndView("homepage");
 
 
     }
@@ -105,13 +105,13 @@ public class AccountDetailsController {
         Account accountFrom;
 
 
-        //ACCOUNT DEBITET
+        //ACCOUNT DEBITEEREN
         if(transaction.getFromAccountId() == account.getAccountId()) {
             accountFrom = accountService.getAccountById(transaction.getToAccountId());
             lasttentbt = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
             lasttentbt.setAmount(" - " + transaction.getAmount());
 
-         //ACCOUNT CREDITET
+         //ACCOUNT CREDITETEREN
 
         }else if((transaction.getToAccountId() == account.getAccountId())){
             accountFrom = accountService.getAccountById(transaction.getFromAccountId());
@@ -122,7 +122,7 @@ public class AccountDetailsController {
         return lasttentbt;
     }
 
-    //FILL OBJECT BB WITH CORRECT VALUES
+    //FILL OBJECT BB laast ten transaction WITH CORRECT VALUES
 
     private LastTenTransactionBackingBean fillBackingBeanWithCorrectCalue(Account accountFrom, Transaction transaction) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -152,9 +152,6 @@ public class AccountDetailsController {
     }
 
 
-    //Use the transaction backing bean
-
-
     //METHODE DIE LIJST MET ACCOUNT HOLDERS TERUG GEEFT
 
     private List<Customer> getAccountHolders(Account myAccount) {
@@ -175,29 +172,13 @@ public class AccountDetailsController {
     }
 
     //METHODE DIE DE DROPDOWN VULT MET ACCOUNTS DIE HOREN BIJ HET GEBRUIKER
+    //GOOIE WEG ALS JE HET NIET GEBRUIKT!!!!! DO NOT FORGET!!!!!!!!!!!!
 
     private List<Account> getAccountsFromUserId(int userId) {
-        List<Account> myAccounts = new ArrayList<>();
         Customer customer = (Customer) userService.findByUserId(userId);
-        Iterator<Account> accounts = customer.getAccount().iterator();
-        while(accounts.hasNext()){
-            myAccounts.add(accounts.next());
-        }
 
-        return myAccounts;
+        return new ArrayList<>(customer.getAccount());
     }
-
-
-    //METHODE DIE ACCOUNT TYPE TERUG GEEFT, MAAR DIE IS WAARSCHIJNLIJK NIET NODIG ALS BACKING BEAN WERKT LETS SEE
-
-
-    private String getAccountType (Account account){
-        String accountType = null;
-        if (account instanceof BusinessAccount)
-            return accountType = "Business Account";
-        else
-            return accountType = "Private Account";
-        }
 
 
 

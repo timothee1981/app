@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class AccountDetailsBackingBean {
+
+    private int accountId;
     private String account;
     private String formatDateTime;
     private String accountType;
@@ -36,6 +38,7 @@ public class AccountDetailsBackingBean {
         this.balance = balance;
 
 
+
     }
 
 
@@ -53,9 +56,17 @@ public class AccountDetailsBackingBean {
         AccountDetailsBackingBean bb =
                 new AccountDetailsBackingBean(account.getAccountNumber(),account.getBalance());
         bb.setAccountType("Private Account");
+        bb.setAccountId(account.getAccountId());
 
         return bb;
 
+    }
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public String getFormatDateTime() {
@@ -70,6 +81,7 @@ public class AccountDetailsBackingBean {
         AccountDetailsBackingBean bb =
                 new AccountDetailsBackingBean(account.getAccountNumber(),account.getBalance());
         bb.setAccountType("Business Account");
+        bb.setAccountId(account.getAccountId());
         return bb;
 
     }
