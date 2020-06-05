@@ -22,7 +22,14 @@ const number = document.getElementById("number");
 const special = document.getElementById("special");
 const length = document.getElementById("length");
 
-// global functies
+// magic numbers
+const BSN_LENGTH = 9;
+const MIN_PASSWORD_LENGTH = 10;
+const MAX_PASSWORD_LENGTH = 100;
+const MIN_USERNAME_LENGTH = 3;
+const MAX_USERNAME_LENGTH = 15;
+
+// globale functies
 function setFieldValid(field){
     field.classList.add("isValid");
     field.classList.remove("isInvalid")
@@ -56,7 +63,7 @@ function showElementAndSetText(elementId, String){
     document.getElementById(elementId).innerHTML = String;
 }
 
-// Show passwordField knop
+// Show passwordField knop op scherm
 function showPassword() {
     const button = document.getElementById("showPasswordButton");
     if (passwordField.type === "password") {
@@ -79,39 +86,6 @@ function hidePasswordRequirements() {
     hideElement("passRequirements2of2");
 }
 
-// wordt gebruikt voor first en last name
-function checkNameField(elementId){
-    const nameField = document.getElementById(elementId);
-    let nameInput = nameField.value;
-
-    const re = /^[^\s].*[a-zA-Z-'\s?][^.]{1,100}/;
-
-    if (re.test(nameInput)) {
-        setFieldValid(nameField);
-    } else {
-        setFieldInvalid(nameField);
-    }
-
-}
-
-// elfproef, wordt gebruikt door BSN check
-function isValidBSN(BSN) {
-    if(BSN.length !== 9){
-        return false;
-    }
-
-    const firstNumbers = BSN.substring(0, 8);
-    const lastNumber = BSN.charAt(8);
-    let sum = 0;
-    let i;
-    for (i = 0; i < firstNumbers.length; i++) {
-        sum += firstNumbers.charAt(i) * (BSN.length - i);
-    }
-    sum += lastNumber;
-
-    return sum % 11 === 0;
-}
-
 /**
  * Username veld
  *
@@ -119,41 +93,39 @@ function isValidBSN(BSN) {
  */
 usernameField.addEventListener("input", function () {
     let usernameInput = usernameField.value;
-    let usernameCheck = `/api/username?username=${usernameInput}`;
 
-    const re = /^[a-zA-Z0-9_-]{3,15}$/;
+    const re = /^[a-zA-Z0-9_-]$/;
 
-    // Maak koppeling met db voor check of username correct en uniek is
-    function checkDatabase() {
+    console.log(isUsernameUnique());
+    if(!re.test(usernameInput) && usernameInput.length < MIN_USERNAME_LENGTH && usernameInput.length > MAX_USERNAME_LENGTH) {
+        showElementAndSetText("usernameNotAvailable", "Between " + MIN_USERNAME_LENGTH + " and " + MAX_USERNAME_LENGTH + " numbers and letters");
+        setFieldInvalid(usernameField);
+    } else {
+        isUsernameUnique();
+    }
+
+    // check met API of gebruikersnaam uniek is
+    function isUsernameUnique() {
+        let usernameCheck = `/api/username?username=${usernameInput}`;
         fetch(usernameCheck)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Response error");
                 }
-                return response.json();
+               // return response.json();
             })
             .then((data) => {
-                console.log("data : " + data);
-                if (data) {
-                    // als hij niet in de database voorkomt
-                    hideElement("usernameNotAvailable");
+                if (data){
                     setFieldValid(usernameField);
-                } else {
-                    // als hij wel in de database voorkomt
+                    hideElement("usernameNotAvailable");
+                } else{
+                    setFieldInvalid(usernameField)
                     showElementAndSetText("usernameNotAvailable", "Choose another username");
-                    setFieldInvalid(usernameField);
                 }
             })
             .catch((error) => {
                 console.log(error);
-            })
-    }
-
-    if(!re.test(usernameInput)) {
-        showElementAndSetText("usernameNotAvailable", "Between 3 and 15 numbers and letters");
-        setFieldInvalid(usernameField);
-    } else {
-        checkDatabase();
+            });
     }
 });
 
@@ -166,44 +138,21 @@ usernameField.addEventListener("input", function () {
  */
 passwordInput.onkeyup = function () {
 
-    let lowerCaseLetters = /[a-z]/g;
-    if (passwordInput.value.match(lowerCaseLetters)) {
-        setPassRequirementValid(letter);
-    } else {
-        setPassRequirementInvalid(letter)
-    }
+    const lowerCaseLetters = /[a-z]/g;
+    const upperCaseLetters = /[A-Z]/g;
+    const numbers = /[0-9]/g;
+    const specials = /[!"#$%&'()*+,\-./:;<=>?@^_`{|}~\[\]]/g;
 
-    let upperCaseLetters = /[A-Z]/g;
-    if (passwordInput.value.match(upperCaseLetters)) {
-        setPassRequirementValid(capital);
-    } else {
-        setPassRequirementInvalid(capital);
-    }
-
-    let numbers = /[0-9]/g;
-    if (passwordInput.value.match(numbers)) {
-        setPassRequirementValid(number);
-    } else {
-        setPassRequirementInvalid(number);
-    }
-
-    let specials = /[!"#$%&'()*+,\-./:;<=>?@^_`{|}~\[\]]/g;
-    if (passwordInput.value.match(specials)) {
-        setPassRequirementValid(special);
-    } else {
-        setPassRequirementInvalid(special);
-    }
-
-    if (passwordInput.value.length >= 10 && passwordInput.value.length <= 100) {
-        setPassRequirementValid(length);
-    } else {
-        setPassRequirementInvalid(length);
-    }
+    passwordInput.value.match(lowerCaseLetters) ? setPassRequirementValid(letter) : setPassRequirementInvalid(letter);
+    passwordInput.value.match(upperCaseLetters) ? setPassRequirementValid(capital) : setPassRequirementInvalid(capital);
+    passwordInput.value.match(numbers) ? setPassRequirementValid(number) : setPassRequirementInvalid(number);
+    passwordInput.value.match(specials) ? setPassRequirementValid(special) : setPassRequirementInvalid(special);
+    passwordInput.value.length >= MIN_PASSWORD_LENGTH && passwordInput.value.length <= MAX_PASSWORD_LENGTH ? setPassRequirementValid(length) : setPassRequirementInvalid(length)
 };
 
 // Wanneer alle checks zijn voldaan, zet veld op valid
 passwordField.addEventListener('keyup', function () {
-    console.log("letter classlist: " + letter.classList.contains("valid"));
+
     if (letter.classList.contains("valid") &&
         capital.classList.contains("valid") &&
         number.classList.contains("valid") &&
@@ -221,8 +170,24 @@ passwordField.addEventListener('keyup', function () {
  * First en Last Name
  */
 nameFields.addEventListener('input', function () {
+
     checkNameField("firstName");
     checkNameField("lastName");
+
+    function checkNameField(elementId){
+        const nameField = document.getElementById(elementId);
+        let nameInput = nameField.value;
+
+        const re = /^[^\s].*[a-zA-Z-'\s?][^.]{1,100}/;
+
+        if (re.test(nameInput)) {
+            setFieldValid(nameField);
+        } else {
+            setFieldInvalid(nameField);
+        }
+
+    }
+
 });
 
 /**
@@ -268,9 +233,25 @@ phoneNumberField.addEventListener('input', function () {
  */
 BSNField.addEventListener("input", function () {
     let BSNInput = BSNField.value;
-    let BSNCheck = `/api/bsn?BSN=${BSNInput}`;
 
-    function checkDatabase() {
+    if (BSNInput.length !== BSN_LENGTH) {
+        setFieldInvalid(BSNField);
+        showElementAndSetText("BSNNotAvailable", "Must be 9 numbers");
+
+    } else if (!isValidBSN(BSNInput)) {
+        setFieldInvalid(BSNField);
+        showElementAndSetText("BSNNotAvailable", "Enter a valid BSN");
+
+    } else {
+        isBSNUnique();
+    }
+
+
+
+    // NESTED FUNCTIONS
+    function isBSNUnique() {
+
+        let BSNCheck = `/api/bsn?BSN=${BSNInput}`;
         fetch(BSNCheck)
             .then((response) => {
                 if (!response.ok) {
@@ -279,36 +260,38 @@ BSNField.addEventListener("input", function () {
                 return response.json();
             })
 
-            // data komt terug van de fetch
             .then((data) => {
-                if (data === true) {
-                    // als hij niet voorkomt (true)
-                    hideElement("BSNNotAvailable");
-                    setFieldValid(BSNField);
-                } else {
-                    // als hij wel voorkomt (false)
-                    showElementAndSetText("BSNNotAvailable", "Enter a valid BSN");
-                    setFieldInvalid(BSNField);
-                }
+            if (data){
+                setFieldValid(BSNField);
+                hideElement("BSNNotAvailable");
+            } else {
+                setFieldInvalid(BSNField);
+                showElementAndSetText("BSNNotAvailable", "Enter a valid BSN");
+            }
+                return data
             })
+
             .catch((error) => {
                 console.log(error);
             })
     }
 
+    // Elfproef
+    function isValidBSN(BSN) {
+        if(BSN.length !== BSN_LENGTH){
+            return false;
+        }
 
-    if (BSNInput.length !== 9) {
-        showElementAndSetText("BSNNotAvailable", "Must be 9 numbers");
-        setFieldInvalid(BSNField);
+        const firstNumbers = BSN.substring(0, BSN_LENGTH -1 );
+        const lastNumber = BSN.charAt(BSN_LENGTH - 1);
+        let sum = 0;
+        let i;
+        for (i = 0; i < firstNumbers.length; i++) {
+            sum += firstNumbers.charAt(i) * (BSN.length - i);
+        }
+        sum += lastNumber;
 
-
-    } else if (!isValidBSN(BSNInput)) {
-        showElementAndSetText("BSNNotAvailable", "Enter a valid BSN");
-        setFieldInvalid(BSNField);
-    }
-
-    else {
-        checkDatabase();
+        return sum % 11 === 0;
     }
 });
 

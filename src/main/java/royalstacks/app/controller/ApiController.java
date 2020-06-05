@@ -25,18 +25,14 @@ public class ApiController {
 
     @GetMapping("/api/username")
     @ResponseBody
-    public String usernameCheckHandler(@RequestParam String username){
-        Customer c = new Customer();
-        c.setUsername(username);
-        return String.valueOf(c.isUsernameFormatValid() && userService.findByUsername(username).isEmpty());
+    public String isUsernameUniqueHandler(@RequestParam String username){
+        return String.valueOf(userService.findByUsername(username).isEmpty());
     }
 
     @GetMapping("/api/bsn")
     @ResponseBody
-    public String BSNCheckHandler(@RequestParam String BSN) {
-        Customer c = new Customer();
-        c.setBSN(BSN);
-        return String.valueOf(c.isBSNFormatValid() && customerService.findCustomerByBSN(BSN).isEmpty());
+    public String isBSNUniqueHandler(@RequestParam String BSN) {
+        return String.valueOf(customerService.findCustomerByBSN(BSN).isEmpty());
 
     }
 }

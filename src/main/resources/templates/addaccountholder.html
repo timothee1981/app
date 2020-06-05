@@ -14,21 +14,11 @@
 </div>
 
 <h1 class="content">Add accountholder</h1>
+<h2 class="content"> Enter the username of the person you want to add as <br>an accountholder for account number <span th:text="${accountNumber}"/> <br>and choose a verification code.</h2>
 <h3><span th:text="${error}"/></h3>
 <form id="form" method="post" class="form">
 
-
-    <!-- label accountNumber -->
-    <label for="accountNumber">Account to which new account holder will be added </label>
-    <!-- maakt veld voor accountNumber -->
-    <select id="accountNumber" name="accountNumber" th:value="${accountNumber}">
-        <!-- vult veld met rekeningnummer? -->
-        <option th:each="account : ${account}" th:value="${account.accountNumber}" th:text="${account.accountNumber}"></option>
-    </select>
-    <br>
-
-
-    <label for="inviteeUsername">New accountholder's username</label>
+    <label for="inviteeUsername">Username </label>
     <input
             type="text"
             name="inviteeUsername"
@@ -39,9 +29,9 @@
     />
     <br>
 
-    <label for="verificationCode">Your verification code</label>
+    <label for="verificationCode">Verification code</label>
     <input
-            type="number"
+            type="text"
             placeholder="12345"
             name="verificationCode"
             id="verificationCode"

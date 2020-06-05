@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
-import royalstacks.app.model.User;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
 
@@ -36,8 +35,7 @@ public class SignUpController {
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
 
-        // check of alle velden goed ingevuld zijn
-        if(isAllInputValid(customer, mav)) {
+        if(isAllInputValid(customer)) {
             customerService.saveCustomer(customer);
             populateFields(customer, mav);
             mav.addObject("form", "disabled");
@@ -45,6 +43,7 @@ public class SignUpController {
             System.out.println("**** Customer saved: " + customer);
         } else {
             // zo niet, vul alle velden met input van gebruiker
+            mav.addObject("error", "Sign Up failed: Invalid Field(s)");
             System.out.println("**** No customer saved");
             populateFields(customer, mav);
         }
@@ -55,30 +54,23 @@ public class SignUpController {
     /**
      * Checkt alle velden apart en geeft feedback al deze niet goed ingvuld zijn
      * @param customer
-     * @param mav
      * @return
      */
-    private boolean isAllInputValid(Customer customer, ModelAndView mav) {
-        boolean save = true;
+    private boolean isAllInputValid(Customer customer) {
 
-        if(!customer.isUsernameFormatValid()) { save = false; showError("invalid format username", mav); }
-        if(userService.findByUsername(customer.getUsername()).isPresent()) { save = false; mav.addObject("username", "showUsernameNotAvailable()"); }
-        if(!User.isPasswordValid(userPassword)) { save = false; showError("Password must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and 10 characters in length", mav); }
-        if(!customer.isFirstNameValid()) { save = false; showError("invalid first name", mav);}
-        if(!customer.isLastNameValid()) { save = false; showError("invalid last name", mav); }
-        if(!customer.isEmailValid()){ save = false; showError("invalid email", mav); }
-        if(!customer.isPostalCodeValid()) { save = false; showError("invalid postalCode", mav); }
-        if(!customer.isCityValid()) { save = false; showError("invalid city", mav); }
-        if(!customer.isPhoneNumberValid()){ save = false; showError("invalid phoneNumber", mav); }
-        if(!customer.isBSNFormatValid() || customerService.findCustomerByBSN(customer.getBSN()).isPresent() ) { save = false; showError("BSN not available", mav); }
-        if(!customer.isHouseNumber()) { save = false; showError("invalid houseNumber", mav); }
-
-        return save;
+        return userService.isUsernameFormatValid(customer.getUsername()) &&
+                userService.findByUsername(customer.getUsername()).isEmpty() &&
+                userService.isPasswordValid(userPassword) &&
+                userService.isFirstNameValid(customer.getFirstName()) &&
+                userService.isLastNameValid(customer.getLastName()) &&
+                customerService.isEmailValid(customer.getEmail()) &&
+                customerService.isPostalCodeValid(customer.getPostalCode()) &&
+                customerService.isCityValid(customer.getCity()) &&
+                customerService.isPhoneNumberValid(customer.getPhoneNumber()) &&
+                customerService.isBSNFormatValid(customer.getBSN()) &&
+                customerService.isHouseNumberValid(customer.getHouseNumber());
     }
 
-    private void showError(String error, ModelAndView mav){
-        mav.addObject("error", error);
-    }
 
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());

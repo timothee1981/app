@@ -47,6 +47,9 @@ public class TransactionController {
     }
 
 
+    public TransactionController() {
+    }
+
     /**
      * PostMapping
      */

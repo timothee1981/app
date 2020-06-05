@@ -3,24 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>myaccounts</title>
+
+    <link type="text/css" href="css/navbar.css" rel="stylesheet" />
+
+
     <style>
         body{
-            padding-top: 20px;
             align-content: center;
             background-color: #ebebeb;
             margin: auto;
-            width: 40%;
+            width: 100%;
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
         }
-        #logoutbutton{
-            padding: 0;
-            margin: 0;
 
-        }
-
-        li{
-            margin: 15px;
-        }
         input[type=submit] {
             width: 100%;
             padding: 15px;
@@ -34,8 +29,49 @@
         input[type=submit]:focus{
             background-color: #ddd;
             outline: none;
+        }
+
+        #logoutbutton{
+            padding: 0;
+            margin: 0;
+        }
+
+        #Account_overview{
+            width: 40%;
+            margin-left: 30%;
+        }
+
+        td a:hover {
 
         }
+        td a button{
+            border:none;
+            opacity: 1.0;
+        }
+
+        td a hover{
+            border:none;
+            color: #1E90FF;
+        }
+
+        tr.trLink{
+            cursor: pointer;
+            border-collapse: collapse;
+        }
+        tr.trLink:hover{
+            opacity: 0.9;
+            color: #1E90FF;
+
+        }
+        tr.trLink a{
+            border-collapse: collapse;
+            height: 100%;
+            width: 100%;
+        }
+        tr.trLink:hover a{
+            opacity: 0.9;
+        }
+
 
     </style>
 </head>
@@ -50,22 +86,33 @@
     <span id="logoNavbar"></span>
 </div>
 
+<div id="Account_overview">
+    <h1>Account overview</h1>
+    <h2>Hello <span th:text="${customer.username}"/></h2>
+    <form  th:action="@{/accountdetails}">
+        <table>
+            <thead>
+                <tr>
+                    <th>Iban Account</th>
+                    <th>Account balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="trLink" th:each="account : ${list}">
+                    <td><a><button type="submit" th:name="accountNumber" th:value="${account.accountNumber}"> <span th:text="${account.accountNumber}"/></button></a></td>
+                    <td><a><button type="submit" th:name="accountNumber" th:value="${account.accountNumber}"><span th:text="${account.balance}"/></button></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
 
-<h1>Account overview</h1>
-<h2>Hello <span th:text="${customer.username}"/></h2>
+    <form th:action="@{openaccount}"  method="get">
+        <input type="submit" name="submitbutton" value="Create a new account" />
+    </form>
+</div>
 
-<ul>
-    <li th:each="account : ${list}">
+<script src="js/navbar.js"></script>
 
-        <div>
-        <tr>Iban Account: <span th:text="${account.accountNumber}"/></tr>
-        <tr>Account Balance:     <span th:text="${account.balance}"/></tr>
-        </div>
-</ul>
-
-
-<form th:action="@{openaccount}"  method="get">
-    <input type="submit" name="submitbutton" value="Create a new account" />
-</form>
 </body>
 </html>
+
