@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
@@ -34,5 +35,13 @@ public class ApiController {
     public String isBSNUniqueHandler(@RequestParam String BSN) {
         return String.valueOf(customerService.findCustomerByBSN(BSN).isEmpty());
 
+    }
+
+    @GetMapping("/openaccount/v_check")
+    @ResponseBody
+    public String vatNumberCheckHandler(@RequestParam String vatnumber){
+        BusinessAccount businessAccount =  new BusinessAccount();
+        businessAccount.setVatNumber(vatnumber);
+        return String.valueOf(businessAccount.isVatValid());
     }
 }

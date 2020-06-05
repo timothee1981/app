@@ -91,7 +91,7 @@
 
     <br>
     <form th:action="@{addaccountholder}" method="get">
-    <button type = "submit" id = "addaccountholderbutton" value = "Add Accountholder">Add accountholder</button>
+    <button type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
     </form>
 
 </div>
