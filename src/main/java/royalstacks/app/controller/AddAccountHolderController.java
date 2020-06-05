@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountHolderInviteBackingBean;
 import royalstacks.app.backingBean.TransactionBackingBean;
-import royalstacks.app.model.Account;
-import royalstacks.app.model.BusinessAccount;
-import royalstacks.app.model.Customer;
-import royalstacks.app.model.User;
+import royalstacks.app.model.*;
 import royalstacks.app.service.AccountHolderInviteService;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;
@@ -62,14 +59,21 @@ public class AddAccountHolderController {
         } else {
             displayMessage("Please enter an existing username", mav);
 
-            //check of user een customer is en check of de verificatiecode klopt
+            //TODO checken of user een customer is
             if (/*userService.isUserCustomer(invitee) &&*/ accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode())) {
                 ibb.setInviteeUsername(invitee.getUsername());
+                //verificationCode zit hier al in de bb?
             } else {
                 displayMessage("Please enter an existing customer's username and a five-digit number", mav);
                 populateFields(ibb, mav);
+                return mav;
             }
-        } return mav;
+        }
+
+        AccountHolderInvite newInvite = ibb.accountHolderInvite();
+        //TODO sla invite op in DB, save methode maken
+        displayMessage("Your invitation has been sent.", mav);
+        return mav;
     }
 
 

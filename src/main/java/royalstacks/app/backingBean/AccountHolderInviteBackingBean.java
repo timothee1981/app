@@ -20,7 +20,6 @@ public class AccountHolderInviteBackingBean {
         this.verificationCode = verificationCode;
     }
 
-    //aanpassen met Optional etc
     public AccountHolderInvite accountHolderInvite() {
         AccountHolderInvite accountHolderInvite = new AccountHolderInvite(invitee, account, verificationCode);
         return accountHolderInvite;
