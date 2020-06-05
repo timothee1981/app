@@ -63,6 +63,11 @@ function setFieldInvalid(field){
     field.classList.remove("isValid");
 }
 
+function removeInvalid(field){
+    field.classList.remove("isValid");
+    field.classList.remove("isInvalid");
+}
+
 function isInputValid(elementId){
     return elementId.classList.contains("isValid")
 }
@@ -76,6 +81,7 @@ function setPassRequirementInvalid(requirement){
     requirement.classList.remove("valid");
     requirement.classList.add("invalid");
 }
+
 
 function hideElement(elementId){
     document.getElementById(elementId).style.display = 'none';
@@ -198,16 +204,18 @@ function getCityAndStreet() {
     })
         .then((response) => {
             if (!response.ok) {
+                city = undefined;
+                street = undefined;
                 throw new Error("Response error");
             }
             return response.json();
         })
         .then((data) => {
-            city = data.city;
-            street = data.street;
+                city = data.city;
+                street = data.street;
         })
         .catch((error) => {
-            console.error(error);
+            console.log(error);
         });
 }
 
@@ -324,29 +332,21 @@ postalCodeField.addEventListener('input', function () {
     }
 });
 
-/**
- * House Number veld
- */
-houseNumberField.addEventListener('input', function () {
-    let houseNumberInput = houseNumberField.value;
-
-    if (houseNumberRegex.test(houseNumberInput)) {
-        setFieldValid(houseNumberField);
-    } else {
-        setFieldInvalid(houseNumberField);
-    }
-});
 
 /**
- * City en Street veld
+ * houseNumber, city en street veld
  */
 NAWFields.addEventListener('input', function(){
-    if(isInputValid(postalCodeField) && isInputValid(houseNumberField)){
+
+    if(isInputValid(postalCodeField)){
+
         getCityAndStreet().then(r => {
             if (city !== undefined) {
+                setFieldValid(houseNumberField);
                 setValue("city", city);
             } else {
                 emptyValue("city");
+                setFieldInvalid(houseNumberField);
             }
             if (street !== undefined) {
                 setValue("street", street);
@@ -354,9 +354,11 @@ NAWFields.addEventListener('input', function(){
                 emptyValue("street");
             }
         })
+
     } else {
         emptyValue("street");
         emptyValue("city");
+        removeInvalid("houseNumber");
     }
 });
 
