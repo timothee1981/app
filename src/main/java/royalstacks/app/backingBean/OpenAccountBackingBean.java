@@ -3,6 +3,7 @@ package royalstacks.app.backingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.PrivateAccount;
+import royalstacks.app.model.Sector;
 
 public class OpenAccountBackingBean {
     public static final double START_BALANCE = Account.getStartingBalance();
@@ -46,7 +47,7 @@ public class OpenAccountBackingBean {
 
     public BusinessAccount businessAccount(){
 
-        BusinessAccount businessAccount = new BusinessAccount(accountNumber, START_BALANCE, companyName,kvkNumber,vatNumber,sector);
+        BusinessAccount businessAccount = new BusinessAccount(accountNumber, START_BALANCE, companyName,kvkNumber,vatNumber, Sector.valueOf(sector));
         return businessAccount;
     }
 

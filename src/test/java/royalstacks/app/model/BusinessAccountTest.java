@@ -271,4 +271,17 @@ class BusinessAccountTest {
         account.setVatNumber("NL316383915B12");
         assertFalse(account.vatPassed11Test());
     }
+
+    @Test
+    void convertSectorEnumTest(){
+        //ARRANGE
+        BusinessAccount businessAccount = new BusinessAccount("NL316383915B12",666.66,"TestBV","12345678","NL010000446B01",Sector.ENERGY_WATER_AND_ENVIRONMENT);
+        Sector expected = Sector.ENERGY_WATER_AND_ENVIRONMENT;
+
+        //ACT
+        Sector actual = businessAccount.getSector();
+
+        //ASSERT
+        assertEquals(expected,actual);
+    }
 }

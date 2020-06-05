@@ -2,6 +2,7 @@ package royalstacks.app.backingBean;
 
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.PrivateAccount;
+import royalstacks.app.model.Sector;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,7 +46,7 @@ public class AccountDetailsBackingBean {
     }
 
     public BusinessAccount businessAccount(){
-        return new BusinessAccount(accountNumber,balance,companyName,kvkNumber,vatNumber,sector);
+        return new BusinessAccount(accountNumber,balance,companyName,kvkNumber,vatNumber, Sector.valueOf(sector));
     }
 
     public static AccountDetailsBackingBean createBeanPrivate(PrivateAccount account){
