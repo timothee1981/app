@@ -6,6 +6,11 @@
 
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
 
+    // make use of webjar - jquery
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+
 
     <style>
         body{
@@ -106,18 +111,46 @@
 </body>
 </html>
 
+
+
+
+
+
+<script type="text/javascript"></script>
+
 <script>
+    var gotoAccountDetails = function(accountnumber){
+        console.log("ik zit in de gotoAccountDetails")
+        $.ajax({
+            type: "GET",
+            url: "/accountdetails",
+            data: { accountNumber: accountnumber}
+        })
+    }
+
+    $(document).ready(function(){
+
     // add eventlistener to all table-cells - on click- go to account details
     document.querySelectorAll('#accountdetailstable tr')
-        .forEach(e => e.addEventListener("click", function() {
-            //1 - get acountnumber clicked
-            // Here, `this` refers to the element the event was hooked on
-            var accountnumber = console.log(this.cells[0].innerHTML);
+.forEach(e => e.addEventListener("click", function() {
 
-            //2 - fire get request with parameter to go to account details
+    console.log("on-click event = triggered")
+//1 - get acountnumber clicked
+// Here, `this` refers to the element the event was hooked on
+let accountnumber = this.cells[0].innerHTML;
 
-            fetch(`/api/accountredirect?accountnumber=${accountnumber}`);
+//2 - fire get request with parameter to go to account details
+gotoAccountDetails(accountnumber);
+//fetch(`/api/accountredirect?accountnumber=${accountnumber}`);
+
+}));
 
 
-        }));
+
+})
+
+
+
+
 </script>
+<script type="text/javascript"></script>
