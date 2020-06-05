@@ -56,7 +56,7 @@ public class TransactionService {
             tenLastTransactions.add(transactions.get(index));
         }
 
-       return  transactions;
+       return  tenLastTransactions;
 
     }
 }
