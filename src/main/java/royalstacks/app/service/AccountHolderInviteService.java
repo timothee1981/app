@@ -3,17 +3,16 @@ package royalstacks.app.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.AccountHolderInvite;
-import royalstacks.app.model.Transaction;
-import royalstacks.app.model.repository.TransactionRepository;
+import royalstacks.app.model.repository.AccountHolderInviteRepository;
 
 @Service
 public class AccountHolderInviteService {
 
     @Autowired
-    TransactionRepository transactionRepository;
+    AccountHolderInviteRepository accountHolderInviteRepository;
 
     public void saveAccountHolderInvite(AccountHolderInvite ahi){
-        AccountHolderInviteRepository.save(ahi);
+        accountHolderInviteRepository.save(ahi);
         System.out.println("Saved to DB");
     }
 

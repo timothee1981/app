@@ -37,9 +37,9 @@ public class AddAccountHolderController {
         // System.out.println(accountNumber);
         ModelAndView mav = new ModelAndView("/addaccountholder");
 
-        Optional<Account> OptionalAccount = accountService.getAccountByAccountNumber(accountNumber);
-        if (OptionalAccount.isPresent()) {
-            Account anAccount = OptionalAccount.get();
+        Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(accountNumber);
+        if (optionalAccount.isPresent()) {
+            Account anAccount = optionalAccount.get();
             mav.addObject("accountNumber", anAccount.getAccountNumber());
         }
         return mav;
@@ -54,6 +54,8 @@ public class AddAccountHolderController {
         User invitee = null;
         //haal user op uit DB met behulp van backing bean en check of deze bestaat
         Optional<User> optionalUser = userService.findByUsername(ibb.getInviteeUsername());
+        Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(ibb.getAccountNumber());
+        Account anAccount = optionalAccount.get();
         if (optionalUser.isPresent()) {
             invitee = optionalUser.get();
         } else {
@@ -71,11 +73,10 @@ public class AddAccountHolderController {
         }
 
         AccountHolderInvite newInvite = ibb.accountHolderInvite();
-        //TODO sla invite op in DB, save methode maken
-        displayMessage("Your invitation has been sent.", mav);
+        accountHolderInviteService.saveAccountHolderInvite(newInvite);
+        displayMessage("We have received your invitation. Please provide the new account holder with the verification code.", mav);
         return mav;
     }
-
 
 
     private void displayMessage(String message, ModelAndView mav){
