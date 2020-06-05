@@ -40,8 +40,6 @@ public class AccountDetailsController {
 
 
         return mav;
-
-
     }
 
     //METHODE DIE VELDEN VULLEN

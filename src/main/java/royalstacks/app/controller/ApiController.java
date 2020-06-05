@@ -3,6 +3,7 @@ package royalstacks.app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import royalstacks.app.model.Customer;
@@ -22,6 +23,12 @@ public class ApiController {
     @Autowired
     private CustomerService customerService;
 
+    @GetMapping("/api/accountredirect")
+    @ResponseBody
+    public void accountredirect(@RequestParam String accountnumber){
+        System.out.println("hij draait de account-redirect methode");
+
+    }
 
     @GetMapping("/api/username")
     @ResponseBody
