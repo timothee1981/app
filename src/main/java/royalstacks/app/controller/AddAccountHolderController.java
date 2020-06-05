@@ -6,10 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountHolderInviteBackingBean;
+import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.User;
+import royalstacks.app.service.AccountHolderInviteService;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;
 
@@ -27,6 +29,9 @@ public class AddAccountHolderController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AccountHolderInviteService accountHolderInviteService;
+
 
     @GetMapping("/addaccountholder")
     public ModelAndView addAccountHolderHandler(@SessionAttribute("userid") int userId,
@@ -42,6 +47,44 @@ public class AddAccountHolderController {
         }
         return mav;
     }
+
+
+    @PostMapping("/addaccountholder")
+    public ModelAndView addAccountHolderHandler(@ModelAttribute AccountHolderInviteBackingBean ibb,
+                                                @SessionAttribute("userid") int userId,
+                                                Model model) {
+        ModelAndView mav = new ModelAndView("addaccountholder");
+        User invitee = null;
+        //haal user op uit DB met behulp van backing bean en check of deze bestaat
+        Optional<User> optionalUser = userService.findByUsername(ibb.getInviteeUsername());
+        if (optionalUser.isPresent()) {
+            invitee = optionalUser.get();
+        } else {
+            displayMessage("Please enter an existing username", mav);
+
+            //check of user een customer is en check of de verificatiecode klopt
+            if (/*userService.isUserCustomer(invitee) &&*/ accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode())) {
+                ibb.setInviteeUsername(invitee.getUsername());
+            } else {
+                displayMessage("Please enter an existing customer's username and a five-digit number", mav);
+                populateFields(ibb, mav);
+            }
+        } return mav;
+    }
+
+
+
+    private void displayMessage(String message, ModelAndView mav){
+        mav.addObject("message", message);
+    }
+
+
+    private void populateFields(AccountHolderInviteBackingBean ibb, ModelAndView mav) {
+        mav.addObject("inviteeUsername", ibb.getInviteeUsername());
+        mav.addObject("verificationCode", ibb.getVerificationCode());
+    }
+
+
 
 
 }
