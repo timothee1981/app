@@ -24,7 +24,7 @@ class CustomerServiceTest {
         Assert.assertTrue(customerService.isEmailValid("email@[123.123.123.123]"));
         Assert.assertTrue(customerService.isEmailValid("_______@example.com"));
         Assert.assertTrue(customerService.isEmailValid("firstname+lastname@example.com"));
-        Assert.assertTrue(customerService.isEmailValid("  example@example.com  "));
+        Assert.assertTrue(customerService.isEmailValid("example@example.com"));
         Assert.assertTrue(customerService.isEmailValid("fiepbakker@hotmail.com"));
         Assert.assertTrue(customerService.isEmailValid("fiepbakker@hotmail.com"));
 
@@ -39,12 +39,11 @@ class CustomerServiceTest {
     @Test
     void isHouseNumberValid() {
 
-        Assert.assertTrue(customerService.isHouseNumberValid("   1  "));
-        Assert.assertTrue(customerService.isHouseNumberValid(" 1"));
-        Assert.assertTrue(customerService.isHouseNumberValid(" 100"));
+        Assert.assertTrue(customerService.isHouseNumberValid("1"));
+        Assert.assertTrue(customerService.isHouseNumberValid("100"));
         Assert.assertTrue(customerService.isHouseNumberValid("26-95"));
-        Assert.assertTrue(customerService.isHouseNumberValid("   4"));
-        Assert.assertTrue(customerService.isHouseNumberValid(" 100"));
+        Assert.assertTrue(customerService.isHouseNumberValid("4"));
+        Assert.assertTrue(customerService.isHouseNumberValid("100"));
 
 
         Assert.assertFalse(customerService.isHouseNumberValid(""));
@@ -78,7 +77,7 @@ class CustomerServiceTest {
         // valid cities
         Assert.assertTrue(customerService.isCityValid("Amsterdam"));
         Assert.assertTrue(customerService.isCityValid("amsterdam"));
-        Assert.assertTrue(customerService.isCityValid("  Maastricht  "));
+        Assert.assertTrue(customerService.isCityValid("Maastricht"));
 
         // invalid cities
         Assert.assertFalse(customerService.isCityValid("Hoorn0"));

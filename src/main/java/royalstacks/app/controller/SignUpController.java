@@ -61,8 +61,8 @@ public class SignUpController {
         return userService.isUsernameFormatValid(customer.getUsername()) &&
                 userService.findByUsername(customer.getUsername()).isEmpty() &&
                 userService.isPasswordValid(userPassword) &&
-                userService.isFirstNameValid(customer.getFirstName()) &&
-                userService.isLastNameValid(customer.getLastName()) &&
+                userService.isNameValid(customer.getFirstName()) &&
+                userService.isNameValid(customer.getLastName()) &&
                 customerService.isEmailValid(customer.getEmail()) &&
                 customerService.isPostalCodeValid(customer.getPostalCode()) &&
                 customerService.isCityValid(customer.getCity()) &&
