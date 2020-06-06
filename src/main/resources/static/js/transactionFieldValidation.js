@@ -20,24 +20,59 @@ toAccountField.addEventListener("input", function(){
         toAccountValidationAction();
     }
     else{
-        removeValidClass(toAccountFieldId)
+        removeValidClass(toAccountFieldId);
     }
 });
-toAccountField.addEventListener("blur", toAccountValidationAction);
-amountField.addEventListener("input", amountValidationAction);
+toAccountField.addEventListener("blur", function(){
+    toAccountValidationAction();
+    checkAndEnableButton();
+});
+toAccountField.addEventListener("mouseout", function(){
+    checkAndEnableButton();
+});
+amountField.addEventListener("input", function(){
+    checkAndEnableButton();
+    amountValidationAction();
+});
 amountField.addEventListener("blur", function pleaseEnterAmount(){
-    if(amountField.value.length == 0 ){
+    if(!isAmountFilledIn() ){
         showError(errorNoAmount, amountErrorId);
         setClassInvalid(amountFieldId);
     }
+    checkAndEnableButton();
+});
+amountField.addEventListener("mouseout", function pleaseEnterAmount(){
+   checkAndEnableButton();
 });
 
+function checkAndEnableButton(){
+    if(isAllInputValid()){
+        enableButton();
+    }
+    else{
+        disableButton();
+    }
+}
+function enableButton(){
+    if(document.getElementById("submitButton").disabled === true){
+        document.getElementById("submitButton").disabled = false;
+    }
+}
+function disableButton(){
+    if(document.getElementById("submitButton").disabled === false) {
+        document.getElementById("submitButton").disabled = true;
+    }
+}
 
 
 function fromAccountValidationAction() {
-    if(amountField.value.length > 0) {
+    if(isAmountFilledIn()) {
         showHideAmountValidMark();
         showHideAmountErrors();
+    }
+    else{
+        removeValidClass(amountFieldId);
+        disableButton()
     }
 }
 function toAccountValidationAction(){
@@ -51,18 +86,19 @@ function amountValidationAction() {
 
 
 function showHideToAccountErrors(){
-
     if(isAccountFormatValid()) {
         hideError(errorAccountDoesntExist, toAccountErrorId);
      }
     else{
         showError(errorAccountDoesntExist, toAccountErrorId);
+        disableButton()
     }
     if(isAccountDifferentThanFromAccount()){
         hideError(errorSenderSameAsReceiver, toAccountErrorId);
     }
     else{
         showError(errorSenderSameAsReceiver, toAccountErrorId);
+        disableButton()
     }
 }
 function showHideAmountErrors(){
@@ -72,12 +108,14 @@ function showHideAmountErrors(){
     }
     else{
         showError(errorAmountFormatInvalid, amountErrorId);
+        disableButton()
     }
     if(isAmountSmallerThanBalance()){
         hideError(errorAmountTooHigh, amountErrorId);
     }
     else {
         showError(errorAmountTooHigh, amountErrorId);
+        disableButton()
     }
 }
 function showHideAmountValidMark(){
@@ -87,7 +125,6 @@ function showHideAmountValidMark(){
         setClassInvalid(amountFieldId);
     }
 }
-
 function showHideToAccountValidMark(){
     if(isToAccountValid()){
         setClassValid(toAccountFieldId);}
@@ -136,8 +173,9 @@ function removeValidClass(id){
     }
 }
 
-
-
+function isAllInputValid(){
+    return (isToAccountValid() && isAmountValid())
+}
 /**
  * checks if ToAccount Input Field is Valid on multiple checks
  */
@@ -148,7 +186,7 @@ function isToAccountValid(){
  * checks if amount Input Field is Valid on multiple checks
  */
 function isAmountValid(){
-    return(isAmountFormatValid() && isAmountSmallerThanBalance())
+    return(isAmountFormatValid() && isAmountSmallerThanBalance() && isAmountFilledIn())
 }
 /**
  * checks if description Input Field is Valid on Format
@@ -156,7 +194,6 @@ function isAmountValid(){
 function isDescriptionValid(){
     return
 }
-
 
 function isAccountFormatValid(){
     let accountFormatRegex = new RegExp(/^nl[\d]{2}roya[\d]{10}$/i);
@@ -175,6 +212,10 @@ function isAmountFormatValid(){
 function isAmountSmallerThanBalance(){
     return (parseInt(fromAccountField.options[fromAccountField.selectedIndex].text, 10) >= amountField.value);
 }
+function isAmountFilledIn(){
+    return (amountField.value.length !== 0);
+}
+
 
 
 // error message: enter correct Iban
