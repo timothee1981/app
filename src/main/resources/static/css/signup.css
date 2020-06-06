@@ -25,7 +25,6 @@ body{
 form{
     width: 800px;
     height: 600px;
-    height: auto;
     margin: auto;
     overflow: hidden;
     border: hidden;
@@ -209,7 +208,7 @@ button[disabled]{
     margin-left: 20px;
 }
 
-#NAW{
+#addressFields{
     width: 400px;
     overflow: hidden;
     border: 0;

@@ -39,11 +39,11 @@ public class SignUpController {
             customerService.saveCustomer(customer);
             populateFields(customer, mav);
             mav.addObject("form", "disabled");
-            mav.addObject("confirmation", "Congratulations! You can now Login");
+            mav.addObject("notification", "Congratulations! You can now Login");
             System.out.println("**** Customer saved: " + customer);
         } else {
             // zo niet, vul alle velden met input van gebruiker
-            mav.addObject("error", "Sign Up failed: Invalid Field(s)");
+            mav.addObject("notification", "Sign Up failed: Invalid Field(s)");
             System.out.println("**** No customer saved");
             populateFields(customer, mav);
         }
@@ -82,7 +82,7 @@ public class SignUpController {
         mav.addObject("city", customer.getCity());
         mav.addObject("phoneNumber", customer.getPhoneNumber());
         mav.addObject("BSN", customer.getBSN());
-        mav.addObject("address", customer.getHouseNumber());
+        mav.addObject("houseNumber", customer.getHouseNumber());
     }
 
 }

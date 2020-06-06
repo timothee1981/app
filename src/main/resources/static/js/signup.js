@@ -17,7 +17,7 @@ const cityField = document.getElementById("city");
 const streetField = document.getElementById("street");
 const postalCodeField = document.getElementById("postalCode");
 const submitButton = document.getElementById("submitButton");
-const NAWFields = document.getElementById("NAW");
+const AddressFields = document.getElementById("addressFields");
 
 // elementen voor password check
 const passwordInput = document.getElementById("password");
@@ -32,7 +32,7 @@ const BSN_LENGTH = 9;
 const MIN_PASS_LENGTH = 10;
 const MAX_PASS_LENGTH = 100;
 const MIN_USERNAME_LENGTH = 3;
-const MAX_USERNAME_LENGTH = 15;
+const MAX_USERNAME_LENGTH = 20;
 
 // regular expressions
 const usernameRegex = /^[a-zA-Z0-9_-]+$/;
@@ -40,14 +40,15 @@ const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+")
 const namesRegex = /^[^\s].*[a-zA-Z-'\s?][^.]{1,100}/;
 const phoneNumberRegex = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$/;
 const postalCodeRegex = /^[1-9][0-9]{3} ?(?!sa|SA|Sa|sA|sd|SD|sD|Sd|ss|SS|sS)[a-zA-Z]{2}$/;
-const houseNumberRegex = /^[0-9]{1,6}([-]\d{1,5})?$/;
 const lowerCaseLetters = /[a-z]/g;
 const upperCaseLetters = /[A-Z]/g;
 const numbers = /[0-9]/g;
 const specials = /[!"#$%&'()*+,\-./:;<=>?@^_`{|}~\[\]]/g;
 
+// returns van APIs
 let city;
 let street;
+let apiResponse;
 
 /**
  * Functies gereleteerd aan valid of invalid classes
@@ -63,9 +64,14 @@ function setFieldInvalid(field){
     field.classList.remove("isValid");
 }
 
-function removeInvalid(field){
-    field.classList.remove("isValid");
-    field.classList.remove("isInvalid");
+function removeValidation(field){
+    if(field.classList.contains("isValid")){
+        field.classList.remove("isValid");
+    }
+
+    if(field.classList.contains("isInvalid")){
+        field.classList.remove("isInvalid");
+    }
 }
 
 function isInputValid(elementId){
@@ -170,8 +176,10 @@ function passCheckDigit(BSN) {
 }
 
 // haalt data uit database op via de API. Wordt gebruikt om Username en BSN te checken
-function fetchApiAndRespond(url, field, elementId, message){
-    fetch(url)
+function fetchApiResponse(url){
+    return fetch(url, {
+        method: 'GET',
+    })
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Response error");
@@ -179,13 +187,7 @@ function fetchApiAndRespond(url, field, elementId, message){
             return response.json();
         })
         .then((data) => {
-            if (data){
-                setFieldValid(field);
-                hideElement(elementId);
-            } else{
-                setFieldInvalid(field);
-                showElementAndSetText(elementId, message);
-            }
+            apiResponse = data;
         })
         .catch((error) => {
             console.log(error);
@@ -204,8 +206,8 @@ function getCityAndStreet() {
     })
         .then((response) => {
             if (!response.ok) {
-                city = undefined;
-                street = undefined;
+                city = null;
+                street = null;
                 throw new Error("Response error");
             }
             return response.json();
@@ -226,11 +228,20 @@ usernameField.addEventListener("input", function () {
     let usernameInput = usernameField.value;
 
     if(!usernameRegex.test(usernameInput) || usernameInput.length < MIN_USERNAME_LENGTH || usernameInput.length > MAX_USERNAME_LENGTH) {
-        showElementAndSetText("usernameNotAvailable", "Between " + MIN_USERNAME_LENGTH + " and " + MAX_USERNAME_LENGTH + " numbers and letters");
+        showElementAndSetText("usernameNotAvailable", "Between " + MIN_USERNAME_LENGTH + " and " + MAX_USERNAME_LENGTH + " letters and numbers");
         setFieldInvalid(usernameField);
     } else {
         let url = `/api/username?username=${usernameInput}`;
-        fetchApiAndRespond(url, usernameField, "usernameNotAvailable","Choose another username" )
+
+        fetchApiResponse(url).then(r => {
+            if (apiResponse) {
+                setFieldValid(usernameField);
+                hideElement("usernameNotAvailable");
+            } else {
+                setFieldInvalid(usernameField);
+                showElementAndSetText("usernameNotAvailable", "Choose another username");
+            }
+        })
     }
 });
 
@@ -315,7 +326,15 @@ BSNField.addEventListener("input", function () {
 
     } else {
         let url = `/api/bsn?BSN=${BSNInput}`;
-        fetchApiAndRespond(url, BSNField, "BSNNotAvailable", "Enter a valid BSN" );
+        fetchApiResponse(url).then(r => {
+            if (apiResponse) {
+                setFieldValid(BSNField);
+                hideElement("BSNNotAvailable");
+            } else {
+                setFieldInvalid(BSNField);
+                showElementAndSetText("BSNNotAvailable", "Enter a valid BSN");
+            }
+        });
     }
 });
 
@@ -336,19 +355,19 @@ postalCodeField.addEventListener('input', function () {
 /**
  * houseNumber, city en street veld
  */
-NAWFields.addEventListener('input', function(){
+AddressFields.addEventListener('input', function(){
 
     if(isInputValid(postalCodeField)){
 
         getCityAndStreet().then(r => {
-            if (city !== undefined) {
+            if (city !== null) {
                 setFieldValid(houseNumberField);
                 setValue("city", city);
             } else {
                 emptyValue("city");
                 setFieldInvalid(houseNumberField);
             }
-            if (street !== undefined) {
+            if (street !== null) {
                 setValue("street", street);
             } else {
                 emptyValue("street");
@@ -356,9 +375,9 @@ NAWFields.addEventListener('input', function(){
         })
 
     } else {
+        removeValidation(houseNumberField);
         emptyValue("street");
         emptyValue("city");
-        removeInvalid("houseNumber");
     }
 });
 

@@ -11,11 +11,11 @@
     <a href="/">Login</a>
     <span id="logoNavbar"></span>
 </div>
-<h1 class="content">Sign up</h1>
+<div class="content">
+<h1>Sign up</h1>
 <fieldset th:disabled="${form}">
 <form th:action="@{signup}" method="post" class="form" id="form" novalidate>
-    <h3><span th:text="${confirmation}"/></h3>
-    <h3><span th:text="${error}"/></h3>
+    <h3><span th:text="${notification}"/></h3>
 
     <div id="formLeft">
     <label for="username"><b>Username</b></label>
@@ -123,7 +123,7 @@
 
 
 
-        <div id="NAW">
+        <div id="addressFields">
             <div id="postalCodeWrapper">
                 <label name="postalCode"><b>Postal code</b></label>
                 <input
@@ -191,6 +191,7 @@
 
 </form>
 </fieldset>
+</div>
 
 <script src="js/navbar.js"></script>
 <script src="js/signup.js"></script>
