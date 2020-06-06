@@ -96,7 +96,7 @@ public class TransactionController {
      * Haalt alle Accounts van userId op
      * Als accountId meegegeven wordt wordt de bijbehorende Account bovenaan gezet
      */
-    @SuppressWarnings("unchecked")
+    // checked by tom
     private void showAccountsOfUserId(Model model, int userId, Integer accountId) {
         Optional<Customer> customerOptional = customerService.findCustomerByUserId(userId);
         if(customerOptional.isPresent()) {
@@ -109,8 +109,8 @@ public class TransactionController {
 
                 if (account != null && account.getAccountHolders().contains(currentUser)) {
 
-                    myAccounts.remove(accountService.getAccountById(accountId));
-                    myAccounts.add(0, accountService.getAccountById(accountId));
+                    myAccounts.remove(account);
+                    myAccounts.add(0, account);
                 }
             }
             model.addAttribute("account", myAccounts);
