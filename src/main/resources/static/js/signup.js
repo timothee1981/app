@@ -37,7 +37,7 @@ const MAX_USERNAME_LENGTH = 20;
 // regular expressions
 const usernameRegex = /^[a-zA-Z0-9_-]+$/;
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const namesRegex = /^[^\s].*[a-zA-Z-'\s?][^.]{1,100}/;
+const namesRegex = /^[a-zA-Z ,.'\-\s]{1,100}$/;
 const phoneNumberRegex = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$/;
 const postalCodeRegex = /^[1-9][0-9]{3} ?(?!sa|SA|Sa|sA|sd|SD|sD|Sd|ss|SS|sS)[a-zA-Z]{2}$/;
 const lowerCaseLetters = /[a-z]/g;

@@ -20,7 +20,7 @@ public class UserService {
 
     private static final Pattern usernameRegex = Pattern.compile("^[a-zA-Z0-9_-]+$");
     private static final Pattern passwordRegex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]])[A-Za-z\\d!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]]+$");
-    private static final Pattern nameRegex = Pattern.compile("^[^\\s].*[a-zA-Z-'\\s][^.]{1,100}");
+    private static final Pattern nameRegex = Pattern.compile("^[a-zA-Z ,.'\\-\\s]{1,100}$");
 
     @Qualifier("userRepository")
     @Autowired
