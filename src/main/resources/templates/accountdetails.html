@@ -19,6 +19,7 @@
     <a href="/myaccounts">Accounts overview</a>
     <span id="logoNavbar"></span>
 </div>
+<span id="dateTime"></span><br>
     <h1>Account details</h1>
     <span></span>
     <!--<THAT'S THE DROPDOWN SELECT. DIFFICULT MAYBE, LETS SEE IF I HAVE TIME LEFT-->
@@ -36,24 +37,19 @@
         <h4>Account holders: </h4>
         <li th:each="customer : ${list}">
             <div>
-                <tr><p>Account Holders:  <span th:text="${customer.lastName}"></span></tr>
+                <tr><span th:text="${customer.firstName}"></span><span th:text="${customer.lastName}"></span></tr>
             </div><br>
         </li>
   <!--  <span th:text="${accountType}"></span>-->
     <table>
-        <tr>
-            </label><span th:text="${account.formatDateTime}"></span><br>
-        </tr>
-        <tr>
-            <label>account type  </label><span th:text="${account.accountType}"></span><br>
-        </tr>
+        <tr id="accountrow">
+            <span th:text="${account.accountType}"></span><span th:text="${account.accountNumber}"></span>
+        </tr><br>
+
+
 
         <tr>
-        <label>IBAN  </label><span th:text="${account.accountNumber}"></span><br>
-        </tr>
-
-        <tr>
-            <label>Balance  </label><span th:text="${account.balance}"></span>
+            <label>Balance  €</label><span th:text="${account.balance}"></span>
         </tr><br>
 
     <form th:action="@{transaction}"  method="get">
@@ -64,8 +60,7 @@
 </div>
     <!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
 <div id="transactiontable">
-    <table>
-        <h2>Transaction</h2>
+        <h2>Transactions</h2>
         <li th:each="transaction : ${transactionList}">
             <div>
                 <td>
@@ -86,18 +81,37 @@
 
         </div><br>
     </li>
-    </table>
-
+</div>
 
     <br>
     <form th:action="@{addaccountholder}" method="get">
     <button type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
     </form>
 
-</div>
+
 
 <script src="js/navbar.js"></script>
 
 </body>
+
+<script>
+    function updateClock() {
+        let now = new Date(), // current date
+            months = ['January', 'February', 'March', 'April','Mei','June','Juli','August','September','Oktober','November','December']; // you get the idea
+        let time = now.getHours() + ':' + now.getMinutes(), // again, you get the idea
+
+            // a cleaner way than string concatenation
+            date = [now.getDate(),
+                months[now.getMonth()],
+                now.getFullYear()].join(' ');
+
+        // set the content of the element with the ID time to the formatted string
+        document.getElementById('dateTime').innerHTML = [date, time].join(' / ');
+
+        // call this function again in 1000ms
+        setTimeout(updateClock, 1000);
+    }
+    updateClock(); // initial call
+</script>
 
 </html>

@@ -4,8 +4,13 @@
 
 h1{
     text-align: center;
+
 }
 
+h2{
+    margin: 4% 0%;
+
+}
 
 body{
     align-content: center;
@@ -36,6 +41,18 @@ input[type=text]:focus{
     outline: none;
 }
 
+#accountInformation span{
+    margin: 0px;
+    padding: 2px;
+    font-size: 13px;
+}
+
+#accountInformation label{
+    margin: 0px;
+    padding: 2px;
+    font-size: 13px;
+}
+
 
 
 /*style button */
@@ -46,7 +63,7 @@ button {
     padding: 14px 20px;
     border: none;
     cursor: pointer;
-    width: 200px;
+    width: 233px;
     opacity: 0.9;
     font-size: 16px;
     font-weight: bold;
@@ -68,16 +85,23 @@ button[type=submit]:disabled {
 
 #transactiontable{
     float: right;
-    width:65%;
+    width:70%;
     height: 30%;
 
 }
 
+#transactiontable span{
+    margin: 5px;
+    padding: 0px;
+}
+
+
 #accountInformation{
     float:left;
-    width: 27%;
+    width: 50%;
     height: 30%;
     margin: 26px;
+    font-size: 12px;
 }
 
 li{
@@ -87,6 +111,12 @@ li{
 td{
     padding: 10px;
     align-content: center;
+}
+
+#dateTime{
+    margin: 2px;
+    font-size: 10px;
+    font-style: italic;
 }
 
 
@@ -107,6 +137,22 @@ fieldset{
 }
 
 
+
+#addaccountholderbutton{
+    position: absolute;
+    top: 53px;
+    right: 8px;
+    font-size: 14px;
+    width: 136px;
+    padding: 4px 20px;
+    font-weight: normal;
+
+}
+
+
+#accountrow{
+    font-size: 80%;
+}
 
 
 
