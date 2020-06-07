@@ -45,17 +45,23 @@ public class DoLoginController {
         }
 
         //Check if password of user matches entered value
-        if ( ! User.checkPassword( inputPassword, user.getPassword() ) ){
-            ModelAndView mav = new ModelAndView("homepage");
-            mav.addObject("login_error", "Username and/or password is incorrect");
-            return mav;
-        }
+        ModelAndView mav = passwordCheck(inputPassword, user);
+        if (mav != null) return mav;
 
         //Add userid to modelSession
         model.addAttribute("userid", user.getUserid());
 
         //Redirect user to next page
         return redirectToNextPage(user);
+    }
+
+    private ModelAndView passwordCheck(String inputPassword, User user) {
+        if ( ! User.checkPassword( inputPassword, user.getPassword() ) ){
+            ModelAndView mav = new ModelAndView("homepage");
+            mav.addObject("login_error", "Username and/or password is incorrect");
+            return mav;
+        }
+        return null;
     }
 
     private ModelAndView redirectToNextPage(User user) {
@@ -78,7 +84,6 @@ public class DoLoginController {
             return mav;
         }
     }
-
 
     private boolean inputUsernameHasValue(String inputUsername) {
         boolean inputUserNameHasValue = true;
