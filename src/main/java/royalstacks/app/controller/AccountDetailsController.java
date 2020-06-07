@@ -65,7 +65,7 @@ public class AccountDetailsController {
             List<Customer> accountholders = getAccountHolders(myAccount);
             AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
             List<Transaction> tenLatestTransactions = getTenLastTransaction(myAccount);
-            if (tenLatestTransactions != null && !tenLatestTransactions.isEmpty()) {
+            if (!tenLatestTransactions.isEmpty()) {
                 List<LastTenTransactionBackingBean> lttb = setupListLastTenTransaction(tenLatestTransactions, myAccount);
                 mav.addObject("transactionList", lttb);
             }
@@ -145,10 +145,9 @@ public class AccountDetailsController {
             for (Transaction transaction : getTenLastTransaction) {
                 System.out.println(transaction);
             }
-            return getTenLastTransaction;
 
-        }else
-            return null;
+        }
+        return getTenLastTransaction;
     }
 
 
