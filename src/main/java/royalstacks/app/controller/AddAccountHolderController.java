@@ -51,30 +51,23 @@ public class AddAccountHolderController {
                                                 @SessionAttribute("userid") int userId,
                                                 Model model) {
         ModelAndView mav = new ModelAndView("addaccountholder");
-        User invitee = null;
-        //haal user op uit DB met behulp van backing bean en check of deze bestaat
+        User invitee;
         Optional<User> optionalUser = userService.findByUsername(ibb.getInviteeUsername());
         Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(ibb.getAccountNumber());
         Account anAccount = optionalAccount.get();
-        if (optionalUser.isPresent()) {
+        //TODO checken of user bestaat en een customer is
+        if (optionalUser.isPresent() && accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode()) /* && userService.isUserCustomer(invitee)*/) {
             invitee = optionalUser.get();
+            ibb.setInviteeUsername(invitee.getUsername());
+            ibb.setVerificationCode(ibb.getVerificationCode());
         } else {
-            displayMessage("Please enter an existing username", mav);
-
-            //TODO checken of user een customer is
-            if (/*userService.isUserCustomer(invitee) &&*/ accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode())) {
-                ibb.setInviteeUsername(invitee.getUsername());
-                //verificationCode zit hier al in de bb?
-            } else {
-                displayMessage("Please enter an existing customer's username and a five-digit number", mav);
-                populateFields(ibb, mav);
-                return mav;
-            }
+            displayMessage("Please enter an existing customer's username and a five-digit number", mav);
+            populateFields(ibb, mav);
+            return mav;
         }
-
         AccountHolderInvite newInvite = ibb.accountHolderInvite();
         accountHolderInviteService.saveAccountHolderInvite(newInvite);
-        displayMessage("We have received your invitation. Please provide the new account holder with the verification code.", mav);
+        displayMessage("Invitation sent. The new account holder can now add the account using your verification code.", mav);
         return mav;
     }
 
