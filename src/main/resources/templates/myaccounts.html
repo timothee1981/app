@@ -84,7 +84,7 @@
 <div id="Account_overview">
     <h1>Account overview</h1>
     <h2>Hello <span th:text="${customer.username}"></span></h2>
-    <form>
+    <form id="accountdetailsForm" th:action="@{/accountdetails}" method="get">
         <table id="accountdetailstable">
             <thead>
                 <tr>
@@ -119,37 +119,23 @@
 <script type="text/javascript"></script>
 
 <script>
-    var gotoAccountDetails = function(accountnumber){
-        console.log("ik zit in de gotoAccountDetails")
-        $.ajax({
-            type: "GET",
-            url: "/accountdetails",
-            data: { accountNumber: accountnumber}
-        })
-    }
 
     $(document).ready(function(){
 
-    // add eventlistener to all table-cells - on click- go to account details
-    document.querySelectorAll('#accountdetailstable tr')
-.forEach(e => e.addEventListener("click", function() {
+        // add eventlistener to all table-cells - on click- go to account details
+        document.querySelectorAll('#accountdetailstable tr')
+        .forEach(e => e.addEventListener("click", function() {
 
-    console.log("on-click event = triggered")
-//1 - get acountnumber clicked
-// Here, `this` refers to the element the event was hooked on
-let accountnumber = this.cells[0].innerHTML;
+            //1 - get acountnumber clicked
+            // Here, `this` refers to the element the event was hooked on
+            let accountnumber = this.cells[0].innerHTML;
 
-//2 - fire get request with parameter to go to account details
-gotoAccountDetails(accountnumber);
-//fetch(`/api/accountredirect?accountnumber=${accountnumber}`);
+            //2 - fire get request with parameter to go to account details
 
-}));
-
-
-
-})
-
-
+            document.getElementById("accountdetailsForm").setAttribute( "value", accountnumber );
+            document.getElementById("accountdetailsForm").submit();
+        }));
+    })
 
 
 </script>
