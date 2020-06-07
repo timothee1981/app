@@ -36,10 +36,8 @@
 
 /* Zet content op pagina onder navbar */
 .content {
-    padding: 16px;
+    padding-top: 16px;
 }
-
-
 
 /* Wordt toegevoegd in JavaScript als er gescrollt wordt */
 .sticky {

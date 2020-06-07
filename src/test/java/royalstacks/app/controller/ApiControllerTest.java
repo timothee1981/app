@@ -1,15 +1,12 @@
 package royalstacks.app.controller;
 
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,9 +18,12 @@ import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
+
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ApiController.class)
@@ -45,15 +45,11 @@ class ApiControllerTest {
     @Autowired
     WebApplicationContext webApplicationContext;
 
-    @Before
-    protected void setUp() {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
 
     @Test
     void UsernameIsUnique() throws Exception {
 
-        String url = "/api/username?username=" + "JanJansen";
+        String url = "/api/username?username=" + "Wesley";
 
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(url)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
@@ -62,8 +58,8 @@ class ApiControllerTest {
         assertEquals(200, status);
 
         String content = mvcResult.getResponse().getContentAsString();
-        System.out.println(content);
         assertTrue(Boolean.parseBoolean(content));
+
     }
 
     @Test
@@ -77,7 +73,7 @@ class ApiControllerTest {
         given(userService.findByUsername(username)).willReturn(Optional.of(customer));
         String url = "/api/username?username=" + username;
 
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(url)
+        MvcResult mvcResult = mvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
 
@@ -89,26 +85,11 @@ class ApiControllerTest {
     }
 
     @Test
-    void UsernameIsTooShort() throws Exception {
-
-        String tooShortUsername = "ad";
-        String url = "/api/username?username=" + tooShortUsername;
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(url)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-        int status = mvcResult.getResponse().getStatus();
-
-        assertEquals(200, status);
-
-        String content = mvcResult.getResponse().getContentAsString();
-        assertFalse(Boolean.parseBoolean(content));
-    }
-
-    @Test
-    void BSNisValid() throws Exception {
+    void BSNisUnique() throws Exception {
 
         String BSN = "663046129";
         String url = "/api/bsn?BSN=" + BSN;
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(url)
+        MvcResult mvcResult = mvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
 
@@ -128,9 +109,8 @@ class ApiControllerTest {
         customer.setBSN(BSN);
 
 
-
         given(customerService.findCustomerByBSN(BSN)).willReturn(Optional.of(customer));
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(url)
+        MvcResult mvcResult = mvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
 
@@ -141,17 +121,20 @@ class ApiControllerTest {
     }
 
     @Test
-    void BSNIsTooLong() throws Exception {
+    void ApiDoesNotExist404() throws Exception {
 
-        String tooLongBSN = "2312323242342";
-        String url = "/api/bsn?BSN=" + tooLongBSN;
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(url)
+        String BSN = "663046129";
+        String url = "/api/bsm?BSN=" + BSN;
+
+        Customer customer = new Customer();
+        customer.setBSN(BSN);
+
+        given(customerService.findCustomerByBSN(BSN)).willReturn(Optional.of(customer));
+        MvcResult mvcResult = mvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
 
-        assertEquals(200, status);
+        assertEquals(404, status);
 
-        String content = mvcResult.getResponse().getContentAsString();
-        assertFalse(Boolean.parseBoolean(content));
     }
 }

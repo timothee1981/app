@@ -109,7 +109,7 @@ public class RecordGenerator {
          String companyName = "company";
          String kvkNumber = "58999426";
          String vatNumber = "NL858805315B01";
-         String sector = "IT";
+         Sector sector = Sector.ICT_AND_MEDIA;
 
         for (int index = 0; index < amount; index++) {
             BusinessAccount businessAccount = new BusinessAccount(accountService.createNewIban(), Account.getStartingBalance(), companyName, kvkNumber, vatNumber, sector);

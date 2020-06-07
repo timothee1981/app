@@ -11,8 +11,6 @@ import java.util.Set;
 @Entity
 public class Customer extends User {
 
-
-
     private String email;
     private String postalCode;
     private String houseNumber;
@@ -59,10 +57,6 @@ public class Customer extends User {
 
     // wordt gebruikt samen met de backing bean
     public Customer() { }
-
-    // METHODS
-
-
 
 
     // GETTERS EN SETTERS
@@ -167,8 +161,6 @@ public class Customer extends User {
                 return false;
             }
         }
-
-
 
 
     @Override

@@ -30,5 +30,4 @@ public interface AccountRepository extends CrudRepository<Account,Integer> {
 
     @Query("SELECT b FROM BusinessAccount b")
     Iterable<Account> findAllBusinessAccounts();
-
 }

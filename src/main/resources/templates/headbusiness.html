@@ -39,7 +39,7 @@
     <a href="/logoutAction">Logout</a>
     <span id="logoNavbar"></span>
 </div>
-<h1>Welcome <span th:text="${employee.firstName}"/></h1>
+<h1 class="content">Welcome <span th:text="${employee.firstName}"/></h1>
 <h2>Top 10 customers with the highest balance on their business account:</h2>
 <table style="width:65%">
     <tr>
@@ -51,6 +51,17 @@
         <td th:text="${topBusinessAccount.firstName}" />
         <td th:text="${topBusinessAccount.lastName}" />
         <td th:text="${topBusinessAccount.totalBalance}" />
+    </tr>
+</table>
+<h2>Total balances by sector:</h2>
+<table style="width:65%">
+    <tr>
+        <th>Sector</th>
+        <th>Total balance</th>
+    </tr>
+    <tr th:each="sectorAndTotalBalance: ${sectorAndTotalBalances}">
+        <td th:text="${sectorAndTotalBalance.sector}" />
+        <td th:text="${sectorAndTotalBalance.totalBalance}" />
     </tr>
 </table>
 <script src="js/navbar.js"></script>

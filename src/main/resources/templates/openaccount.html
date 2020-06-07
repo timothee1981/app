@@ -72,17 +72,11 @@
             <tr>
                 <td><b>Sector</b></td>
                 <td>
-
-                    <label for="sector"></label><select id="sector" th:field="*{sector}" >
-                            <option disabled value="" hidden></option>
-                            <option value="financial">Financial</option>
-                            <option value="it">IT</option>
-                            <option value="retail">Retail</option>
-                            <option value="agriculture">Agriculture</option>
-                            <option value="education">Education</option>
-                            <option value="logistic">Logistic</option>
-                            <option value="industry">Industry</option>
-                        </select><span></span>
+                    <label for="sector"></label><select id="sector" name="sector">
+                        <option disabled value="" hidden></option>
+                        <option th:each="sectorOpt : ${T(royalstacks.app.model.Sector).values()}"
+                        th:value="${sectorOpt}" th:text="${sectorOpt.displayValue}"></option>
+                    </select><span></span>
                 </td>
             </tr>
         </table>

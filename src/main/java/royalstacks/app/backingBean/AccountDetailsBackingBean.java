@@ -2,12 +2,15 @@ package royalstacks.app.backingBean;
 
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.PrivateAccount;
+import royalstacks.app.model.Sector;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class AccountDetailsBackingBean {
+
+    private int accountId;
     private String account;
     private String formatDateTime;
     private String accountType;
@@ -35,6 +38,7 @@ public class AccountDetailsBackingBean {
         this.balance = balance;
 
 
+
     }
 
 
@@ -45,16 +49,24 @@ public class AccountDetailsBackingBean {
     }
 
     public BusinessAccount businessAccount(){
-        return new BusinessAccount(accountNumber,balance,companyName,kvkNumber,vatNumber,sector);
+        return new BusinessAccount(accountNumber,balance,companyName,kvkNumber,vatNumber, Sector.valueOf(sector));
     }
 
     public static AccountDetailsBackingBean createBeanPrivate(PrivateAccount account){
         AccountDetailsBackingBean bb =
                 new AccountDetailsBackingBean(account.getAccountNumber(),account.getBalance());
         bb.setAccountType("Private Account");
+        bb.setAccountId(account.getAccountId());
 
         return bb;
 
+    }
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public String getFormatDateTime() {
@@ -69,6 +81,7 @@ public class AccountDetailsBackingBean {
         AccountDetailsBackingBean bb =
                 new AccountDetailsBackingBean(account.getAccountNumber(),account.getBalance());
         bb.setAccountType("Business Account");
+        bb.setAccountId(account.getAccountId());
         return bb;
 
     }

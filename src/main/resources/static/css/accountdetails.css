@@ -1,30 +1,31 @@
 * {box-sizing: border-box}
 * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
-::placeholder {
-    text-align: left;
 
-}
 
 h1{
     text-align: center;
+
 }
 
+h2{
+    margin: 4% 0%;
+
+}
 
 body{
-
     align-content: center;
     background-color: #ebebeb;
+    margin: auto;
     width: 100%;
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
 }
-
-form{
-    width: 800px;
+/*form{
+    width: 30px;
     height: auto;
     margin: auto;
     overflow: hidden;
     border: hidden;
-}
+}*/
 
 input[type=text] {
     width: 100%;
@@ -40,6 +41,18 @@ input[type=text]:focus{
     outline: none;
 }
 
+#accountInformation span{
+    margin: 0px;
+    padding: 2px;
+    font-size: 13px;
+}
+
+#accountInformation label{
+    margin: 0px;
+    padding: 2px;
+    font-size: 13px;
+}
+
 
 
 /*style button */
@@ -50,7 +63,7 @@ button {
     padding: 14px 20px;
     border: none;
     cursor: pointer;
-    width: 200px;
+    width: 233px;
     opacity: 0.9;
     font-size: 16px;
     font-weight: bold;
@@ -70,44 +83,40 @@ button[type=submit]:disabled {
 }
 
 
+#transactiontable{
+    float: right;
+    width:70%;
+    height: 30%;
 
-input[type=text]:disabled {
-    background: #dcdcdc;
 }
 
-/* Add a background color when the inputs get focus */
-input[type=text]:focus{
-    background-color: #ddd;
-    outline: none;
-}
-
-
-input + span {
-    position: relative;
+#transactiontable span{
+    margin: 5px;
+    padding: 0px;
 }
 
 
-input + span::before {
-    position: absolute;
-    right: -20px;
-    top: 5px;
+#accountInformation{
+    float:left;
+    width: 50%;
+    height: 30%;
+    margin: 26px;
+    font-size: 12px;
 }
 
-
-.isValid + span::before {
-    content: '✓';
-    color: #1E90FF;
+li{
+    list-style: none;
 }
-
-.isInvalid + span::before {
-    content: '✗';
-    color: rgba(255, 0, 0, 0.6);
-}
-
 
 td{
     padding: 10px;
     align-content: center;
+}
+
+#dateTime{
+    margin: 2px;
+    font-size: 10px;
+    font-style: italic;
 }
 
 
@@ -118,14 +127,31 @@ fieldset{
 
 /*invalid popup style */
 
-.invalidInputPopup {
-    float: right;
-    overflow: hidden;
-    font-size: 12px;
-    font-weight: bold;
-    color: rgba(255, 0, 0, 0.70);
-    font-style: italic;
-    display: none;
+
+#logoutbutton{
+    padding: 0;
+    margin: 0;
+    background: inherit;
+    border: none;
+    color: white;
+}
+
+
+
+#addaccountholderbutton{
+    position: absolute;
+    top: 53px;
+    right: 8px;
+    font-size: 14px;
+    width: 136px;
+    padding: 4px 20px;
+    font-weight: normal;
+
+}
+
+
+#accountrow{
+    font-size: 80%;
 }
 
 

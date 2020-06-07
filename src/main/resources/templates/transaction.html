@@ -13,12 +13,12 @@
     </div>
     <h1 class="content">Transfer Money</h1>
     <h3><span th:text="${notification}"/></h3>
-    <form id="form" method="post" class="form">
+    <form id="form"   method="post" class="form" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 
         <!-- Deze wordt automatisch geselecteerd. Later eventueel een dropdown -->
         <label for="fromAccountNumber"><b>From Account</b></label>
-        <select id="fromAccountNumber" name="fromAccountNumber" th:value="${fromAccountNumber}">
-            <option th:each="account : ${account}" th:value="${account.accountNumber}" th:text="${account.accountNumber} + '        Balance: €' + ${account.balance}"></option>
+        <select id="fromAccountNumber" class="balanceCheck" name="fromAccountNumber" th:value="${fromAccountNumber}">
+            <option th:each="account : ${account}"  th:value="${account.accountNumber}" th:label="*{account.accountNumber} + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balance: €' + *{account.balance}" th:text="${account.balance}"></option>
         </select>
         <span></span>
         <span></span>
@@ -26,7 +26,7 @@
 
         <input
                 type="text"
-                placeholder="NL27ABNA433706589"
+                placeholder="NL12ROYA0123456789433706589"
                 name="toAccountNumber"
                 id="toAccountNumber"
                 title="A valid account number"
@@ -34,14 +34,15 @@
                 required
         />
         <span></span>
-        <span></span>
+        <span id="toAccountError"> </span>
 
         <label for="amount"><b>Amount</b></label>
         <input
                 type="number"
-                placeholder="100.00"
+                placeholder="119.95"
                 name="amount"
                 id="amount"
+                class="balanceCheck"
                 title="Enter a valid amount"
                 th:value="${amount}"
                 step=".01"
@@ -49,12 +50,12 @@
                 required
         />
         <span></span>
-        <span></span>
+        <span id="amountError"></span>
 
         <label for="description"><b>Description</b></label>
         <input
                 type="text"
-                placeholder="Sending all the moneys to yooouuu"
+                placeholder="example: Here's some money for your trip to Spain"
                 name="description"
                 id="description"
                 title="Enter a valid description"
@@ -62,10 +63,14 @@
         />
         <span></span>
         <span></span>
-            <td><button type="submit" name="submit" id="submitButton" value="Send Money">Send Money</button></td>
+            <td><button type="submit" name="submit" id="submitButton" disabled=true value="Send Money">Send Money</button></td>
     </form>
 
-    /<script src="js/navbar"></script>
-    <script src="js/transactionFieldValidation.js"></script>
+
 </body>
+<script th:inline="javascript">
+    let  accountBalance = [[${balance}]];
+</script>
+<script src="js/navbar"></script>
+<script src="js/transactionFieldValidation.js"></script>
 </html>

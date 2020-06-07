@@ -11,19 +11,19 @@ public class BusinessAccount extends Account {
     private String sector;
 
     // CONSTRUCTORS
-    public BusinessAccount(String accountNumber, double balance, String companyName, String kvkNumber, String vatNumber, String sector) {
+    public BusinessAccount(String accountNumber, double balance, String companyName, String kvkNumber, String vatNumber, Sector sector) {
         super(accountNumber, balance);
         this.companyName = companyName;
         this.kvkNumber = kvkNumber;
         this.vatNumber = vatNumber;
-        this.sector = sector;
+        this.sector = sector.toString();
     }
 
-    public BusinessAccount(String companyName, String kvkNumber, String vatNumber, String sector) {
+    public BusinessAccount(String companyName, String kvkNumber, String vatNumber, Sector sector) {
         this.companyName = companyName;
         this.kvkNumber = kvkNumber;
         this.vatNumber = vatNumber;
-        this.sector = sector;
+        this.sector = sector.toString();
     }
 
     public BusinessAccount() { }
@@ -52,12 +52,12 @@ public class BusinessAccount extends Account {
         this.vatNumber = vatNumber;
     }
 
-    public String getSector() {
-        return sector;
+    public Sector getSector() {
+        return Sector.valueOf(sector);
     }
 
-    public void setSector(String sector) {
-        this.sector = sector;
+    public void setSector(Sector sector) {
+        this.sector = sector.toString();
     }
 
 
