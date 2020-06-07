@@ -1,18 +1,15 @@
 package royalstacks.app.backingBean;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Optional;
 
 public class TransactionBackingBean {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     private int transactionId;
     private String fromAccountNumber;
@@ -31,7 +28,7 @@ public class TransactionBackingBean {
          this.date = LocalDateTime.now();
     }
 
-    public Transaction Transaction(){
+    public Transaction transaction(){
         return new Transaction(fromAccountId, toAccountId, amount, description, date);
     }
 

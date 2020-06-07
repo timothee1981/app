@@ -43,18 +43,15 @@ public class CustomerBackingBean {
     }
 
     public Customer customer() {
-        Customer customer = new Customer(username, password, firstName, lastName, email, postalCode, houseNumber, suffix, city, phoneNumber, BSN, null, false);
-        return customer;
+        return new Customer(username, password, firstName, lastName, email, postalCode, houseNumber, suffix, city, phoneNumber, BSN, null, false);
     }
 
     //TODO nog een constructor maken voor backing bean met lijst van accounts voor ophalen uit DB?
 
     // creates a backing bean from a customer
     public static CustomerBackingBean createCustomerBackingBean(Customer customer) {
-        CustomerBackingBean cbb =
-                new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmail(),
-                        customer.getPostalCode(), customer.getHouseNumber(), customer.getSuffix(), customer.getCity(), customer.getPhoneNumber(), customer.getBSN());
-                return cbb;
+        return new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmail(),
+                customer.getPostalCode(), customer.getHouseNumber(), customer.getSuffix(), customer.getCity(), customer.getPhoneNumber(), customer.getBSN());
     }
 
     // setters (for testing purposes)

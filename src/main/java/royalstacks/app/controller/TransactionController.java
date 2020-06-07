@@ -12,23 +12,19 @@ import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.TransactionService;
-import royalstacks.app.service.UserService;
 import java.util.*;
 
 @Controller
 public class TransactionController {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    UserService userService;
+    private TransactionService transactionService;
 
     @Autowired
-    TransactionService transactionService;
-
-    @Autowired
-    CustomerService customerService;
+    private CustomerService customerService;
 
 
     /**
@@ -78,7 +74,7 @@ public class TransactionController {
             return mav;
         }
 
-        if (transactionService.executeTransaction(tbb.Transaction())) {
+        if (transactionService.executeTransaction(tbb.transaction())) {
             showNotification("Money successfully sent", mav);
         } else {
             showNotification("Transaction failed: failed to execute", mav);

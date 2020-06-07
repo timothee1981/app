@@ -16,8 +16,6 @@ import royalstacks.app.service.UserService;
 @Controller
 public class SignUpController {
 
-    private String userPassword;
-
     @Autowired
     private CustomerService customerService;
 
@@ -30,12 +28,11 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb, @RequestParam String password){
-        userPassword = password;
+    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
         Customer customer = cbb.customer();
         ModelAndView mav = new ModelAndView("signup");
 
-        if(isAllInputValid(customer)) {
+        if(customerService.isAllInputValid(customer)){
             customerService.saveCustomer(customer);
             populateFields(customer, mav);
             mav.addObject("form", "disabled");
@@ -51,30 +48,9 @@ public class SignUpController {
     }
 
 
-    /**
-     * Checkt alle velden apart en geeft feedback al deze niet goed ingvuld zijn
-     * @param customer
-     * @return
-     */
-    private boolean isAllInputValid(Customer customer) {
-
-        return userService.isUsernameFormatValid(customer.getUsername()) &&
-                userService.findByUsername(customer.getUsername()).isEmpty() &&
-                userService.isPasswordValid(userPassword) &&
-                userService.isNameValid(customer.getFirstName()) &&
-                userService.isNameValid(customer.getLastName()) &&
-                customerService.isEmailValid(customer.getEmail()) &&
-                customerService.isPostalCodeValid(customer.getPostalCode()) &&
-                customerService.isCityValid(customer.getCity()) &&
-                customerService.isPhoneNumberValid(customer.getPhoneNumber()) &&
-                customerService.isBSNFormatValid(customer.getBSN()) &&
-                customerService.isHouseNumberValid(customer.getHouseNumber());
-    }
-
-
     private void populateFields(Customer customer, ModelAndView mav) {
         mav.addObject("username", customer.getUsername());
-        mav.addObject("password", userPassword);
+        mav.addObject("password", customer.getPassword());
         mav.addObject("firstName", customer.getFirstName());
         mav.addObject("lastName", customer.getLastName());
         mav.addObject("email", customer.getEmail());

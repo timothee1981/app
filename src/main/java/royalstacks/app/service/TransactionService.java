@@ -12,38 +12,43 @@ import java.util.List;
 public class TransactionService {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
 
-    public void saveTransaction(Transaction t){
-        transactionRepository.save(t);
-        System.out.println("**** Saved: " + t);
-    }
+    private Transaction transaction;
+    private Account fromAccount;
+    private Account toAccount;
+
 
     public boolean executeTransaction(Transaction t){
-        // maak van accountId's die in de transaction staat Accounts
-        Account fromAccount = accountService.getAccountById(t.getFromAccountId());
-        Account toAccount = accountService.getAccountById(t.getToAccountId());
+        this.transaction = t;
+        this.fromAccount = accountService.getAccountById(transaction.getFromAccountId());
+        this.toAccount = accountService.getAccountById(transaction.getToAccountId());
 
-        if(fromAccount.equals(toAccount)){
+        if(isTransactionValid()) {
+            updateBalances();
+            saveTransaction();
+            return true;
+        } else {
             return false;
         }
+    }
 
-        if(fromAccount.getBalance() < t.getAmount()){
-            return false;
-        }
+    private boolean isTransactionValid(){
+        return this.fromAccount.equals(this.toAccount) || this.fromAccount.getBalance() < this.transaction.getAmount() ;
+    }
 
-        fromAccount.subtractAmount(t.getAmount());
-        accountService.saveAccount(fromAccount);
+    private void updateBalances(){
+        this.fromAccount.subtractAmount(this.transaction.getAmount());
+        accountService.saveAccount(this.fromAccount);
+        this.toAccount.addAmount(this.transaction.getAmount());
+        accountService.saveAccount(this.toAccount);
+    }
 
-        toAccount.addAmount(t.getAmount());
-        accountService.saveAccount(toAccount);
-
-        saveTransaction(t);
-
-        return true;
+    private void saveTransaction(){
+        transactionRepository.save(this.transaction);
     }
 
 
