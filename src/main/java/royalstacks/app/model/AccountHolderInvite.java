@@ -1,9 +1,19 @@
 package royalstacks.app.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class AccountHolderInvite {
 
-    // TODO annotaties kardinaliteit?
+    @Id
+    @GeneratedValue
+    private int inviteId;
+    @ManyToOne
     private Customer invitee;
+    @ManyToOne
     private Account account;
     private String verificationCode;
 
