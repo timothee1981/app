@@ -2,7 +2,6 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -56,6 +55,10 @@ public class DoLoginController {
         model.addAttribute("userid", user.getUserid());
 
         //Redirect user to next page
+        return redirectToNextPage(user);
+    }
+
+    private ModelAndView redirectToNextPage(User user) {
         if (user instanceof Employee) {
             Employee employee = (Employee) user;
             ModelAndView mav;
