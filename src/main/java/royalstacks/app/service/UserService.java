@@ -25,8 +25,12 @@ public class UserService {
     private static final Pattern NAME_REGEX = Pattern.compile("^[-a-zA-Z\\-']+(\\s+[-a-zA-Z\\-']+)*$");
 
     @Qualifier("userRepository")
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository ur) {
+        this.userRepository = ur;
+    }
 
     public Optional<User> findById(int id) {
         return userRepository.findById(id);

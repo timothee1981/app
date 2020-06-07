@@ -7,58 +7,71 @@ import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.CustomerBackingBean;
 import royalstacks.app.model.Customer;
 import royalstacks.app.service.CustomerService;
-import royalstacks.app.service.UserService;
 
-/**
- * @author Suzanne & Wesley
- */
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 public class SignUpController {
 
-    @Autowired
+    private static final String SIGN_UP_SUCCESS= "Congratulations! You can now Login";
+    private static final String SIGN_UP_FAILED= "Sign Up failed: Invalid Field(s)";
+
+    private static final Logger LOGGER = Logger.getLogger(SignUpController.class.getName());
+
     private CustomerService customerService;
+    private ModelAndView mav;
+    private Customer customer;
 
     @Autowired
-    private UserService userService;
+    public SignUpController(CustomerService cs){
+        this.customerService = cs;
+    }
 
     @GetMapping("/signup")
-    public ModelAndView signUpHandler(){
+    public final ModelAndView signUpHandler(){
         return new ModelAndView("signup");
     }
 
     @PostMapping("/signup")
-    public ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
-        Customer customer = cbb.customer();
-        ModelAndView mav = new ModelAndView("signup");
+    public final ModelAndView signUpHandler(@ModelAttribute CustomerBackingBean cbb){
 
-        if(customerService.isAllInputValid(customer)){
-            customerService.saveCustomer(customer);
-            populateFields(customer, mav);
-            mav.addObject("form", "disabled");
-            mav.addObject("notification", "Congratulations! You can now Login");
-            System.out.println("**** Customer saved: " + customer);
+        this.mav = new ModelAndView("signup");
+        this.customer = cbb.customer();
+
+        if(customerService.isAllInputValid(this.customer)){
+            customerService.saveCustomer(this.customer);
+            populateFields();
+            disableForm();
+            notification(SIGN_UP_SUCCESS);
+            LOGGER.log(Level.INFO, "**** Customer saved");
         } else {
-            // zo niet, vul alle velden met input van gebruiker
-            mav.addObject("notification", "Sign Up failed: Invalid Field(s)");
-            System.out.println("**** No customer saved");
-            populateFields(customer, mav);
+            populateFields();
+            notification(SIGN_UP_FAILED);
+            LOGGER.log(Level.SEVERE,"**** No customer saved");
         }
         return mav;
     }
 
+    private void disableForm(){
+        this.mav.addObject("form", "disabled");
+    }
 
-    private void populateFields(Customer customer, ModelAndView mav) {
-        mav.addObject("username", customer.getUsername());
-        mav.addObject("password", customer.getPassword());
-        mav.addObject("firstName", customer.getFirstName());
-        mav.addObject("lastName", customer.getLastName());
-        mav.addObject("email", customer.getEmail());
-        mav.addObject("postalCode", customer.getPostalCode());
-        mav.addObject("city", customer.getCity());
-        mav.addObject("phoneNumber", customer.getPhoneNumber());
-        mav.addObject("BSN", customer.getBSN());
-        mav.addObject("houseNumber", customer.getHouseNumber());
+    private void notification(String notification){
+        this.mav.addObject("notification", notification);
+    }
+
+    private void populateFields() {
+        this.mav.addObject("username", this.customer.getUsername());
+        this.mav.addObject("password", this.customer.getPassword());
+        this.mav.addObject("firstName", this.customer.getFirstName());
+        this.mav.addObject("lastName", this.customer.getLastName());
+        this.mav.addObject("email", this.customer.getEmail());
+        this.mav.addObject("postalCode", this.customer.getPostalCode());
+        this.mav.addObject("city", this.customer.getCity());
+        this.mav.addObject("phoneNumber", this.customer.getPhoneNumber());
+        this.mav.addObject("BSN", this.customer.getBSN());
+        this.mav.addObject("houseNumber", this.customer.getHouseNumber());
     }
 
 }

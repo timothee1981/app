@@ -10,7 +10,6 @@ import java.util.Set;
 
 public class CustomerBackingBean {
 
-    private int userid;
     private String username;
     private String password;
     private String firstName;
@@ -72,42 +71,9 @@ public class CustomerBackingBean {
         this.lastName = lastName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setBSN(String BSN) {
-        this.BSN = BSN;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
     @Override
     public String toString() {
         return "CustomerBackingBean{" +
-                "userid=" + userid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +

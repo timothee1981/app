@@ -7,37 +7,50 @@ import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.TransactionRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class TransactionService {
 
-    @Autowired
-    private AccountService accountService;
+    private static final Logger LOGGER = Logger.getLogger(TransactionService.class.getName());
 
-    @Autowired
+    private AccountService accountService;
     private TransactionRepository transactionRepository;
 
     private Transaction transaction;
     private Account fromAccount;
     private Account toAccount;
 
+    @Autowired
+    public TransactionService(AccountService as, TransactionRepository tr){
+        this.accountService = as;
+        this.transactionRepository = tr;
+    }
 
-    public boolean executeTransaction(Transaction t){
-        this.transaction = t;
-        this.fromAccount = accountService.getAccountById(transaction.getFromAccountId());
-        this.toAccount = accountService.getAccountById(transaction.getToAccountId());
+    public final boolean executeTransaction(Transaction t){
+        setAttributes(t);
 
         if(isTransactionValid()) {
             updateBalances();
             saveTransaction();
+
+            LOGGER.log(Level.INFO, "**** Transaction has been executed");
             return true;
         } else {
+            LOGGER.log(Level.SEVERE,"**** Transaction FAILED");
             return false;
         }
     }
 
+    private void setAttributes(Transaction t){
+        this.transaction = t;
+        this.fromAccount = accountService.getAccountById(transaction.getFromAccountId());
+        this.toAccount = accountService.getAccountById(transaction.getToAccountId());
+    }
+
     private boolean isTransactionValid(){
-        return this.fromAccount.equals(this.toAccount) || this.fromAccount.getBalance() < this.transaction.getAmount() ;
+        return !this.fromAccount.equals(this.toAccount) || this.fromAccount.getBalance() >= this.transaction.getAmount() ;
     }
 
     private void updateBalances(){
