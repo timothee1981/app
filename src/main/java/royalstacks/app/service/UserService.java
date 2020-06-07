@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.Employee;
 import royalstacks.app.model.User;
 import royalstacks.app.model.repository.UserRepository;
 
@@ -65,4 +66,10 @@ public class UserService {
         Matcher m = nameRegex.matcher(name);
         return m.matches();
     }
+
+    public boolean isUserCustomer (User user){
+        return (user instanceof Customer);
+    }
+
+
 }

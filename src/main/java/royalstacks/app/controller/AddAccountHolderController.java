@@ -51,13 +51,15 @@ public class AddAccountHolderController {
                                                 @SessionAttribute("userid") int userId,
                                                 Model model) {
         ModelAndView mav = new ModelAndView("addaccountholder");
-        User invitee;
+        User invitee = null;
         Optional<User> optionalUser = userService.findByUsername(ibb.getInviteeUsername());
         Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(ibb.getAccountNumber());
         Account anAccount = optionalAccount.get();
         //TODO checken of user bestaat en een customer is
-        if (optionalUser.isPresent() && accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode()) /* && userService.isUserCustomer(invitee)*/) {
+        if (optionalUser.isPresent()) {
             invitee = optionalUser.get();
+        }
+        if (accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode()) && userService.isUserCustomer(invitee)) {
             ibb.setInviteeUsername(invitee.getUsername());
             ibb.setVerificationCode(ibb.getVerificationCode());
         } else {
