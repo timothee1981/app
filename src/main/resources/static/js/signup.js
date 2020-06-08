@@ -29,7 +29,6 @@ const BSN_IS_INVALID = "Enter a valid BSN";
 
 
 
-
 /**
  * Functies gerelateerd aan valid of invalid classes
  */
@@ -185,7 +184,7 @@ document.getElementById("username").addEventListener("input", function () {
     } else {
         let url = `/api/username?username=${usernameInput}`;
         const api = new API(url);
-        api.fetch(url).then(r => {
+        api.isUnique(url).then(r => {
             if (r) {
                 setFieldValid(USERNAME_FIELD);
                 hideElement(USERNAME_ERROR_ID);
@@ -244,9 +243,7 @@ document.getElementById("lastName").addEventListener('input', function() {
 document.getElementById("email").addEventListener('input', function () {
     const EMAIL_FIELD = document.getElementById("email");
 
-    let emailInput = EMAIL_FIELD.value;
-
-    if (regex.email.test(emailInput)) {
+    if (regex.email.test(EMAIL_FIELD.value)) {
         hideElement(EMAIL_ERROR_ID);
         setFieldValid(EMAIL_FIELD);
     } else {
@@ -261,9 +258,7 @@ document.getElementById("email").addEventListener('input', function () {
 document.getElementById("phoneNumber").addEventListener('input', function () {
     const PHONE_NUMBER_FIELD = document.getElementById("phoneNumber");
 
-    let phoneNumberInput = PHONE_NUMBER_FIELD.value;
-
-    if (regex.phoneNumber.test(phoneNumberInput)) {
+    if (regex.phoneNumber.test(PHONE_NUMBER_FIELD.value)) {
         hideElement(PHONE_ERROR_ID);
         setFieldValid(PHONE_NUMBER_FIELD);
 
@@ -293,7 +288,7 @@ document.getElementById("BSN").addEventListener("input", function () {
     } else {
         let url = `/api/bsn?BSN=${BSNInput}`;
         const api = new API(url);
-        api.fetch(url).then(r => {
+        api.isUnique(url).then(r => {
             if (r) {
                 setFieldValid(BSN_FIELD);
                 hideElement(BSN_ERROR_ID);
@@ -311,9 +306,7 @@ document.getElementById("BSN").addEventListener("input", function () {
 document.getElementById("postalCode").addEventListener('input', function () {
     const POSTAL_CODE_FIELD = document.getElementById("postalCode");
 
-    let postalCodeInput = POSTAL_CODE_FIELD.value;
-
-    if (regex.postalCode.test(postalCodeInput)) {
+    if (regex.postalCode.test(POSTAL_CODE_FIELD.value)) {
         setFieldValid(POSTAL_CODE_FIELD);
     } else {
         setFieldInvalid(POSTAL_CODE_FIELD);
@@ -329,23 +322,15 @@ document.getElementById("addressFields").addEventListener('input', function(){
 
     if(isInputValid("postalCode")){
         const api = new API();
-        api.cityAddress(document.getElementById("postalCode").value, HOUSE_NUMBER_FIELD.value).then(r => {
-
-            console.log(r)
-        });
-
-        getCityAndStreet().then(() => {
-            if (cityApi !== null) {
+        api.cityAddress().then(r => {
+            if(r !== undefined){
+                setValue("city", r.city);
+                setValue("street", r.street);
                 setFieldValid(HOUSE_NUMBER_FIELD);
-                setValue("city", cityApi);
             } else {
                 emptyValue("city");
-                setFieldInvalid(HOUSE_NUMBER_FIELD);
-            }
-            if (streetApi !== null) {
-                setValue("street", streetApi);
-            } else {
                 emptyValue("street");
+                setFieldInvalid(HOUSE_NUMBER_FIELD);
             }
         })
 

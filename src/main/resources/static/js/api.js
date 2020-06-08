@@ -2,16 +2,12 @@ class API {
     constructor(url) {
         this.url = url;
     }
+    url;
 
-
-    POST_CODE_API_TOKEN = "ccf855f3-4bd0-4cd6-8f12-25c9e254efd2";
-
-    responseApi;
-
-    fetch(url) {
-
+    fetch(url, header) {
         return fetch(url, {
             method: 'GET',
+            headers : header
         })
             .then((response) => {
                 if (!response.ok) {
@@ -20,36 +16,22 @@ class API {
                 return response.json();
             })
             .then((data) => {
-                this.responseApi = data;
-                return this.responseApi
+                return data;
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
             });
     }
 
-    cityAddress(postCode, houseNumber){
+    isUnique(url) {
+        return this.fetch(url);
+    }
 
-            const header = new Headers();
-            let url = `https://postcode.tech/api/v1/postcode?postcode=${postCode}&number=${houseNumber}`;
-            header.append('Authorization', 'Bearer ' + this.POST_CODE_API_TOKEN);
+    cityAddress(){
+        const header = new Headers;
+        const TOKEN = "ccf855f3-4bd0-4cd6-8f12-25c9e254efd2";
+        header.append('Authorization', 'Bearer ' + TOKEN);
+        let url = `https://postcode.tech/api/v1/postcode?postcode=${document.getElementById("postalCode").value}&number=${document.getElementById("houseNumber").value}`;
 
-            return fetch(url, {
-                method: 'GET',
-                headers: header,
-            })
-                .then((response) => {
-                    if (!response.ok) {
-
-                        throw new Error("Response error");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    return data
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+        return this.fetch(url, header);
     }
 }
