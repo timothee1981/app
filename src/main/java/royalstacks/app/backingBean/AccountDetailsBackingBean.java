@@ -4,6 +4,7 @@ import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.model.Sector;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +16,7 @@ public class AccountDetailsBackingBean {
     private String formatDateTime;
     private String accountType;
     private String accountNumber;
-    private double balance;
+    private BigDecimal balance;
     private String companyName;
     private String kvkNumber;
     private String vatNumber;
@@ -24,14 +25,14 @@ public class AccountDetailsBackingBean {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 
-    public AccountDetailsBackingBean(String accountNumber, double balance) {
+    public AccountDetailsBackingBean(String accountNumber, BigDecimal balance) {
         this(null,accountNumber,balance);
         this.formatDateTime =  now.format(formatter);
 
     }
 
 
-    public AccountDetailsBackingBean(String accountType, String accountNumber, double balance) {
+    public AccountDetailsBackingBean(String accountType, String accountNumber, BigDecimal balance) {
         this.formatDateTime =  now.format(formatter);
         this.accountType = accountType;
         this.accountNumber = accountNumber;
@@ -145,11 +146,11 @@ public class AccountDetailsBackingBean {
         this.accountNumber = accountNumber;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

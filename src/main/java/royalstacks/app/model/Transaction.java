@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Document(collection = "Transactions")
@@ -14,14 +15,14 @@ public class Transaction {
     private String transactionId;
     private int fromAccountId;
     private int toAccountId;
-    private double amount;
+    private BigDecimal amount;
     private String description;
     @Indexed(direction = IndexDirection.DESCENDING)
     private LocalDateTime date;
 
     // CONSTRUCTORS
     // all args
-    public Transaction(String transactionId, int fromAccountId, int toAccountId, double amount, String description, LocalDateTime date) {
+    public Transaction(String transactionId, int fromAccountId, int toAccountId, BigDecimal amount, String description, LocalDateTime date) {
         this.transactionId = transactionId;
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
@@ -31,7 +32,7 @@ public class Transaction {
     }
 
     // om op te slaan in database
-    public Transaction(int fromAccountId, int toAccountId, double amount, String description, LocalDateTime date) {
+    public Transaction(int fromAccountId, int toAccountId, BigDecimal amount, String description, LocalDateTime date) {
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
         this.amount = amount;
@@ -39,7 +40,7 @@ public class Transaction {
         this.date = date;
     }
 
-    public Transaction(int fromAccountId, int toAccountId, double amount, String description) {
+    public Transaction(int fromAccountId, int toAccountId, BigDecimal amount, String description) {
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
         this.amount = amount;
@@ -47,7 +48,7 @@ public class Transaction {
         this.date = LocalDateTime.now();
     }
 
-    public Transaction(int fromAccountId, int toAccountId, double amount) {
+    public Transaction(int fromAccountId, int toAccountId, BigDecimal amount) {
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
         this.amount = amount;
@@ -88,11 +89,11 @@ public class Transaction {
         this.toAccountId = toAccountId;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

@@ -1,9 +1,8 @@
 package royalstacks.app.model;
 
 import javax.persistence.*;
-import java.util.HashMap;
+import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,13 +15,13 @@ public abstract class Account {
     @GeneratedValue
     protected int accountId;
     protected String accountNumber;
-    protected double balance;
+    protected BigDecimal balance;
     @ManyToMany
     protected Set<Customer> accountHolders;
 
     // CONSTRUCTORS
 
-    public Account(String accountNumber, double balance) {
+    public Account(String accountNumber, BigDecimal balance) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         accountHolders = new HashSet<>();
@@ -30,20 +29,20 @@ public abstract class Account {
 
     // generates new account
     public Account() {
-        this("",STARTING_BALANCE);
+        this("", BigDecimal.valueOf(STARTING_BALANCE));
     }
 
     //METHODS
-    public boolean hasSufficientBalance(double sentAmount){
-    return this.balance >= sentAmount;
+    public boolean hasSufficientBalance(BigDecimal sentAmount){
+        return this.balance.compareTo(sentAmount) >= 0;
     }
 
-    public void subtractAmount(double subtractAmount){
-        this.setBalance(this.getBalance() - subtractAmount);
+    public void subtractAmount(BigDecimal subtractAmount){
+        this.setBalance(this.getBalance().subtract(subtractAmount));
     }
 
-    public void addAmount(double addAmount){
-        this.setBalance(this.getBalance() + addAmount);
+    public void addAmount(BigDecimal addAmount){
+        this.setBalance(this.getBalance().add(addAmount));
     }
 
     public void addAccountHolder(Customer accountHolderToAdd){
@@ -54,8 +53,8 @@ public abstract class Account {
     }
 
     //Getters and Setters
-    public static double getStartingBalance() {
-        return STARTING_BALANCE;
+    public static BigDecimal getStartingBalance() {
+        return BigDecimal.valueOf(STARTING_BALANCE);
     }
 
     public int getAccountId() {
@@ -74,11 +73,11 @@ public abstract class Account {
         this.accountNumber = accountNumber;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

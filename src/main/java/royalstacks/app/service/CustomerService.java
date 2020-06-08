@@ -6,11 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.CustomerAndTotalBalance;
+import royalstacks.app.model.CustomerAndTransactions;
+import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.CustomerRepository;
+import royalstacks.app.model.repository.TransactionRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +41,9 @@ public class CustomerService {
     private CustomerRepository customerRepository;
 
     @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
     private UserService userService;
 
     public void saveCustomer(Customer customer) {
@@ -63,7 +68,7 @@ public class CustomerService {
                     new CustomerAndTotalBalance(
                             (String) result[0],
                             (String) result[1],
-                            (double) result[2]
+                            (BigDecimal) result[2]
                     )
             );
         }
@@ -71,6 +76,26 @@ public class CustomerService {
         return customersAndTotalBalance;
     }
 
+    public List<CustomerAndTransactions> findTop10TransactionsOnBusinessAccounts(){
+        List<Object[]> results = customerRepository.findCustomersAndBusinessAccounts();
+        List<CustomerAndTransactions> customerAndTransactions = new ArrayList<>();
+
+        for (Object[] result : results) {
+            List<Transaction> transactionList = transactionRepository
+                    .getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc((int)result[2], (int)result[2]);
+
+            customerAndTransactions.add(
+                    new CustomerAndTransactions(
+                            (String) result [0],
+                            (String) result [1],
+                            transactionList.size(),
+                            (BigDecimal) result [3]
+                    )
+            );
+        }
+        Collections.sort(customerAndTransactions);
+        return customerAndTransactions.subList(0,10);
+    }
 
     public boolean isPhoneNumberValid(String phoneNumber){
         Matcher home = PHONE_HOME_REGEX.matcher(phoneNumber);

@@ -3,6 +3,7 @@ package royalstacks.app.backingBean;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.AccountHolderInvite;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.User;
 
 import java.util.Objects;
 
@@ -20,11 +21,16 @@ public class AccountHolderInviteBackingBean {
         this.verificationCode = verificationCode;
     }
 
-    //aanpassen met Optional etc
-    public AccountHolderInvite accountHolderInvite() {
+/*    public AccountHolderInvite accountHolderInvite() {
+        AccountHolderInvite accountHolderInvite = new AccountHolderInvite(invitee, account, verificationCode);
+        return accountHolderInvite;
+    }*/
+
+    public AccountHolderInvite accountHolderInvite(Customer invitee, Account account, String verificationCode) {
         AccountHolderInvite accountHolderInvite = new AccountHolderInvite(invitee, account, verificationCode);
         return accountHolderInvite;
     }
+
 
     // creates a backing bean from accountHolderInvite (heb ik deze nodig?)
     public static AccountHolderInviteBackingBean createAccountHolderInviteBackingBean(AccountHolderInvite accountHolderInvite) {

@@ -109,20 +109,20 @@ public class AccountDetailsController {
         if(transaction.getFromAccountId() == account.getAccountId()) {
             accountFrom = accountService.getAccountById(transaction.getToAccountId());
             lasttentbt = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
-            lasttentbt.setAmount(" - " + transaction.getAmount());
+            lasttentbt.setAmount1(" - " + transaction.getAmount());
 
-         //ACCOUNT CREDITETEREN
+         //ACCOUNT CREDITEEREN
 
         }else if((transaction.getToAccountId() == account.getAccountId())){
             accountFrom = accountService.getAccountById(transaction.getFromAccountId());
             lasttentbt = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
-            lasttentbt.setAmount(" + " + transaction.getAmount());
+            lasttentbt.setAmount1(" + " + transaction.getAmount());
 
         }
         return lasttentbt;
     }
 
-    //FILL OBJECT BB laast ten transaction WITH CORRECT VALUES
+    //FILL OBJECT BB last ten transaction WITH CORRECT VALUES
 
     private LastTenTransactionBackingBean fillBackingBeanWithCorrectCalue(Account accountFrom, Transaction transaction) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

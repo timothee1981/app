@@ -46,6 +46,7 @@ class HeadBusinessControllerTest {
                 get("/headbusiness").sessionAttr("userid", userId)
         ).andExpect(status().isOk())
                 .andExpect(model().attributeExists("top10BusinessAccounts"))
-                .andExpect(model().attributeExists("sectorAndTotalBalances"));
+                .andExpect(model().attributeExists("sectorAndAverageBalances"))
+                .andExpect(model().attributeExists("top10TransactionsBusinessAccounts"));
     }
 }
