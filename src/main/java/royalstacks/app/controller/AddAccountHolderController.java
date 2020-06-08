@@ -65,6 +65,8 @@ public class AddAccountHolderController {
             ibb.setVerificationCode(ibb.getVerificationCode());
         } else {
             displayMessage("Please enter an existing customer's username and a five-digit number", mav);
+            //toegevoegd
+            //ibb.setAccountNumber(anAccount.getAccountNumber());
             populateFields(ibb, mav);
             return mav;
         }
@@ -81,6 +83,8 @@ public class AddAccountHolderController {
 
 
     private void populateFields(AccountHolderInviteBackingBean ibb, ModelAndView mav) {
+        //toegevoegd
+        mav.addObject("accountNumber",ibb.getAccountNumber());
         mav.addObject("inviteeUsername", ibb.getInviteeUsername());
         mav.addObject("verificationCode", ibb.getVerificationCode());
     }
