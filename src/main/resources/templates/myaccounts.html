@@ -7,6 +7,11 @@
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
 
 
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+
+
     <style>
         body{
             align-content: center;
@@ -15,7 +20,6 @@
             width: 100%;
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
         }
-
         input[type=submit] {
             width: 100%;
             padding: 15px;
@@ -41,36 +45,27 @@
             margin-left: 30%;
         }
 
-        td a:hover {
 
+        table{
+            width: 100%;
+            -webkit-border-horizontal-spacing: 0;
         }
-        td a button{
-            border:none;
-            opacity: 1.0;
-        }
-
-        td a hover{
-            border:none;
-            color: #1E90FF;
+        td{
+            text-align: center;
         }
 
         tr.trLink{
             cursor: pointer;
             border-collapse: collapse;
+
+            background: #1E90FF;
         }
         tr.trLink:hover{
             opacity: 0.9;
-            color: #1E90FF;
 
         }
-        tr.trLink a{
-            border-collapse: collapse;
-            height: 100%;
-            width: 100%;
-        }
-        tr.trLink:hover a{
-            opacity: 0.9;
-        }
+
+
 
 
     </style>
@@ -88,9 +83,10 @@
 
 <div id="Account_overview">
     <h1>Account overview</h1>
-    <h2>Hello <span th:text="${customer.username}"/></h2>
-    <form  th:action="@{/accountdetails}">
-        <table>
+    <h2>Hello <span th:text="${customer.username}"></span></h2>
+    <form id="accountdetailsForm" th:action="@{/accountdetails}" method="get">
+        <input id="inputdetails" type="hidden" value="dummy">
+        <table id="accountdetailstable">
             <thead>
                 <tr>
                     <th>Iban Account</th>
@@ -99,8 +95,8 @@
             </thead>
             <tbody>
                 <tr class="trLink" th:each="account : ${list}">
-                    <td><a><button type="submit" th:name="accountNumber" th:value="${account.accountNumber}"> <span th:text="${account.accountNumber}"/></button></a></td>
-                    <td><a><button type="submit" th:name="accountNumber" th:value="${account.accountNumber}"><span th:text="${account.balance}"/></button></a></td>
+                    <td th:text="${account.accountNumber}"></td>
+                    <td><span th:text="${account.balance}"></span></td>
                 </tr>
             </tbody>
         </table>
@@ -116,3 +112,30 @@
 </body>
 </html>
 
+<script type="text/javascript"></script>
+
+<script>
+
+    $(document).ready(function(){
+
+        // add eventlistener to all table-cells - on click- go to account details
+        document.querySelectorAll('#accountdetailstable tr')
+        .forEach(e => e.addEventListener("click", function() {
+
+            //1 - get acountnumber clicked
+            // Here, `this` refers to the element the event was hooked on
+            let accountnumber = this.cells[0].innerHTML;
+
+            //2 - fire get request with parameter to go to account details
+            //document.getElementById("accountdetailsForm").submit();
+
+            let input = $("<input>")
+                .attr("type", "hidden")
+                .attr("name", "accountNumber").val(accountnumber);
+            $('#accountdetailsForm').append($(input)).submit();
+        }));
+    })
+
+
+</script>
+<script type="text/javascript"></script>
