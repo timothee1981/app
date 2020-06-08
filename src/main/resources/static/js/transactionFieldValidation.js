@@ -66,6 +66,10 @@ function disableButton(){
 
 
 function fromAccountValidationAction() {
+    if(toAccountField.value.length > 0 ) {
+        showHideToAccountValidMark();
+        showHideToAccountErrors();
+    }
     if(isAmountFilledIn()) {
         showHideAmountValidMark();
         showHideAmountErrors();
@@ -203,7 +207,18 @@ function isAccountDifferentThanFromAccount(){
     return(fromAccountField.value.toUpperCase() !== toAccountField.value.toUpperCase());
 }
 function doesAccountExistInDb(){
-    return true;
+    const options = {
+        method: 'POST',
+        body: toAccountField.value,
+        headers: {
+            'Content-Type': 'text/plain'
+        }
+    }
+    fetch("/api/iban/",options).then(response => {
+        console.log(response);
+        return response.text();}).then(response => {
+        console.log(response);
+    })
 }
 function isAmountFormatValid(){
     let amountFormatRegex = new RegExp(/^\d{0,11}([,.][\d]{1,2})?$/);
@@ -215,6 +230,7 @@ function isAmountSmallerThanBalance(){
 function isAmountFilledIn(){
     return (amountField.value.length !== 0);
 }
+
 
 
 

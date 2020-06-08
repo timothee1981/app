@@ -1,10 +1,9 @@
 package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
@@ -43,5 +42,10 @@ public class ApiController {
         BusinessAccount businessAccount =  new BusinessAccount();
         businessAccount.setVatNumber(vatnumber);
         return String.valueOf(businessAccount.isVatValid());
+    }
+    @PostMapping(value = "/api/iban",consumes = "text/plain")
+    @ResponseBody
+    public String ibanCheckHandler(@RequestBody String iban) throws Exception{
+        return String.valueOf(accountService.getAccountByAccountNumber(iban).isPresent());
     }
 }
