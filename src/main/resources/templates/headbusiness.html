@@ -50,7 +50,7 @@
     <tr th:each="topBusinessAccount: ${top10BusinessAccounts}">
         <td th:text="${topBusinessAccount.firstName}" />
         <td th:text="${topBusinessAccount.lastName}" />
-        <td th:text="${topBusinessAccount.totalBalance}" />
+        <td th:text="${#numbers.formatDecimal(topBusinessAccount.totalBalance, 0, 2)}" />
     </tr>
 </table>
 <h2>Average balances by sector:</h2>
@@ -61,7 +61,7 @@
     </tr>
     <tr th:each="sectorAndAverageBalance: ${sectorAndAverageBalances}">
         <td th:text="${sectorAndAverageBalance.sector.displayValue}" />
-        <td th:text="${sectorAndAverageBalance.totalBalance}" />
+        <td th:text="${#numbers.formatDecimal(sectorAndAverageBalance.totalBalance, 0, 2)}" />
     </tr>
 </table>
 <h2>Top 10 customers with the most transactions on their business account:</h2>
@@ -76,7 +76,7 @@
         <td th:text="${topBusinessAccountTransactions.firstName}" />
         <td th:text="${topBusinessAccountTransactions.lastName}" />
         <td th:text="${topBusinessAccountTransactions.numberOfTransactions}" />
-        <td th:text="${topBusinessAccountTransactions.balance}" />
+        <td th:text="${#numbers.formatDecimal(topBusinessAccountTransactions.balance, 0, 2)}" />
     </tr>
 </table>
 <script src="js/navbar.js"></script>

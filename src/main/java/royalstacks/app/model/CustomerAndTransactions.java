@@ -1,14 +1,16 @@
 package royalstacks.app.model;
 
+import java.math.BigDecimal;
+
 public class CustomerAndTransactions implements Comparable<CustomerAndTransactions> {
 
     private String firstName;
     private String lastName;
     private int numberOfTransactions;
-    private double balance;
+    private BigDecimal balance;
 
     //CONSTRUCTOR
-    public CustomerAndTransactions(String firstName, String lastName, int numberOfTransactions, double balance) {
+    public CustomerAndTransactions(String firstName, String lastName, int numberOfTransactions, BigDecimal balance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.numberOfTransactions = numberOfTransactions;
@@ -28,7 +30,7 @@ public class CustomerAndTransactions implements Comparable<CustomerAndTransactio
         return numberOfTransactions;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 

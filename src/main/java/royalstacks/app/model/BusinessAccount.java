@@ -1,6 +1,7 @@
 package royalstacks.app.model;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 @Entity
 public class BusinessAccount extends Account {
@@ -11,7 +12,7 @@ public class BusinessAccount extends Account {
     private String sector;
 
     // CONSTRUCTORS
-    public BusinessAccount(String accountNumber, double balance, String companyName, String kvkNumber, String vatNumber, Sector sector) {
+    public BusinessAccount(String accountNumber, BigDecimal balance, String companyName, String kvkNumber, String vatNumber, Sector sector) {
         super(accountNumber, balance);
         this.companyName = companyName;
         this.kvkNumber = kvkNumber;

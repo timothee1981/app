@@ -11,6 +11,7 @@ import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.CustomerRepository;
 import royalstacks.app.model.repository.TransactionRepository;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,7 +68,7 @@ public class CustomerService {
                     new CustomerAndTotalBalance(
                             (String) result[0],
                             (String) result[1],
-                            (double) result[2]
+                            (BigDecimal) result[2]
                     )
             );
         }
@@ -88,7 +89,7 @@ public class CustomerService {
                             (String) result [0],
                             (String) result [1],
                             transactionList.size(),
-                            (double) result [3]
+                            (BigDecimal) result [3]
                     )
             );
         }

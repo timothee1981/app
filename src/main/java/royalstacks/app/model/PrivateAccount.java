@@ -1,12 +1,13 @@
 package royalstacks.app.model;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 @Entity
 public class PrivateAccount extends Account  {
 
     // CONSTRUCTORS
-    public PrivateAccount(String accountNumber, double balance) {
+    public PrivateAccount(String accountNumber, BigDecimal balance) {
         super(accountNumber, balance);
     }
 
