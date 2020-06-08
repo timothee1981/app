@@ -55,10 +55,11 @@ public class AddAccountHolderController {
         Optional<User> optionalUser = userService.findByUsername(ibb.getInviteeUsername());
         Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(ibb.getAccountNumber());
         Account anAccount = optionalAccount.get();
-        //TODO checken of user bestaat en een customer is
+        //check of user bestaat werkt
         if (optionalUser.isPresent()) {
             invitee = optionalUser.get();
         }
+        //check op 5 getallen werkt, check op Customer lijkt ook te werken
         if (accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode()) && userService.isUserCustomer(invitee)) {
             ibb.setInviteeUsername(invitee.getUsername());
             ibb.setVerificationCode(ibb.getVerificationCode());
@@ -67,7 +68,7 @@ public class AddAccountHolderController {
             populateFields(ibb, mav);
             return mav;
         }
-        AccountHolderInvite newInvite = ibb.accountHolderInvite();
+        AccountHolderInvite newInvite = ibb.accountHolderInvite((Customer) invitee, anAccount, ibb.getVerificationCode());
         accountHolderInviteService.saveAccountHolderInvite(newInvite);
         displayMessage("Invitation sent. The new account holder can now add the account using your verification code.", mav);
         return mav;
