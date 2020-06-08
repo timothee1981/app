@@ -20,18 +20,22 @@
     <span id="logoNavbar"></span>
 </div>
 
-<div class="content">
 
+<div class="content">
+    <div class="wrapper">
 <span id="dateTime"></span><br>
     <h1>Account details</h1>
 
     <!--<THAT'S THE DROPDOWN SELECT. DIFFICULT MAYBE, LETS SEE IF I HAVE TIME LEFT-->
-    <!--<label for="accountnumber">AccountList</label>
+<!--
+    <label for="accountNumber">AccountList</label>
         <select id="accountNumber" name="accountNumber" th:value="${accountnumber}">
-            <option th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
+            <option id="option" th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
             </option>
         </select>
+<<<<<<< HEAD
         <button type="submit" id="SUBMIT_BUTTON"  value="DoTransfer">choose account</button>-->
+
 
     <!--TABLE HOUDT INFORMATIE OVER REKENING HOUDER -->
 
@@ -55,7 +59,7 @@
 </div>
 <div class="buttondiv">
     <form th:action="@{transaction}"  method="get">
-        <button type="submit" id="submitButton" name="accountId" th:value="${account.accountId=20}"   value="DoTransfer">New money transfer</button>
+        <button type="submit" id="submitButton" name="accountId" th:value="${account.accountId}"   value="DoTransfer">New money transfer</button>
     </form>
     <form th:action="@{addaccountholder}" method="get">
         <button type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
@@ -87,8 +91,9 @@
     </div>
 
 </div>
+</div>
 
-
+</div>
 
 
 
@@ -117,6 +122,14 @@
         setTimeout(updateClock, 1000);
     }
     updateClock(); // initial call
+
+ /*   const accountNumber = document.getElementById("option");
+
+
+    console.log(accountNumber.innerHTML);*/
+
+
+
 </script>
 
 </html>
