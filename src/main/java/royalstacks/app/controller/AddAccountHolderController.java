@@ -82,6 +82,7 @@ public class AddAccountHolderController {
             accountHolderInviteService.saveAccountHolderInvite(newInvite);
             displayMessage("Invitation sent. The new account holder can now add the account using your verification code.", mav);
         }
+        populateFields(ibb, mav);
         return mav;
     }
 
