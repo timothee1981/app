@@ -25,4 +25,5 @@ public class CustomerAndTotalBalance {
     public double getTotalBalance() {
         return totalBalance;
     }
+
 }

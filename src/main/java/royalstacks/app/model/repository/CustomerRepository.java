@@ -19,4 +19,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
     @Query("SELECT c FROM Customer c WHERE c.userid = ?1")
     Optional<Customer> findCustomerByUserId(int userid);
+
+    @Query("SELECT c.firstName, c.lastName, ba.accountId FROM Customer c JOIN c.account ba")
+    List<Object[]> findCustomersAndBusinessAccounts();
 }
