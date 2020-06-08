@@ -20,18 +20,21 @@
     <span id="logoNavbar"></span>
 </div>
 
-<div class="content">
 
+<div class="content">
+    <div class="wrapper">
 <span id="dateTime"></span><br>
     <h1>Account details</h1>
 
     <!--<THAT'S THE DROPDOWN SELECT. DIFFICULT MAYBE, LETS SEE IF I HAVE TIME LEFT-->
-    <!--<label for="accountnumber">AccountList</label>
+<!--
+    <label for="accountNumber">AccountList</label>
         <select id="accountNumber" name="accountNumber" th:value="${accountnumber}">
-            <option th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
+            <option id="option" th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
             </option>
         </select>
-        <button type="submit" id="submitButton"  value="DoTransfer">choose account</button>-->
+-->
+
 
     <!--TABLE HOUDT INFORMATIE OVER REKENING HOUDER -->
 
@@ -87,8 +90,9 @@
     </div>
 
 </div>
+</div>
 
-
+</div>
 
 
 
@@ -116,6 +120,14 @@
         setTimeout(updateClock, 1000);
     }
     updateClock(); // initial call
+
+ /*   const accountNumber = document.getElementById("option");
+
+
+    console.log(accountNumber.innerHTML);*/
+
+
+
 </script>
 
 </html>
