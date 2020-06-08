@@ -39,8 +39,8 @@ public class ApiController {
 
     @GetMapping("/api/bsn")
     @ResponseBody
-    public String isBSNUniqueHandler(@RequestParam String BSN) {
-        return String.valueOf(customerService.findCustomerByBSN(BSN).isEmpty());
+    public String isBSNUniqueHandler(@RequestParam String bsn) {
+        return String.valueOf(customerService.findCustomerByBSN(bsn).isEmpty());
 
     }
 
