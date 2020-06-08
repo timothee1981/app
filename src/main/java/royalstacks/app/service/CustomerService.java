@@ -87,7 +87,8 @@ public class CustomerService {
                     new CustomerAndTransactions(
                             (String) result [0],
                             (String) result [1],
-                            transactionList.size()
+                            transactionList.size(),
+                            (double) result [3]
                     )
             );
         }

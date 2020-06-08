@@ -5,13 +5,14 @@ public class CustomerAndTransactions implements Comparable<CustomerAndTransactio
     private String firstName;
     private String lastName;
     private int numberOfTransactions;
-    private double balance = 0.0;
+    private double balance;
 
     //CONSTRUCTOR
-    public CustomerAndTransactions(String firstName, String lastName, int numberOfTransactions) {
+    public CustomerAndTransactions(String firstName, String lastName, int numberOfTransactions, double balance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.numberOfTransactions = numberOfTransactions;
+        this.balance = balance;
     }
 
     //GETTERS
