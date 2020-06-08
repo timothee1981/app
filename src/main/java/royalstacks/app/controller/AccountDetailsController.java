@@ -109,14 +109,14 @@ public class AccountDetailsController {
         if(transaction.getFromAccountId() == account.getAccountId()) {
             accountFrom = accountService.getAccountById(transaction.getToAccountId());
             lasttentbt = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
-            lasttentbt.setAmount(" - " + transaction.getAmount());
+            lasttentbt.setAmount1(" - " + transaction.getAmount());
 
          //ACCOUNT CREDITEEREN
 
         }else if((transaction.getToAccountId() == account.getAccountId())){
             accountFrom = accountService.getAccountById(transaction.getFromAccountId());
             lasttentbt = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
-            lasttentbt.setAmount(" + " + transaction.getAmount());
+            lasttentbt.setAmount1(" + " + transaction.getAmount());
 
         }
         return lasttentbt;
