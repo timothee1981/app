@@ -50,7 +50,7 @@ public class TransactionService {
     }
 
     private boolean isTransactionValid(){
-        return !this.fromAccount.equals(this.toAccount) || this.fromAccount.getBalance() >= this.transaction.getAmount() ;
+        return !this.fromAccount.equals(this.toAccount) || this.fromAccount.getBalance().compareTo(this.transaction.getAmount()) >= 0;
     }
 
     private void updateBalances(){

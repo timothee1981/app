@@ -2,6 +2,8 @@ package royalstacks.app.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BusinessAccountTest {
@@ -275,7 +277,7 @@ class BusinessAccountTest {
     @Test
     void convertSectorEnumTest(){
         //ARRANGE
-        BusinessAccount businessAccount = new BusinessAccount("NL316383915B12",666.66,"TestBV","12345678","NL010000446B01",Sector.ENERGY_WATER_AND_ENVIRONMENT);
+        BusinessAccount businessAccount = new BusinessAccount("NL316383915B12", new BigDecimal(666.66),"TestBV","12345678","NL010000446B01",Sector.ENERGY_WATER_AND_ENVIRONMENT);
         Sector expected = Sector.ENERGY_WATER_AND_ENVIRONMENT;
 
         //ACT

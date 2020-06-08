@@ -46,7 +46,7 @@
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Balance</div>
-        <div class = "infocell">€ <span th:text="${account.balance}"></span></div>
+        <div class = "infocell">€ <span th:text="${#numbers.formatDecimal(account.balance, 0, 2)}"></span></div>
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Account Type</div>
@@ -86,7 +86,7 @@
         <div class="cell"  th:text="${transaction.bankAccountNumber}"></div>
         <div class="cell"  th:text="${transaction.customerName}"></div>
         <div class="cell"  th:text="${transaction.description}"></div>
-        <div class="cell"  th:text="${transaction.amount}"></div>
+        <div class="cell"  th:text="${#numbers.formatDecimal(transaction.amount, 0, 2)}"></div>
 
     </div>
 
