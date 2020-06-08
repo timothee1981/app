@@ -2,6 +2,7 @@ package royalstacks.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import royalstacks.app.model.Sector;
 import royalstacks.app.model.SectorAndAverageBalance;
 import royalstacks.app.model.repository.BusinessAccountRepository;
 
@@ -21,7 +22,7 @@ public class BusinessAccountService {
         for (Object[] result : results) {
             sectorAndAverageBalances.add(
                     new SectorAndAverageBalance(
-                            (String) result[0],
+                            Sector.valueOf((String) result[0]),
                             (double) result[1]
                     )
             );

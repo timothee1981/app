@@ -60,7 +60,7 @@
         <th>Average balance</th>
     </tr>
     <tr th:each="sectorAndAverageBalance: ${sectorAndAverageBalances}">
-        <td th:text="${sectorAndAverageBalance.sector}" />
+        <td th:text="${sectorAndAverageBalance.sector.displayValue}" />
         <td th:text="${sectorAndAverageBalance.totalBalance}" />
     </tr>
 </table>
