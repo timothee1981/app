@@ -7,43 +7,61 @@ import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.TransactionRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class TransactionService {
 
-    @Autowired
-    AccountService accountService;
+    private static final Logger LOGGER = Logger.getLogger(TransactionService.class.getName());
+
+    private AccountService accountService;
+    private TransactionRepository transactionRepository;
+
+    private Transaction transaction;
+    private Account fromAccount;
+    private Account toAccount;
 
     @Autowired
-    TransactionRepository transactionRepository;
-
-    public void saveTransaction(Transaction t){
-        transactionRepository.save(t);
-        System.out.println("**** Saved: " + t);
+    public TransactionService(AccountService as, TransactionRepository tr){
+        this.accountService = as;
+        this.transactionRepository = tr;
     }
 
-    public boolean executeTransaction(Transaction t){
-        // maak van accountId's die in de transaction staat Accounts
-        Account fromAccount = accountService.getAccountById(t.getFromAccountId());
-        Account toAccount = accountService.getAccountById(t.getToAccountId());
+    public final boolean executeTransaction(Transaction t){
+        setAttributes(t);
 
-        if(fromAccount.equals(toAccount)){
+        if(isTransactionValid()) {
+            updateBalances();
+            saveTransaction();
+
+            LOGGER.log(Level.INFO, "**** Transaction has been executed");
+            return true;
+        } else {
+            LOGGER.log(Level.SEVERE,"**** Transaction FAILED");
             return false;
         }
+    }
 
-        if(fromAccount.getBalance() < t.getAmount()){
-            return false;
-        }
+    private void setAttributes(Transaction t){
+        this.transaction = t;
+        this.fromAccount = accountService.getAccountById(transaction.getFromAccountId());
+        this.toAccount = accountService.getAccountById(transaction.getToAccountId());
+    }
 
-        fromAccount.subtractAmount(t.getAmount());
-        accountService.saveAccount(fromAccount);
+    private boolean isTransactionValid(){
+        return !this.fromAccount.equals(this.toAccount) || this.fromAccount.getBalance() >= this.transaction.getAmount() ;
+    }
 
-        toAccount.addAmount(t.getAmount());
-        accountService.saveAccount(toAccount);
+    private void updateBalances(){
+        this.fromAccount.subtractAmount(this.transaction.getAmount());
+        accountService.saveAccount(this.fromAccount);
+        this.toAccount.addAmount(this.transaction.getAmount());
+        accountService.saveAccount(this.toAccount);
+    }
 
-        saveTransaction(t);
-
-        return true;
+    private void saveTransaction(){
+        transactionRepository.save(this.transaction);
     }
 
 

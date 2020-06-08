@@ -94,9 +94,9 @@ form.addEventListener('click', function () {
             kvknumber.classList.contains("isValid") &&
             vatnumber.classList.contains("isValid") &&
             sector.value !== "") {
-            document.getElementById("submitButton").disabled = false;
+            document.getElementById("SUBMIT_BUTTON").disabled = false;
         } else {
-            document.getElementById("submitButton").disabled = true;
+            document.getElementById("SUBMIT_BUTTON").disabled = true;
         }
     }else{
         hideBusinessFields();
@@ -111,9 +111,9 @@ form.addEventListener('keyup', function () {
         vatnumber.classList.contains("isValid")&&
         sector.value !== "")
     {
-        document.getElementById("submitButton").disabled = false;
+        document.getElementById("SUBMIT_BUTTON").disabled = false;
     } else {
-        document.getElementById("submitButton").disabled = true;
+        document.getElementById("SUBMIT_BUTTON").disabled = true;
     }
 });
 
@@ -124,7 +124,7 @@ form.addEventListener('keyup', function () {
 function showBusinessFields() {
 
     document.getElementById("businessFields").style.display = "inline";
-    document.getElementById("submitButton").disabled = true;
+    document.getElementById("SUBMIT_BUTTON").disabled = true;
     document.getElementById("companyName").required = true;
     document.getElementById("kvkNumber").required = true;
     document.getElementById("vatNumber").required = true;
@@ -138,7 +138,7 @@ function showBusinessFields() {
 /*HIDE BUSINESS FIELD METHOD*/
 
 function hideBusinessFields() {
-    document.getElementById("submitButton").disabled = false;
+    document.getElementById("SUBMIT_BUTTON").disabled = false;
     document.getElementById("businessFields").style.display = "none";
     document.getElementById("companyName").removeAttribute("required");
     document.getElementById("kvkNumber").removeAttribute("required");

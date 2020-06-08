@@ -18,13 +18,19 @@ public class UserService {
     private static final int MIN_PASSWORD_LENGTH = 10;
     private static final int MAX_PASSWORD_LENGTH = 100;
 
-    private static final Pattern usernameRegex = Pattern.compile("^[a-zA-Z0-9_-]+$");
-    private static final Pattern passwordRegex = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]])[A-Za-z\\d!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]]+$");
-    private static final Pattern nameRegex = Pattern.compile("^[^\\s].*[a-zA-Z-'\\s][^.]{1,100}");
+    // username mag kleine letters, grote letters, getallen, en - of _ bevatten en moet tussen 3 en 20 characters lang zijn.
+    private static final Pattern USERNAME_REGEX = Pattern.compile("^[a-zA-Z0-9_-]+$");
+    // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 10 karakters lang zijn
+    private static final Pattern PASSWORD_REGEX = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]])[A-Za-z\\d!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]]+$");
+    private static final Pattern NAME_REGEX = Pattern.compile("^[-a-zA-Z\\-']+(\\s+[-a-zA-Z\\-']+)*$");
 
     @Qualifier("userRepository")
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository ur) {
+        this.userRepository = ur;
+    }
 
     public Optional<User> findById(int id) {
         return userRepository.findById(id);
@@ -44,24 +50,23 @@ public class UserService {
         }
     }
 
+
     public boolean isUsernameFormatValid(String username){
-        Matcher m = usernameRegex.matcher(username);
-        // username mag kleine letters, grote letters, getallen, en - of _ bevatten en moet tussen 3 en 20 characters lang zijn.
+            Matcher m = USERNAME_REGEX.matcher(username);
         return m.matches()
                 && username.length() >= MIN_USERNAME_LENGTH
                 && username.length() <= MAX_USERNAME_LENGTH;
     }
 
     public boolean isPasswordValid(String password){
-        Matcher m = passwordRegex.matcher(password);
-        // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 10 karakters lang zijn
+        Matcher m = PASSWORD_REGEX.matcher(password);
         return m.matches()
                 && password.length() >= MIN_PASSWORD_LENGTH
                 && password.length() <= MAX_PASSWORD_LENGTH;
     }
 
     public boolean isNameValid(String name){
-        Matcher m = nameRegex.matcher(name);
+        Matcher m = NAME_REGEX.matcher(name);
         return m.matches();
     }
 }

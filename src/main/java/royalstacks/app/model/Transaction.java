@@ -39,13 +39,21 @@ public class Transaction {
         this.date = date;
     }
 
-    public Transaction(int fromAccountId, int toAccountId, double amount, String description ) {
+    public Transaction(int fromAccountId, int toAccountId, double amount, String description) {
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
         this.amount = amount;
         this.description = description;
         this.date = LocalDateTime.now();
     }
+
+    public Transaction(int fromAccountId, int toAccountId, double amount) {
+        this.fromAccountId = fromAccountId;
+        this.toAccountId = toAccountId;
+        this.amount = amount;
+        this.date = LocalDateTime.now();
+    }
+
 
     //default
     public Transaction(){}
