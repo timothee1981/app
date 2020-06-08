@@ -63,7 +63,6 @@ public class SignUpController {
 
     private void populateFields() {
         this.mav.addObject("username", this.customer.getUsername());
-        this.mav.addObject("password", this.customer.getPassword());
         this.mav.addObject("firstName", this.customer.getFirstName());
         this.mav.addObject("lastName", this.customer.getLastName());
         this.mav.addObject("email", this.customer.getEmail());

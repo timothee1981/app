@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Become a Royal Stacks customer!</title>
+
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/signup.css" rel="stylesheet" />
+    <script type="application/javascript" src="js/navbar.js" defer></script>
+    <script type="application/javascript" src="js/signup.js" defer></script>
 </head>
 <body>
 <div id="navbar">
@@ -34,7 +37,7 @@
 <div id="passwordLabel">
     <label for="password"><b>Password</b></label>
 </div>
-        <div onfocusin="showPasswordRequirements()" onfocusout="hidePasswordRequirements()">
+        <div id="passwordElements">
         <input
             type="password"
             placeholder="At least 10 characters"
@@ -43,7 +46,7 @@
             title="Must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and at least 10 characters in length"
             th:value="${password}"
             required
-    /><input id="showPasswordButton" class="fa fa-fw fa-eye" type="button" onmousedown="showPassword()" value="show"><span></span>
+    /><input id="showPasswordButton" class="fa fa-fw fa-eye" type="button" value="show"><span></span>
         </div>
         <!-- Laat zien wanneer password geselecteerd is -->
     <div id="passRequirements">
@@ -192,8 +195,5 @@
 </form>
 </fieldset>
 </div>
-
-<script src="js/navbar.js"></script>
-<script src="js/signup.js"></script>
 </body>
 </html>
