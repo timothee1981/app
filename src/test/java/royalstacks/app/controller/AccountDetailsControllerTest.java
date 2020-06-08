@@ -14,8 +14,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.ModelAndView;
+import royalstacks.app.backingBean.AccountDetailsBackingBean;
 import royalstacks.app.model.*;
 import royalstacks.app.service.*;
+
+import javax.swing.text.html.Option;
+import java.util.*;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(AccountDetailsController.class)
+@WebMvcTest(AccountDetailsBackingBean.class)
 class AccountDetailsControllerTest {
 
 
@@ -50,30 +54,29 @@ class AccountDetailsControllerTest {
     void accountDetailsHandler() throws Exception{
         //ARRANGE
 
-        int userId = 1;
-        Customer customer = new Customer(1,null, null, "-", "sdsd", null,"3513", "sds",
-               " S", "city", null,
-               null,null, false);
+        Customer customer = new Customer();
+        Transaction transaction = new Transaction();
 
-        customer.setPassword("Jsdsdsd798+");
-        customer.setUsername("lklkeeeee");
-        String accountNumber = "NL32ROYA0000000019";
-
-        Account account = new PrivateAccount(null,0);
+        customer.setUserid(1);
+        Account account = new PrivateAccount();
+        String accountNumber =  "NL10ROYA0000100027";
         account.setAccountNumber(accountNumber);
-        customer.getAccount().add(account);
-        given(userService.findByUserId(userId)).willReturn(customer);
-        given(accountService.getAccountByAccountNumber(accountNumber)).willReturn(java.util.Optional.of(account));
+        account.setAccountId(1);
+        Set<Account> accounts = new HashSet<>();
+        accounts.add(account);
+        customer.setAccount(accounts);
 
-        //ACT AND ASSERT
 
-        mvc.perform(
-                get("accountdetails").
-                        sessionAttr("userId",userId).
-                        param("account", accountNumber)
-        ).andExpect(status().isOk())
-                .andExpect(view().name("accountdetails"));
 
+        given(accountService.getAccountByAccountNumber(accountNumber)).willReturn(Optional.of(account));
+        given(userService.findByUserId(customer.getUserid())).willReturn(customer);
+
+
+
+        mvc.perform(get("/accountdetails")
+                .sessionAttr("userid", customer.getUserid())
+                .param("accountNumber", accountNumber)
+        ).andExpect(status().isOk());
 
 
     }
