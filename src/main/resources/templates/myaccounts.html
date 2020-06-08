@@ -6,7 +6,7 @@
 
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
 
-    // make use of webjar - jquery
+
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
     <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
@@ -85,6 +85,7 @@
     <h1>Account overview</h1>
     <h2>Hello <span th:text="${customer.username}"></span></h2>
     <form id="accountdetailsForm" th:action="@{/accountdetails}" method="get">
+        <input id="inputdetails" type="hidden" value="dummy">
         <table id="accountdetailstable">
             <thead>
                 <tr>
@@ -111,11 +112,6 @@
 </body>
 </html>
 
-
-
-
-
-
 <script type="text/javascript"></script>
 
 <script>
@@ -131,9 +127,12 @@
             let accountnumber = this.cells[0].innerHTML;
 
             //2 - fire get request with parameter to go to account details
+            //document.getElementById("accountdetailsForm").submit();
 
-            document.getElementById("accountdetailsForm").setAttribute( "value", accountnumber );
-            document.getElementById("accountdetailsForm").submit();
+            let input = $("<input>")
+                .attr("type", "hidden")
+                .attr("name", "accountNumber").val(accountnumber);
+            $('#accountdetailsForm').append($(input)).submit();
         }));
     })
 
