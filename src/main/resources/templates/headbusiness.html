@@ -57,11 +57,11 @@
 <table style="width:65%">
     <tr>
         <th>Sector</th>
-        <th>Total balance</th>
+        <th>Average balance</th>
     </tr>
-    <tr th:each="sectorAndTotalBalance: ${sectorAndTotalBalances}">
-        <td th:text="${sectorAndTotalBalance.sector}" />
-        <td th:text="${sectorAndTotalBalance.totalBalance}" />
+    <tr th:each="sectorAndAverageBalance: ${sectorAndAverageBalances}">
+        <td th:text="${sectorAndAverageBalance.sector}" />
+        <td th:text="${sectorAndAverageBalance.totalBalance}" />
     </tr>
 </table>
 <script src="js/navbar.js"></script>

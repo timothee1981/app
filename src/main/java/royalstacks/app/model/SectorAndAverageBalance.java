@@ -1,13 +1,13 @@
 package royalstacks.app.model;
 
-public class SectorAndTotalBalance {
+public class SectorAndAverageBalance {
 
     private String sector;
     private double totalBalance;
 
     //CONSTRUCTOR
 
-    public SectorAndTotalBalance(String sector, double totalBalance) {
+    public SectorAndAverageBalance(String sector, double totalBalance) {
         this.sector = sector;
         this.totalBalance = totalBalance;
     }
