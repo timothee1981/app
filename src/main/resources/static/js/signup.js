@@ -1,51 +1,18 @@
 /**
- * Constanten, regex & magic numbers
+ * Constanten & magic numbers
  */
 
 // ElementIds
-const CITY_ID = "city";
-const STREET_ID = "street";
-const POSTAL_CODE_ID = "postalCode";
-
 const IS_VALID_CLASS = "isValid";
 const IS_INVALID_CLASS = "isInvalid";
 const PASS_REQ_VALIDATED = "valid";
 const PASS_REQ_INVALID = "invalid";
-
 const USERNAME_ERROR_ID = "usernameNotAvailable";
 const EMAIL_ERROR_ID = "InvalidEmail";
 const PHONE_ERROR_ID = "InvalidPhoneNumber";
 const BSN_ERROR_ID = "BSNNotAvailable";
-
 const PASS_REQ_LEFT = "passRequirements1of2";
 const PASS_REQ_RIGHT = "passRequirements2of2";
-
-const POST_CODE_API_TOKEN = "ccf855f3-4bd0-4cd6-8f12-25c9e254efd2";
-
-// Fields & buttons
-const USERNAME_FIELD = document.getElementById("username");
-const PASSWORD_FIELD = document.getElementById("password");
-const SHOW_PASSWORD_BUTTON = document.getElementById("showPasswordButton");
-const FIRST_NAME_FIELD = document.getElementById( "firstName");
-const LAST_NAME_FIELD = document.getElementById("lastName");
-const EMAIL_FIELD = document.getElementById("email");
-const BSN_FIELD = document.getElementById("BSN");
-const FORM = document.getElementById("form");
-const HOUSE_NUMBER_FIELD = document.getElementById("houseNumber");
-const PHONE_NUMBER_FIELD = document.getElementById("phoneNumber");
-const CITY_FIELD = document.getElementById(CITY_ID);
-const STREET_FIELD = document.getElementById(STREET_ID);
-const POSTAL_CODE_FIELD = document.getElementById(POSTAL_CODE_ID);
-const SUBMIT_BUTTON = document.getElementById("submitButton");
-const SUBMIT_BUTTON_WRAPPER = document.getElementById("signUpButton");
-const ADDRESS_FIELDS = document.getElementById("addressFields");
-
-const PASSWORD_ELEMENTS = document.getElementById("passwordElements");
-const LOWERCASE_REQ = document.getElementById("letter");
-const UPPERCASE_REQ = document.getElementById("capital");
-const NUMBER_REQ = document.getElementById("number");
-const SPECIAL_REQ = document.getElementById("special");
-const LENGTH_REQ = document.getElementById("length");
 
 // Magic numbers
 const BSN_LENGTH = 9;
@@ -60,21 +27,6 @@ const USERNAME_IS_INVALID = "Between " + MIN_USERNAME_LENGTH + " and " + MAX_USE
 const BSN_INCORRECT_LENGTH = "Enter " + BSN_LENGTH + " numbers";
 const BSN_IS_INVALID = "Enter a valid BSN";
 
-// Regular expressions
-const USERNAME_REGEX = /^[a-zA-Z0-9_-]+$/;
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const NAMES_REGEX = /^[^\s]*[a-zA-Z\s,.'\-][^\s]{1,100}$/;
-const PHONE_NUMBER_REGEX = /^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$|^(((\\+31|0|0031)6)[1-9][0-9]{7})$/;
-const POSTAL_CODE_REGEX = /^[1-9][0-9]{3} ?(?!sa|SA|Sa|sA|sd|SD|sD|Sd|ss|SS|sS)[a-zA-Z]{2}$/;
-const LOWERCASE_REGEX = /[a-z]/g;
-const UPPERCASE_REGEX = /[A-Z]/g;
-const NUMBERS_REGEX = /[0-9]/g;
-const SPECIALS_REGEX = /[!"#$%&'()*+,\-./:;<=>?@^_`{|}~\[\]]/g;
-
-// Returns van APIs
-let cityApi;
-let streetApi;
-let responseApi;
 
 
 /**
@@ -101,7 +53,7 @@ function removeValidation(field){
 }
 
 function isInputValid(elementId){
-    return elementId.classList.contains(IS_VALID_CLASS)
+    return document.getElementById(elementId).classList.contains(IS_VALID_CLASS)
 }
 
 function setPassRequirementValid(requirement){
@@ -113,7 +65,6 @@ function setPassRequirementInvalid(requirement){
     requirement.classList.remove(PASS_REQ_VALIDATED);
     requirement.classList.add(PASS_REQ_INVALID);
 }
-
 
 function hideElement(elementId){
     document.getElementById(elementId).style.display = 'none';
@@ -138,26 +89,39 @@ function emptyValue(elementId){
     document.getElementById(elementId).classList.remove(IS_VALID_CLASS);
 }
 
-function setFieldPink(field){
-    field.style.backgroundColor = '#ffdede';
+function setFieldPink(id){
+    document.getElementById(id).style.backgroundColor = '#ffdede';
 }
 
-function setFieldGrey(field){
-    field.style.backgroundColor = '#f1f1f1';
+function setFieldGrey(id){
+    document.getElementById(id).style.backgroundColor = '#f1f1f1';
+}
+
+function setFieldGreyOrPink(id){
+    !isInputValid(id) ? setFieldPink(id) : setFieldGrey(id);
+}
+
+function setPasswordFieldGreyOrPink(){
+    !isInputValid("showPasswordButton") ? setFieldPink("password") : setFieldGrey("password");
 }
 
 function isPasswordValid(){
-    return LOWERCASE_REQ.classList.contains(PASS_REQ_VALIDATED) &&
-        UPPERCASE_REQ.classList.contains(PASS_REQ_VALIDATED) &&
-        NUMBER_REQ.classList.contains(PASS_REQ_VALIDATED) &&
-        SPECIAL_REQ.classList.contains(PASS_REQ_VALIDATED) &&
-        LENGTH_REQ.classList.contains(PASS_REQ_VALIDATED);
+    return document.getElementById("letter").classList.contains(PASS_REQ_VALIDATED) &&
+        document.getElementById("capital").classList.contains(PASS_REQ_VALIDATED) &&
+        document.getElementById("number").classList.contains(PASS_REQ_VALIDATED) &&
+        document.getElementById("special").classList.contains(PASS_REQ_VALIDATED) &&
+        document.getElementById("length").classList.contains(PASS_REQ_VALIDATED);
 }
 
-function setPassReq(regex, element){
-    PASSWORD_FIELD.value.match(regex) ? setPassRequirementValid(element) : setPassRequirementInvalid(element);
+function setPassReq(regex, id){
+    let element = document.getElementById(id);
+    document.getElementById("password").value.match(regex) ? setPassRequirementValid(element) : setPassRequirementInvalid(element);
 }
+
 function setPassLengthReq(){
+    const PASSWORD_FIELD = document.getElementById("password");
+    const LENGTH_REQ = document.getElementById("length");
+
     PASSWORD_FIELD.value.length >= MIN_PASS_LENGTH && PASSWORD_FIELD.value.length <= MAX_PASS_LENGTH
         ? setPassRequirementValid(LENGTH_REQ) : setPassRequirementInvalid(LENGTH_REQ)
 }
@@ -165,10 +129,11 @@ function setPassLengthReq(){
 /**
  * Global functions
  */
-function checkNameField(nameField){
+function checkNameField(id){
+    let nameField = document.getElementById(id);
     let nameInput = nameField.value;
 
-    if (NAMES_REGEX.test(nameInput)) {
+    if (regex.username.test(nameInput)) {
         setFieldValid(nameField);
     } else {
         setFieldInvalid(nameField);
@@ -176,9 +141,12 @@ function checkNameField(nameField){
 }
 
 function showPassword(){
+    const PASSWORD_FIELD = document.getElementById("password");
+    const SHOW_PASSWORD_BUTTON =  document.getElementById("showPasswordButton");
+
     if (PASSWORD_FIELD.type === "password") {
         PASSWORD_FIELD.type = "text";
-        SHOW_PASSWORD_BUTTON.value = "hide";
+        SHOW_PASSWORD_BUTTON .value = "hide";
     } else {
         PASSWORD_FIELD.type = "password";
         SHOW_PASSWORD_BUTTON.value = "show"
@@ -203,66 +171,21 @@ function passCheckDigit(BSN) {
     return sum % 11 === 0;
 }
 
-// haalt data uit database op via de API. Wordt gebruikt voor Username en BSN check
-function fetchApiResponse(url){
-    return fetch(url, {
-        method: 'GET',
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Response error");
-            }
-            return response.json();
-        })
-        .then((data) => {
-            responseApi = data;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-
-function getCityAndStreet() {
-    const header = new Headers();
-    let url = `https://postcode.tech/api/v1/postcode?postcode=${POSTAL_CODE_FIELD.value}&number=${HOUSE_NUMBER_FIELD.value}`;
-    header.append('Authorization', 'Bearer ' + POST_CODE_API_TOKEN);
-
-    return fetch(url, {
-        method: 'GET',
-        headers: header,
-    })
-        .then((response) => {
-            if (!response.ok) {
-                cityApi = null;
-                streetApi = null;
-                throw new Error("Response error");
-            }
-            return response.json();
-        })
-        .then((data) => {
-                cityApi = data.city;
-                streetApi = data.street;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
 /**
  * Username veld
  */
-USERNAME_FIELD.addEventListener("input", function () {
+document.getElementById("username").addEventListener("input", function () {
+    const USERNAME_FIELD = document.getElementById("username");
     let usernameInput = USERNAME_FIELD.value;
 
-    if(!USERNAME_REGEX.test(usernameInput) || usernameInput.length < MIN_USERNAME_LENGTH || usernameInput.length > MAX_USERNAME_LENGTH) {
+    if(!regex.username.test(usernameInput) || usernameInput.length < MIN_USERNAME_LENGTH || usernameInput.length > MAX_USERNAME_LENGTH) {
         showElementAndSetText(USERNAME_ERROR_ID, USERNAME_IS_INVALID);
         setFieldInvalid(USERNAME_FIELD);
     } else {
         let url = `/api/username?username=${usernameInput}`;
-
-        fetchApiResponse(url).then(() => {
-            if (responseApi) {
+        const api = new API(url);
+        api.isUnique(url).then(r => {
+            if (r) {
                 setFieldValid(USERNAME_FIELD);
                 hideElement(USERNAME_ERROR_ID);
             } else {
@@ -278,49 +201,49 @@ USERNAME_FIELD.addEventListener("input", function () {
  * Password veld: Gebruiker ziet real-time aan welke eisen de ingevoerde password voldoet
  */
 
-SHOW_PASSWORD_BUTTON.addEventListener('click', showPassword);
+document.getElementById("showPasswordButton").addEventListener('click', showPassword);
 
-PASSWORD_ELEMENTS.addEventListener('focusin', function() {
+document.getElementById("passwordElements").addEventListener('focusin', function() {
     showElement(PASS_REQ_LEFT);
     showElement(PASS_REQ_RIGHT);
 });
-PASSWORD_ELEMENTS.addEventListener('focusout', function() {
+document.getElementById("passwordElements").addEventListener('focusout', function() {
     hideElement(PASS_REQ_LEFT);
     hideElement(PASS_REQ_RIGHT);
 });
 
-PASSWORD_FIELD.addEventListener('keyup', function () {
+document.getElementById("password").addEventListener('keyup', function () {
     setPassLengthReq();
-    setPassReq(LOWERCASE_REGEX, LOWERCASE_REQ);
-    setPassReq(UPPERCASE_REGEX, UPPERCASE_REQ);
-    setPassReq(NUMBERS_REGEX, NUMBER_REQ);
-    setPassReq(SPECIALS_REGEX, SPECIAL_REQ);
+    setPassReq(regex.lowerCase, "letter");
+    setPassReq(regex.upperCase, "capital");
+    setPassReq(regex.numbers, "number");
+    setPassReq(regex.specials, "special");
 
     if (isPasswordValid()) {
-        setFieldValid(SHOW_PASSWORD_BUTTON);
+        setFieldValid(document.getElementById("showPasswordButton"));
     } else {
-        setFieldInvalid(SHOW_PASSWORD_BUTTON);
+        setFieldInvalid(document.getElementById("showPasswordButton"));
     }
 });
 
 /**
  * First en Last Name
  */
-FIRST_NAME_FIELD.addEventListener('input', function () {
-    checkNameField(FIRST_NAME_FIELD);
+document.getElementById( "firstName").addEventListener('input', function () {
+    checkNameField( "firstName");
 });
 
-LAST_NAME_FIELD.addEventListener('input', function() {
-    checkNameField(LAST_NAME_FIELD);
+document.getElementById("lastName").addEventListener('input', function() {
+    checkNameField("lastName");
 });
 
 /**
  * Email veld
  */
-EMAIL_FIELD.addEventListener('input', function () {
-    let emailInput = EMAIL_FIELD.value;
+document.getElementById("email").addEventListener('input', function () {
+    const EMAIL_FIELD = document.getElementById("email");
 
-    if (EMAIL_REGEX.test(emailInput)) {
+    if (regex.email.test(EMAIL_FIELD.value)) {
         hideElement(EMAIL_ERROR_ID);
         setFieldValid(EMAIL_FIELD);
     } else {
@@ -332,10 +255,10 @@ EMAIL_FIELD.addEventListener('input', function () {
 /**
  * Phone Number veld
  */
-PHONE_NUMBER_FIELD.addEventListener('input', function () {
-    let phoneNumberInput = PHONE_NUMBER_FIELD.value;
+document.getElementById("phoneNumber").addEventListener('input', function () {
+    const PHONE_NUMBER_FIELD = document.getElementById("phoneNumber");
 
-    if (PHONE_NUMBER_REGEX.test(phoneNumberInput)) {
+    if (regex.phoneNumber.test(PHONE_NUMBER_FIELD.value)) {
         hideElement(PHONE_ERROR_ID);
         setFieldValid(PHONE_NUMBER_FIELD);
 
@@ -348,7 +271,9 @@ PHONE_NUMBER_FIELD.addEventListener('input', function () {
 /**
  * BSN veld
  */
-BSN_FIELD.addEventListener("input", function () {
+document.getElementById("BSN").addEventListener("input", function () {
+    const BSN_FIELD = document.getElementById("BSN");
+
     let BSNInput = BSN_FIELD.value;
 
     if (BSNInput.length !== BSN_LENGTH) {
@@ -362,8 +287,9 @@ BSN_FIELD.addEventListener("input", function () {
 
     } else {
         let url = `/api/bsn?BSN=${BSNInput}`;
-        fetchApiResponse(url).then(() => {
-            if (responseApi) {
+        const api = new API(url);
+        api.isUnique(url).then(r => {
+            if (r) {
                 setFieldValid(BSN_FIELD);
                 hideElement(BSN_ERROR_ID);
             } else {
@@ -377,10 +303,10 @@ BSN_FIELD.addEventListener("input", function () {
 /**
  * Postal Code veld
  */
-POSTAL_CODE_FIELD.addEventListener('input', function () {
-    let postalCodeInput = POSTAL_CODE_FIELD.value;
+document.getElementById("postalCode").addEventListener('input', function () {
+    const POSTAL_CODE_FIELD = document.getElementById("postalCode");
 
-    if (POSTAL_CODE_REGEX.test(postalCodeInput)) {
+    if (regex.postalCode.test(POSTAL_CODE_FIELD.value)) {
         setFieldValid(POSTAL_CODE_FIELD);
     } else {
         setFieldInvalid(POSTAL_CODE_FIELD);
@@ -391,29 +317,27 @@ POSTAL_CODE_FIELD.addEventListener('input', function () {
 /**
  * houseNumber, city en street veld
  */
-ADDRESS_FIELDS.addEventListener('input', function(){
+document.getElementById("addressFields").addEventListener('input', function(){
+    const HOUSE_NUMBER_FIELD = document.getElementById("houseNumber");
 
-    if(isInputValid(POSTAL_CODE_FIELD)){
-
-        getCityAndStreet().then(() => {
-            if (cityApi !== null) {
+    if(isInputValid("postalCode")){
+        const api = new API();
+        api.cityAddress().then(r => {
+            if(r !== undefined){
+                setValue("city", r.city);
+                setValue("street", r.street);
                 setFieldValid(HOUSE_NUMBER_FIELD);
-                setValue(CITY_ID, cityApi);
             } else {
-                emptyValue(CITY_ID);
+                emptyValue("city");
+                emptyValue("street");
                 setFieldInvalid(HOUSE_NUMBER_FIELD);
-            }
-            if (streetApi !== null) {
-                setValue(STREET_ID, streetApi);
-            } else {
-                emptyValue(STREET_ID);
             }
         })
 
     } else {
         removeValidation(HOUSE_NUMBER_FIELD);
-        emptyValue(STREET_ID);
-        emptyValue(CITY_ID);
+        emptyValue("street");
+        emptyValue("city");
     }
 });
 
@@ -421,45 +345,44 @@ ADDRESS_FIELDS.addEventListener('input', function(){
 /**
  * Sign Up knop
  */
-FORM.addEventListener('keyup', function () {
-
-    // als een veld niet valid is, disable knop
-    SUBMIT_BUTTON.disabled =
-        !isInputValid(USERNAME_FIELD) || !isInputValid(EMAIL_FIELD) ||
-        !isInputValid(SHOW_PASSWORD_BUTTON) || !isInputValid(PHONE_NUMBER_FIELD) ||
-        !isInputValid(FIRST_NAME_FIELD) || !isInputValid(LAST_NAME_FIELD) ||
-        !isInputValid(HOUSE_NUMBER_FIELD) || !isInputValid(CITY_FIELD) ||
-        !isInputValid(STREET_FIELD) || !isInputValid(POSTAL_CODE_FIELD) ||
-        !isInputValid(BSN_FIELD)
-});
-
-SUBMIT_BUTTON_WRAPPER.addEventListener("mouseenter", function() {
-    if(SUBMIT_BUTTON.disabled === true){
-        !isInputValid(USERNAME_FIELD) ? setFieldPink(USERNAME_FIELD) : setFieldGrey(USERNAME_FIELD);
-        !isInputValid(EMAIL_FIELD) ? setFieldPink(EMAIL_FIELD) : setFieldGrey(EMAIL_FIELD);
-        !isInputValid(SHOW_PASSWORD_BUTTON) ? setFieldPink(PASSWORD_FIELD) : setFieldGrey(PASSWORD_FIELD);
-        !isInputValid(PHONE_NUMBER_FIELD) ? setFieldPink(PHONE_NUMBER_FIELD) : setFieldGrey(PHONE_NUMBER_FIELD);
-        !isInputValid(FIRST_NAME_FIELD) ? setFieldPink(FIRST_NAME_FIELD) : setFieldGrey(FIRST_NAME_FIELD);
-        !isInputValid(LAST_NAME_FIELD) ? setFieldPink(LAST_NAME_FIELD) : setFieldGrey(LAST_NAME_FIELD);
-        !isInputValid(HOUSE_NUMBER_FIELD) ? setFieldPink(HOUSE_NUMBER_FIELD) : setFieldGrey(HOUSE_NUMBER_FIELD);
-        !isInputValid(CITY_FIELD) ? setFieldPink(CITY_FIELD): setFieldGrey(CITY_FIELD);
-        !isInputValid(STREET_FIELD) ? setFieldPink(STREET_FIELD) : setFieldGrey(STREET_FIELD);
-        !isInputValid(POSTAL_CODE_FIELD) ? setFieldPink(POSTAL_CODE_FIELD) : setFieldGrey(POSTAL_CODE_FIELD);
-        !isInputValid(BSN_FIELD) ? setFieldPink(BSN_FIELD) : setFieldGrey(BSN_FIELD);
-
+document.getElementById("signUpButton").addEventListener("mouseenter", function() {
+    if(document.getElementById("submitButton").disabled === true){
+        setPasswordFieldGreyOrPink();
+        setFieldGreyOrPink("username");
+        setFieldGreyOrPink("email");
+        setFieldGreyOrPink("phoneNumber");
+        setFieldGreyOrPink("firstName");
+        setFieldGreyOrPink("lastName");
+        setFieldGreyOrPink("houseNumber");
+        setFieldGreyOrPink("city");
+        setFieldGreyOrPink("street");
+        setFieldGreyOrPink("postalCode");
+        setFieldGreyOrPink("BSN");
     }
 });
 
-SUBMIT_BUTTON_WRAPPER.addEventListener("mouseleave", function() {
-    setFieldGrey(USERNAME_FIELD);
-    setFieldGrey(EMAIL_FIELD);
-    setFieldGrey(PASSWORD_FIELD);
-    setFieldGrey(PHONE_NUMBER_FIELD);
-    setFieldGrey(FIRST_NAME_FIELD);
-    setFieldGrey(LAST_NAME_FIELD);
-    setFieldGrey(HOUSE_NUMBER_FIELD);
-    setFieldGrey(CITY_FIELD);
-    setFieldGrey(STREET_FIELD);
-    setFieldGrey(POSTAL_CODE_FIELD);
-    setFieldGrey(BSN_FIELD);
+document.getElementById("signUpButton").addEventListener("mouseleave", function() {
+    setFieldGrey("username");
+    setFieldGrey("email");
+    setFieldGrey("password");
+    setFieldGrey("phoneNumber");
+    setFieldGrey( "firstName");
+    setFieldGrey("lastName");
+    setFieldGrey("houseNumber");
+    setFieldGrey("city");
+    setFieldGrey("street");
+    setFieldGrey("postalCode");
+    setFieldGrey("BSN");
+});
+
+document.getElementById("form").addEventListener('keyup', function () {
+
+    // als een veld niet valid is, disable knop
+    document.getElementById("submitButton").disabled =
+        !isInputValid("username") || !isInputValid("email") ||
+        !isInputValid("showPasswordButton") || !isInputValid("phoneNumber") ||
+        !isInputValid( "firstName") || !isInputValid("lastName") ||
+        !isInputValid("houseNumber") || !isInputValid("city") ||
+        !isInputValid("street") || !isInputValid("postalCode") ||
+        !isInputValid("BSN");
 });
