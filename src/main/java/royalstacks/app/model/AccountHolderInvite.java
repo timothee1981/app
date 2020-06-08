@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Objects;
 
 @Entity
 public class AccountHolderInvite {
@@ -63,4 +64,19 @@ public class AccountHolderInvite {
                 ", verificationCode='" + verificationCode + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountHolderInvite that = (AccountHolderInvite) o;
+        return Objects.equals(invitee, that.invitee) &&
+                Objects.equals(account, that.account);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(invitee, account);
+    }
+
 }

@@ -71,7 +71,17 @@ public class AddAccountHolderController {
             return mav;
         }
         AccountHolderInvite newInvite = ibb.accountHolderInvite((Customer) invitee, anAccount, ibb.getVerificationCode());
-        accountHolderInviteService.saveAccountHolderInvite(newInvite);
+        System.out.println(newInvite.toString());
+        //hier methode met check of invite al bestaat
+        Optional<AccountHolderInvite> existingInvite = accountHolderInviteService.findInviteByAccountAndInvitee(newInvite.getInvitee().getUserid(), newInvite.getAccount().getAccountId());
+        System.out.println(existingInvite);
+        if (existingInvite.isPresent()){
+            AccountHolderInvite updateInvite = existingInvite.get();
+            updateInvite.setVerificationCode(newInvite.getVerificationCode());
+            accountHolderInviteService.saveAccountHolderInvite(updateInvite);
+        } else {
+            accountHolderInviteService.saveAccountHolderInvite(newInvite);
+        }
         displayMessage("Invitation sent. The new account holder can now add the account using your verification code.", mav);
         return mav;
     }
@@ -88,6 +98,8 @@ public class AddAccountHolderController {
         mav.addObject("inviteeUsername", ibb.getInviteeUsername());
         mav.addObject("verificationCode", ibb.getVerificationCode());
     }
+
+
 
 
 
