@@ -154,6 +154,14 @@ function isPasswordValid(){
         LENGTH_REQ.classList.contains(PASS_REQ_VALIDATED);
 }
 
+function setPassReq(regex, element){
+    PASSWORD_FIELD.value.match(regex) ? setPassRequirementValid(element) : setPassRequirementInvalid(element);
+}
+function setPassLengthReq(){
+    PASSWORD_FIELD.value.length >= MIN_PASS_LENGTH && PASSWORD_FIELD.value.length <= MAX_PASS_LENGTH
+        ? setPassRequirementValid(LENGTH_REQ) : setPassRequirementInvalid(LENGTH_REQ)
+}
+
 /**
  * Global functions
  */
@@ -281,21 +289,19 @@ PASSWORD_ELEMENTS.addEventListener('focusout', function() {
     hideElement(PASS_REQ_RIGHT);
 });
 
-PASSWORD_FIELD.addEventListener('input', function () {
-        if (isPasswordValid()) {
-            setFieldValid(SHOW_PASSWORD_BUTTON);
-        } else {
-            setFieldInvalid(SHOW_PASSWORD_BUTTON);
-        }
-});
+PASSWORD_FIELD.addEventListener('keyup', function () {
+    setPassLengthReq();
+    setPassReq(LOWERCASE_REGEX, LOWERCASE_REQ);
+    setPassReq(UPPERCASE_REGEX, UPPERCASE_REQ);
+    setPassReq(NUMBERS_REGEX, NUMBER_REQ);
+    setPassReq(SPECIALS_REGEX, SPECIAL_REQ);
 
-PASSWORD_FIELD.onkeyup = function () {
-    PASSWORD_FIELD.value.match(LOWERCASE_REGEX) ? setPassRequirementValid(LOWERCASE_REQ) : setPassRequirementInvalid(LOWERCASE_REQ);
-    PASSWORD_FIELD.value.match(UPPERCASE_REGEX) ? setPassRequirementValid(UPPERCASE_REQ) : setPassRequirementInvalid(UPPERCASE_REQ);
-    PASSWORD_FIELD.value.match(NUMBERS_REGEX) ? setPassRequirementValid(NUMBER_REQ) : setPassRequirementInvalid(NUMBER_REQ);
-    PASSWORD_FIELD.value.match(SPECIALS_REGEX) ? setPassRequirementValid(SPECIAL_REQ) : setPassRequirementInvalid(SPECIAL_REQ);
-    PASSWORD_FIELD.value.length >= MIN_PASS_LENGTH && PASSWORD_FIELD.value.length <= MAX_PASS_LENGTH ? setPassRequirementValid(LENGTH_REQ) : setPassRequirementInvalid(LENGTH_REQ)
-};
+    if (isPasswordValid()) {
+        setFieldValid(SHOW_PASSWORD_BUTTON);
+    } else {
+        setFieldInvalid(SHOW_PASSWORD_BUTTON);
+    }
+});
 
 /**
  * First en Last Name
