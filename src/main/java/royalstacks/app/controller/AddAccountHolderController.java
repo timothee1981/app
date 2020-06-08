@@ -65,24 +65,23 @@ public class AddAccountHolderController {
             ibb.setVerificationCode(ibb.getVerificationCode());
         } else {
             displayMessage("Please enter an existing customer's username and a five-digit number", mav);
-            //toegevoegd
-            //ibb.setAccountNumber(anAccount.getAccountNumber());
             populateFields(ibb, mav);
             return mav;
         }
         AccountHolderInvite newInvite = ibb.accountHolderInvite((Customer) invitee, anAccount, ibb.getVerificationCode());
-        System.out.println(newInvite.toString());
-        //hier methode met check of invite al bestaat
+        System.out.println(newInvite);
+        //hier check of invite al bestaat
         Optional<AccountHolderInvite> existingInvite = accountHolderInviteService.findInviteByAccountAndInvitee(newInvite.getInvitee().getUserid(), newInvite.getAccount().getAccountId());
         System.out.println(existingInvite);
         if (existingInvite.isPresent()){
             AccountHolderInvite updateInvite = existingInvite.get();
             updateInvite.setVerificationCode(newInvite.getVerificationCode());
             accountHolderInviteService.saveAccountHolderInvite(updateInvite);
+            displayMessage("Verification code is updated successfully. The new account holder can now add the account using the new verification code.", mav);
         } else {
             accountHolderInviteService.saveAccountHolderInvite(newInvite);
+            displayMessage("Invitation sent. The new account holder can now add the account using your verification code.", mav);
         }
-        displayMessage("Invitation sent. The new account holder can now add the account using your verification code.", mav);
         return mav;
     }
 
