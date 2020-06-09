@@ -34,7 +34,7 @@ passwordFeatures = function(){
     });
 
 
-    // hide & show password
+    // hide & show button
     document.getElementById("showPasswordButton").addEventListener('click', function(){
         const passwordField = document.getElementById("password");
         const showPasswordButton = document.getElementById("showPasswordButton");
@@ -49,48 +49,43 @@ passwordFeatures = function(){
 }();
 
 submitButton = function() {
-    // disable sumbit tot alle velden valid zijn
-    document.getElementById("form").addEventListener('keyup', function () {
-        document.getElementById("submitButton").disabled =
-            !isInputValid("username") || !isInputValid("email") ||
-            !isInputValid("showPasswordButton") || !isInputValid("phoneNumber") ||
-            !isInputValid("firstName") || !isInputValid("lastName") ||
-            !isInputValid("houseNumber") || !isInputValid("city") ||
-            !isInputValid("street") || !isInputValid("postalCode") ||
-            !isInputValid("BSN");
-    });
+    const validate = new Validate();
+    const allFields = ["username", "email", "password", "phoneNumber", "firstName",
+        "lastName", "city", "street", "postalCode", "houseNumber", "BSN"];
 
-    function isInputValid(elementId){
-        return document.getElementById(elementId).classList.contains("isValid")
-    }
+    // zet button disabled uit als alle velden valid zijn
+    document.getElementById("form").addEventListener('keyup', function () {
+        document.getElementById("submitButton").disabled = false;
+        for (let i = 0; i < allFields.length ; i++) {
+            if(validate.isInputValid(allFields[i]) === false){
+                document.getElementById("submitButton").disabled = true;
+                break;
+            }
+        }
+    });
 
     // bij mouseenter zet invalid velden op pink
     document.getElementById("signUpButton").addEventListener("mouseenter", function () {
         if (document.getElementById("submitButton").disabled === true) {
-            setPasswordFieldGreyOrPink();
-            setFieldGreyOrPink("username"); setFieldGreyOrPink("email");
-            setFieldGreyOrPink("phoneNumber");setFieldGreyOrPink("firstName");
-            setFieldGreyOrPink("lastName"); setFieldGreyOrPink("houseNumber");
-            setFieldGreyOrPink("city"); setFieldGreyOrPink("street");
-            setFieldGreyOrPink("postalCode"); setFieldGreyOrPink("BSN");
+            for (let i = 0; i < allFields.length ; i++) {
+                setFieldGreyOrPink(allFields[i]);
+            }
         }
     });
 
-    function setPasswordFieldGreyOrPink(){
-        !isInputValid("showPasswordButton") ? setFieldPink("password") : setFieldGrey("password");
-    }
-
-    function setFieldGreyOrPink(id){
-        !isInputValid(id) ? setFieldPink(id) : setFieldGrey(id);
-    }
-
    // bij mouseleave zet alles op grijs
     document.getElementById("signUpButton").addEventListener("mouseleave", function () {
-        setFieldGrey("username"); setFieldGrey("email"); setFieldGrey("password");
-        setFieldGrey("phoneNumber"); setFieldGrey("firstName"); setFieldGrey("lastName");
-        setFieldGrey("houseNumber"); setFieldGrey("city"); setFieldGrey("street");
-        setFieldGrey("postalCode"); setFieldGrey("BSN");
+        for (let i = 0; i < allFields.length ; i++) {
+            setFieldGrey(allFields[i]);
+        }
     });
+
+    function setFieldGreyOrPink(id){
+        if(id === "password"){
+            validate.isInputValid("showPasswordButton") ? setFieldGrey(id) : setFieldPink(id) ;
+        }
+        validate.isInputValid(id) ? setFieldGrey(id) : setFieldPink(id);
+    }
 
     function setFieldPink(id){
         document.getElementById(id).style.backgroundColor = '#ffdede';

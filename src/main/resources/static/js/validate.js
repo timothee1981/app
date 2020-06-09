@@ -4,26 +4,12 @@ class Validate{
     }
     field;
 
-    BSN_LENGTH = 9;
-    MIN_PASS_LENGTH = 10;
-    MAX_PASS_LENGTH = 100;
-    MIN_USERNAME_LENGTH = 3;
-    MAX_USERNAME_LENGTH = 20;
-
-    USERNAME_NOT_AVAILABLE = "Choose another username";
-    USERNAME_IS_INVALID = "Between " + this.MIN_USERNAME_LENGTH + " and " + this.MAX_USERNAME_LENGTH + " letters and numbers";
-    BSN_INCORRECT_LENGTH = "Enter " + this.BSN_LENGTH + " numbers";
-    BSN_IS_INVALID = "Enter a valid BSN";
-
-    IS_VALID_CLASS = "isValid";
-    IS_INVALID_CLASS = "isInvalid";
-    PASS_REQ_VALIDATED = "valid";
-    PASS_REQ_INVALID = "invalid";
-    USERNAME_ERROR_ID = "usernameNotAvailable";
-    EMAIL_ERROR_ID = "InvalidEmail";
-    PHONE_ERROR_ID = "InvalidPhoneNumber";
-    BSN_ERROR_ID = "BSNNotAvailable";
-
+    #USERNAME_NOT_AVAILABLE = "Choose another username";
+    #USERNAME_IS_INVALID = "Between " + regex.min_username_length + " and " + regex.max_username_length + " letters and numbers";
+    #BSN_INCORRECT_LENGTH = "Enter " + regex.bsn_length + " numbers";
+    #BSN_IS_INVALID = "Enter a valid BSN";
+    #PHONE_NUMBER_INVALID = "Must be 9 numbers starting with 0";
+    #EMAIL_INVALID = "Enter a valid email address";
 
     /**
      * FUNCTIONS
@@ -32,8 +18,8 @@ class Validate{
         const USERNAME_FIELD = document.getElementById("username");
         let username = USERNAME_FIELD.value;
 
-        if (!regex.username.test(username) || username.length < this.MIN_USERNAME_LENGTH || username.length > this.MAX_USERNAME_LENGTH) {
-            this.revealElementAndSetText(this.USERNAME_ERROR_ID, this.USERNAME_IS_INVALID);
+        if (!regex.username.test(username)) {
+            this.revealElement("usernameNotAvailable", this.#USERNAME_IS_INVALID);
             this.setElementInvalid("username");
         } else {
             let url = `/api/username?username=${username}`;
@@ -41,40 +27,47 @@ class Validate{
             api.isUnique(url).then(r => {
                 if (r) {
                     this.setElementValid("username");
-                    this.hideElement(this.USERNAME_ERROR_ID);
+                    this.hideElement("usernameNotAvailable");
                 } else {
                     this.setElementInvalid("username");
-                    this.revealElementAndSetText(this.USERNAME_ERROR_ID, this.USERNAME_NOT_AVAILABLE);
+                    this.revealElement("usernameNotAvailable", this.#USERNAME_NOT_AVAILABLE);
                 }
             })
         }
     }
 
 
-    password(){
-        this.checkAllRequirements();
-        if (this.isPasswordValid()) {
+    password() {
+        let isPasswordValid = true;
+        let requirements = { "lowercase": regex.lowerCase, "uppercase": regex.upperCase,
+            "number": regex.numbers, "special": regex.specials, "length": regex.pass_length };
+
+        for (let k in requirements) {
+            let element = document.getElementById(k);
+            if(document.getElementById("password").value.match(requirements[k])){
+                this.setPassRequirementValid(element)
+            } else {
+                this.setPassRequirementInvalid(element);
+                isPasswordValid = false;
+            }
+        }
+
+        if (isPasswordValid) {
             this.setElementValid("showPasswordButton");
         } else {
             this.setElementInvalid("showPasswordButton");
         }
     }
 
-    checkAllRequirements(){
-        this.checkPassLength();
-        this.checkRequirement(regex.lowerCase, "letter");
-        this.checkRequirement(regex.lowerCase, "letter");
-        this.checkRequirement(regex.upperCase, "capital") ;
-        this.checkRequirement(regex.numbers, "number");
-        this.checkRequirement(regex.specials, "special");
+
+    setPassRequirementValid(requirement) {
+        requirement.classList.remove("passReqInvalid");
+        requirement.classList.add("passReqValid");
     }
 
-    isPasswordValid(){
-        return document.getElementById("letter").classList.contains(this.PASS_REQ_VALIDATED) &&
-            document.getElementById("capital").classList.contains(this.PASS_REQ_VALIDATED) &&
-            document.getElementById("number").classList.contains(this.PASS_REQ_VALIDATED) &&
-            document.getElementById("special").classList.contains(this.PASS_REQ_VALIDATED) &&
-            document.getElementById("length").classList.contains(this.PASS_REQ_VALIDATED);
+    setPassRequirementInvalid(requirement){
+        requirement.classList.remove("passReqValid");
+        requirement.classList.add("passReqInvalid");
     }
 
 
@@ -93,10 +86,10 @@ class Validate{
         const EMAIL_FIELD = document.getElementById("email");
 
         if (regex.email.test(EMAIL_FIELD.value)) {
-            this.hideElement(this.EMAIL_ERROR_ID);
+            this.hideElement("InvalidEmail");
             this.setElementValid("email");
         } else {
-            this.revealElement(this.EMAIL_ERROR_ID);
+            this.revealElement("InvalidEmail", this.#EMAIL_INVALID);
             this.setElementInvalid("email");
         }
     }
@@ -106,11 +99,11 @@ class Validate{
         const PHONE_NUMBER_FIELD = document.getElementById("phoneNumber");
 
         if (regex.phoneNumber.test(PHONE_NUMBER_FIELD.value)) {
-            this.hideElement(this.PHONE_ERROR_ID);
+            this.hideElement("InvalidPhoneNumber");
             this.setElementValid("phoneNumber");
 
         } else {
-            this.revealElement(this.PHONE_ERROR_ID);
+            this.revealElement("InvalidPhoneNumber", this.#PHONE_NUMBER_INVALID);
             this.setElementInvalid("phoneNumber")
         }
     }
@@ -121,13 +114,13 @@ class Validate{
 
         let BSNInput = BSN_FIELD.value;
 
-        if (BSNInput.length !== this.BSN_LENGTH) {
+        if (!regex.bsn.test(BSNInput)) {
             this.setElementInvalid("BSN");
-            this.revealElementAndSetText(this.BSN_ERROR_ID, this.BSN_INCORRECT_LENGTH);
+            this.revealElement("BSNNotAvailable", this.#BSN_INCORRECT_LENGTH);
 
-        } else if (!this.passCheckDigit(BSNInput)) {
+        } else if (!this.passesCheckDigit(BSNInput)) {
             this.setElementInvalid("BSN");
-            this.revealElementAndSetText(this.BSN_ERROR_ID, this.BSN_IS_INVALID);
+            this.revealElement("BSNNotAvailable", this.#BSN_IS_INVALID);
 
         } else {
             let url = `/api/bsn?bsn=${BSNInput}`;
@@ -135,10 +128,10 @@ class Validate{
             api.isUnique(url).then(r => {
                 if (r) {
                     this.setElementValid("BSN");
-                    this.hideElement(this.BSN_ERROR_ID);
+                    this.hideElement("BSNNotAvailable");
                 } else {
                     this.setElementInvalid("BSN");
-                    this.revealElementAndSetText(this.BSN_ERROR_ID, this.BSN_IS_INVALID);
+                    this.revealElement("BSNNotAvailable", this.#BSN_IS_INVALID);
                 }
             });
         }
@@ -146,17 +139,17 @@ class Validate{
 
 
     // 11-proef
-    passCheckDigit(BSN) {
-        if(BSN.length !== this.BSN_LENGTH){
+    passesCheckDigit(BSN) {
+        if(!regex.bsn.test(BSN)){
             return false;
         }
 
-        const firstNumbers = BSN.substring(0, this.BSN_LENGTH -1 );
-        const lastNumber = BSN.charAt(this.BSN_LENGTH - 1);
+        const firstNumbers = BSN.substring(0, regex.bsn_length -1 );
+        const lastNumber = BSN.charAt(regex.bsn_length - 1);
         let sum = 0;
         let i;
         for (i = 0; i < firstNumbers.length; i++) {
-            sum += firstNumbers.charAt(i) * (this.BSN_LENGTH - i);
+            sum += firstNumbers.charAt(i) * (regex.bsn_length - i);
         }
         sum += lastNumber;
 
@@ -176,7 +169,6 @@ class Validate{
 
 
     addressFields(){
-
         if(this.isInputValid("postalCode")){
             const api = new API();
             api.cityAddress().then(r => {
@@ -192,85 +184,55 @@ class Validate{
             })
 
         } else {
-            this.removeValidation("houseNumber");
-            this.emptyValue("street");
             this.emptyValue("city");
+            this.emptyValue("street");
+            this.removeValidation("houseNumber");
         }
+    }
+
+    isInputValid(id){
+        if(id === "password"){
+            return document.getElementById("showPasswordButton").classList.contains("isValid")
+        }
+        return document.getElementById(id).classList.contains("isValid");
     }
 
 
     /**
      * SETTERS
      */
-    checkRequirement(regex, id) {
-        let element = document.getElementById(id);
-        document.getElementById("password").value.match(regex) ? this.setPassRequirementValid(element) : this.setPassRequirementInvalid(element);
-        return element.classList.contains(this.PASS_REQ_VALIDATED)
+
+    hideElement(id){
+        document.getElementById(id).style.display = "none";
+    }
+    revealElement(id, String){
+        document.getElementById(id).style.display = 'inline';
+        document.getElementById(id).innerHTML = String;
     }
 
-    setPassRequirementValid(requirement) {
-        requirement.classList.remove(this.PASS_REQ_INVALID);
-        requirement.classList.add(this.PASS_REQ_VALIDATED);
+
+    setElementValid(id){
+        document.getElementById(id).classList.remove("isInvalid");
+        document.getElementById(id).classList.add("isValid");
+    }
+    setElementInvalid(id){
+        document.getElementById(id).classList.add("isInvalid");
+        document.getElementById(id).classList.remove("isValid");
     }
 
-    setPassRequirementInvalid(requirement){
-        requirement.classList.remove(this.PASS_REQ_VALIDATED);
-        requirement.classList.add(this.PASS_REQ_INVALID);
-    }
-
-    checkPassLength() {
-        const PASSWORD_FIELD = document.getElementById("password");
-        const LENGTH_REQ = document.getElementById("length");
-
-        PASSWORD_FIELD.value.length >= this.MIN_PASS_LENGTH && PASSWORD_FIELD.value.length <= this.MAX_PASS_LENGTH
-            ? this.setPassRequirementValid(LENGTH_REQ) : this.setPassRequirementInvalid(LENGTH_REQ)
-
-    }
 
     setValue(id, value){
         document.getElementById(id).value = value;
         this.setElementValid(id);
     }
-
     emptyValue(id){
         document.getElementById(id).value = "";
-        document.getElementById(id).classList.remove(this.IS_VALID_CLASS);
+        document.getElementById(id).classList.remove("isValid");
     }
 
-     setElementValid(id){
-        document.getElementById(id).classList.remove(this.IS_INVALID_CLASS);
-        document.getElementById(id).classList.add(this.IS_VALID_CLASS);
-    }
-
-     setElementInvalid(id){
-        document.getElementById(id).classList.add(this.IS_INVALID_CLASS);
-        document.getElementById(id).classList.remove(this.IS_VALID_CLASS);
-    }
 
     removeValidation(id){
-        if(document.getElementById(id).classList.contains(this.IS_VALID_CLASS)){
-            document.getElementById(id).classList.remove(this.IS_VALID_CLASS);
-        }
-
-        if(document.getElementById(id).classList.contains(this.IS_INVALID_CLASS)){
-            document.getElementById(id).classList.remove(this.IS_INVALID_CLASS);
-        }
-    }
-
-     revealElementAndSetText(id, String){
-        document.getElementById(id).style.display = 'inline';
-        document.getElementById(id).innerHTML = String;
-    }
-
-    isInputValid(id){
-        return document.getElementById(id).classList.contains(this.IS_VALID_CLASS)
-    }
-
-    revealElement(id){
-        document.getElementById(id).style.display = "inline";
-    }
-
-    hideElement(id){
-        document.getElementById(id).style.display = "none";
+        document.getElementById(id).classList.remove("isValid");
+        document.getElementById(id).classList.remove("isInvalid");
     }
 }
