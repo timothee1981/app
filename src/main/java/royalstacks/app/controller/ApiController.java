@@ -6,11 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.CustomerAndTransactions;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.util.List;
 
 @Controller
 public class ApiController {
@@ -50,5 +57,15 @@ public class ApiController {
         BusinessAccount businessAccount =  new BusinessAccount();
         businessAccount.setVatNumber(vatnumber);
         return String.valueOf(businessAccount.isVatValid());
+    }
+
+    @GetMapping("/api/top10transactions")
+    @ResponseBody
+    public ModelAndView topTransactionList(){
+        Gson gson = new Gson();
+        String json = gson.toJson(customerService.findTop10TransactionsOnBusinessAccounts());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject(json);
+        return mav;
     }
 }

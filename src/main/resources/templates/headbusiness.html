@@ -65,20 +65,21 @@
     </tr>
 </table>
 <h2>Top 10 customers with the most transactions on their business account:</h2>
-<table style="width:65%">
-    <tr>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Number of transactions</th>
-        <th>Balance</th>
-    </tr>
-    <tr th:each="topBusinessAccountTransactions: ${top10TransactionsBusinessAccounts}">
-        <td th:text="${topBusinessAccountTransactions.firstName}" />
-        <td th:text="${topBusinessAccountTransactions.lastName}" />
-        <td th:text="${topBusinessAccountTransactions.numberOfTransactions}" />
-        <td th:text="${#numbers.formatDecimal(topBusinessAccountTransactions.balance, 0, 2)}" />
-    </tr>
-</table>
+<script type="text/javascript" src="js/topTransactions.js"></script>
+<!--<table style="width:65%">-->
+<!--    <tr>-->
+<!--        <th>First name</th>-->
+<!--        <th>Last name</th>-->
+<!--        <th>Number of transactions</th>-->
+<!--        <th>Balance</th>-->
+<!--    </tr>-->
+<!--    <tr th:each="topBusinessAccountTransactions: ${top10TransactionsBusinessAccounts}">-->
+<!--        <td th:text="${topBusinessAccountTransactions.firstName}" />-->
+<!--        <td th:text="${topBusinessAccountTransactions.lastName}" />-->
+<!--        <td th:text="${topBusinessAccountTransactions.numberOfTransactions}" />-->
+<!--        <td th:text="${#numbers.formatDecimal(topBusinessAccountTransactions.balance, 0, 2)}" />-->
+<!--    </tr>-->
+<!--</table>-->
 <script src="js/navbar.js"></script>
 </body>
 </html>
