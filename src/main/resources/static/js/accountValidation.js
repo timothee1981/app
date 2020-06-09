@@ -1,16 +1,20 @@
 
+const vatnumber = document.getElementById("vatNumber");
+const kvknumber = document.getElementById("kvkNumber");
+const companyname = document.getElementById("companyName");
 
 
 
+/* Regex */
+const companynameregex = /^[\w@ ]*[^\W_ ][\w- @ & +]*$/;
 
 /* check companyname */
 
-const companyname = document.getElementById("companyName");
+
 companyname.addEventListener("input",function () {
     let companyname = document.getElementById("companyName");
     let companynameInput = companyname.value;
-    const re = /^[\w@ ]*[^\W_ ][\w- @ & +]*$/;
-    if(re.test(companynameInput)) {
+    if(companynameregex.test(companynameInput)) {
         document.getElementById("InvalidCompanyName").style.display = "none";
         companyname.classList.add("isValid");
         companyname.classList.remove("isInvalid");
@@ -25,7 +29,7 @@ companyname.addEventListener("input",function () {
 
 /*check if kvk valid*/
 
-const kvknumber = document.getElementById("kvkNumber");
+
 kvknumber.addEventListener('input',function(){
     let kvknumber = document.getElementById("kvkNumber");
     let kvknumberInput = kvknumber.value;
@@ -43,7 +47,7 @@ kvknumber.addEventListener('input',function(){
 
 
 /*check if VAT valid*/
-const vatnumber = document.getElementById("vatNumber");
+
 vatnumber.addEventListener('input', function () {
     let vatnumberInput = vatnumber.value;
     let VATchek = window.location.pathname + `/v_check?vatnumber=${vatnumberInput}`;

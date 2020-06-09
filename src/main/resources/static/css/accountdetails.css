@@ -12,6 +12,10 @@ h2{
 
 }
 
+.wrapper{
+    width: 1000px;
+}
+
 body{
     align-content: center;
     background-color: #ebebeb;

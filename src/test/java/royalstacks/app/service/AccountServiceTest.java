@@ -20,6 +20,7 @@ import royalstacks.app.model.repository.AccountRepository;
 
 
 import javax.validation.constraints.AssertTrue;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,7 +50,7 @@ public class AccountServiceTest {
 
     @Test
     public void retrieveLastIban() {
-        PrivateAccount privateAccount1 = new PrivateAccount("NL79ROYA1111111111", 111);
+        PrivateAccount privateAccount1 = new PrivateAccount("NL79ROYA1111111111", new BigDecimal(111));
         Optional<String> optionalAccount1 = Optional.of(privateAccount1.getAccountNumber());
         Mockito.when(accountRepository.getLastAccountNumber()).thenReturn(optionalAccount1);
         String lastIban = accountService.retrieveLastIban();
