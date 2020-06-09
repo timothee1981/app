@@ -5,14 +5,14 @@ public class LastTenTransactionBackingBean {
     private String customerName;
     private String bankAccountNumber;
     private String description;
-    private String amount1;
+    private String amount;
 
     public LastTenTransactionBackingBean(String dateTime, String customerName, String bankAccountNumber, String description, String amount) {
         this.dateTime = dateTime;
         this.customerName = customerName;
         this.bankAccountNumber = bankAccountNumber;
         this.description = description;
-        this.amount1 = amount;
+        this.amount = amount;
     }
 
 
@@ -50,11 +50,11 @@ public class LastTenTransactionBackingBean {
         this.description = description;
     }
 
-    public String getAmount1() {
-        return amount1;
+    public String getAmount() {
+        return amount;
     }
 
-    public void setAmount1(String amount1) {
-        this.amount1 = amount1;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

@@ -1,8 +1,6 @@
 class API {
-    constructor(url) {
-        this.url = url;
+    constructor() {
     }
-    url;
 
     fetch(url, header) {
         return fetch(url, {

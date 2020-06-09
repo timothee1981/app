@@ -87,7 +87,7 @@ class ApiControllerTest {
     void BSNisUnique() throws Exception {
 
         String BSN = "663046129";
-        String url = "/api/bsn?BSN=" + BSN;
+        String url = "/api/bsn?bsn=" + BSN;
         MvcResult mvcResult = mvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
@@ -102,7 +102,7 @@ class ApiControllerTest {
     void BSNisNotUnique() throws Exception {
 
         String BSN = "663046129";
-        String url = "/api/bsn?BSN=" + BSN;
+        String url = "/api/bsn?bsn=" + BSN;
 
         Customer customer = new Customer();
         customer.setBSN(BSN);
