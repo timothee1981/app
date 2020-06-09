@@ -6,33 +6,44 @@
     <title>Head Business Overview</title>
     <style>
         * {box-sizing: border-box}
+
         * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
-        body{
+
+        body {
             align-content: center;
             background-color: #ebebeb;
             margin: auto;
             width: 100%;
-            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+            padding-bottom: 50px;
         }
-        h1, h2{
+
+        h1, h2 {
             text-align: center;
         }
+
+        h2 {
+            margin-top: 50px;
+        }
+
         table {
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
             border-collapse: collapse;
             margin-left: auto;
             margin-right: auto;
         }
+
         td, th {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
+
         tr:nth-child(even) {
             background-color: #dddddd;
         }
     </style>
-    <link type="text/css" href="css/navbar.css" rel="stylesheet" />
+    <link type="text/css" href="css/navbar.css" rel="stylesheet"/>
 </head>
 <body>
 <div id="navbar">
@@ -48,9 +59,9 @@
         <th>Total balance</th>
     </tr>
     <tr th:each="topBusinessAccount: ${top10BusinessAccounts}">
-        <td th:text="${topBusinessAccount.firstName}" />
-        <td th:text="${topBusinessAccount.lastName}" />
-        <td th:text="${#numbers.formatDecimal(topBusinessAccount.totalBalance, 0, 2)}" />
+        <td th:text="${topBusinessAccount.firstName}"/>
+        <td th:text="${topBusinessAccount.lastName}"/>
+        <td th:text="${#numbers.formatDecimal(topBusinessAccount.totalBalance, 0, 2)}"/>
     </tr>
 </table>
 <h2>Average balances by sector:</h2>
@@ -60,8 +71,8 @@
         <th>Average balance</th>
     </tr>
     <tr th:each="sectorAndAverageBalance: ${sectorAndAverageBalances}">
-        <td th:text="${sectorAndAverageBalance.sector.displayValue}" />
-        <td th:text="${#numbers.formatDecimal(sectorAndAverageBalance.totalBalance, 0, 2)}" />
+        <td th:text="${sectorAndAverageBalance.sector.displayValue}"/>
+        <td th:text="${#numbers.formatDecimal(sectorAndAverageBalance.totalBalance, 0, 2)}"/>
     </tr>
 </table>
 <h2>Top 10 customers with the most transactions on their business account:</h2>
