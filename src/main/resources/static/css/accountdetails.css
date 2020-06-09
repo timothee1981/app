@@ -12,6 +12,10 @@ h2{
 
 }
 
+.wrapper{
+    width: 1000px;
+}
+
 body{
     align-content: center;
     background-color: #ebebeb;
@@ -41,16 +45,52 @@ input[type=text]:focus{
     outline: none;
 }
 
-#accountInformation span{
-    margin: 0px;
-    padding: 2px;
-    font-size: 13px;
+
+
+
+.infoTable{
+    display: table;
+    width: 20%;
+    height: 30%;
+    margin: 1%;
+    font-size: 14px;
 }
 
-#accountInformation label{
-    margin: 0px;
-    padding: 2px;
-    font-size: 13px;
+.inforow{
+    display: table-row;
+
+}
+
+
+.infocell{
+    display: table-cell;
+
+}
+
+
+.inforow .infoheader.infocell{
+    font-weight: bold;
+}
+
+.inforow .infocell{
+    font-family: Poppins-Regular, sans-serif;
+    font-size: 15px;
+    color: #666666;
+    line-height: 1.2;
+    font-weight: unset;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.inforow .infocell:nth-child(1) {
+    width: 50px;
+    padding-left: 40px;
+}
+
+.inforow .infocell:nth-child(2) {
+
+    padding-left: 38px;
 }
 
 
@@ -69,6 +109,7 @@ button {
     font-weight: bold;
     margin: 20px auto auto;
 
+
 }
 button:hover {
     opacity:1;
@@ -83,34 +124,89 @@ button[type=submit]:disabled {
 }
 
 
-#transactiontable{
-    float: right;
-    width:70%;
-    height: 30%;
+
+
+.table {
+    display: table;
+    margin-left: 1%;
+    margin-top: 2%;
+    margin-bottom: 3%;
+    max-width: 85%;
+    background-color: transparent;
+    font-weight: 400;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table, .row{
+    width: 93%;
+}
+
+
+.row {
+    display: table-row;
+    background: #fff;
 
 }
 
-#transactiontable span{
-    margin: 5px;
-    padding: 0px;
+.row.header{
+    color: #ffffff;
+    background: #1E90FF;
 }
 
-
-#accountInformation{
-    float:left;
-    width: 50%;
-    height: 30%;
-    margin: 26px;
-    font-size: 12px;
+.row{
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
 }
+
+.row .cell{
+    font-family: Poppins-Regular, sans-serif;
+    font-size: 15px;
+    color: #666666;
+    line-height: 1.2;
+    font-weight: unset;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.row .cell:nth-child(1) {
+    width: 360px;
+    padding-left: 40px;
+}
+
+.row .cell:nth-child(2) {
+    width: 250px;
+}
+
+.row .cell:nth-child(3) {
+    width: 250px;
+}
+.row .cell:nth-child(4) {
+    width: 400px;
+}
+.row .cell:nth-child(5) {
+    width: 160px;
+}
+
+.row.header .cell{
+    font-family: Poppins-Regular, serif;
+    font-size: 18px;
+    color: #fff;
+    line-height: 1.2;
+    font-weight: unset;
+    padding-bottom: 19px;
+    padding-top: 19px;
+}
+
+.cell {
+    display: table-cell;
+}
+
 
 li{
     list-style: none;
-}
-
-td{
-    padding: 10px;
-    align-content: center;
 }
 
 #dateTime{
@@ -134,19 +230,18 @@ fieldset{
     background: inherit;
     border: none;
     color: white;
+    opacity: 0.9;
 }
 
 
 
-#addaccountholderbutton{
-    position: absolute;
-    top: 53px;
-    right: 8px;
-    font-size: 14px;
-    width: 136px;
-    padding: 4px 20px;
-    font-weight: normal;
 
+.buttondiv{
+
+
+    position: absolute;
+    right: 2%;
+    top: 6%;
 }
 
 

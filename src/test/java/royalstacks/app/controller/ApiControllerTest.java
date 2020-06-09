@@ -12,7 +12,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
@@ -88,7 +87,7 @@ class ApiControllerTest {
     void BSNisUnique() throws Exception {
 
         String BSN = "663046129";
-        String url = "/api/bsn?BSN=" + BSN;
+        String url = "/api/bsn?bsn=" + BSN;
         MvcResult mvcResult = mvc.perform(get(url)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
@@ -103,7 +102,7 @@ class ApiControllerTest {
     void BSNisNotUnique() throws Exception {
 
         String BSN = "663046129";
-        String url = "/api/bsn?BSN=" + BSN;
+        String url = "/api/bsn?bsn=" + BSN;
 
         Customer customer = new Customer();
         customer.setBSN(BSN);

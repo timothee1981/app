@@ -5,8 +5,10 @@ import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.model.Sector;
 
+import java.math.BigDecimal;
+
 public class OpenAccountBackingBean {
-    public static final double START_BALANCE = Account.getStartingBalance();
+    public static final BigDecimal START_BALANCE = Account.getStartingBalance();
     public static final String EMPTY_STRING = "";
     private String companyName;
     private String companyNamePlaceholder;

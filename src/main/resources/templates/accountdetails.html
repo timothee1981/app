@@ -19,76 +19,83 @@
     <a href="/myaccounts">Accounts overview</a>
     <span id="logoNavbar"></span>
 </div>
+
+
 <div class="content">
+    <div class="wrapper">
 <span id="dateTime"></span><br>
     <h1>Account details</h1>
-    <span></span>
+
     <!--<THAT'S THE DROPDOWN SELECT. DIFFICULT MAYBE, LETS SEE IF I HAVE TIME LEFT-->
-    <!--<label for="accountnumber">AccountList</label>
+<!--
+    <label for="accountNumber">AccountList</label>
         <select id="accountNumber" name="accountNumber" th:value="${accountnumber}">
-            <option th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
+            <option id="option" th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
             </option>
         </select>
-        <button type="submit" id="submitButton"  value="DoTransfer">choose account</button>-->
+<<<<<<< HEAD
+        <button type="submit" id="SUBMIT_BUTTON"  value="DoTransfer">choose account</button>-->
+
 
     <!--TABLE HOUDT INFORMATIE OVER REKENING HOUDER -->
 
-<div id="accountInformation">
-
-        <h4>Account holders: </h4>
-        <li th:each="customer : ${list}">
-            <div>
-                <tr><span th:text="${customer.firstName}"></span><span th:text="${customer.lastName}"></span></tr>
-            </div><br>
-        </li>
-  <!--  <span th:text="${accountType}"></span>-->
-    <table>
-        <tr id="accountrow">
-            <span th:text="${account.accountType}"></span><span th:text="${account.accountNumber}"></span>
-        </tr><br>
-
-
-
-        <tr>
-            <label>Balance  €</label><span th:text="${account.balance}"></span>
-        </tr><br>
-
+<div class="infoTable">
+    <div class="inforow">
+        <div class = "infocell infoheader">IBAN</div>
+        <div class = "infocell"><span th:text="${account.accountNumber}"></span></div>
+    </div>
+    <div class="inforow">
+        <div class = "infocell infoheader">Balance</div>
+        <div class = "infocell">€ <span th:text="${#numbers.formatDecimal(account.balance, 0, 2)}"></span></div>
+    </div>
+    <div class="inforow">
+        <div class = "infocell infoheader">Account Type</div>
+        <div class="infocell"><span th:text="${account.accountType}"></span></div>
+    </div>
+    <div class="inforow">
+        <div class = "infocell infoheader">Account holders</div>
+        <div class="infocell" th:each="customer : ${list}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></div>
+    </div>
+</div>
+<div class="buttondiv">
     <form th:action="@{transaction}"  method="get">
-        <button type="submit" id="submitButton" name="accountId" th:value="${account.accountId=20}"   value="DoTransfer">New money transfer</button>
+        <button type="submit" id="submitButton" name="accountId" th:value="${account.accountId}"   value="DoTransfer">New money transfer</button>
     </form>
-    </table>
-
-</div>
-    <!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
-<div id="transactiontable">
-        <h2>Transactions</h2>
-        <li th:each="transaction : ${transactionList}">
-            <div>
-                <td>
-                    <tr> <span th:text="${transaction.dateTime}"></span></tr>
-                </td>
-                <td>
-                    <tr> <span th:text="${transaction.bankAccountNumber}"></span></tr>
-                </td>
-                <td>
-                    <tr> <span th:text="${transaction.customerName}"></span></tr>
-                </td>
-                <td>
-                        <tr> <span th:text="${transaction.description}"></span></tr>
-                </td>
-                <td>
-                    <tr> <span th:text="${transaction.amount}"></span></tr>
-            </td>
-
-        </div><br>
-    </li>
-</div>
-
-    <br>
     <form th:action="@{addaccountholder}" method="get">
-    <button type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
+        <button type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
     </form>
 </div>
+
+
+
+
+    <!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
+<div class="table">
+
+    <div class="row header">
+        <div class="cell">Date Transaction</div>
+        <div class="cell">IBAN </div>
+        <div class="cell">Name</div>
+        <div class="cell">description</div>
+        <div class="cell"> Amount</div>
+    </div>
+
+    <div class="row" th:each="transaction : ${transactionList}">
+
+        <div class="cell"  th:text="${transaction.dateTime}"></div>
+        <div class="cell"  th:text="${transaction.bankAccountNumber}"></div>
+        <div class="cell"  th:text="${transaction.customerName}"></div>
+        <div class="cell"  th:text="${transaction.description}"></div>
+        <div class="cell"  th:text="${#numbers.formatDecimal(transaction.amount, 0, 2)}"></div>
+
+    </div>
+
+</div>
+</div>
+
+</div>
+
+
 
 
 
@@ -99,8 +106,9 @@
 <script>
     function updateClock() {
         let now = new Date(), // current date
-            months = ['January', 'February', 'March', 'April','Mei','June','Juli','August','September','Oktober','November','December']; // you get the idea
-        let time = now.getHours() + ':' + now.getMinutes(), // again, you get the idea
+            months = ['January', 'February', 'March','April','Mei','June','July','Augustus','September','October','November','December']; // you get the idea
+
+        let time = now.getHours() + ':' + ((now.getMinutes() < 10)?"0":"") + now.getMinutes();
 
             // a cleaner way than string concatenation
             date = [now.getDate(),
@@ -114,6 +122,14 @@
         setTimeout(updateClock, 1000);
     }
     updateClock(); // initial call
+
+ /*   const accountNumber = document.getElementById("option");
+
+
+    console.log(accountNumber.innerHTML);*/
+
+
+
 </script>
 
 </html>

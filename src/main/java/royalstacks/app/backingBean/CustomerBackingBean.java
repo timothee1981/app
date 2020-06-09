@@ -10,7 +10,6 @@ import java.util.Set;
 
 public class CustomerBackingBean {
 
-    private int userid;
     private String username;
     private String password;
     private String firstName;
@@ -43,18 +42,15 @@ public class CustomerBackingBean {
     }
 
     public Customer customer() {
-        Customer customer = new Customer(username, password, firstName, lastName, email, postalCode, houseNumber, suffix, city, phoneNumber, BSN, null, false);
-        return customer;
+        return new Customer(username, password, firstName, lastName, email, postalCode, houseNumber, suffix, city, phoneNumber, BSN, null, false);
     }
 
     //TODO nog een constructor maken voor backing bean met lijst van accounts voor ophalen uit DB?
 
     // creates a backing bean from a customer
     public static CustomerBackingBean createCustomerBackingBean(Customer customer) {
-        CustomerBackingBean cbb =
-                new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmail(),
-                        customer.getPostalCode(), customer.getHouseNumber(), customer.getSuffix(), customer.getCity(), customer.getPhoneNumber(), customer.getBSN());
-                return cbb;
+        return new CustomerBackingBean(customer.getUsername(), customer.getPassword(), customer.getFirstName(), customer.getLastName(), customer.getEmail(),
+                customer.getPostalCode(), customer.getHouseNumber(), customer.getSuffix(), customer.getCity(), customer.getPhoneNumber(), customer.getBSN());
     }
 
     // setters (for testing purposes)
@@ -75,42 +71,9 @@ public class CustomerBackingBean {
         this.lastName = lastName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setBSN(String BSN) {
-        this.BSN = BSN;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
-
     @Override
     public String toString() {
         return "CustomerBackingBean{" +
-                "userid=" + userid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +

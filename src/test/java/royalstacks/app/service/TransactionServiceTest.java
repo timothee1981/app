@@ -16,7 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Employee;
+import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.AccountRepository;
 
@@ -34,13 +36,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class TransactionServiceTest {
 
 
-
-
     @Mock
     TransactionRepository transactionRepository;
 
     @InjectMocks
     TransactionService transactionService;
+
+    @Test
+    void saveTransaction() {
+    }
+
+    @Test
+    void executeTransaction() {
+    }
 
 
 

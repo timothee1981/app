@@ -12,23 +12,27 @@ import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.TransactionService;
-import royalstacks.app.service.UserService;
 import java.util.*;
 
 @Controller
 public class TransactionController {
 
-    @Autowired
-    AccountService accountService;
+    private static final String INVALID_INPUT = "Transaction failed: invalid input";
+    private static final String TRANSACTION_SUCCESS = "Money successfully sent";
+    private static final String TRANSACTION_FAILED = "Transaction failed: failed to execute";
+
+    private AccountService accountService;
+    private TransactionService transactionService;
+    private CustomerService customerService;
+    private ModelAndView mav;
+    private TransactionBackingBean tbb;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    TransactionService transactionService;
-
-    @Autowired
-    CustomerService customerService;
+    public TransactionController(AccountService as, TransactionService ts, CustomerService cs){
+        this.accountService = as;
+        this.transactionService = ts;
+        this.customerService = cs;
+    }
 
 
     /**
@@ -40,9 +44,9 @@ public class TransactionController {
                                            @SessionAttribute("userid") int userId,
                                            Model model) {
 
-        ModelAndView mav = new ModelAndView("transaction");
+        this.mav = new ModelAndView("transaction");
         showAccountsOfUserId(model, userId, accountId);
-        return mav;
+        return this.mav;
     }
 
 
@@ -53,38 +57,54 @@ public class TransactionController {
      * PostMapping
      */
     @PostMapping("/transaction")
-    public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean tbb,
+    public ModelAndView transactionHandler(@ModelAttribute TransactionBackingBean transactionBackingBean,
                                            @RequestParam (required = false) Integer accountId,
                                            @SessionAttribute("userid") int userId,
                                            Model model) {
 
-        ModelAndView mav = new ModelAndView("transaction");
-
         showAccountsOfUserId(model, userId, accountId);
+        this.mav = new ModelAndView("transaction");
+        this.tbb = transactionBackingBean;
 
-        Optional<Account> fromAccountOptional = accountService.getAccountByAccountNumber(tbb.getFromAccountNumber());
-        Optional<Account> toAccountOptional = accountService.getAccountByAccountNumber(tbb.getToAccountNumber());
+        Optional<Account> fromAccountOpt = getAccount(this.tbb.getFromAccountNumber());
+        Optional<Account> toAccountOpt = getAccount(this.tbb.getToAccountNumber());
 
-        // Check of alle velden correct ingevuld zijn
-        if (fromAccountOptional.isPresent() && toAccountOptional.isPresent() && tbb.getAmount() > 0) {
-
-            // Zet in backingbean zodat een Transaction gemaakt kan worden
-            tbb.setFromAccountId(fromAccountOptional.get().getAccountId());
-            tbb.setToAccountId(toAccountOptional.get().getAccountId());
+        if (fromAccountOpt.isPresent() && toAccountOpt.isPresent()) {
+            setAccountsInBean(fromAccountOpt.get(), toAccountOpt.get());
+            executeTransaction();
         } else {
-
-            showNotification("Transaction failed: invalid input", mav);
-            populateFields(tbb, mav);
-            return mav;
+            showNotification(INVALID_INPUT);
+            populateFields();
         }
+        return this.mav;
+    }
 
-        if (transactionService.executeTransaction(tbb.Transaction())) {
-            showNotification("Money successfully sent", mav);
+    private Optional<Account> getAccount(String accountNumber){
+        return accountService.getAccountByAccountNumber(accountNumber);
+    }
+
+    private void setAccountsInBean(Account fromAccount, Account toAccount){
+        this.tbb.setFromAccountId(fromAccount.getAccountId());
+        this.tbb.setToAccountId(toAccount.getAccountId());
+    }
+
+    private void showNotification(String notification){
+        this.mav.addObject("notification", notification);
+    }
+
+    private void populateFields() {
+        this.mav.addObject("toAccountNumber", this.tbb.getToAccountNumber());
+        this.mav.addObject("amount", this.tbb.getAmount());
+        this.mav.addObject("description", this.tbb.getDescription());
+    }
+
+    private void executeTransaction() {
+        if (transactionService.executeTransaction(this.tbb.transaction())) {
+            showNotification(TRANSACTION_SUCCESS);
         } else {
-            showNotification("Transaction failed: failed to execute", mav);
-            populateFields(tbb, mav);
+            showNotification(TRANSACTION_FAILED);
+            populateFields();
         }
-        return mav;
     }
 
     /**
@@ -92,6 +112,7 @@ public class TransactionController {
      * Als accountId meegegeven wordt wordt de bijbehorende Account bovenaan gezet
      */
     // checked by tom
+    @SuppressWarnings("unchecked")
     private void showAccountsOfUserId(Model model, int userId, Integer accountId) {
         Optional<Customer> customerOptional = customerService.findCustomerByUserId(userId);
 
@@ -112,18 +133,5 @@ public class TransactionController {
             }
             model.addAttribute("account", myAccounts);
         }
-    }
-
-    /**
-     * Vul de velden met de ingevoerde waardes. Wordt gebruikt wanneer een error getoond wodt
-     */
-    private void populateFields(TransactionBackingBean tbb, ModelAndView mav) {
-        mav.addObject("toAccountNumber", tbb.getToAccountNumber());
-        mav.addObject("amount", tbb.getAmount());
-        mav.addObject("description", tbb.getDescription());
-    }
-
-    private void showNotification(String notification, ModelAndView mav){
-        mav.addObject("notification", notification);
     }
 }

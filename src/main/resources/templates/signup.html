@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Become a Royal Stacks customer!</title>
+
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/signup.css" rel="stylesheet" />
+    <script type="application/javascript" src="js/navbar.js" defer></script>
+    <script type="application/javascript" src="js/regex.js" defer></script>
+    <script type="application/javascript" src="js/validate.js" defer></script>
+    <script type="application/javascript" src="js/api.js" defer></script>
+    <script type="application/javascript" src="js/signup.js" defer></script>
 </head>
 <body>
 <div id="navbar">
@@ -34,7 +40,7 @@
 <div id="passwordLabel">
     <label for="password"><b>Password</b></label>
 </div>
-        <div onfocusin="showPasswordRequirements()" onfocusout="hidePasswordRequirements()">
+        <div id="passwordElements">
         <input
             type="password"
             placeholder="At least 10 characters"
@@ -43,18 +49,18 @@
             title="Must contain 1 lower case letter, 1 upper case letter, 1 number, 1 special character and at least 10 characters in length"
             th:value="${password}"
             required
-    /><input id="showPasswordButton" class="fa fa-fw fa-eye" type="button" onmousedown="showPassword()" value="show"><span></span>
+    /><input id="showPasswordButton" class="fa fa-fw fa-eye" type="button" value="show"><span></span>
         </div>
         <!-- Laat zien wanneer password geselecteerd is -->
     <div id="passRequirements">
         <div id="passRequirements1of2">
-            <p id="letter" class="invalid">A lowercase letter</p>
-            <p id="capital" class="invalid">A uppercase letter</p>
-            <p id="number" class="invalid">A number</p>
+            <p id="lowercase" class="passReqInvalid">A lowercase letter</p>
+            <p id="uppercase" class="passReqInvalid">A uppercase letter</p>
+            <p id="number" class="passReqInvalid">A number</p>
         </div>
         <div id="passRequirements2of2">
-            <p id="length" class="invalid">Minimum 10 characters</p>
-            <p id="special" class="invalid">A special character</p>
+            <p id="length" class="passReqInvalid">Minimum 10 characters</p>
+            <p id="special" class="passReqInvalid">A special character</p>
         </div>
     </div>
 
@@ -100,7 +106,7 @@
     </div>
     <div id="formRight">
         <label for="email"><b>Email</b></label>
-        <div id="InvalidEmail" class="invalidInputPopup"><span>Enter a valid email address</span></div>
+        <div id="InvalidEmail" class="invalidInputPopup"><span></span></div>
         <input
                 type="email"
                 placeholder="mail@example.com"
@@ -111,7 +117,7 @@
 
 
         <label for="phoneNumber"><b>Phone Number</b></label>
-        <div id="InvalidPhoneNumber" class="invalidInputPopup"><span>Must be 9 numbers starting with 0</span></div>
+        <div id="InvalidPhoneNumber" class="invalidInputPopup"><span></span></div>
         <input
                 type="number"
                 placeholder="0612345678 or 0311234567"
@@ -192,8 +198,5 @@
 </form>
 </fieldset>
 </div>
-
-<script src="js/navbar.js"></script>
-<script src="js/signup.js"></script>
 </body>
 </html>

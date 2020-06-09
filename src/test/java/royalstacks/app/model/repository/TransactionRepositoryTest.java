@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import royalstacks.app.model.Transaction;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +41,7 @@ class TransactionRepositoryTest {
         //GIVEN
         //TEST IF WE CAN GET A TRANSACTION FROM MONGO DB, TEST if from accountDB is what we expect
         //Create three transcation Object
-        Transaction transaction1 = new Transaction(5,6,300,"HELOOO", null);
+        Transaction transaction1 = new Transaction(5,6, new BigDecimal(300),"HELOOO", null);
         transaction1.setTransactionId("200");
         //SAVE IT INTO DB
 

@@ -2,7 +2,8 @@ package royalstacks.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import royalstacks.app.model.SectorAndTotalBalance;
+import royalstacks.app.model.Sector;
+import royalstacks.app.model.SectorAndAverageBalance;
 import royalstacks.app.model.repository.BusinessAccountRepository;
 
 import java.util.ArrayList;
@@ -14,19 +15,19 @@ public class BusinessAccountService {
     @Autowired
     private BusinessAccountRepository businessAccountRepository;
 
-    public List<SectorAndTotalBalance> findSectorAndTotalBalance(){
-        List<Object[]> results = businessAccountRepository.findSectorAndTotalBalance();
-        List<SectorAndTotalBalance> sectorAndTotalBalances = new ArrayList<>();
+    public List<SectorAndAverageBalance> findSectorAndAverageBalance(){
+        List<Object[]> results = businessAccountRepository.findSectorAndAverageBalance();
+        List<SectorAndAverageBalance> sectorAndAverageBalances = new ArrayList<>();
 
         for (Object[] result : results) {
-            sectorAndTotalBalances.add(
-                    new SectorAndTotalBalance(
-                            (String) result[0],
+            sectorAndAverageBalances.add(
+                    new SectorAndAverageBalance(
+                            Sector.valueOf((String) result[0]),
                             (double) result[1]
                     )
             );
         }
-        return sectorAndTotalBalances;
+        return sectorAndAverageBalances;
 
     }
 }

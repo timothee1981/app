@@ -5,10 +5,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
-import royalstacks.app.model.Customer;
+import royalstacks.app.model.CustomerAndTransactions;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
+
+import java.util.List;
 
 @Controller
 public class ApiController {
@@ -22,6 +24,12 @@ public class ApiController {
     @Autowired
     private CustomerService customerService;
 
+    @GetMapping("/api/accountredirect")
+    @ResponseBody
+    public void accountredirect(@RequestParam String accountnumber){
+        System.out.println("hij draait de account-redirect methode");
+
+    }
 
     @GetMapping("/api/username")
     @ResponseBody
@@ -31,8 +39,8 @@ public class ApiController {
 
     @GetMapping("/api/bsn")
     @ResponseBody
-    public String isBSNUniqueHandler(@RequestParam String BSN) {
-        return String.valueOf(customerService.findCustomerByBSN(BSN).isEmpty());
+    public String isBSNUniqueHandler(@RequestParam String bsn) {
+        return String.valueOf(customerService.findCustomerByBSN(bsn).isEmpty());
 
     }
 
@@ -43,6 +51,12 @@ public class ApiController {
         businessAccount.setVatNumber(vatnumber);
         return String.valueOf(businessAccount.isVatValid());
     }
+
+    @GetMapping("/api/top10transactions")
+    public @ResponseBody List<CustomerAndTransactions> topTransactionList(){
+        return customerService.findTop10TransactionsOnBusinessAccounts();
+    }
+
     @PostMapping(value = "/api/iban",consumes = "text/plain")
     @ResponseBody
     public String ibanCheckHandler(@RequestBody String iban) throws Exception{

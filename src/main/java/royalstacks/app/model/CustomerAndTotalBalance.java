@@ -1,13 +1,15 @@
 package royalstacks.app.model;
 
+import java.math.BigDecimal;
+
 public class CustomerAndTotalBalance {
 
     private String firstName;
     private String lastName;
-    private double totalBalance;
+    private BigDecimal totalBalance;
 
     //CONSTRUCTOR
-    public CustomerAndTotalBalance(String firstName, String lastName, double totalBalance) {
+    public CustomerAndTotalBalance(String firstName, String lastName, BigDecimal totalBalance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.totalBalance = totalBalance;
@@ -22,7 +24,8 @@ public class CustomerAndTotalBalance {
         return lastName;
     }
 
-    public double getTotalBalance() {
+    public BigDecimal getTotalBalance() {
         return totalBalance;
     }
+
 }

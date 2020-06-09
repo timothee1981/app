@@ -1,29 +1,27 @@
 package royalstacks.app.backingBean;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.service.AccountService;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Optional;
 
 public class TransactionBackingBean {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     private int transactionId;
     private String fromAccountNumber;
     private String toAccountNumber;
     private int fromAccountId;
     private int toAccountId;
-    private double amount;
+    private BigDecimal amount;
     private String description;
     private LocalDateTime date;
 
-    public TransactionBackingBean(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+    public TransactionBackingBean(String fromAccountNumber, String toAccountNumber, BigDecimal amount, String description) {
          this.fromAccountNumber = fromAccountNumber;
          this.toAccountNumber = toAccountNumber;
          this.amount = amount;
@@ -31,7 +29,7 @@ public class TransactionBackingBean {
          this.date = LocalDateTime.now();
     }
 
-    public Transaction Transaction(){
+    public Transaction transaction(){
         return new Transaction(fromAccountId, toAccountId, amount, description, date);
     }
 
@@ -76,11 +74,11 @@ public class TransactionBackingBean {
         this.toAccountId = toAccountId;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

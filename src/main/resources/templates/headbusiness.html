@@ -6,33 +6,44 @@
     <title>Head Business Overview</title>
     <style>
         * {box-sizing: border-box}
+
         * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
-        body{
+
+        body {
             align-content: center;
             background-color: #ebebeb;
             margin: auto;
             width: 100%;
-            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+            font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+            padding-bottom: 50px;
         }
-        h1, h2{
+
+        h1, h2 {
             text-align: center;
         }
+
+        h2 {
+            margin-top: 50px;
+        }
+
         table {
             font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
             border-collapse: collapse;
             margin-left: auto;
             margin-right: auto;
         }
+
         td, th {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
+
         tr:nth-child(even) {
             background-color: #dddddd;
         }
     </style>
-    <link type="text/css" href="css/navbar.css" rel="stylesheet" />
+    <link type="text/css" href="css/navbar.css" rel="stylesheet"/>
 </head>
 <body>
 <div id="navbar">
@@ -40,7 +51,7 @@
     <span id="logoNavbar"></span>
 </div>
 <h1 class="content">Welcome <span th:text="${employee.firstName}"/></h1>
-<h2>Top 10 customers with the highest balance on their business account:</h2>
+<h2>Top 10 customers with the highest balance on their business accounts:</h2>
 <table style="width:65%">
     <tr>
         <th>First name</th>
@@ -48,22 +59,24 @@
         <th>Total balance</th>
     </tr>
     <tr th:each="topBusinessAccount: ${top10BusinessAccounts}">
-        <td th:text="${topBusinessAccount.firstName}" />
-        <td th:text="${topBusinessAccount.lastName}" />
-        <td th:text="${topBusinessAccount.totalBalance}" />
+        <td th:text="${topBusinessAccount.firstName}"/>
+        <td th:text="${topBusinessAccount.lastName}"/>
+        <td th:text="${#numbers.formatDecimal(topBusinessAccount.totalBalance, 0, 2)}"/>
     </tr>
 </table>
-<h2>Total balances by sector:</h2>
+<h2>Average balances by sector:</h2>
 <table style="width:65%">
     <tr>
         <th>Sector</th>
-        <th>Total balance</th>
+        <th>Average balance</th>
     </tr>
-    <tr th:each="sectorAndTotalBalance: ${sectorAndTotalBalances}">
-        <td th:text="${sectorAndTotalBalance.sector}" />
-        <td th:text="${sectorAndTotalBalance.totalBalance}" />
+    <tr th:each="sectorAndAverageBalance: ${sectorAndAverageBalances}">
+        <td th:text="${sectorAndAverageBalance.sector.displayValue}"/>
+        <td th:text="${#numbers.formatDecimal(sectorAndAverageBalance.totalBalance, 0, 2)}"/>
     </tr>
 </table>
+<h2>Top 10 customers with the most transactions on their business account:</h2>
+<script type="text/javascript" src="js/topTransactions.js"></script>
 <script src="js/navbar.js"></script>
 </body>
 </html>

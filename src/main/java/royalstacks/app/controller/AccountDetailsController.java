@@ -65,7 +65,7 @@ public class AccountDetailsController {
             List<Customer> accountholders = getAccountHolders(myAccount);
             AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
             List<Transaction> tenLatestTransactions = getTenLastTransaction(myAccount);
-            if (tenLatestTransactions != null && !tenLatestTransactions.isEmpty()) {
+            if (!tenLatestTransactions.isEmpty()) {
                 List<LastTenTransactionBackingBean> lttb = setupListLastTenTransaction(tenLatestTransactions, myAccount);
                 mav.addObject("transactionList", lttb);
             }
@@ -111,7 +111,7 @@ public class AccountDetailsController {
             lasttentbt = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
             lasttentbt.setAmount(" - " + transaction.getAmount());
 
-         //ACCOUNT CREDITETEREN
+         //ACCOUNT CREDITEEREN
 
         }else if((transaction.getToAccountId() == account.getAccountId())){
             accountFrom = accountService.getAccountById(transaction.getFromAccountId());
@@ -122,7 +122,7 @@ public class AccountDetailsController {
         return lasttentbt;
     }
 
-    //FILL OBJECT BB laast ten transaction WITH CORRECT VALUES
+    //FILL OBJECT BB last ten transaction WITH CORRECT VALUES
 
     private LastTenTransactionBackingBean fillBackingBeanWithCorrectCalue(Account accountFrom, Transaction transaction) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -145,10 +145,9 @@ public class AccountDetailsController {
             for (Transaction transaction : getTenLastTransaction) {
                 System.out.println(transaction);
             }
-            return getTenLastTransaction;
 
-        }else
-            return null;
+        }
+        return getTenLastTransaction;
     }
 
 
