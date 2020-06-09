@@ -24,7 +24,7 @@ function isAccountFormatValidWhileTyping(){
 function isAccountDifferentThanFromAccount(){
     return(fromAccountField.value.toUpperCase() !== toAccountField.value.toUpperCase());
 }
-function doesAccountExistInDb(){
+function existInDbHandler(){
 
     const options = {
         method: 'POST',
@@ -32,20 +32,21 @@ function doesAccountExistInDb(){
         headers: {
             'Content-Type': 'text/plain'
         }
-
     }
-    var exists;
-   return  fetch("/api/iban/",options)
+    fetch("/api/iban/",options)
         .then(response => {
             return response.text();
         })
         .then(response => {
             console.log(response);
-        exists =  (response === "true") ;
-        return (response === "true");
-       ;
+        if(response === "true"){
+            setClassValid("toAccountNumber");
+        }
+        else{
+            showError(errorAccountDoesntExist3, "toAccountError");
+            setClassInvalid("toAccountNumber");
+        }
     });
-
 }
 function isAmountFormatValid(){
     let amountFormatRegex = new RegExp(/^\d{0,11}([,.][\d]{1,2})?$/);
@@ -60,7 +61,7 @@ function isAmountFilledIn(){
 }
 //Combined validation checks on singel input fields
 function isToAccountValid(){
-    return(isAccountFormatValid() && isAccountDifferentThanFromAccount() && doesAccountExistInDb());
+    return(isAccountFormatValid() && isAccountDifferentThanFromAccount() && existInDbHandler());
 }
 function isAmountValid(){
     return(isAmountFormatValid() && isAmountSmallerThanBalance() && isAmountFilledIn());
@@ -86,15 +87,7 @@ function toAccountFieldErrorHandler(){
         setClassInvalid("toAccountNumber");
     }
     else {
-        doesAccountExistInDb().then(r => {
-            console.log(apiResponse);
-            if (!apiResponse) {
-                showError(errorAccountDoesntExist3, "toAccountError");
-                setClassInvalid("toAccountNumber");
-            } else {
-                setClassValid("toAccountNumber");
-            }
-        })
+        existInDbHandler()
     }
 };
 //Combined check and error handling for amount inputField
@@ -112,31 +105,6 @@ function amountFieldErrorHandler(){
     }
 
 };
-// Error Handlers
-function errorHandlerWhileTyping(){
-    if (!isAccountFormatValidWhileTyping()) {
-        showError(errorAccountDoesntExist, "toAccountError");
-        setClassInvalid("toAccountNumber");
-    }
-}
-function errorHandlerNonValidAccount(){
-    if(!isAccountFormatValid()){
-        showError(errorAccountDoesntExist, "toAccountError");
-        setClassInvalid("toAccountNumber");
-    }
-}
-function errorHandlerSameAsSender() {
-    if (!isAccountDifferentThanFromAccount()) {
-        showError(errorSenderSameAsReceiver, "toAccountError");
-        setClassInvalid("toAccountNumber");
-    }
-}function errorHandlerNonExistingAccount() {
-        if (!doesAccountExistInDb()) {
-            showError(errorAccountDoesntExist, "toAccountError");
-            setClassInvalid("toAccountNumber");
-        }
-    }
-
 
 //Button enable/disable handler
 function buttonHandler(){
@@ -148,7 +116,6 @@ function buttonHandler(){
     }
 }
 
-
 //Event Listeners
 toAccountField.addEventListener("input", function() {
     hideError(errorAccountDoesntExist1, "toAccountError");
@@ -157,7 +124,6 @@ toAccountField.addEventListener("input", function() {
     hideError(errorSenderSameAsReceiver, "toAccountError");
     removeValidInValidClasses("toAccountNumber");
     toAccountFieldErrorHandler();
-    console.log(doesAccountExistInDb())
 });
 
 amountField.addEventListener("input", function(){
@@ -182,44 +148,6 @@ fromAccountField.addEventListener("click", function(){
 });
 
 
-
-
-/*fromAccountField.addEventListener("click",fromAccountValidationAction);
-toAccountField.addEventListener("input", function(){
-    if(!isAccountFormatValidWhileTyping()){
-        setClassInvalid("toAccountNumber");}
-    else{
-        setClassValid("toAccountNumber")
-
-    }
-/!*    if(toAccountField.value.length > 17) {
-        toAccountValidationAction();
-    }
-    else{
-        removeValidClass(toAccountFieldId);
-    }*!/
-});
-toAccountField.addEventListener("blur", function(){
-    toAccountValidationAction();
-    checkAndEnableButton();
-});
-toAccountField.addEventListener("mouseout", function(){
-    checkAndEnableButton();
-});
-amountField.addEventListener("input", function(){
-    checkAndEnableButton();
-    amountValidationAction();
-});
-amountField.addEventListener("blur", function pleaseEnterAmount(){
-    if(!isAmountFilledIn() ){
-        showError(errorNoAmount, "amountError");
-        setClassInvalid("amount");
-    }
-    checkAndEnableButton();
-});
-amountField.addEventListener("mouseout", function pleaseEnterAmount(){
-   checkAndEnableButton();
-});*/
 
 function enableButton(){
     if(document.getElementById("submitButton").disabled === true){
