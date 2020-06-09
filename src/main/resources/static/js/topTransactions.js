@@ -1,11 +1,5 @@
 //Creating a new XMLHttpRequest object
-var request;
-if (window.XMLHttpRequest) {
-    request = new XMLHttpRequest(); //for IE7+, Firefox, Chrome, Opera, Safari
-}
-else {
-    request = new ActiveXObject("Microsoft.XMLHTTP"); //for IE6, IE5
-}
+const request = new XMLHttpRequest();
 
 //Initialize request
 request.open("GET","/api/top10transactions", true);
@@ -14,56 +8,43 @@ request.open("GET","/api/top10transactions", true);
 request.onreadystatechange = function() {
     if (request.readyState === 4) {
         if (request.status === 200) {
-            tableCreate(JSON.parse(request.responseText));
+            createTable(JSON.parse(request.responseText));
         }
         else {
-            alert('Something is wrong !!');
+            alert('Something is wrong!');
         }
     }
 };
 request.send(null);
 
-
-function tableCreate(top10transactions) {
-    var body = document.body,
+//Create and fill table
+function createTable(top10transactions) {
+    const body = document.body,
         tbl = document.createElement('table');
     tbl.style.width = '65%';
-    var row = tbl.insertRow();
-    var cell = document.createElement('th');
-    cell.appendChild(document.createTextNode("First name"));
-    row.appendChild(cell);
+    const headerRow = tbl.insertRow();
+    createTableHeader("First name", headerRow);
+    createTableHeader("Last name", headerRow);
+    createTableHeader("Number of transactions", headerRow);
+    createTableHeader("Balance", headerRow);
 
-    var cell = document.createElement('th');
-    cell.appendChild(document.createTextNode("Last name"));
-    row.appendChild(cell);
-
-    var cell = document.createElement('th');
-    cell.appendChild(document.createTextNode("Number of transactions"));
-    row.appendChild(cell);
-
-    var cell = document.createElement('th');
-    cell.appendChild(document.createTextNode("Balance"));
-    row.appendChild(cell);
-
-
-    for (var i = 0; i < top10transactions.length; i++) {
-        var row = tbl.insertRow();
-
-        var cell = row.insertCell();
-        cell.appendChild(document.createTextNode('Cell'));
-        cell.innerHTML = top10transactions[i].firstName;
-
-        var cell = row.insertCell();
-        cell.appendChild(document.createTextNode('Cell'));
-        cell.innerHTML = top10transactions[i].lastName;
-
-        var cell = row.insertCell();
-        cell.appendChild(document.createTextNode('Cell'));
-        cell.innerHTML = top10transactions[i].numberOfTransactions;
-
-        var cell = row.insertCell();
-        cell.appendChild(document.createTextNode('Cell'));
-        cell.innerHTML = top10transactions[i].balance.toFixed(2);
-    }
+    top10transactions.forEach(element => {
+        const row = tbl.insertRow();
+        createTableCell(element.firstName, row);
+        createTableCell(element.lastName, row);
+        createTableCell(element.numberOfTransactions, row);
+        createTableCell(element.balance.toFixed(2), row);
+    });
     body.appendChild(tbl);
+}
+
+function createTableHeader(title, row){
+    const cell = document.createElement('th');
+    cell.appendChild(document.createTextNode(title));
+    row.appendChild(cell);
+}
+
+function createTableCell(content, row){
+    const cell = row.insertCell();
+    cell.appendChild(document.createTextNode(content));
 }
