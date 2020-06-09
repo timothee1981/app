@@ -14,7 +14,7 @@ request.open("GET","/api/top10transactions", true);
 request.onreadystatechange = function() {
     if (request.readyState === 4) {
         if (request.status === 200) {
-            document.getElementById("message").innerHTML = request.responseText;
+            tableCreate(JSON.parse(request.responseText));
         }
         else {
             alert('Something is wrong !!');
@@ -23,64 +23,47 @@ request.onreadystatechange = function() {
 };
 request.send(null);
 
-//add something that fires the request (pageload?)
+
+function tableCreate(top10transactions) {
+    var body = document.body,
+        tbl = document.createElement('table');
+    tbl.style.width = '65%';
+    var row = tbl.insertRow();
+    var cell = document.createElement('th');
+    cell.appendChild(document.createTextNode("First name"));
+    row.appendChild(cell);
+
+    var cell = document.createElement('th');
+    cell.appendChild(document.createTextNode("Last name"));
+    row.appendChild(cell);
+
+    var cell = document.createElement('th');
+    cell.appendChild(document.createTextNode("Number of transactions"));
+    row.appendChild(cell);
+
+    var cell = document.createElement('th');
+    cell.appendChild(document.createTextNode("Balance"));
+    row.appendChild(cell);
 
 
+    for (var i = 0; i < top10transactions.length; i++) {
+        var row = tbl.insertRow();
 
-//vanuit Javascript aanmaak van een lege tabel
-function tableCreate(){
-        var body = document.body,
-            tbl  = document.createElement('table');
-        tbl.style.width  = '100px';
-        tbl.style.border = '1px solid black';
+        var cell = row.insertCell();
+        cell.appendChild(document.createTextNode('Cell'));
+        cell.innerHTML = top10transactions[i].firstName;
 
-        for(var i = 0; i < 10; i++){
-            var tr = tbl.insertRow();
-            for(var j = 0; j < 4; j++){
-                if(i === 10 && j === 4){
-                    break;
-                } else {
-                    var td = tr.insertCell();
-                    td.appendChild(document.createTextNode('Cell'));
-                    td.style.border = '1px solid black';
-                    if(i === 1 && j === 1){
-                        td.setAttribute('rowSpan', '10');
-                    }
-                }
-            }
-        }
-        body.appendChild(tbl);
+        var cell = row.insertCell();
+        cell.appendChild(document.createTextNode('Cell'));
+        cell.innerHTML = top10transactions[i].lastName;
+
+        var cell = row.insertCell();
+        cell.appendChild(document.createTextNode('Cell'));
+        cell.innerHTML = top10transactions[i].numberOfTransactions;
+
+        var cell = row.insertCell();
+        cell.appendChild(document.createTextNode('Cell'));
+        cell.innerHTML = top10transactions[i].balance.toFixed(2);
     }
-    tableCreate();
-
-//JSON opvangen die gestuurd(?) wordt en met die gegevens de tabel vullen??? callback function?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// <p id="/api/top10transactions"></p>
-//
-// <script>
-//     document.getElementById("").innerHTML =
-//     obj.CustomerAndTransactions[1].firstName + " " +
-//     obj.CustomerAndTransactions[2].lastName + " " +
-//     obj.CustomerAndTransactions[3].numberOfTransactions + " " +
-//     obj.CustomerAndTransactions[4].balance;
-//     </script>
+    body.appendChild(tbl);
+}
