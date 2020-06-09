@@ -33,7 +33,7 @@ public class AccountDetailsController {
     @GetMapping("/accountdetails")
     public ModelAndView accountDetailsHandler( @SessionAttribute("userid") int userId, @RequestParam(value = "accountNumber",required = false) String accountNumber) {
 
-        ModelAndView mav = new ModelAndView("/accountdetails");
+        ModelAndView mav = new ModelAndView("accountdetails");
 
         //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
         List<Account> myAccounts = getAccountsFromUserId(userId);
