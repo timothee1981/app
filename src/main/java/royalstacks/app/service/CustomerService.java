@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 public class CustomerService {
 
     private static final int BUSINESS_ACCOUNT_SIZE = 10;
+    private static final int PRIVATE_ACCOUNT_SIZE = 10;
     private static final int BSN_LENGTH = 9;
 
     private static final Pattern PHONE_HOME_REGEX = Pattern.compile("^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$");
@@ -157,4 +158,21 @@ public class CustomerService {
                 isHouseNumberValid(customer.getHouseNumber());
     }
 
+    public List<CustomerAndTotalBalance> findTop10PrivateAccounts() {
+        Pageable pageable = PageRequest.of(0, PRIVATE_ACCOUNT_SIZE);
+        List<Object[]> results = customerRepository.findCustomersAndPrivateAccountBalance(pageable);
+        List<CustomerAndTotalBalance> customersAndTotalBalance = new ArrayList<>();
+
+        for (Object[] result : results) {
+            customersAndTotalBalance.add(
+                    new CustomerAndTotalBalance(
+                            (String) result[0], // FIRSTNAME
+                            (String) result[1], // LASTNAME
+                            (BigDecimal) result[2] // BALANCE
+                    )
+            );
+        }
+
+        return customersAndTotalBalance;
+    }
 }

@@ -17,6 +17,9 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
     @Query("SELECT c.firstName, c.lastName, SUM(ba.balance) AS totalBalance FROM Customer c JOIN c.account ba WHERE TYPE(ba) = BusinessAccount GROUP BY c.userid ORDER BY totalBalance DESC")
     List<Object[]> findCustomersAndBusinessAccountBalance(Pageable pageable);
 
+    @Query("SELECT c.firstName, c.lastName, SUM(pa.balance) AS totalBalance FROM Customer c JOIN c.account pa WHERE TYPE(pa) = PrivateAccount GROUP BY c.userid ORDER BY totalBalance DESC")
+    List<Object[]> findCustomersAndPrivateAccountBalance(Pageable pageable);
+
     @Query("SELECT c FROM Customer c WHERE c.userid = ?1")
     Optional<Customer> findCustomerByUserId(int userid);
 
