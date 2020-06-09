@@ -1,15 +1,14 @@
 const fromAccountField = document.getElementById("fromAccountNumber");
 const toAccountField = document.getElementById("toAccountNumber");
 const amountField = document.getElementById("amount");
-const errorAccountDoesntExist1 = "while typing: Enter an existing Royal Stacks iban account number "
-const errorAccountDoesntExist2 = "Account format error: Enter an existing Royal Stacks "
-const errorAccountDoesntExist3 = "not in DB : Enter an existing Royal Stacks iban account number "
+const errorAccountDoesntExist1 = "Pleas enter a valid Royal Stacks Iban"
+const errorAccountDoesntExist2 = "Account doesn't exist, enter an existing account "
 const errorSenderSameAsReceiver = "The receiving account can't be the same as the sending account"
 const errorAmountTooHigh = "The amount can't be higher than the available balance"
 const errorAmountFormatInvalid = "The amount should only consist of numbers, with a maximum of two decimals"
 const errorNoAmount = "Enter the amount to be transfered"
 const ibanLength = 18;
-let apiResponse;
+let ibanExistInDb;
 
 //Input validation checks
 
@@ -41,10 +40,12 @@ function existInDbHandler(){
             console.log(response);
         if(response === "true"){
             setClassValid("toAccountNumber");
+            ibanExistInDb = true;
         }
         else{
-            showError(errorAccountDoesntExist3, "toAccountError");
+            showError(errorAccountDoesntExist2, "toAccountError");
             setClassInvalid("toAccountNumber");
+            ibanExistInDb = false;
         }
     });
 }
@@ -61,13 +62,15 @@ function isAmountFilledIn(){
 }
 //Combined validation checks on singel input fields
 function isToAccountValid(){
-    return(isAccountFormatValid() && isAccountDifferentThanFromAccount() && existInDbHandler());
+    return(isAccountFormatValid() && isAccountDifferentThanFromAccount() && ibanExistInDb);
 }
 function isAmountValid(){
     return(isAmountFormatValid() && isAmountSmallerThanBalance() && isAmountFilledIn());
 }
 //Combined check on ALL input fields
 function isAllInputValid(){
+    console.log("toAccount Valid:  "+ isToAccountValid());
+    console.log("Amount Valid:  "+ isAmountValid());
     return (isToAccountValid() && isAmountValid());
 }
 //Combined check and error handling for toAccount inputField
@@ -79,7 +82,7 @@ function toAccountFieldErrorHandler(){
         }
     }
     else if (!isAccountFormatValid()){
-        showError(errorAccountDoesntExist2, "toAccountError");
+        showError(errorAccountDoesntExist1, "toAccountError");
         setClassInvalid("toAccountNumber")
     }
     else if(!isAccountDifferentThanFromAccount()){
@@ -100,7 +103,7 @@ function amountFieldErrorHandler(){
         showError(errorAmountTooHigh, "amountError");
         setClassInvalid("amount");
     }
-    else{
+    else if (amountField.value.length>0) {
         setClassValid("amount");
     }
 
@@ -115,15 +118,21 @@ function buttonHandler(){
         disableButton()
     }
 }
+// remove errors and valid/invalid classen
+function resetErrorsAndClasses(){
+
+}
+
 
 //Event Listeners
 toAccountField.addEventListener("input", function() {
     hideError(errorAccountDoesntExist1, "toAccountError");
     hideError(errorAccountDoesntExist2, "toAccountError");
-    hideError(errorAccountDoesntExist3, "toAccountError");
     hideError(errorSenderSameAsReceiver, "toAccountError");
     removeValidInValidClasses("toAccountNumber");
     toAccountFieldErrorHandler();
+    buttonHandler();
+
 });
 
 amountField.addEventListener("input", function(){
@@ -131,12 +140,12 @@ amountField.addEventListener("input", function(){
     hideError(errorAmountTooHigh, "amountError");
     removeValidInValidClasses("amount");
     amountFieldErrorHandler();
+    buttonHandler();
 
 });
 fromAccountField.addEventListener("click", function(){
     hideError(errorAccountDoesntExist1, "toAccountError");
     hideError(errorAccountDoesntExist2, "toAccountError");
-    hideError(errorAccountDoesntExist3, "toAccountError");
     hideError(errorSenderSameAsReceiver, "toAccountError");
     hideError(errorAmountFormatInvalid, "amountError");
     hideError(errorAmountTooHigh, "amountError");
@@ -145,9 +154,8 @@ fromAccountField.addEventListener("click", function(){
     toAccountFieldErrorHandler();
     amountFieldErrorHandler();
 
+
 });
-
-
 
 function enableButton(){
     if(document.getElementById("submitButton").disabled === true){
@@ -159,83 +167,6 @@ function disableButton(){
         document.getElementById("submitButton").disabled = true;
     }
 }
-    /*
-
-    function fromAccountValidationAction() {
-        if(toAccountField.value.length > 0 ) {
-            showHideToAccountValidMark();
-            showHideToAccountErrors();
-        }
-        if(isAmountFilledIn()) {
-            showHideAmountValidMark();
-            showHideAmountErrors();
-        }
-        else{
-            removeValidClass("amount");
-            disableButton()
-        }
-    }
-    function toAccountValidationAction(){
-        showHideToAccountErrors();
-        showHideToAccountValidMark();
-    }
-    function amountValidationAction() {
-        showHideAmountErrors();
-        showHideAmountValidMark();
-    }
-
-
-    function showHideToAccountErrors(){
-        if(isAccountFormatValid()) {
-            hideError(errorAccountDoesntExist, "toAccountError");
-         }
-        else{
-            showError(errorAccountDoesntExist, "toAccountError");
-            disableButton()
-        }
-        if(isAccountDifferentThanFromAccount()){
-            hideError(errorSenderSameAsReceiver, "toAccountError");
-        }
-        else{
-            showError(errorSenderSameAsReceiver, "toAccountError");
-            disableButton()
-        }
-
-    }
-    function showHideAmountErrors(){
-        hideError(errorNoAmount, "amountError");
-        if(isAmountFormatValid()){
-            hideError(errorAmountFormatInvalid, "amountError");
-        }
-        else{
-            showError(errorAmountFormatInvalid, "amountError");
-            disableButton()
-        }
-        if(isAmountSmallerThanBalance()){
-            hideError(errorAmountTooHigh, "amountError");
-        }
-        else {
-            showError(errorAmountTooHigh, "amountError");
-            disableButton()
-        }
-    }
-    function showHideAmountValidMark(){
-        if(isAmountValid()){
-            setClassValid("amount");}
-        else{
-            setClassInvalid("amount");
-        }
-    }
-    function showHideToAccountValidMark(){
-        if(isToAccountValid()){
-            setClassValid("toAccountNumber");}
-        else{
-            setClassInvalid("toAccountNumber");
-        }
-    }*/
-
-
-
 
 function showError(errorMessage, elementId){
     let currentText = document.getElementById(elementId).innerHTML;
