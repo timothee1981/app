@@ -2,6 +2,7 @@ package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +17,7 @@ import royalstacks.app.service.UserService;
 
 import java.util.Optional;
 
+@Controller
 public class AcceptAccountHolderInviteController {
 
     @Autowired
@@ -58,10 +60,11 @@ public class AcceptAccountHolderInviteController {
         AccountHolderInvite inviteToBeVerified = new AccountHolderInvite((Customer) invitee, accountToBeAdded, ibb.getVerificationCode());
         Optional<AccountHolderInvite> existingInvite = accountHolderInviteService.findAccountHolderInviteByAccountAndInviteeAndCode(inviteToBeVerified.getInvitee().getUserid(), inviteToBeVerified.getAccount().getAccountId(), inviteToBeVerified.getVerificationCode());
         //ifPresent: voeg customer toe als accountholder en geef bevestiging aan klant
-        // TODO moet hier meer gebeuren? Boolean isBusinessAccountHolder en Employee accountmanager?
+        // TODO moet hier meer gebeuren? Boolean isBusinessAccountHolder en Employee accountmanager! ZIE OPENACCOUNTCONTROLLER
         if (existingInvite.isPresent()){
             // TODO wat gebeurt er als men al accountholder was van dezelfde account?
             accountToBeAdded.addAccountHolder((Customer) invitee);
+            accountService.saveAccount(accountToBeAdded);
             displayMessage("Account added.", mav);
             System.out.println("Account added");
         }
