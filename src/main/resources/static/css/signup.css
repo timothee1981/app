@@ -172,21 +172,21 @@ button[disabled]{
 
 
 /* maakt text groen bij juiste invoer */
-.valid {
+.passReqValid {
     color: rgba(0, 128, 0, 0.70);
 }
 
-.valid:before {
+.passReqValid:before {
     position: relative;
     left: -35px;
 }
 
 /* maakt tekst rood bij foute invoer */
-.invalid {
+.passReqInvalid {
     color: rgba(255, 0, 0, 0.70);
 }
 
-.invalid:before {
+.passReqInvalid:before {
     position: relative;
     left: -35px;
 }
