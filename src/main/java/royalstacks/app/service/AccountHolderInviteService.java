@@ -23,6 +23,11 @@ public class AccountHolderInviteService {
             return accountHolderInviteRepository.findInviteByAccountAndInvitee(userId, accountId);
     }
 
+    public Optional<AccountHolderInvite> findAccountHolderInviteByAccountAndInviteeAndCode(int userId, int accountId, String verificationCode){
+        return accountHolderInviteRepository.findAccountHolderInviteByAccountAndInviteeAndCode(userId, accountId, verificationCode);
+    }
+
+
     public boolean isVerificationCodeValid(String verificationCode){
         verificationCode = verificationCode.trim();
         return verificationCode.matches("\\d{5}");
