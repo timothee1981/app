@@ -7,17 +7,17 @@ import org.springframework.web.servlet.ModelAndView;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-class MyAccountsControllerTest {
+class AccountOverviewControllerTest {
 
 
 
     @Test
     void openAccountHandler() {
         //ARRANGE
-        MyAccountsController myAccountsController = new MyAccountsController();
+        AccountOverviewController accountOverviewController = new AccountOverviewController();
 
         //ACT
-        ModelAndView result = myAccountsController.openAccountHandler();
+        ModelAndView result = accountOverviewController.openAccountHandler();
 
 
         //ASSERT
