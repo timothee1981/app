@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountHolderInviteBackingBean;
 import royalstacks.app.model.*;
+import royalstacks.app.model.repository.EmployeeRepository;
 import royalstacks.app.service.AccountHolderInviteService;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.BusinessAccountService;
@@ -29,6 +30,9 @@ public class AcceptAccountHolderInviteController {
 
     @Autowired
     AccountHolderInviteService accountHolderInviteService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
 
     @GetMapping("/acceptaccountholderinvite")
@@ -61,19 +65,22 @@ public class AcceptAccountHolderInviteController {
         AccountHolderInvite inviteToBeVerified = new AccountHolderInvite((Customer) invitee, accountToBeAdded, ibb.getVerificationCode());
         Optional<AccountHolderInvite> existingInvite = accountHolderInviteService.findAccountHolderInviteByAccountAndInviteeAndCode(inviteToBeVerified.getInvitee().getUserid(), inviteToBeVerified.getAccount().getAccountId(), inviteToBeVerified.getVerificationCode());
         //ifPresent: voeg customer toe als accountholder en geef bevestiging aan klant
-        // TODO moet hier meer gebeuren? Boolean isBusinessAccountHolder en Employee accountmanager! ZIE OPENACCOUNTCONTROLLER
         if (existingInvite.isPresent()){
-            if (isBusinessAccount(accountToBeAdded)){
-
+            if (isBusinessAccount(accountToBeAdded)) {
+                if (!((Customer) invitee).isBusinessAccountHolder()) {
+                    ((Customer) invitee).setBusinessAccountHolder(true);
+                }
+                    if (employeeRepository.findAll().iterator().hasNext()) {
+                        //Er moet geen Account Manager aangemaakt kunnen worden als er geen account manager is.
+                        ((Customer) invitee).setAccountManager(employeeRepository.findAll().iterator().next());
+                    }
+                }
             }
-
             // TODO wat gebeurt er als men al accountholder was van dezelfde account?
             accountToBeAdded.addAccountHolder((Customer) invitee);
             accountService.saveAccount(accountToBeAdded);
             displayMessage("Account added.", mav);
             System.out.println("Account added");
-        }
-        // TODO hier wordt nu nog een héél verkeerd scherm getoond haha
         return mav;
     }
 
@@ -88,11 +95,13 @@ public class AcceptAccountHolderInviteController {
         mav.addObject("verificationCode", ibb.getVerificationCode());
     }
 
-    // checkt of accountId voorkomt in tabel business_account
-    private boolean isBusinessAccount(Account account) {
+    // checkt of accountId voorkomt in tabel business_account, moet naar BusinessAccount of naar Account toe???
+    public boolean isBusinessAccount(Account account) {
         Optional<BusinessAccount> optionalBusinessAccount = businessAccountService.findByAccountId(account.getAccountId());
         return (optionalBusinessAccount.isPresent());
     }
+
+
 
 
 }

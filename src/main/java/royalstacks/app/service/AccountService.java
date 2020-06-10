@@ -3,6 +3,7 @@ package royalstacks.app.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Account;
+import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
 
@@ -97,9 +98,5 @@ public class AccountService {
         }else
             return null;
     }
-
-
-
-
 
 }
