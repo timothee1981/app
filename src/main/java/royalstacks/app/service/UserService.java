@@ -24,7 +24,7 @@ public class UserService {
     private static final Pattern USERNAME_REGEX = Pattern.compile("^[a-zA-Z0-9_-]+$");
     // Moet 1 kleine letter, 1 grote letter, 1 nummer, 1 speciaal karakter en minstens 10 karakters lang zijn
     private static final Pattern PASSWORD_REGEX = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]])[A-Za-z\\d!\"#$%&'()*+,\\-./:;<=>?@^_`{|}~\\[\\]]+$");
-    private static final Pattern NAME_REGEX = Pattern.compile("^[-a-zA-Z\\-']+(\\s+[-a-zA-Z\\-']+)*$");
+    private static final Pattern NAME_REGEX = Pattern.compile("^([-a-zA-Z\\-']+(\\s+[-a-zA-Z\\-']+)*){2,100}$");
 
     @Qualifier("userRepository")
     private final UserRepository userRepository;
