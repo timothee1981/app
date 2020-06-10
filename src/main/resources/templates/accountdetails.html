@@ -54,7 +54,9 @@
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Account holders</div>
-        <div class="infocell" th:each="customer : ${list}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></div>
+        <Select  size="2" id="select" class="infocell" >
+                <option id="option" th:each="customer : ${list}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></option>
+        </Select>
     </div>
 </div>
 <div class="buttondiv">
