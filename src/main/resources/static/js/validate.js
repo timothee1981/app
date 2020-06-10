@@ -68,7 +68,7 @@ class Validate{
     names(id){
         let nameInput = document.getElementById(id).value;
 
-        if (regex.username.test(nameInput)) {
+        if (regex.names.test(nameInput)) {
             this.setElementValid(id);
         } else {
             this.setElementInvalid(id);

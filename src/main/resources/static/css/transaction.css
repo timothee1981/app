@@ -114,17 +114,19 @@ input + span::before {
 
 .isValid + span::before {
     content: '✓';
-    font-size: 2em;
+    font-size: 1em;
     color: #00b300;
     position: relative;
+    margin-top: 6px;
 
 
 }
 
 .isInvalid + span::before {
     content: '✗';
-    font-size: 2em;
-    color: rgba(255, 0, 0, 1);
+    font-size: 1em;
+    color: #1E90FF;
+    margin-top: 6px;
 }
 
 /* Set a style button */
