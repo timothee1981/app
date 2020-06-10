@@ -81,14 +81,11 @@
 
 <script src="js/navbar"></script>
 <script src="js/transactionFieldValidation.js" defer></script>
-<script>
-    $(document).ready(function(){
+<script defer>
+
 
         // add eventlistener to all table-cells - on click- go to account details
         document.getElementById('backButton').addEventListener("click", function(){
-
-                //1 - get acountnumber clicked
-                // Here, `this` refers to the element the event was hooked on
 
                 let e = document.getElementById("fromAccountNumber");
                 let accountnumber = e.options[e.selectedIndex].value;
@@ -96,14 +93,23 @@
 
                 //2 - fire get request with parameter to go to account details
 
+            let input = document.createElement("input");
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "accountNumber");
+            input.setAttribute("value", accountnumber);
 
-               let input = $("<input>")
+            let form = document.getElementById("accountdetailsForm");
+            form.appendChild(input);
+            form.submit();
+
+
+  /*             let input = $("<input>")
                     .attr("type", "hidden")
                     .attr("name", "accountNumber")
                    .attr("value", accountnumber);
-                $('#accountdetailsForm').append($(input)).submit();
+                $('#accountdetailsForm').append($(input)).submit();*/
             });
-    })
+
 
 </script>
 </html>
