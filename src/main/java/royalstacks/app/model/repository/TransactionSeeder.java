@@ -28,5 +28,6 @@ public class TransactionSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        transactionRepository.deleteAll();
     }
 }

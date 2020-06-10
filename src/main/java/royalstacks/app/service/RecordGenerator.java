@@ -8,7 +8,6 @@ import royalstacks.app.model.repository.CustomerRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -49,6 +48,7 @@ public class RecordGenerator {
         String houseNumber = "22";
         String suffix = "a";
         String city = "Ede";
+        String street = "Duindoornstraat";
         String postalCode = "1337GG";
         String phone = "0656475656";
         String socialSecurityNumber = "199887878";
@@ -56,7 +56,8 @@ public class RecordGenerator {
         for (int index = 1; index <= amount ; index++) {
             String username = usernameBase + index;
             socialSecurityNumber = String.valueOf(Integer.parseInt(socialSecurityNumber)+1);
-            Customer customer = new Customer(username, password, name, lastname, emailAddress, postalCode, houseNumber, suffix, city, phone, socialSecurityNumber, null, false);
+            CustomerAddress customerAddress = new CustomerAddress (postalCode, houseNumber, suffix, city, street);
+            Customer customer = new Customer(username, password, name, lastname, emailAddress, customerAddress, phone, socialSecurityNumber, null, false);
 
             // only save this user if username does not exist yet
             if(userService.findByUsername(username).isEmpty()) {

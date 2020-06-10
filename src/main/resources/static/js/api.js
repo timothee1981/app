@@ -13,9 +13,6 @@ class API {
                 }
                 return response.json();
             })
-            .then((data) => {
-                return data;
-            })
             .catch(() => {
             });
     }

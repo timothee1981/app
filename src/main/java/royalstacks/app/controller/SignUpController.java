@@ -22,6 +22,7 @@ public class SignUpController {
     private CustomerService customerService;
     private ModelAndView mav;
     private Customer customer;
+    private CustomerBackingBean cbb;
 
     @Autowired
     public SignUpController(CustomerService cs){
@@ -38,7 +39,7 @@ public class SignUpController {
 
         this.mav = new ModelAndView("signup");
         this.customer = cbb.customer();
-
+        this.cbb = cbb;
         if(customerService.isAllInputValid(this.customer)){
             customerService.saveCustomer(this.customer);
             populateFields();
@@ -62,15 +63,15 @@ public class SignUpController {
     }
 
     private void populateFields() {
-        this.mav.addObject("username", this.customer.getUsername());
-        this.mav.addObject("firstName", this.customer.getFirstName());
-        this.mav.addObject("lastName", this.customer.getLastName());
-        this.mav.addObject("email", this.customer.getEmail());
-        this.mav.addObject("postalCode", this.customer.getPostalCode());
-        this.mav.addObject("city", this.customer.getCity());
-        this.mav.addObject("phoneNumber", this.customer.getPhoneNumber());
-        this.mav.addObject("BSN", this.customer.getBSN());
-        this.mav.addObject("houseNumber", this.customer.getHouseNumber());
+        this.mav.addObject("username", this.cbb.getUsername());
+        this.mav.addObject("firstName", this.cbb.getFirstName());
+        this.mav.addObject("lastName", this.cbb.getLastName());
+        this.mav.addObject("email", this.cbb.getEmail());
+        this.mav.addObject("postalCode", this.cbb.getPostalCode());
+        this.mav.addObject("city", this.cbb.getCity());
+        this.mav.addObject("phoneNumber", this.cbb.getPhoneNumber());
+        this.mav.addObject("BSN", this.cbb.getBSN());
+        this.mav.addObject("houseNumber", this.cbb.getHouseNumber());
     }
 
 }

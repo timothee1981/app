@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.CustomerAddress;
 import royalstacks.app.model.Employee;
 import royalstacks.app.model.User;
 
@@ -30,7 +31,8 @@ class UserRepositoryIntegrationTest {
     @Test
     void findUserByUsername() {
 
-        Customer customer = new Customer("username","password",  "firstName", "LastName", "email", "postcode", "housenumber", "suffix", "city", "phonenumber","BSN", null, false);
+        CustomerAddress customerAddress = new CustomerAddress("postalCode", "houseNumber", "suffix", "city", "street");
+        Customer customer = new Customer("username","password",  "firstName", "LastName", "email", customerAddress, "phonenumber","BSN", null, false);
         this.entityManager.persist(customer);
         Optional<User> expected = Optional.of(customer);
 

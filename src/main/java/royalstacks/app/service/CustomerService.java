@@ -151,11 +151,10 @@ public class CustomerService {
                 userService.isNameValid(customer.getFirstName()) &&
                 userService.isNameValid(customer.getLastName()) &&
                 isEmailValid(customer.getEmail()) &&
-                isPostalCodeValid(customer.getPostalCode()) &&
-                isCityValid(customer.getCity()) &&
+
                 isPhoneNumberValid(customer.getPhoneNumber()) &&
-                isBSNFormatValid(customer.getBSN()) &&
-                isHouseNumberValid(customer.getHouseNumber());
+                isBSNFormatValid(customer.getBSN());
+
     }
 
     public List<CustomerAndTotalBalance> findTop10PrivateAccounts() {
