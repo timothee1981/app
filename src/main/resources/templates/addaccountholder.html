@@ -17,7 +17,7 @@
 <h2 class="content"> Enter the username of the person you want to add as <br>an accountholder and choose a verification code.</h2>
 <form id="form" method="post" class="form">
 
-    Account number <span th:text="${accountNumber}"/> <br>
+    <h4 class="content" > Account number <span th:text="${accountNumber}"/> </h4> <br>
 
     <label for="inviteeUsername">Username </label>
     <input
@@ -46,7 +46,8 @@
 
     <td><button type="submit" name="submit" id="submitButton" value="Send invitation">Send invitation</button></td>
 </form>
-<h3><span th:text="${message}"/></h3>
+<h3> <span th:text="${message}"/> </h3>
+
 
 <script src="js/navbar.js"></script>
 </body>
