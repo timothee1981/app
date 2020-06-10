@@ -68,6 +68,7 @@ public class AcceptAccountHolderInviteController {
             displayMessage("Account added.", mav);
             System.out.println("Account added");
         }
+        // TODO hier wordt nu nog een héél verkeerd scherm getoond haha
         return mav;
     }
 

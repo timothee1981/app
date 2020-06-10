@@ -35,7 +35,7 @@ public class AddAccountHolderController {
                                                 @RequestParam(value = "accountNumber", required = false) String accountNumber) {
         // http://localhost/addaccountholder?accountNumber=NL32ROYA0000000019
         // System.out.println(accountNumber);
-        ModelAndView mav = new ModelAndView("/addaccountholder");
+        ModelAndView mav = new ModelAndView("addaccountholder");
 
         Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(accountNumber);
         if (optionalAccount.isPresent()) {
