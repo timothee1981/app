@@ -55,16 +55,16 @@ public class AddAccountHolderController {
         Optional<User> optionalUser = userService.findByUsername(ibb.getInviteeUsername());
         Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(ibb.getAccountNumber());
         Account anAccount = optionalAccount.get();
-        //check of user bestaat werkt
+        //check of user bestaat
         if (optionalUser.isPresent()) {
             invitee = optionalUser.get();
         }
-        //check op 5 getallen werkt, check op Customer lijkt ook te werken
-        if (accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode()) && userService.isUserCustomer(invitee)) {
+        //check op 5 getallen, check op Customer
+        if (accountHolderInviteService.isVerificationCodeValid(ibb.getVerificationCode()) && userService.isUserCustomer(invitee) && (!(anAccount.getAccountHolders().contains(invitee)))) {
             ibb.setInviteeUsername(invitee.getUsername());
             ibb.setVerificationCode(ibb.getVerificationCode());
         } else {
-            displayMessage("Please enter an existing customer's username and a five-digit number", mav);
+            displayMessage("Please enter an existing customer's username (who is not already an account holder for this account) and a five-digit number", mav);
             populateFields(ibb, mav);
             return mav;
         }
@@ -98,9 +98,6 @@ public class AddAccountHolderController {
         mav.addObject("inviteeUsername", ibb.getInviteeUsername());
         mav.addObject("verificationCode", ibb.getVerificationCode());
     }
-
-
-
 
 
 
