@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Transfer Money</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/transaction.css" rel="stylesheet" />
 </head>
@@ -64,11 +67,43 @@
         <span></span>
         <span></span>
             <td><button type="submit" name="submit" id="submitButton" disabled=true value="Send Money">Send Money</button></td>
+
     </form>
+    <form id="accountdetailsForm" th:action="@{accountdetails}" type="get">
+        <button type="button" id="backButton" value="Cancel">Cancel</button>
+    </form>
+
+
+
 
 
 </body>
 
 <script src="js/navbar"></script>
 <script src="js/transactionFieldValidation.js" defer></script>
+<script>
+    $(document).ready(function(){
+
+        // add eventlistener to all table-cells - on click- go to account details
+        document.getElementById('backButton').addEventListener("click", function(){
+
+                //1 - get acountnumber clicked
+                // Here, `this` refers to the element the event was hooked on
+
+                let e = document.getElementById("fromAccountNumber");
+                let accountnumber = e.options[e.selectedIndex].value;
+                console.log(accountnumber);
+
+                //2 - fire get request with parameter to go to account details
+
+
+               let input = $("<input>")
+                    .attr("type", "hidden")
+                    .attr("name", "accountNumber")
+                   .attr("value", accountnumber);
+                $('#accountdetailsForm').append($(input)).submit();
+            });
+    })
+
+</script>
 </html>

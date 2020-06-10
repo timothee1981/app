@@ -31,19 +31,25 @@ public class AccountDetailsController {
     }
 
     @GetMapping("/accountdetails")
-    public ModelAndView accountDetailsHandler( @SessionAttribute("userid") int userId, @RequestParam(value = "accountNumber",required = false) String accountNumber) {
+    public ModelAndView accountDetailsHandler( @SessionAttribute("userid") int userId, @RequestParam(value = "accountNumber",required = false) String accountNumber, @RequestParam(value = "fromAccountNumber",required = false) String fromAccountNumber) {
 
         ModelAndView mav = new ModelAndView("accountdetails");
 
         //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
         List<Account> myAccounts = getAccountsFromUserId(userId);
         mav.addObject("accounts",myAccounts);
-
+        String accountNumberCookie;
         //check if accountnumber belongs to user:
+        if(accountNumber!=null) {
+             accountNumberCookie = accountNumber;
+        }
+        else{
+            accountNumberCookie = fromAccountNumber;
+        }
         for(Account account: myAccounts){
-            if(accountNumber.matches(account.getAccountNumber())){
+            if(accountNumberCookie.matches(account.getAccountNumber())){
 
-            Account myAccount = getAccountFromAccountNumber(accountNumber);
+            Account myAccount = getAccountFromAccountNumber(accountNumberCookie);
 
             populatefields(mav,myAccount);
 
