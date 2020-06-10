@@ -12,6 +12,7 @@ import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class AccountOverviewController {
         while(accounts.hasNext()){
             myAccounts.add(accounts.next());
         }
+        Collections.sort(myAccounts);
         model.addAttribute("customer",customer);
         model.addAttribute("list",myAccounts);
     }
