@@ -7,12 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountHolderInviteBackingBean;
-import royalstacks.app.model.Account;
-import royalstacks.app.model.AccountHolderInvite;
-import royalstacks.app.model.Customer;
-import royalstacks.app.model.User;
+import royalstacks.app.model.*;
 import royalstacks.app.service.AccountHolderInviteService;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.BusinessAccountService;
 import royalstacks.app.service.UserService;
 
 import java.util.Optional;
@@ -22,6 +20,9 @@ public class AcceptAccountHolderInviteController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    BusinessAccountService businessAccountService;
 
     @Autowired
     UserService userService;
@@ -40,7 +41,7 @@ public class AcceptAccountHolderInviteController {
     public ModelAndView acceptAccountHolderInviteHandler(@ModelAttribute AccountHolderInviteBackingBean ibb,
                                                          @SessionAttribute("userid") int userId,
                                                          Model model) {
-        ModelAndView mav = new ModelAndView("addaccountholder");
+        ModelAndView mav = new ModelAndView("acceptaccountholderinvite");
         User invitee = null;
         Account accountToBeAdded = null;
 
@@ -62,6 +63,10 @@ public class AcceptAccountHolderInviteController {
         //ifPresent: voeg customer toe als accountholder en geef bevestiging aan klant
         // TODO moet hier meer gebeuren? Boolean isBusinessAccountHolder en Employee accountmanager! ZIE OPENACCOUNTCONTROLLER
         if (existingInvite.isPresent()){
+            if (isBusinessAccount(accountToBeAdded)){
+
+            }
+
             // TODO wat gebeurt er als men al accountholder was van dezelfde account?
             accountToBeAdded.addAccountHolder((Customer) invitee);
             accountService.saveAccount(accountToBeAdded);
@@ -81,6 +86,12 @@ public class AcceptAccountHolderInviteController {
     private void populateFields(AccountHolderInviteBackingBean ibb, ModelAndView mav) {
         mav.addObject("accountNumber",ibb.getAccountNumber());
         mav.addObject("verificationCode", ibb.getVerificationCode());
+    }
+
+    // checkt of accountId voorkomt in tabel business_account
+    private boolean isBusinessAccount(Account account) {
+        Optional<BusinessAccount> optionalBusinessAccount = businessAccountService.findByAccountId(account.getAccountId());
+        return (optionalBusinessAccount.isPresent());
     }
 
 
