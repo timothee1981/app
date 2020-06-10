@@ -65,15 +65,15 @@ public class AcceptAccountHolderInviteController {
         AccountHolderInvite inviteToBeVerified = new AccountHolderInvite((Customer) invitee, accountToBeAdded, ibb.getVerificationCode());
         Optional<AccountHolderInvite> existingInvite = accountHolderInviteService.findAccountHolderInviteByAccountAndInviteeAndCode(inviteToBeVerified.getInvitee().getUserid(), inviteToBeVerified.getAccount().getAccountId(), inviteToBeVerified.getVerificationCode());
         //ifPresent: voeg customer toe als accountholder en geef bevestiging aan klant
-        if (existingInvite.isPresent()){
+        if (existingInvite.isPresent()) {
             if (isBusinessAccount(accountToBeAdded)) {
+                //uit OpenAccountController gepakt
                 if (!((Customer) invitee).isBusinessAccountHolder()) {
                     ((Customer) invitee).setBusinessAccountHolder(true);
                 }
-                    if (employeeRepository.findAll().iterator().hasNext()) {
-                        //Er moet geen Account Manager aangemaakt kunnen worden als er geen account manager is.
-                        ((Customer) invitee).setAccountManager(employeeRepository.findAll().iterator().next());
-                    }
+                if (employeeRepository.findAll().iterator().hasNext()) {
+                    //Er moet geen Account Manager aangemaakt kunnen worden als er geen account manager is.
+                    ((Customer) invitee).setAccountManager(employeeRepository.findAll().iterator().next());
                 }
             }
             // TODO wat gebeurt er als men al accountholder was van dezelfde account?
@@ -81,6 +81,11 @@ public class AcceptAccountHolderInviteController {
             accountService.saveAccount(accountToBeAdded);
             displayMessage("Account added.", mav);
             System.out.println("Account added");
+        } else {
+            // om veiligheidsredenen geen aparte melding geven als alleen rekeningnummer óf verificatiecode onjuist zijn
+            displayMessage("The account number and/or verification code you entered is incorrect.", mav);
+            populateFields(ibb, mav);
+        }
         return mav;
     }
 
