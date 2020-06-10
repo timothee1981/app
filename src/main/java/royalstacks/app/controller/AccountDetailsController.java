@@ -176,8 +176,7 @@ public class AccountDetailsController {
         return myAccount;
     }
 
-    //METHODE DIE DE DROPDOWN VULT MET ACCOUNTS DIE HOREN BIJ HET GEBRUIKER
-    //GOOIE WEG ALS JE HET NIET GEBRUIKT!!!!! DO NOT FORGET!!!!!!!!!!!!
+    //METHODE DIE HAALT  ACCOUNTS DIE HOREN BIJ HET GEBRUIKER
 
     private List<Account> getAccountsFromUserId(int userId) {
         Customer customer = (Customer) userService.findByUserId(userId);
