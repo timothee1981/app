@@ -1,7 +1,7 @@
-const inviteeUsernameField = document.getElementById("inviteeUsername");
+const accountNumberField = document.getElementById("accountNumber");
 const verificationCodeField = document.getElementById("verificationCode");
 const messageVerificationCodeInvalid = "Please enter a code consisting of five numbers."
-const messageUsernameEmpty = "Please enter the new account holder's username."
+const messageAccountNumberInvalid = "Please enter a valid account number."
 
 function isVerificationCodeFormatValid(){
     let verificationCodeFormatRegex = new RegExp(/^[/\d]{5}?$/);
@@ -12,28 +12,35 @@ function isVerificationCodeProvided() {
     return (verificationCodeField.value.length !== 0);
 }
 
-function isUsernameProvided() {
-    return (inviteeUsernameField.value.length !== 0);
+function isAccountNumberProvided() {
+    return (accountNumberField.value.length !== 0);
 }
 
 
 function verificationCodeFieldMessageHandler() {
     if ((!isVerificationCodeFormatValid()) || (!isVerificationCodeProvided())) {
         showMessage(messageVerificationCodeInvalid, "verificationCodeMessage");
-        setClassInvalid("verificationCode");
+        //setClassInvalid("verificationCode");
     }
 }
 
-function usernameMessageHandler() {
-    if (!isUsernameProvided()){
-        showMessage(messageUsernameEmpty, "usernameMessage");
-        setClassInvalid("inviteeUsername");
+function accountNumberFieldMessageHandler() {
+    if (!isAccountNumberFormatValid() || (!isAccountNumberProvided())) {
+        showMessage(messageAccountNumberInvalid, "accountNumberMessage");
+        //setClassInvalid("accountNumber");
     }
 }
 
+function isAccountNumberFormatValid(){
+    let accountFormatRegex = new RegExp(/^nl[\d]{2}roya[\d]{10}$/i);
+    return (accountFormatRegex.test(toAccountField.value));
+}
+
+function isAllInputValid(){
+    return (isVerificationCodeFormatValid() && isAccountNumberFormatValid() && isVerificationCodeProvided() && isAccountNumberProvided());
+}
 
 
-//Button enable/disable handler
 function buttonHandler(){
     if(isAllInputValid()){
         enableButton();
@@ -42,44 +49,24 @@ function buttonHandler(){
         disableButton()
     }
 }
-// remove errors and valid/invalid classen
-function resetErrorsAndClasses(){
 
-}
 
 
 //Event Listeners
-toAccountField.addEventListener("input", function() {
-    hideError(errorAccountDoesntExist1, "toAccountError");
-    hideError(errorAccountDoesntExist2, "toAccountError");
-    hideError(errorSenderSameAsReceiver, "toAccountError");
-    removeValidInValidClasses("toAccountNumber");
-    toAccountFieldErrorHandler();
+accountNumberField.addEventListener("input", function() {
+    hideMessage(messageAccountNumberInvalid, "accountNumberMessage");
+    //removeValidInValidClasses("accountNumber");
+    accountNumberFieldMessageHandler();
     buttonHandler();
+})
 
-});
-
-amountField.addEventListener("input", function(){
-    hideError(errorAmountFormatInvalid, "amountError");
-    hideError(errorAmountTooHigh, "amountError");
-    removeValidInValidClasses("amount");
-    amountFieldErrorHandler();
+verificationCodeField.addEventListener("input", function() {
+    hideMessage(messageVerificationCodeInvalid, "verificationCodeMessage");
+    //removeValidInValidClasses("verificationCode");
+    verificationCodeFieldMessageHandler();
     buttonHandler();
+})
 
-});
-fromAccountField.addEventListener("click", function(){
-    hideError(errorAccountDoesntExist1, "toAccountError");
-    hideError(errorAccountDoesntExist2, "toAccountError");
-    hideError(errorSenderSameAsReceiver, "toAccountError");
-    hideError(errorAmountFormatInvalid, "amountError");
-    hideError(errorAmountTooHigh, "amountError");
-    removeValidInValidClasses("amount");
-    removeValidInValidClasses("toAccountNumber");
-    toAccountFieldErrorHandler();
-    amountFieldErrorHandler();
-
-
-});
 
 function enableButton(){
     if(document.getElementById("submitButton").disabled === true){
@@ -92,21 +79,22 @@ function disableButton(){
     }
 }
 
-function showError(errorMessage, elementId){
+function showMessage(message, elementId){
     let currentText = document.getElementById(elementId).innerHTML;
-    if(!currentText.includes(errorMessage)) {
-        let newString = currentText.concat(errorMessage);
+    if(!currentText.includes(message)) {
+        let newString = currentText.concat(message);
         document.getElementById(elementId).innerHTML = newString;
     }
 }
-function hideError(errorMessage, elementId){
+function hideMessage(message, elementId){
     let currentText = document.getElementById(elementId).innerHTML;
-    if(currentText.includes(errorMessage)) {
-        let newString = currentText.replace(errorMessage, "");
+    if(currentText.includes(message)) {
+        let newString = currentText.replace(message, "");
         document.getElementById(elementId).innerHTML = newString;
     }
 }
 
+/*
 function setClassValid(id) {
     if(document.getElementById(id).classList.contains('isInvalid')){
         document.getElementById(id).classList.remove('isInvalid');
@@ -130,4 +118,4 @@ function removeValidInValidClasses(id){
     if(document.getElementById(id).classList.contains('isInvalid')){
         document.getElementById(id).classList.remove('isInvalid');
     }
-}
+}*/
