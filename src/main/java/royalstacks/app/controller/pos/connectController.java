@@ -1,12 +1,10 @@
 package royalstacks.app.controller.pos;
 
-import com.google.gson.Gson;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import royalstacks.app.model.pos.ConnectionRequest;
 import royalstacks.app.model.pos.ConnectionRequestData;
 
 
@@ -14,20 +12,19 @@ import royalstacks.app.model.pos.ConnectionRequestData;
 public class connectController {
 
 
-    private ConnectionRequestData connectionRequestData;
-
-
     /**
      *  Zenden van volgende curl stuurt een bericht terug:
-     *  curl -X POST http://localhost/paymentmachine/connect -H "Content-Type: application/json" -d "{\"number\":\"9\"}"
-     * @param number
+     *  curl -X POST http://localhost/paymentmachine/connect -H "Content-Type: application/json" -d "{\"account\":\"0123456789\", \"code\":54321}"
+     * @param connectionRequestData
      * @return
      */
 
     @PostMapping("/paymentmachine/connect")
-    public String paymentMachineConnectionResult(@RequestBody String number){
+    public String paymentMachineConnectionResult(@RequestBody ConnectionRequestData connectionRequestData){
 
-        System.out.println(number);
+
+        System.out.println(connectionRequestData.getAccount());
+        System.out.println(connectionRequestData.getCode());
         return "gelukt";
     }
 
