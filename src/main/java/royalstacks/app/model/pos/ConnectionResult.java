@@ -1,6 +1,10 @@
 package royalstacks.app.model.pos;
 
-import royalstacks.app.model.BusinessAccount;
+import org.springframework.beans.factory.annotation.Autowired;
+import royalstacks.app.model.repository.AccountRepository;
+import royalstacks.app.model.repository.PosConnectionRepository;
+
+import java.util.Optional;
 
 public class ConnectionResult {
 
@@ -10,6 +14,10 @@ public class ConnectionResult {
 
     private boolean succeeded;
     private long id;
+
+    @Autowired
+    private PosConnectionRepository posConnectionRepository;
+
 
     //CONSTRUCTORS
     public ConnectionResult(boolean succeeded, long id) {
@@ -33,7 +41,26 @@ public class ConnectionResult {
 
     private long generate8DigitId() {
         //todo: implement
-        return 87655678;
+        final long INITIAL_ID = 00000000;
+        long lastId;
+
+        if(retrieveLastId() == 0){
+            lastId = INITIAL_ID;
+        }
+        else {
+            lastId = retrieveLastId();
+        }
+        long newId = lastId+1;;
+        return  newId;
+    }
+
+    private long retrieveLastId() {
+        Optional<Long> lastId = posConnectionRepository.getLastId();
+        if (lastId.isPresent()) {
+            return lastId.get();
+        } else {
+            return 0;
+        }
     }
 
 

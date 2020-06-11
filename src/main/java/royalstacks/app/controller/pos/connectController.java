@@ -33,7 +33,8 @@ public class connectController {
 
         ConnectionResult connectionResult = new ConnectionResult();
         boolean connectionRequestExists = doesConnectionObjectExist(data);
-        if(connectionRequestExists){
+        boolean codeMatches = doesCodeMatch(data);
+        if(connectionRequestExists && codeMatches){
             connectionResult.succeededConnection();
         } else{
             connectionResult.failedConnection();
@@ -42,9 +43,14 @@ public class connectController {
         return connectionResult;
     }
 
+    private boolean doesCodeMatch(ConnectionRequestData data) {
+        //todo: implement (check in database)
+        return true;
+    }
+
     private boolean doesConnectionObjectExist(ConnectionRequestData data) {
         //todo: implement (check in database)
-        return false;
+        return true;
     }
 
 }
