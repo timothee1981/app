@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import royalstacks.app.model.*;
+import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.Transaction;
 
 import royalstacks.app.model.repository.TransactionRepository;
@@ -53,7 +55,7 @@ class TransactionServiceTest {
         Mockito.when(transactionRepository.getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc(1,1)).thenReturn(transactions);
 
 
-        List<Transaction> transactionListActual = transactionService.getTenLastTransaction(1);
+        List<AccountHolderTransaction> transactionListActual = transactionService.getTenLastTransaction(1);
         int transactionListSizeActual = transactionListActual.size();
         int transactionListSizeExpected = 10;
 

@@ -90,7 +90,22 @@ input[type=text]:focus{
 
 .inforow .infocell:nth-child(2) {
 
-    padding-left: 38px;
+    margin-left: -2px;
+    margin-bottom: -19px;
+    padding: 4px 49px 2px 25px;
+
+}
+
+#select{
+    border: none;
+    background-color: transparent;
+    text-overflow: ellipsis;
+    outline: none;
+}
+
+#option{
+    padding-top: 3px;
+
 }
 
 

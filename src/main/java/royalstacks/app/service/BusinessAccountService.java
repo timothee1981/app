@@ -1,10 +1,12 @@
 package royalstacks.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Sector;
 import royalstacks.app.model.SectorAndAverageBalance;
+import royalstacks.app.model.User;
 import royalstacks.app.model.repository.BusinessAccountRepository;
 
 import java.util.ArrayList;
@@ -36,4 +38,11 @@ public class BusinessAccountService {
     public Optional<BusinessAccount> findBusinessAccountByAccountNumber(String accountNumber){
         return businessAccountRepository.findBusinessAccountByAccountNumber(accountNumber);
     }
+
+
+    public Optional<BusinessAccount> findByAccountId(int accountId) {
+        return businessAccountRepository.findByAccountId(accountId);
+    }
+
+
 }

@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import royalstacks.app.model.BusinessAccount;
+import royalstacks.app.model.User;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,5 +17,8 @@ public interface BusinessAccountRepository extends CrudRepository<BusinessAccoun
 
     @Query("SELECT ba FROM BusinessAccount ba WHERE ba.accountNumber = ?1")
     Optional<BusinessAccount> findBusinessAccountByAccountNumber(String accountNumber);
+
+    @Query("SELECT ba FROM BusinessAccount ba WHERE ba.accountId = ?1")
+    Optional<BusinessAccount> findByAccountId(int accountId);
 
 }

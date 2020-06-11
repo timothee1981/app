@@ -3,10 +3,13 @@ package royalstacks.app.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Account;
+import royalstacks.app.model.BusinessAccount;
+import royalstacks.app.model.Customer;
 import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,8 +101,9 @@ public class AccountService {
             return null;
     }
 
+    public List<Customer> getAccountHolders(Account myAccount) {
+        return new ArrayList<>(myAccount.getAccountHolders());
 
-
-
+    }
 
 }
