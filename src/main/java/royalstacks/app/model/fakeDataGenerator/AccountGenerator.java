@@ -13,30 +13,36 @@ import java.util.List;
 
 public class AccountGenerator {
 
+    static String lastAccountNr = "0000000000";
 
-
-
-    public static List<Account> accountGenerator(int amount, JSONArray jsonArray) {
+    public static List<Account> businessAccountGenerator(int amount, JSONArray jsonArray) {
         Iterator<JSONObject> iterator = jsonArray.iterator();
         List<Account> accounts = new ArrayList<>();
-        String accountNr = "0000000000";
-        int i = 0;
-        while(iterator.hasNext() && i < amount){
-            JSONObject company = iterator.next();
-            String companyName = company.get("companyName").toString();
-            String kvkNumber = kvkNumberGenerator();
-            String vatNumber = vatNumberGenerator();
-            Sector sector = sectorGenerator();
-            System.out.println(sector);
-            BigDecimal balance = balanceGenerator();
-            String iban = ibanGenerator(accountNr);
-            accountNr = iban.substring(8);
-            BusinessAccount businessAccount = new BusinessAccount(iban, balance, companyName, kvkNumber, vatNumber, sector);
-            System.out.println(businessAccount);
-            accounts.add(businessAccount);
-            i++;
-        }
-            return accounts;
+        for (int i = 0; i < amount ; i++) {
+            if(iterator.hasNext()) {
+                JSONObject company = iterator.next();
+                String companyName = company.get("companyName").toString();
+                String kvkNumber = kvkNumberGenerator();
+                String vatNumber = vatNumberGenerator();
+                Sector sector = sectorGenerator();
+                BigDecimal balance = balanceGenerator();
+                String iban = ibanGenerator(lastAccountNr);
+                lastAccountNr = iban.substring(8);
+                Account businessAccount = new BusinessAccount(iban, balance, companyName, kvkNumber, vatNumber, sector);
+                accounts.add(businessAccount);
+            }
+        }return accounts;
+    }
+    public static List<Account> privateAccountGenerator(int amount){
+        List<Account> accounts = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            String iban = ibanGenerator(lastAccountNr);
+            lastAccountNr = iban.substring(8);
+            Account privateAccount = new PrivateAccount(iban, balanceGenerator());
+
+            System.out.println(privateAccount);
+            accounts.add(privateAccount);
+        }return accounts;
     }
     public static String kvkNumberGenerator(){
         final int KVK_MIN = 1;
@@ -63,14 +69,7 @@ public class AccountGenerator {
         final int MAX_UNCOMMON = 10000000;
         final int MAX_COMMON = 5000;
         final int PERCENTAGE_COMMON = 85;
-        if(Gen.generateRandomTrueFalse(PERCENTAGE_COMMON)){
-            double randomBalance =(Gen.generateRandomInt(MIN, MAX_COMMON*100))/100.0;
-            return BigDecimal.valueOf(randomBalance);
-        }
-        else {
-            double randomBalance = (Gen.generateRandomInt(MIN, MAX_UNCOMMON * 100)) / 100.0;
-            return BigDecimal.valueOf(randomBalance);
-        }
+        return Gen.amountGenerator(MIN, MAX_COMMON, MAX_UNCOMMON, PERCENTAGE_COMMON);
     }
     public static String ibanGenerator(String previousAccountNr){
         final String LANDCODE = "NL";

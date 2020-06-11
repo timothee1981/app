@@ -11,4 +11,5 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
 
     List<Transaction> getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc(int fromAccountId, int toAccountId);
 
+
 }
