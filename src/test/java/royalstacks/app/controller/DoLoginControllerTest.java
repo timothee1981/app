@@ -147,7 +147,7 @@ class DoLoginControllerTest {
                 post("/doLogin")
                         .param("inputUsername", username)
                         .param("inputPassword", password)
-        ).andExpect(status().isMovedTemporarily()).andExpect(view().name("redirect:/myaccounts"));
+        ).andExpect(status().isMovedTemporarily()).andExpect(view().name("redirect:/accountOverview"));
     }
 
     @Test
