@@ -53,16 +53,16 @@ public class TransactionGenerator {
     public static LocalDateTime randomDateTime(){
         LocalDateTime start = LocalDateTime.of(2020, Month.FEBRUARY, 1, 9, 0);
         long seconds = ChronoUnit.SECONDS.between(start, LocalDateTime.now());
-        LocalDateTime randomDate = start.plusDays(new Random().nextInt((int)seconds+1));
+        LocalDateTime randomDate = start.plusSeconds(new Random().nextInt((int)seconds+1));
         return randomDate;
     }
 
     public static String randomDescription(){
         String description = "";
-        final int MIN_LETTERS = 1;
-        final int MAX_LETTERS = 10;
+        final int MIN_LETTERS = 2;
+        final int MAX_LETTERS = 7;
         final int MIN_WORDS = 0;
-        final int MAX_WORDS = 10;
+        final int MAX_WORDS = 7;
         int letterAmount = Gen.generateRandomInt(MIN_LETTERS, MAX_LETTERS);
         int wordAmount = Gen.generateRandomInt(MIN_WORDS, MAX_WORDS);
 
@@ -76,7 +76,7 @@ public class TransactionGenerator {
     private static String randomWord(int letterAmount) {
         String word = "";
         for (int i = 0; i < letterAmount; i++) {
-            char letter = Gen.generateRandomChar('z');
+            char letter = Gen.generateRandomChar('Z');
             word += letter;
         }
         return word;
