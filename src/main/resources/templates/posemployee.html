@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Headbusiness POS</title>
+</head>
+<body>
+<script language="JavaScript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+
+    start = function() {
+
+        fetch('pos/employee', {
+            method: 'POST',
+            headers: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }),
+            body: JSON.stringify({
+                account: 'account1',
+                code: 'code2',
+            })
+        })
+            .then(function (data) {
+                console.log('Request success: ', data);
+            })
+            .catch(function (error) {
+                console.log('Request failure: ', error);
+            });
+    }();
+</script>
+
+<form method="POST">  <button value="Submit" type="submit">Click me</button></form>
+
+</body>
+</html>

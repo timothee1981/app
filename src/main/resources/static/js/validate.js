@@ -1,8 +1,7 @@
 class Validate{
-    constructor(field) {
-        this.field = field
+    constructor() {
     }
-    field;
+
 
     #USERNAME_NOT_AVAILABLE = "Choose another username";
     #USERNAME_IS_INVALID = "Between " + regex.min_username_length + " and " + regex.max_username_length + " letters and numbers";

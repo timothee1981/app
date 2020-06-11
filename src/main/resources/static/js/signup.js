@@ -1,23 +1,35 @@
-validation = function() {
+
+SignUp = function() {
+    const allFields = ["username", "email", "password", "phoneNumber", "firstName",
+        "lastName", "city", "street", "postalCode", "houseNumber", "BSN"];
     const validate = new Validate();
+    const submitButton = new SubmitButton;
+
     document.getElementById("username").addEventListener("input", function () {
-        validate.username(); });
+        validate.username()});
     document.getElementById("password").addEventListener('input', function () {
-        validate.password(); });
+        validate.password()});
     document.getElementById("firstName").addEventListener('input', function () {
-        validate.names("firstName") });
+        validate.names("firstName")});
     document.getElementById("lastName").addEventListener('input', function () {
-        validate.names("lastName") });
+        validate.names("lastName")});
     document.getElementById("email").addEventListener('input', function () {
-        validate.email() });
+        validate.email()});
     document.getElementById("phoneNumber").addEventListener('input', function () {
-        validate.phoneNumber() });
+        validate.phoneNumber()});
     document.getElementById("BSN").addEventListener("input", function () {
-        validate.bsn() });
+        validate.bsn()});
     document.getElementById("postalCode").addEventListener('input', function () {
-        validate.postalCode() });
+        validate.postalCode()});
     document.getElementById("addressFields").addEventListener('input', function () {
-        validate.addressFields() });
+        validate.addressFields()});
+    document.getElementById("signUpButton").addEventListener("mouseenter", function() {
+        submitButton.mouseEnter(allFields)});
+    document.getElementById("signUpButton").addEventListener("mouseleave", function() {
+        submitButton.mouseLeave(allFields)});
+
+    document.getElementById("form").addEventListener("keyup", function(){
+        submitButton.checkFields(allFields)});
 }();
 
 passwordFeatures = function(){
@@ -47,57 +59,3 @@ passwordFeatures = function(){
         }
     });
 }();
-
-submitButton = function() {
-    const validate = new Validate();
-    const allFields = ["username", "email", "password", "phoneNumber", "firstName",
-        "lastName", "city", "street", "postalCode", "houseNumber", "BSN"];
-
-    // zet button disabled uit als alle velden valid zijn
-    document.getElementById("form").addEventListener('keyup', function () {
-        document.getElementById("submitButton").disabled = false;
-        for (let i = 0; i < allFields.length ; i++) {
-            if(validate.isInputValid(allFields[i]) === false){
-                document.getElementById("submitButton").disabled = true;
-                break;
-            }
-        }
-    });
-
-    // bij mouseenter zet invalid velden op pink
-    document.getElementById("signUpButton").addEventListener("mouseenter", function () {
-        if (document.getElementById("submitButton").disabled === true) {
-            for (let i = 0; i < allFields.length ; i++) {
-                setFieldGreyOrPink(allFields[i]);
-            }
-        }
-    });
-
-   // bij mouseleave zet alles op grijs
-    document.getElementById("signUpButton").addEventListener("mouseleave", function () {
-        for (let i = 0; i < allFields.length ; i++) {
-            setFieldGrey(allFields[i]);
-        }
-    });
-
-    function setFieldGreyOrPink(id){
-        if(id === "password"){
-            validate.isInputValid("showPasswordButton") ? setFieldGrey(id) : setFieldPink(id) ;
-        }
-        validate.isInputValid(id) ? setFieldGrey(id) : setFieldPink(id);
-    }
-
-    function setFieldPink(id){
-        document.getElementById(id).style.backgroundColor = '#ffdede';
-    }
-
-    function setFieldGrey(id){
-        document.getElementById(id).style.backgroundColor = '#f1f1f1';
-    }
-}();
-
-
-
-
-
-
