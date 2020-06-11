@@ -17,21 +17,34 @@ public class connectController {
      *  Zenden van volgende curl stuurt een bericht terug:
      *  curl -X POST http://localhost/paymentmachine/connect -H "Content-Type: application/json" -d "{\"account\":\"0123456789\", \"code\":54321}"
      * @param connectionRequestData
-     * @return
+     * @return ConnectionResult - false / 0 als gefaald
+     * - true / id als geslaagd
      */
 
     @PostMapping("/paymentmachine/connect")
     public ConnectionResult paymentMachineConnectionResult(@RequestBody ConnectionRequestData connectionRequestData){
 
-        // do some checks if object is correct
+        ConnectionResult returnValue = checkConnectionResult(connectionRequestData);
 
-        ConnectionResult returnvalue = new ConnectionResult();
-        returnvalue.setId(1337);
-        returnvalue.setSucceeded(true);
+        return returnValue;
+    }
 
-        System.out.println(connectionRequestData.getAccount());
-        System.out.println(connectionRequestData.getCode());
-        return returnvalue;
+    private ConnectionResult checkConnectionResult(ConnectionRequestData data) {
+
+        ConnectionResult connectionResult = new ConnectionResult();
+        boolean connectionRequestExists = doesConnectionObjectExist(data);
+        if(connectionRequestExists){
+            connectionResult.succeededConnection();
+        } else{
+            connectionResult.failedConnection();
+            return new ConnectionResult();
+        }
+        return connectionResult;
+    }
+
+    private boolean doesConnectionObjectExist(ConnectionRequestData data) {
+        //todo: implement (check in database)
+        return false;
     }
 
 }
