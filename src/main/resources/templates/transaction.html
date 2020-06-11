@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Transfer Money</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
-    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/transaction.css" rel="stylesheet" />
 </head>
@@ -29,7 +26,7 @@
 
         <input
                 type="text"
-                placeholder="NL12ROYA0123456789433706589"
+                placeholder="NL12ROYA0123456789"
                 name="toAccountNumber"
                 id="toAccountNumber"
                 title="A valid account number"
@@ -84,14 +81,14 @@
 <script defer>
 
 
-        // add eventlistener to all table-cells - on click- go to account details
+
         document.getElementById('backButton').addEventListener("click", function(){
 
                 let e = document.getElementById("fromAccountNumber");
                 let accountnumber = e.options[e.selectedIndex].value;
                 console.log(accountnumber);
 
-                //2 - fire get request with parameter to go to account details
+
 
             let input = document.createElement("input");
             input.setAttribute("type", "hidden");
@@ -102,12 +99,6 @@
             form.appendChild(input);
             form.submit();
 
-
-  /*             let input = $("<input>")
-                    .attr("type", "hidden")
-                    .attr("name", "accountNumber")
-                   .attr("value", accountnumber);
-                $('#accountdetailsForm').append($(input)).submit();*/
             });
 
 

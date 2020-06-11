@@ -1,4 +1,4 @@
-package royalstacks.app.service;
+package royalstacks.app.model.fakeDataGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,8 @@ import royalstacks.app.model.*;
 import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.repository.CustomerRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
+import royalstacks.app.service.AccountService;
+import royalstacks.app.service.UserService;
 
 import java.util.Iterator;
 import java.util.Optional;
