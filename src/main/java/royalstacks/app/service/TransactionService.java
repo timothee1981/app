@@ -71,18 +71,19 @@ public class TransactionService {
 
     //
     public List<AccountHolderTransaction> getTenLastTransaction(int accountId){
-        List<AccountHolderTransaction> accountHoldersTransactions = null;
+        List<AccountHolderTransaction> accountHoldersTransactions = new ArrayList<>();
         List<Transaction> transactions = transactionRepository.getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc(accountId,accountId);
         List<Transaction> tenLastTransactions = new ArrayList<>();
         for(int index =0; index < 10 && index < transactions.size(); index++){
             tenLastTransactions.add(transactions.get(index));
         }
 
-        for (Transaction transaction : tenLastTransactions) {
-            AccountHolderTransaction accountTransaction = getTransaction(transaction,  accountId);
-            if(accountTransaction != null) {
+        for (Transaction transaction1 : tenLastTransactions) {
+            if(transaction1 != null) {
+                AccountHolderTransaction accountTransaction = getTransaction(transaction1, accountId);
                 accountHoldersTransactions.add(accountTransaction);
             }
+
 
         }
 
@@ -96,7 +97,7 @@ public class TransactionService {
 
 
     public AccountHolderTransaction getTransaction(Transaction transaction, int accountId) {
-        AccountHolderTransaction accountHolderTransaction = null;
+        AccountHolderTransaction accountHolderTransaction = new AccountHolderTransaction();
         Account accountFrom;
 
 
@@ -121,8 +122,12 @@ public class TransactionService {
     public AccountHolderTransaction fillBackingBeanWithCorrectCalue(Account accountFrom, Transaction transaction) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String datetime = transaction.getDate().format(formatter);
-        String name = accountService.getAccountHolders(accountFrom).get(0).getLastName();
-        String bankaccount = accountFrom.getAccountNumber();
+        String name = null;
+        String bankaccount = null;
+        if(accountFrom != null) {
+            name = accountService.getAccountHolders(accountFrom).get(0).getLastName();
+            bankaccount = accountFrom.getAccountNumber();
+        }
         String description = transaction.getDescription();
 
 

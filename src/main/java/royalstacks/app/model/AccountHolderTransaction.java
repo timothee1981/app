@@ -7,6 +7,10 @@ public class AccountHolderTransaction {
     private String description;
     private String amount;
 
+
+    public AccountHolderTransaction() {
+    }
+
     public AccountHolderTransaction(String dateTime, String customerName, String bankAccountNumber, String description, String amount) {
         this.dateTime = dateTime;
         this.customerName = customerName;
