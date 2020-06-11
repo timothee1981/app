@@ -59,8 +59,11 @@ public class AcceptAccountHolderInviteController {
         Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(ibb.getAccountNumber());
         if (optionalAccount.isPresent()) {
             accountToBeAdded = optionalAccount.get();
+        } else {
+            displayMessage("Please enter a valid account number.", mav);
+            populateFields(ibb, mav);
+            return mav;
         }
-
         // invite aanmaken en checken of deze in de DB bestaat (Customer invitee, Account account, String verif.code)
         AccountHolderInvite inviteToBeVerified = new AccountHolderInvite((Customer) invitee, accountToBeAdded, ibb.getVerificationCode());
         Optional<AccountHolderInvite> existingInvite = accountHolderInviteService.findAccountHolderInviteByAccountAndInviteeAndCode(inviteToBeVerified.getInvitee().getUserid(), inviteToBeVerified.getAccount().getAccountId(), inviteToBeVerified.getVerificationCode());
