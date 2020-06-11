@@ -3,32 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Headbusiness POS</title>
+    <link type="text/css" href="../css/navbar.css" rel="stylesheet" />
+    <link type="text/css" href="../css/signup.css" rel="stylesheet" />
+    <script type="application/javascript" src="../js/navbar.js" defer></script>
+    <script type="application/javascript" src="../js/regex.js" defer></script>
+    <script type="application/javascript" src="../js/api.js" defer></script>
+    <script type="application/javascript" src="../js/generateposconnection.js" defer></script>
+    <script type="application/javascript" src="../js/validate.js" defer></script>
 </head>
+
 <body>
-<script language="JavaScript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+<div id="navbar">
+    <a href="/">Login</a>
+    <span id="logoNavbar"></span>
+</div>
+<div class="content">
+    <h1>Generate POS Connection Code</h1>
+<form method="POST">
+<label for="businessAccountIban"><b>Business Account IBAN</b></label>
+<input
+        type="text"
+        placeholder="NL26ABNA0433706589"
+        name="businessAccountIban"
+        id="businessAccountIban"
+        title="Enter a BusinessAccount IBAN"
+        th:value="${businessAccountIban}"
+        autofocus
+        required
+/><span></span>
 
-    start = function() {
-        fetch('pos/employee', {
-            method: 'POST',
-            headers: new Headers({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }),
-            body: JSON.stringify({
-                account: 'account1',
-                code: 'code2',
-            })
-        })
-            .then(function (data) {
-                console.log('Request success: ', data);
-            })
-            .catch(function (error) {
-                console.log('Request failure: ', error);
-            });
-    }();
-</script>
+    <label for="connectionCode"><b>Connection Code</b></label>
+    <input
+            type="text"
+            placeholder="Auto-generated"
+            name="connectionCode"
+            id="connectionCode"
+            title="ConnenctionCode"
+            th:value="${connectionCode}"
+            disabled="disabled"
+    /><span></span>
+<button value="Submit" id='submit' name="submit" type="submit" disabled="disabled">Generate Code</button>
 
-<form method="POST">  <button value="Submit" type="submit">Click me</button></form>
-
+</form>
+</div>
 </body>
 </html>

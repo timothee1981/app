@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.CustomerAndTransactions;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.BusinessAccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
 
@@ -15,14 +16,20 @@ import java.util.List;
 @Controller
 public class ApiController {
 
-    @Autowired
+
     private AccountService accountService;
-
-    @Autowired
     private UserService userService;
+    private CustomerService customerService;
+    private BusinessAccountService businessAccountService;
 
     @Autowired
-    private CustomerService customerService;
+    public ApiController(AccountService as, UserService us, CustomerService cs,  BusinessAccountService bs){
+        this.accountService = as;
+        this.userService = us;
+        this.customerService = cs;
+        this.businessAccountService = bs;
+    }
+
 
     @GetMapping("/api/accountredirect")
     @ResponseBody
@@ -41,6 +48,13 @@ public class ApiController {
     @ResponseBody
     public String isBSNUniqueHandler(@RequestParam String bsn) {
         return String.valueOf(customerService.findCustomerByBSN(bsn).isEmpty());
+
+    }
+
+    @GetMapping("/api/isBusinessAccount")
+    @ResponseBody
+    public String isBusinessAccountHandler(@RequestParam String accountNumber) {
+        return String.valueOf(businessAccountService.findBusinessAccountByAccountNumber(accountNumber).isPresent());
 
     }
 

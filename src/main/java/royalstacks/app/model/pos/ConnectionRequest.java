@@ -1,27 +1,21 @@
 package royalstacks.app.model.pos;
 
-import royalstacks.app.model.BusinessAccount;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class ConnectionRequest {
 
-
-
     @Id
     @GeneratedValue
     protected int id;
-    @OneToOne
-    private BusinessAccount bussinessAccount;
-    private int validationCode;
+    private String businessAccountIban;
+    private int connectionCode;
 
-    public ConnectionRequest(BusinessAccount businessAccount, int validationCode) {
-        this.bussinessAccount = bussinessAccount;
-        this.validationCode = validationCode;
+    public ConnectionRequest(String businessAccountIban, int connectionCode) {
+        this.businessAccountIban = businessAccountIban;
+        this.connectionCode = connectionCode;
     }
 
     public ConnectionRequest() {
@@ -35,28 +29,28 @@ public class ConnectionRequest {
         this.id = id;
     }
 
-    public BusinessAccount getBussinessAccount() {
-        return bussinessAccount;
+    public String getBusinessAccountIban() {
+        return businessAccountIban;
     }
 
-    public void setBussinessAccount(BusinessAccount bussinessAccount) {
-        this.bussinessAccount = bussinessAccount;
+    public void setBusinessAccountIban(String businessAccountIban) {
+        this.businessAccountIban = businessAccountIban;
     }
 
-    public int getValidationCode() {
-        return validationCode;
+    public int getConnectionCode() {
+        return connectionCode;
     }
 
-    public void setValidationCode(int validationCode) {
-        this.validationCode = validationCode;
+    public void setConnectionCode(int validationCode) {
+        this.connectionCode = validationCode;
     }
 
     @Override
     public String toString() {
-        return "PosValidator{" +
+        return "ConnectionRequest{" +
                 "id=" + id +
-                ", bussinessAccount=" + bussinessAccount +
-                ", validationCode=" + validationCode +
+                ", businessAccountIban='" + businessAccountIban + '\'' +
+                ", connectionCode=" + connectionCode +
                 '}';
     }
 }

@@ -4,15 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import royalstacks.app.model.pos.ConnectionRequest;
-import royalstacks.app.model.repository.PosConnectionRepository;
+import royalstacks.app.model.repository.ConnectionRequestRepository;
+
+import java.util.Optional;
 
 @Service
 public class ConnectionRequestService {
 
     @Autowired
-    PosConnectionRepository posConnectionRepository;
+    ConnectionRequestRepository connectionRequestRepository;
 
-    public void savePosValidator(ConnectionRequest connectionRequest) {
-        posConnectionRepository.save(connectionRequest);
+    public void saveConnectionRequest(ConnectionRequest connectionRequest) {
+        connectionRequestRepository.save(connectionRequest);
+    }
+
+    public Optional<ConnectionRequest> findCustomerRequestByBusinessAccountIban(String businessAcountIban){
+       return connectionRequestRepository.findCustomerRequestByBusinessAccountIban(businessAcountIban);
     }
 }
