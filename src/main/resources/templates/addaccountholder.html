@@ -5,6 +5,9 @@
     <title>Add accountholder</title>
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/addaccountholder.css" rel="stylesheet" />
+    <!-- toegevoegd voor js -->
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
 
@@ -28,7 +31,13 @@
             th:value="${inviteeUsername}"
             required
     />
+
     <br>
+
+    <span></span>
+    <span id="usernameMessage"> </span>
+    <br>
+
 
     <label for="verificationCode">Verification code</label>
     <input
@@ -42,15 +51,24 @@
             min="0"
             required
     />
+
     <br>
+
+    <span></span>
+    <span id="verificationCodeMessage"> </span>
+    <br>
+    <br>
+
 
     <td><button type="submit" name="submit" id="submitButton" value="Send invitation">Send invitation</button></td>
 </form>
 <h3> <span th:text="${message}"/> </h3>
 
+</body>
 
 <script src="js/navbar.js"></script>
-</body>
+<script src="js/addaccountholdervalidation.js" defer></script>
+
 </html>
 
 

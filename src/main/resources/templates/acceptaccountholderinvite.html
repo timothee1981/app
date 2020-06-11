@@ -5,11 +5,14 @@
     <title>Accept invite</title>
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/acceptaccountholderinvite.css" rel="stylesheet" />
+    <!-- toegevoegd voor js -->
+    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
 
 <div id="navbar">
-    <a class="active" href="/myaccounts">My accounts</a>
+    <a class="active" href="/accountOverview">Account Overview</a>
     <span id="logoNavbar"></span>
 </div>
 
@@ -30,6 +33,10 @@
     <br>
     <br>
 
+    <span></span>
+    <span id="accountNumberMessage"> </span>
+    <br>
+
     <label for="verificationCode">Verification code</label>
     <input
             type="text"
@@ -45,10 +52,17 @@
     <br>
     <br>
 
+    <span></span>
+    <span id="verificationCodeMessage"> </span>
+    <br>
+
     <td><button type="submit" name="accept" id="acceptButton" value="Accept invitation">Accept invitation</button></td>
 </form>
 <h3><span th:text="${message}"/></h3>
 
-<script src="js/navbar.js"></script>
 </body>
+
+<script src="js/navbar.js"></script>
+<script src="js/acceptaccountholderinvite.js" defer></script>
+
 </html>

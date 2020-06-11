@@ -59,15 +59,18 @@ public class AcceptAccountHolderInviteController {
         Optional<Account> optionalAccount = accountService.getAccountByAccountNumber(ibb.getAccountNumber());
         if (optionalAccount.isPresent()) {
             accountToBeAdded = optionalAccount.get();
+        } else { //om veiligheidsredenen hier een generieke foutmelding, format checks nog in JS implementeren
+            displayMessage("The account number and/or verification code you entered is incorrect.", mav);
+            populateFields(ibb, mav);
+            return mav;
         }
-
         // invite aanmaken en checken of deze in de DB bestaat (Customer invitee, Account account, String verif.code)
         AccountHolderInvite inviteToBeVerified = new AccountHolderInvite((Customer) invitee, accountToBeAdded, ibb.getVerificationCode());
         Optional<AccountHolderInvite> existingInvite = accountHolderInviteService.findAccountHolderInviteByAccountAndInviteeAndCode(inviteToBeVerified.getInvitee().getUserid(), inviteToBeVerified.getAccount().getAccountId(), inviteToBeVerified.getVerificationCode());
         //ifPresent: voeg customer toe als accountholder en geef bevestiging aan klant
         if (existingInvite.isPresent()) {
             if (isBusinessAccount(accountToBeAdded)) {
-                //uit OpenAccountController gepakt
+                //uit OpenAccountController gejat
                 if (!((Customer) invitee).isBusinessAccountHolder()) {
                     ((Customer) invitee).setBusinessAccountHolder(true);
                 }
@@ -76,13 +79,11 @@ public class AcceptAccountHolderInviteController {
                     ((Customer) invitee).setAccountManager(employeeRepository.findAll().iterator().next());
                 }
             }
-            // TODO wat gebeurt er als men al accountholder was van dezelfde account?
             accountToBeAdded.addAccountHolder((Customer) invitee);
             accountService.saveAccount(accountToBeAdded);
             displayMessage("Account added.", mav);
             System.out.println("Account added");
         } else {
-            // om veiligheidsredenen geen aparte melding geven als alleen rekeningnummer óf verificatiecode onjuist zijn
             displayMessage("The account number and/or verification code you entered is incorrect.", mav);
             populateFields(ibb, mav);
         }
@@ -100,7 +101,7 @@ public class AcceptAccountHolderInviteController {
         mav.addObject("verificationCode", ibb.getVerificationCode());
     }
 
-    // checkt of accountId voorkomt in tabel business_account, moet naar BusinessAccount of naar Account toe???
+    // checkt of accountId voorkomt in tabel business_account, hoort eigenlijk niet in deze klasse, nog verplaatsen
     public boolean isBusinessAccount(Account account) {
         Optional<BusinessAccount> optionalBusinessAccount = businessAccountService.findByAccountId(account.getAccountId());
         return (optionalBusinessAccount.isPresent());
