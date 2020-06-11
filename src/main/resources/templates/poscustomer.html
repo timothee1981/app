@@ -64,6 +64,20 @@
             border-radius: 5px;
         }
 
+        #displayPos {
+            float: left;
+            margin: 0 5px 5px 0;
+            width: 250px;
+            height: 60px;
+            font-size: 24px;
+            line-height: 60px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #f9f9f9;
+            border-radius: 5px;
+
+        }
+
         #display {
             margin: 0;
             padding-bottom: 100px;
@@ -92,11 +106,8 @@
             float: left;
             width: 556px;
         }
-        #keyboard .stop, #keyboard .space, #keyboard .return{
-            font-size: 16px;
-        }
-        .on {
-            display: none;
+        #keyboard .stop, #keyboard .space, #keyboard .delete, #keyboard .return, #keyboard .bottom{
+            font-size: 20px;
         }
         #keyboard li:hover {
             position: relative;
@@ -120,59 +131,79 @@
             margin-top: 70px;
         }
     </style>
+    <link type="text/css" href="../css/pos.css" rel="stylesheet" />
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <div>
     <div id="headers">
-    <h3>ROYAL STACKS ♔</h3>
-</div>
-<div id="container">
-    <ul id="display">
-        <li class="titles">Rekeningnummer + Pincode</li>
-        <li id="displayAccountNumber"></li>
-        <li id="displayPincode"></li>
-    </ul>
-    <ul id="keyboard">
-        <a onclick="addNumber(1);"><li class="letter">1 </li></a>
-        <a onclick="addNumber(2);"><li class="letter">2</li></a>
-        <a onclick="addNumber(3);"> <li class="letter">3</li></a>
-        <a onclick="addNumber(4);"><li class="letter clearl">4</li></a>
-        <a onclick="addNumber(5);"> <li class="letter">5</li></a>
-        <a onclick="addNumber(6);"> <li class="letter">6</li></a>
-        <a onclick="addNumber(7);"><li class="letter clearl">7</li></a>
-        <a onclick="addNumber(8);"> <li class="letter ">8</li></a>
-        <a onclick="addNumber(9);"> <li class="letter">9</li></a>
-        <a onclick="addNumber(0);"> <li class="letter">0</li></a>
-        <a onclick="addNumber(1);"> <li class="stop">stop</li></a>
-        <a onclick="removeNumber();"><li class="delete">wis</li></a>
-        <a onclick="addNumber(1);"> <li class="return">ok</li></a>
-    </ul>
-</div>
+        <h3>ROYAL STACKS ♔</h3>
+    </div>
+    <div id="container">
+        <ul id="display">
+            <li id="displayPos"></li>
+        </ul>
+        <ul id="keyboard">
+            <a onclick="addNumber(1);"><li class="letter">1 </li></a>
+            <a onclick="addNumber(2);"><li class="letter">2</li></a>
+            <a onclick="addNumber(3);"> <li class="letter">3</li></a>
+            <a onclick="addNumber(4);"><li class="letter clearl">4</li></a>
+            <a onclick="addNumber(5);"> <li class="letter">5</li></a>
+            <a onclick="addNumber(6);"> <li class="letter">6</li></a>
+            <a onclick="addNumber(7);"><li class="letter clearl">7</li></a>
+            <a onclick="addNumber(8);"> <li class="letter ">8</li></a>
+            <a onclick="addNumber(9);"> <li class="letter">9</li></a>
+            <a onclick="addNumber(0);"> <li class="letter">0</li></a>
+            <a onclick="stopButton();"> <li class="stop">Stop</li></a>
+            <a onclick="wisButton();"><li class="delete">Wis</li></a>
+            <a onclick="okButton();"> <li class="return">Ok</li></a>
+            <a onclick="kopButton();"> <li class="bottom">Kopp</li></a>
+            <a onclick="openButton();"><li class="bottom">Open</li></a>
+            <a onclick="sluitButton();"> <li class="bottom">Sluit</li></a>
+            <a onclick="transButton();"> <li class="bottom">Trans</li></a>
+        </ul>
+    </div>
 </div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
-    function addNumber(number){
-        let displayAccountNumber = document.getElementById('displayAccountNumber').innerHTML;
-        console.log(displayAccountNumber.length)
-        if(displayAccountNumber.length < 10) {
-            document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML + number;
-        } else if (displayAccountNumber.length === 10 && document.getElementById('displayPincode').innerHTML.length < 4){
-            document.getElementById('displayPincode').innerHTML = document.getElementById('displayPincode').innerHTML + number
+
+    document.addEventListener('keydown', function(e) {
+        if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+            addNumber(e.keyCode - 48);
+            console.log(e.code)
+        } else if (e.keyCode === 8){
+            wisButton()
         }
+    });
+
+    function addNumber(number) {
+        document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML + number;
     }
-    function removeNumber(){
-        let displayAccountNumber = document.getElementById('displayAccountNumber').innerHTML;
-        if(displayAccountNumber.length < 10) {
-            document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML.slice(0, -1)
-        } else if (displayAccountNumber.length === 10 && document.getElementById('displayPincode').innerHTML.length > 0){
-            document.getElementById('displayPincode').innerHTML = document.getElementById('displayPincode').innerHTML.slice(0, -1)
-        } else if (displayAccountNumber.length === 10 && document.getElementById('displayPincode').innerHTML.length === 0){
-            document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML.slice(0, -1)
-        }
+    function wisButton(){
+        document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML.slice(0, -1);
     }
+
+    function okButton(){
+    }
+
+    function stopButton(){
+    }
+
+    function kopButton() {
+    }
+
+    function openButton() {
+    }
+
+    function sluitButton(){
+    }
+
+    function transButton(){
+    }
+
+
 </script>
 </body>
 </html>
