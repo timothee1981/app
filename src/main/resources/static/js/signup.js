@@ -23,14 +23,16 @@ SignUp = function() {
         validate.postalCode()});
     document.getElementById("addressFields").addEventListener('input', function () {
         validate.addressFields()});
+
     document.getElementById("signUpButton").addEventListener("mouseenter", function() {
         submitButton.mouseEnter(allFields)});
     document.getElementById("signUpButton").addEventListener("mouseleave", function() {
         submitButton.mouseLeave(allFields)});
-
     document.getElementById("form").addEventListener("keyup", function(){
         submitButton.checkFields(allFields)});
 }();
+
+
 
 passwordFeatures = function(){
     // reveal requirements

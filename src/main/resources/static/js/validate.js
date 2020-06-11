@@ -188,7 +188,6 @@ class Validate{
         return document.getElementById(id).classList.contains("isValid");
     }
 
-
     /**
      * SETTERS
      */

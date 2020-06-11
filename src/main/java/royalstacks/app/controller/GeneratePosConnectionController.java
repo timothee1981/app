@@ -1,50 +1,47 @@
 package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import royalstacks.app.model.PosValidator;
-import royalstacks.app.model.PosValidatorData;
+import royalstacks.app.model.pos.ConnectionRequest;
 import royalstacks.app.service.AccountService;
-import royalstacks.app.service.PosValidatorService;
+import royalstacks.app.service.ConnectionRequestService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController
-public class PosEmployeeController {
+public class GeneratePosConnectionController {
 
     AccountService accountService;
-    PosValidatorService posValidatorService;
+    ConnectionRequestService connectionRequestService;
 
     @Autowired
-    public PosEmployeeController(AccountService accountService, PosValidatorService posValidatorService) {
+    public GeneratePosConnectionController(AccountService accountService, ConnectionRequestService connectionRequestService) {
         this.accountService = accountService;
-        this.posValidatorService = posValidatorService;
+        this.connectionRequestService = connectionRequestService;
     }
 
     @GetMapping("/pos/employee")
     public ModelAndView posEmployeeHandler() {
-        return new ModelAndView("posemployee");
+        return new ModelAndView("generateposconnection");
     }
 
     @PostMapping("/pos/employee")
-    public ResponseEntity<PosValidator> create(@ModelAttribute PosValidator posValidator) throws URISyntaxException {
-        System.out.println(posValidator);
-        if (posValidator == null) {
+    public ResponseEntity<ConnectionRequest> create(@ModelAttribute ConnectionRequest connectionRequest) throws URISyntaxException {
+        System.out.println(connectionRequest);
+        if (connectionRequest == null) {
             return ResponseEntity.notFound().build();
         } else {
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                     .path("/{id}")
-                    .buildAndExpand(posValidator.getId())
+                    .buildAndExpand(connectionRequest.getId())
                     .toUri();
 
             return ResponseEntity.created(uri)
-                    .body(posValidator);
+                    .body(connectionRequest);
         }
     }
 }

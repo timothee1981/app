@@ -1,4 +1,6 @@
-package royalstacks.app.model;
+package royalstacks.app.model.pos;
+
+import royalstacks.app.model.BusinessAccount;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class PosValidator {
+public class ConnectionRequest {
+
+
 
     @Id
     @GeneratedValue
@@ -15,12 +19,12 @@ public class PosValidator {
     private BusinessAccount bussinessAccount;
     private int validationCode;
 
-    public PosValidator(BusinessAccount businessAccount, int validationCode) {
+    public ConnectionRequest(BusinessAccount businessAccount, int validationCode) {
         this.bussinessAccount = bussinessAccount;
         this.validationCode = validationCode;
     }
 
-    public PosValidator() {
+    public ConnectionRequest() {
     }
 
     public int getId() {

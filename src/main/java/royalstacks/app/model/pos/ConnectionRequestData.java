@@ -1,12 +1,12 @@
-package royalstacks.app.model;
+package royalstacks.app.model.pos;
 
-public class PosValidatorData {
+public class ConnectionRequestData {
 
     private String account;
 
     private int code;
 
-    public PosValidatorData(String account, int code) {
+    public ConnectionRequestData(String account, int code) {
         this.account = account;
         this.code = code;
     }

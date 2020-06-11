@@ -1,5 +1,7 @@
-package royalstacks.app.model;
+package royalstacks.app.model.pos;
 
+
+import royalstacks.app.model.BusinessAccount;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,13 +18,13 @@ public class Pos {
     private BusinessAccount businessAccount;
     private int identificationNumber;
     @OneToOne
-    private PosTerminal posTerminal;
+    private Terminal terminal;
 
     // CONSTRUCTORS
-    public Pos(BusinessAccount businessAccount, int identificationNumber, PosTerminal posTerminal) {
+    public Pos(BusinessAccount businessAccount, int identificationNumber, Terminal terminal) {
         this.businessAccount = businessAccount;
         this.identificationNumber = identificationNumber;
-        this.posTerminal = posTerminal;
+        this.terminal = terminal;
     }
 
     public Pos() {
@@ -54,12 +56,12 @@ public class Pos {
         this.identificationNumber = identificationNumber;
     }
 
-    public PosTerminal getPosTerminal() {
-        return posTerminal;
+    public Terminal getTerminal() {
+        return terminal;
     }
 
-    public void setPosTerminal(PosTerminal posTerminal) {
-        this.posTerminal = posTerminal;
+    public void setTerminal(Terminal terminal) {
+        this.terminal = terminal;
     }
 
 
@@ -70,7 +72,7 @@ public class Pos {
                 "id=" + id +
                 ", businessAccount=" + businessAccount +
                 ", identificationNumber=" + identificationNumber +
-                ", posTerminal=" + posTerminal +
+                ", posTerminal=" + terminal +
                 '}';
     }
 }

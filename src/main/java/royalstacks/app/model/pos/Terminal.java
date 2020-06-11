@@ -1,4 +1,4 @@
-package royalstacks.app.model;
+package royalstacks.app.model.pos;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class PosTerminal {
+public class Terminal {
 
     @Id
     @GeneratedValue
@@ -14,10 +14,10 @@ public class PosTerminal {
     @OneToOne
     private Pos pos;
 
-    public PosTerminal(Pos pos) {
+    public Terminal(Pos pos) {
         this.pos = pos;
     }
 
-    public PosTerminal() {
+    public Terminal() {
     }
 }

@@ -1,6 +1,7 @@
 package royalstacks.app.model;
 
-import javax.persistence.Entity;
+import royalstacks.app.model.pos.Pos;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.math.BigDecimal;

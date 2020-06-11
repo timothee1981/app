@@ -3,6 +3,7 @@ package royalstacks.app.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.*;
+import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.repository.CustomerRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
