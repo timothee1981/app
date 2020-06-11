@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import royalstacks.app.model.pos.ConnectionRequest;
 import royalstacks.app.model.pos.ConnectionRequestData;
+import royalstacks.app.model.pos.ConnectionResult;
 
 
 @RestController
@@ -20,12 +21,17 @@ public class connectController {
      */
 
     @PostMapping("/paymentmachine/connect")
-    public String paymentMachineConnectionResult(@RequestBody ConnectionRequestData connectionRequestData){
+    public ConnectionResult paymentMachineConnectionResult(@RequestBody ConnectionRequestData connectionRequestData){
 
+        // do some checks if object is correct
+
+        ConnectionResult returnvalue = new ConnectionResult();
+        returnvalue.setId(1337);
+        returnvalue.setSucceeded(true);
 
         System.out.println(connectionRequestData.getAccount());
         System.out.println(connectionRequestData.getCode());
-        return "gelukt";
+        return returnvalue;
     }
 
 }
