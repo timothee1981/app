@@ -3,8 +3,12 @@ package royalstacks.app.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Account;
+import royalstacks.app.model.AccountHolderTransaction;
+import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.TransactionRepository;
+
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -65,16 +69,66 @@ public class TransactionService {
     }
 
 
-    //MOET GETEST WORDEN
-    public List<Transaction> getTenLastTransaction(int accountId){
-
+    //
+    public List<AccountHolderTransaction> getTenLastTransaction(int accountId){
+        List<AccountHolderTransaction> accountHoldersTransactions = null;
         List<Transaction> transactions = transactionRepository.getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc(accountId,accountId);
         List<Transaction> tenLastTransactions = new ArrayList<>();
         for(int index =0; index < 10 && index < transactions.size(); index++){
             tenLastTransactions.add(transactions.get(index));
         }
 
-       return  tenLastTransactions;
+        for (Transaction transaction : tenLastTransactions) {
+            AccountHolderTransaction accountTransaction = getTransaction(transaction,  accountId);
+            if(accountTransaction != null) {
+                accountHoldersTransactions.add(accountTransaction);
+            }
+
+        }
+
+
+
+
+        return  accountHoldersTransactions;
 
     }
+
+
+
+    public AccountHolderTransaction getTransaction(Transaction transaction, int accountId) {
+        AccountHolderTransaction accountHolderTransaction = null;
+        Account accountFrom;
+
+
+        //ACCOUNT DEBITEEREN
+        if(transaction.getFromAccountId() == accountId) {
+            accountFrom = accountService.getAccountById(transaction.getToAccountId());
+            accountHolderTransaction = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
+            accountHolderTransaction.setAmount(" - " + transaction.getAmount());
+
+            //ACCOUNT CREDITEEREN
+
+        }else if(transaction.getToAccountId() == accountId){
+            accountFrom = accountService.getAccountById(transaction.getFromAccountId());
+            accountHolderTransaction = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
+            accountHolderTransaction.setAmount(" + " + transaction.getAmount());
+
+        }
+        return accountHolderTransaction;
+    }
+
+
+    public AccountHolderTransaction fillBackingBeanWithCorrectCalue(Account accountFrom, Transaction transaction) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String datetime = transaction.getDate().format(formatter);
+        String name = accountService.getAccountHolders(accountFrom).get(0).getLastName();
+        String bankaccount = accountFrom.getAccountNumber();
+        String description = transaction.getDescription();
+
+
+        return new AccountHolderTransaction(datetime,name,bankaccount,description,null);
+    }
+
+
+
 }

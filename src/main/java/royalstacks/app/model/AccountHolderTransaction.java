@@ -1,13 +1,13 @@
-package royalstacks.app.backingBean;
+package royalstacks.app.model;
 
-public class LastTenTransactionBackingBean {
+public class AccountHolderTransaction {
     private String dateTime;
     private String customerName;
     private String bankAccountNumber;
     private String description;
     private String amount;
 
-    public LastTenTransactionBackingBean(String dateTime, String customerName, String bankAccountNumber, String description, String amount) {
+    public AccountHolderTransaction(String dateTime, String customerName, String bankAccountNumber, String description, String amount) {
         this.dateTime = dateTime;
         this.customerName = customerName;
         this.bankAccountNumber = bankAccountNumber;
