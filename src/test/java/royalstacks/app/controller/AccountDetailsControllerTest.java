@@ -50,11 +50,12 @@ class AccountDetailsControllerTest {
     private UserService userService;
 
 
-/*    @Test
+    @Test
     void accountDetailsHandler() throws Exception{
         //ARRANGE
 
         Customer customer = new Customer();
+        AccountDetailsBackingBean accountDetailsBackingBean;
         Transaction transaction = new Transaction();
 
         customer.setUserid(1);
@@ -79,11 +80,6 @@ class AccountDetailsControllerTest {
         ).andExpect(status().isOk());
 
 
-    }*/
-
-    @Test
-    void goToTransactionHandler() {
-
-
     }
+
 }

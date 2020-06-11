@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.AccountHolderTransaction;
-import royalstacks.app.model.Customer;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.TransactionRepository;
 
@@ -69,7 +68,8 @@ public class TransactionService {
     }
 
 
-    //
+    //CREATE LIST OF TRANSACTION WHICH FOR THE ACCOUNTDETAIL
+
     public List<AccountHolderTransaction> getTenLastTransaction(int accountId){
         List<AccountHolderTransaction> accountHoldersTransactions = new ArrayList<>();
         List<Transaction> transactions = transactionRepository.getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc(accountId,accountId);
@@ -83,43 +83,36 @@ public class TransactionService {
                 AccountHolderTransaction accountTransaction = getTransaction(transaction1, accountId);
                 accountHoldersTransactions.add(accountTransaction);
             }
-
-
         }
-
-
-
-
         return  accountHoldersTransactions;
 
     }
 
-
+    //GET ONE TRANSACTION
 
     public AccountHolderTransaction getTransaction(Transaction transaction, int accountId) {
         AccountHolderTransaction accountHolderTransaction = new AccountHolderTransaction();
         Account accountFrom;
 
 
-        //ACCOUNT DEBITEEREN
+        //IF ACCOUNT IS DEBITET, SET THE ACCOUNTFROM WHERE MONEY IS TRANSFERED TOO
         if(transaction.getFromAccountId() == accountId) {
             accountFrom = accountService.getAccountById(transaction.getToAccountId());
-            accountHolderTransaction = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
+            accountHolderTransaction = fillTransactionWithCorrectCalue(accountFrom,transaction);
             accountHolderTransaction.setAmount(" - " + transaction.getAmount());
 
-            //ACCOUNT CREDITEEREN
-
+            //IF ACCOUNT IS CREDITET SET THE ACCOUNTFROM FROM WHERE MONEY IS FROM
         }else if(transaction.getToAccountId() == accountId){
             accountFrom = accountService.getAccountById(transaction.getFromAccountId());
-            accountHolderTransaction = fillBackingBeanWithCorrectCalue(accountFrom,transaction);
+            accountHolderTransaction = fillTransactionWithCorrectCalue(accountFrom,transaction);
             accountHolderTransaction.setAmount(" + " + transaction.getAmount());
 
         }
         return accountHolderTransaction;
     }
 
-
-    public AccountHolderTransaction fillBackingBeanWithCorrectCalue(Account accountFrom, Transaction transaction) {
+    // AND FILL THE TRANSCATION WITH CORRECT AND FORMATED VALUE
+    public AccountHolderTransaction fillTransactionWithCorrectCalue(Account accountFrom, Transaction transaction) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String datetime = transaction.getDate().format(formatter);
         String name = null;
@@ -133,6 +126,9 @@ public class TransactionService {
 
         return new AccountHolderTransaction(datetime,name,bankaccount,description,null);
     }
+
+
+
 
 
 

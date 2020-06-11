@@ -16,6 +16,9 @@ import java.util.*;
 
 import static org.springframework.core.annotation.MergedAnnotations.from;
 
+/**
+ * Auteur: Timothee Busch
+ */
 @Controller
 public class AccountDetailsController {
     @Autowired
@@ -35,9 +38,9 @@ public class AccountDetailsController {
 
         ModelAndView mav = new ModelAndView("accountdetails");
 
-        //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
+
         List<Account> myAccounts = getAccountsFromUserId(userId);
-        mav.addObject("accounts",myAccounts);
+        // mav.addObject("accounts",myAccounts); //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
         String accountNumberCookie;
         //check if accountnumber belongs to user:
         if(accountNumber!=null) {
@@ -60,65 +63,6 @@ public class AccountDetailsController {
 
     }
 
-    //METHODE DIE VELDEN VULLEN
-    private void populatefields(ModelAndView mav,Account myAccount) {
-
-        //check als My account heeft waarde
-        if(myAccount != null){
-            List<Customer> accountholders = getAccountHolders(myAccount);
-            AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
-            List<AccountHolderTransaction> tenLatestTransactions = getTenLastTransaction(myAccount);
-            if (tenLatestTransactions != null) {
-                mav.addObject("transactionList", tenLatestTransactions);
-            }
-            mav.addObject("account",accountDetailsBackingBean);
-            mav.addObject("list",accountholders);
-        }
-    }
-
-    //CREATE ACCOUNT DETAILS BACKING BEAN
-    private AccountDetailsBackingBean getAccountdetailsbb(Account myAccount) {
-        AccountDetailsBackingBean accountDetailsBackingBean = null;
-        if(myAccount instanceof PrivateAccount){
-            accountDetailsBackingBean = AccountDetailsBackingBean.createBeanPrivate((PrivateAccount) myAccount);
-        }else if (myAccount instanceof BusinessAccount)
-            accountDetailsBackingBean = AccountDetailsBackingBean.createBeanBusiness((BusinessAccount) myAccount);
-        return accountDetailsBackingBean;
-    }
-
-    //CREATE LIST TRANSACTION BACKING BEAN
-
-
-    //CREATE ONE TRANSACTION BACKING BEAN
-
-
-
-    //FILL OBJECT BB last ten transaction WITH CORRECT VALUES
-
-
-
-    //METHODE DIE DE TIEN LAATSTE TRANSACTIES OPHAALD
-
-    private List<AccountHolderTransaction> getTenLastTransaction(Account myAccount) {
-        List<AccountHolderTransaction> getTenLastTransaction;
-        getTenLastTransaction = transactionService.getTenLastTransaction(myAccount.getAccountId());
-        if(getTenLastTransaction != null) {
-            for (AccountHolderTransaction transaction : getTenLastTransaction) {
-                System.out.println(transaction);
-            }
-            return getTenLastTransaction;
-        }
-        else return null;
-    }
-
-
-    //METHODE DIE LIJST MET ACCOUNT HOLDERS TERUG GEEFT
-
-    private List<Customer> getAccountHolders(Account myAccount) {
-        return new ArrayList<>(myAccount.getAccountHolders());
-
-    }
-
     //METHODE DIE JUISTE ACCOUNT TERUG GEEFT
 
     private Account getAccountFromAccountNumber(String accountNumber) {
@@ -131,6 +75,46 @@ public class AccountDetailsController {
         return myAccount;
     }
 
+    //PUT DE ACCOUNT IN ACCOUNT DETAILS BACKING BEAN
+    private AccountDetailsBackingBean getAccountdetailsbb(Account myAccount) {
+        AccountDetailsBackingBean accountDetailsBackingBean = null;
+        if(myAccount instanceof PrivateAccount){
+            accountDetailsBackingBean = AccountDetailsBackingBean.createBeanPrivate((PrivateAccount) myAccount);
+        }else if (myAccount instanceof BusinessAccount)
+            accountDetailsBackingBean = AccountDetailsBackingBean.createBeanBusiness((BusinessAccount) myAccount);
+        return accountDetailsBackingBean;
+    }
+
+
+
+    //POPULATE THE FIELDS WITH THE DIFFERENT VALUE
+    private void populatefields(ModelAndView mav,Account myAccount) {
+
+            //get accountholder
+            List<Customer> accountholders =  accountService.getAccountHolders(myAccount);
+            //get accountdetails
+            AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
+            //get list transactions
+            List<AccountHolderTransaction> tenLatestTransactions = getTenLastTransaction(myAccount);
+            mav.addObject("transactionList", tenLatestTransactions);
+            mav.addObject("account",accountDetailsBackingBean);
+            mav.addObject("list",accountholders);
+    }
+
+
+    //METHODE DIE DE TIEN LAATSTE TRANSACTIES OPHAALD
+
+    private List<AccountHolderTransaction> getTenLastTransaction(Account myAccount) {
+        List<AccountHolderTransaction> getTenLastTransaction;
+        getTenLastTransaction = transactionService.getTenLastTransaction(myAccount.getAccountId());
+        if(getTenLastTransaction != null) {
+            return getTenLastTransaction;
+        }
+        else return null;
+    }
+
+
+
     //METHODE DIE HAALT  ACCOUNTS DIE HOREN BIJ HET GEBRUIKER
 
     private List<Account> getAccountsFromUserId(int userId) {
@@ -138,6 +122,7 @@ public class AccountDetailsController {
 
         return new ArrayList<>(customer.getAccount());
     }
+
 
 
 
