@@ -4,12 +4,12 @@
 }
 body {
     font: 71%/1.5 Helvetica;
-    background: #eee;
+    background: #727272;
     font-weight: lighter;
     font-size: 20px;
 }
 #container {
-    margin-top: 70px;
+    margin-top: 0px;
     margin-left: auto;
     margin-right: auto;
     width: 300px;
@@ -76,6 +76,7 @@ body {
 
 #display {
     margin: 0;
+    padding-top: 50px;
     padding-bottom: 100px;
     list-style: none;
 
@@ -102,7 +103,7 @@ body {
     float: left;
     width: 556px;
 }
-#keyboard .stop, #keyboard .space, #keyboard .delete, #keyboard .return{
+#keyboard .stop, #keyboard .space, #keyboard .delete, #keyboard .return, #keyboard .bottom{
     font-size: 20px;
 }
 #keyboard li:hover {
@@ -119,10 +120,30 @@ body {
 }
 
 h3 {
-    color: #202020;
+    color: #D3D3D3;
+    text-align: center;
+    position: absolute;
+    top: 520px;
+    left: 620px
 }
 
 #headers{
     text-align: center;
-    margin-top: 70px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.notification{
+    text-align: center;
+    color: red;
+}
+
+#themachine {
+    border-radius: 25px;
+    width: 400px;
+    height: 500px;
+    margin-top:60px;
+    margin-right: auto;
+    margin-left: auto;
+    background: #eee;
 }

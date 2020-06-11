@@ -8,12 +8,12 @@
         }
         body {
             font: 71%/1.5 Helvetica;
-            background: #eee;
+            background: #666666;
             font-weight: lighter;
             font-size: 20px;
         }
         #container {
-            margin-top: 70px;
+            margin-top: 0px;
             margin-left: auto;
             margin-right: auto;
             width: 300px;
@@ -80,6 +80,7 @@
 
         #display {
             margin: 0;
+            padding-top: 50px;
             padding-bottom: 100px;
             list-style: none;
 
@@ -123,25 +124,45 @@
         }
 
         h3 {
-            color: #202020;
+            color: #D3D3D3;
+            text-align: center;
+            position: absolute;
+            top: 590px;
+            left: 620px
         }
 
         #headers{
             text-align: center;
-            margin-top: 70px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .notification{
+            text-align: center;
+            color: red;
+        }
+
+        #themachine {
+            width: 400px;
+            height: 580px;
+            margin-top:60px;
+            margin-right: auto;
+            margin-left: auto;
+            background: #eee;
+            border-radius: 25px;
         }
     </style>
-    <link type="text/css" href="../css/pos.css" rel="stylesheet" />
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<div>
-    <div id="headers">
-        <h3>ROYAL STACKS ♔</h3>
-    </div>
+<div id="themachine">
+
+
     <div id="container">
+
         <ul id="display">
+            <li id="notify" class="titles">Welcome!</li>
             <li id="displayPos"></li>
         </ul>
         <ul id="keyboard">
@@ -158,16 +179,22 @@
             <a onclick="stopButton();"> <li class="stop">Stop</li></a>
             <a onclick="wisButton();"><li class="delete">Wis</li></a>
             <a onclick="okButton();"> <li class="return">Ok</li></a>
-            <a onclick="kopButton();"> <li class="bottom">Kopp</li></a>
+            <a onclick="connButton();"> <li class="bottom">Conn</li></a>
             <a onclick="openButton();"><li class="bottom">Open</li></a>
-            <a onclick="sluitButton();"> <li class="bottom">Sluit</li></a>
+            <a onclick="closeButton();"> <li class="bottom">Close</li></a>
             <a onclick="transButton();"> <li class="bottom">Trans</li></a>
         </ul>
     </div>
+    <h3>ROYAL STACKS ♔</h3>
 </div>
+
+</div>
+
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
+
+    let koppelMode = false;
 
     document.addEventListener('keydown', function(e) {
         if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
@@ -188,10 +215,14 @@
     function okButton(){
     }
 
-    function stopButton(){
+    function closeButton(){
     }
 
-    function kopButton() {
+    function connButton() {
+        koppelMode = true;
+        document.getElementById("notify").innerHTML = "Enter connection code";
+        document.getElementById("notify").invisible = false;
+        document.getElementById('displayPos').innerHTML = null
     }
 
     function openButton() {

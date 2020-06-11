@@ -6,13 +6,14 @@
     <title>Title</title>
 </head>
 <body>
+<div id="themachine">
 <div>
     <div id="headers">
     <h3>ROYAL STACKS ♔</h3>
 </div>
 <div id="container">
     <ul id="display">
-        <li class="titles">Rekeningnummer + Pincode</li>
+        <li class="titles">Account Number + Pincode</li>
         <li id="displayAccountNumber"></li>
         <li id="displayPincode"></li>
     </ul>
@@ -28,9 +29,10 @@
         <a onclick="addNumber(9);"> <li class="letter">9</li></a>
         <a onclick="addNumber(0);"> <li class="letter">0</li></a>
         <a onclick="stopButton();"> <li class="stop">Stop</li></a>
-        <a onclick="removeNumber();"><li class="delete">Wis</li></a>
+        <a onclick="delButton();"><li class="delete">Del</li></a>
         <a onclick="okButton();"> <li class="return">Ok</li></a>
     </ul>
+</div>
 </div>
 </div>
 
@@ -43,7 +45,7 @@
             addNumber(e.keyCode - 48);
             console.log(e.code)
         } else if (e.keyCode === 8){
-            wisButton()
+            delButton()
         }
     });
 
@@ -56,7 +58,7 @@
             document.getElementById('displayPincode').innerHTML = document.getElementById('displayPincode').innerHTML + number
         }
     }
-    function removeNumber(){
+    function delButton(){
         let displayAccountNumber = document.getElementById('displayAccountNumber').innerHTML;
         if(displayAccountNumber.length < 10) {
             document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML.slice(0, -1)
