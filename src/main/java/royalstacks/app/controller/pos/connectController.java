@@ -1,3 +1,4 @@
+/*
 package royalstacks.app.controller.pos;
 
 
@@ -13,13 +14,15 @@ import royalstacks.app.model.pos.ConnectionResult;
 public class connectController {
 
 
-    /**
+    */
+/**
      *  Zenden van volgende curl stuurt een bericht terug:
      *  curl -X POST http://localhost/paymentmachine/connect -H "Content-Type: application/json" -d "{\"account\":\"0123456789\", \"code\":54321}"
      * @param connectionRequestData
      * @return ConnectionResult - false / 0 als gefaald
      * - true / id als geslaagd
-     */
+     *//*
+
 
     @PostMapping("/paymentmachine/connect")
     public ConnectionResult paymentMachineConnectionResult(@RequestBody ConnectionRequestData connectionRequestData){
@@ -54,3 +57,4 @@ public class connectController {
     }
 
 }
+*/

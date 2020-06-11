@@ -1,4 +1,4 @@
-package royalstacks.app.controller;
+package royalstacks.app.controller.pos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,7 @@ public class GeneratePosConnectionController {
         ModelAndView mav = new ModelAndView("generateposconnection");
 
         if(businessAccountService.findBusinessAccountByAccountNumber(businessAccountIban).isEmpty()){
-            mav.addObject("businessAccountIban", "Ik bel de politie!");
+            mav.addObject("businessAccountIban", "Ik bel de politie, vieze h4ck3r!");
             return mav;
         }
 
