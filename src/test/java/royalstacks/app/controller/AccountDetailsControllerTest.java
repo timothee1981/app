@@ -50,36 +50,5 @@ class AccountDetailsControllerTest {
     private UserService userService;
 
 
-  /*  @Test
-    void accountDetailsHandler() throws Exception{
-        //ARRANGE
-
-        Customer customer = new Customer();
-        AccountDetailsBackingBean accountDetailsBackingBean;
-        Transaction transaction = new Transaction();
-
-        customer.setUserid(1);
-        Account account = new PrivateAccount();
-        String accountNumber =  "NL10ROYA0000100027";
-        account.setAccountNumber(accountNumber);
-        account.setAccountId(1);
-        Set<Account> accounts = new HashSet<>();
-        accounts.add(account);
-        customer.setAccount(accounts);
-
-
-
-        given(accountService.getAccountByAccountNumber(accountNumber)).willReturn(Optional.of(account));
-        given(userService.findByUserId(customer.getUserid())).willReturn(customer);
-
-
-
-        mvc.perform(get("/accountdetails")
-                .sessionAttr("userid", customer.getUserid())
-                .param("accountNumber", accountNumber)
-        ).andExpect(status().isOk());
-
-
-    }*/
 
 }
