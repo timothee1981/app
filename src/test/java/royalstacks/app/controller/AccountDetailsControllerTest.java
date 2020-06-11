@@ -50,7 +50,7 @@ class AccountDetailsControllerTest {
     private UserService userService;
 
 
-    @Test
+  /*  @Test
     void accountDetailsHandler() throws Exception{
         //ARRANGE
 
@@ -80,6 +80,6 @@ class AccountDetailsControllerTest {
         ).andExpect(status().isOk());
 
 
-    }
+    }*/
 
 }
