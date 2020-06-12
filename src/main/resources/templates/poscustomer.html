@@ -124,22 +124,13 @@
         }
 
         h3 {
-            color: #D3D3D3;
+            color: #767676;
             text-align: center;
-            position: absolute;
-            top: 590px;
-            left: 620px
+            padding-top: 20px
         }
 
-        #headers{
-            text-align: center;
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
-
-        .notification{
-            text-align: center;
-            color: red;
+        #logo{
+)           text-align: center;
         }
 
         #themachine {
@@ -177,15 +168,18 @@
             <a onclick="addNumber(9);"> <li class="letter">9</li></a>
             <a onclick="addNumber(0);"> <li class="letter">0</li></a>
             <a onclick="stopButton();"> <li class="stop">Stop</li></a>
-            <a onclick="wisButton();"><li class="delete">Wis</li></a>
+            <a onclick="delButton();"><li class="delete">Del</li></a>
             <a onclick="okButton();"> <li class="return">Ok</li></a>
             <a onclick="connButton();"> <li class="bottom">Conn</li></a>
             <a onclick="openButton();"><li class="bottom">Open</li></a>
             <a onclick="closeButton();"> <li class="bottom">Close</li></a>
             <a onclick="transButton();"> <li class="bottom">Trans</li></a>
+
         </ul>
     </div>
-    <h3>ROYAL STACKS ♔</h3>
+    <div id="logo">
+        <h3 class="bottom clearl">ROYAL STACKS ♔</h3>
+    </div>
 </div>
 
 </div>
@@ -201,14 +195,14 @@
             addNumber(e.keyCode - 48);
             console.log(e.code)
         } else if (e.keyCode === 8){
-            wisButton()
+            delButton()
         }
     });
 
     function addNumber(number) {
         document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML + number;
     }
-    function wisButton(){
+    function delButton(){
         document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML.slice(0, -1);
     }
 
