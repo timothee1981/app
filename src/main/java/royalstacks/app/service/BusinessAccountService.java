@@ -42,7 +42,36 @@ public class BusinessAccountService {
     public List<CompanyAndTransactions> findTop10TransactionsOnBusinessAccounts() {
         //List with objects that represent companies and business accounts
         List<Object[]> results = businessAccountRepository.findCompaniesAndBusinessAccounts();
+        List<CompanyAndTransactions> companiesAndTransactionsList = enrichWithNumberOfTransactions(results);
+        companiesAndTransactionsList = groupOnKvKNumber(companiesAndTransactionsList);
 
+        //Sort list by number of transactions
+        Collections.sort(companiesAndTransactionsList);
+
+        //Return top10 results (or less if the resultlist is smaller than 10)
+        return companiesAndTransactionsList.subList(0, Math.min(companiesAndTransactionsList.size(), 10));
+    }
+
+    private List<CompanyAndTransactions> groupOnKvKNumber(List<CompanyAndTransactions> companiesAndTransactionsList) {
+        //Group list on kvkNumber
+        HashMap<String, CompanyAndTransactions> hmap = new HashMap<>();
+        for (CompanyAndTransactions companyAndTransactions : companiesAndTransactionsList) {
+            if (hmap.containsKey(companyAndTransactions.getKvkNumber())) {
+                CompanyAndTransactions existingValue = hmap.get(companyAndTransactions.getKvkNumber());
+                existingValue.setBalance(existingValue.getBalance().add(companyAndTransactions.getBalance()));
+                existingValue.setNumberOfTransactions(existingValue.getNumberOfTransactions() + companyAndTransactions.getNumberOfTransactions());
+                hmap.put(companyAndTransactions.getKvkNumber(), existingValue);
+            } else {
+                hmap.put(companyAndTransactions.getKvkNumber(), companyAndTransactions);
+            }
+        }
+
+        //Put hashmap grouped values back in list
+        companiesAndTransactionsList = new ArrayList<>(hmap.values());
+        return companiesAndTransactionsList;
+    }
+
+    private List<CompanyAndTransactions> enrichWithNumberOfTransactions(List<Object[]> results) {
         //Arraylist with companies, their business accounts and the transactions on those accounts
         List<CompanyAndTransactions> companiesAndTransactionsList = new ArrayList<>();
 
@@ -60,26 +89,6 @@ public class BusinessAccountService {
                     )
             );
         }
-
-        //Group list on kvkNumber
-        HashMap<String, CompanyAndTransactions> hmap = new HashMap<>();
-        for (CompanyAndTransactions companyAndTransactions : companiesAndTransactionsList) {
-            if (hmap.containsKey(companyAndTransactions.getKvkNumber())) {
-                CompanyAndTransactions existingValue = hmap.get(companyAndTransactions.getKvkNumber());
-                existingValue.setBalance(existingValue.getBalance().add(companyAndTransactions.getBalance()));
-                existingValue.setNumberOfTransactions(existingValue.getNumberOfTransactions() + companyAndTransactions.getNumberOfTransactions());
-                hmap.put(companyAndTransactions.getKvkNumber(), existingValue);
-            } else {
-                hmap.put(companyAndTransactions.getKvkNumber(), companyAndTransactions);
-            }
-        }
-
-        //Put hashmap grouped values back in list
-        companiesAndTransactionsList = new ArrayList<>(hmap.values());
-        //Sort list by number of transactions
-        Collections.sort(companiesAndTransactionsList);
-
-        //Return top10 results (or less if the resultlist is smaller than 10)
-        return companiesAndTransactionsList.subList(0, Math.min(companiesAndTransactionsList.size(), 10));
+        return companiesAndTransactionsList;
     }
 }
