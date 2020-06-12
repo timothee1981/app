@@ -1,24 +1,28 @@
 package royalstacks.app.model.pos;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import royalstacks.app.model.repository.AccountRepository;
-import royalstacks.app.model.repository.ConnectionRequestRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import royalstacks.app.model.repository.PosRepository;
+import royalstacks.app.service.PosService;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Optional;
 
+@Entity
 public class ConnectionResult {
 
     final static long ID_WHEN_SUCCEEDED_IS_FALSE = 0;
     final static boolean SUCCEEDED_IS_FALSE = false;
     final static boolean SUCCEEDED_IS_TRUE = true;
 
-    private boolean succeeded;
+    @Id
+    @GeneratedValue
     private long id;
-
-    @Autowired
-    private PosRepository posRepository;
-
+    private boolean succeeded;
 
     //CONSTRUCTORS
     public ConnectionResult(boolean succeeded, long id) {
@@ -29,45 +33,7 @@ public class ConnectionResult {
     public ConnectionResult() {
     }
 
-    public void failedConnection(){
-        setSucceeded(SUCCEEDED_IS_FALSE);
-        setId(ID_WHEN_SUCCEEDED_IS_FALSE);
-    }
 
-
-    public void succeededConnection() {
-        setSucceeded(SUCCEEDED_IS_TRUE);
-        setId(generate8DigitId());
-    }
-
-    private long generate8DigitId() {
-        //todo: implement
-        final long INITIAL_ID = 00000000;
-        long lastId;
-
-        if(retrieveLastId() == 0){
-            lastId = INITIAL_ID;
-        }
-        else {
-            lastId = retrieveLastId();
-        }
-        long newId = lastId+1;;
-        return  newId;
-    }
-
-    private long retrieveLastId() {
-        Optional<Integer> lastId = posRepository.getLastId();
-        if (lastId.isPresent()) {
-            try{
-                int intId = lastId.get();
-                return intId;
-            } catch (Error e){
-                return 0;
-            }
-        } else {
-            return 0;
-        }
-    }
 
     //GETTERS AND SETTERS
 

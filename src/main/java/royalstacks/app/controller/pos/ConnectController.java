@@ -2,15 +2,19 @@
 package royalstacks.app.controller.pos;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import royalstacks.app.model.pos.ConnectionRequest;
 import royalstacks.app.model.pos.ConnectionResult;
+import royalstacks.app.service.PosService;
+
+import java.util.Optional;
 
 
 @RestController
-public class connectController {
+public class ConnectController {
 
 /**
      *  Zenden van volgende curl stuurt een bericht terug:
@@ -20,6 +24,8 @@ public class connectController {
      * - true / id als geslaagd
      */
 
+    @Autowired
+    PosService posService;
 
     @PostMapping("/paymentmachine/connect")
     public ConnectionResult paymentMachineConnectionResult(@RequestBody ConnectionRequest connectionRequest){
@@ -35,10 +41,9 @@ public class connectController {
         boolean connectionRequestExists = doesConnectionObjectExist(data);
         boolean codeMatches = doesCodeMatch(data);
         if(connectionRequestExists && codeMatches){
-            connectionResult.succeededConnection();
+            connectionResult = succeededConnection(connectionResult);
         } else{
-            connectionResult.failedConnection();
-            return new ConnectionResult();
+            connectionResult = failedConnection(connectionResult);
         }
         return connectionResult;
     }
@@ -51,6 +56,46 @@ public class connectController {
     private boolean doesConnectionObjectExist(ConnectionRequest data) {
         //todo: implement (check in database)
         return true;
+    }
+
+    private ConnectionResult failedConnection(ConnectionResult connectionResult){
+        connectionResult.setSucceeded(false);
+        connectionResult.setId(0);
+        return connectionResult;
+    }
+
+
+    private ConnectionResult succeededConnection(ConnectionResult connectionResult) {
+        connectionResult.setSucceeded(true);
+        connectionResult.setId(generate8DigitId());
+        return connectionResult;
+    }
+
+    private long generate8DigitId() {
+        final long INITIAL_ID = 00000000;
+        long lastId;
+
+        if(retrieveLastId() == 0){
+            lastId = INITIAL_ID;
+        }
+        else {
+            lastId = retrieveLastId();
+        }
+        return  lastId+1;
+    }
+
+    private long retrieveLastId() {
+        Optional<Integer> lastId = posService.getLastPosId();
+        if (lastId.isPresent()) {
+            try{
+                int intId = lastId.get();
+                return intId;
+            } catch (Error e){
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
 
 }
