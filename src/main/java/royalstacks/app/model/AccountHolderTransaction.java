@@ -9,6 +9,7 @@ public class AccountHolderTransaction {
 
 
     public AccountHolderTransaction() {
+        this("dd","dd","dd","dd","dd");
     }
 
     public AccountHolderTransaction(String dateTime, String customerName, String bankAccountNumber, String description, String amount) {
