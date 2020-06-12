@@ -2,29 +2,21 @@ package royalstacks.app.model;
 
 import java.math.BigDecimal;
 
-public class CustomerAndTransactions implements Comparable<CustomerAndTransactions> {
+public class CompaniesAndTransactions implements Comparable<CompaniesAndTransactions> {
 
-    private String firstName;
-    private String lastName;
+    private String companyName;
     private int numberOfTransactions;
     private BigDecimal balance;
 
     //CONSTRUCTOR
-    public CustomerAndTransactions(String firstName, String lastName, int numberOfTransactions, BigDecimal balance) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public CompaniesAndTransactions(String companyName, int numberOfTransactions, BigDecimal balance) {
+        this.companyName = companyName;
         this.numberOfTransactions = numberOfTransactions;
         this.balance = balance;
     }
 
     //GETTERS
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
+    public String getCompanyName() { return companyName; }
 
     public int getNumberOfTransactions() {
         return numberOfTransactions;
@@ -35,7 +27,7 @@ public class CustomerAndTransactions implements Comparable<CustomerAndTransactio
     }
 
     @Override
-    public int compareTo(CustomerAndTransactions o) {
+    public int compareTo(CompaniesAndTransactions o) {
         return (o.getNumberOfTransactions() - this.getNumberOfTransactions());
     }
 }
