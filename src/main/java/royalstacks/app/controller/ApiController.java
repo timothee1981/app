@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
-import royalstacks.app.model.CompaniesAndTransactions;
+import royalstacks.app.model.CompanyAndTransactions;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.BusinessAccountService;
 import royalstacks.app.service.CustomerService;
@@ -56,7 +56,7 @@ public class ApiController {
     }
 
     @GetMapping("/api/top10transactions")
-    public @ResponseBody List<CompaniesAndTransactions> topTransactionList(){
+    public @ResponseBody List<CompanyAndTransactions> topTransactionList(){
         return businessAccountService.findTop10TransactionsOnBusinessAccounts();
     }
 

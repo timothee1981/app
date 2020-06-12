@@ -7,10 +7,7 @@ import royalstacks.app.model.repository.BusinessAccountRepository;
 import royalstacks.app.model.repository.TransactionRepository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BusinessAccountService {
@@ -21,7 +18,7 @@ public class BusinessAccountService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public List<SectorAndAverageBalance> findSectorAndAverageBalance(){
+    public List<SectorAndAverageBalance> findSectorAndAverageBalance() {
         List<Object[]> results = businessAccountRepository.findSectorAndAverageBalance();
         List<SectorAndAverageBalance> sectorAndAverageBalances = new ArrayList<>();
 
@@ -42,23 +39,47 @@ public class BusinessAccountService {
         return businessAccountRepository.findByAccountId(accountId);
     }
 
-    public List<CompaniesAndTransactions> findTop10TransactionsOnBusinessAccounts(){
+    public List<CompanyAndTransactions> findTop10TransactionsOnBusinessAccounts() {
+        //List with objects that represent companies and business accounts
         List<Object[]> results = businessAccountRepository.findCompaniesAndBusinessAccounts();
-        List<CompaniesAndTransactions> companiesAndTransactions = new ArrayList<>();
 
+        //Arraylist with companies, their business accounts and the transactions on those accounts
+        List<CompanyAndTransactions> companiesAndTransactionsList = new ArrayList<>();
+
+        //Enrich with number of transactions & join with object model
         for (Object[] result : results) {
             List<Transaction> transactionList = transactionRepository
-                    .getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc((int)result[0], (int)result[0]);
+                    .getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc((int) result[0], (int) result[0]);
 
-            companiesAndTransactions.add(
-                    new CompaniesAndTransactions(
-                            (String) result [3],
+            companiesAndTransactionsList.add(
+                    new CompanyAndTransactions(
+                            (String) result[3],
+                            (String) result[2],
                             transactionList.size(),
-                            (BigDecimal) result [1]
+                            (BigDecimal) result[1]
                     )
             );
         }
-        Collections.sort(companiesAndTransactions);
-        return companiesAndTransactions.subList(0,10);
+
+        //Group list on kvkNumber
+        HashMap<String, CompanyAndTransactions> hmap = new HashMap<>();
+        for (CompanyAndTransactions companyAndTransactions : companiesAndTransactionsList) {
+            if (hmap.containsKey(companyAndTransactions.getKvkNumber())) {
+                CompanyAndTransactions existingValue = hmap.get(companyAndTransactions.getKvkNumber());
+                existingValue.setBalance(existingValue.getBalance().add(companyAndTransactions.getBalance()));
+                existingValue.setNumberOfTransactions(existingValue.getNumberOfTransactions() + companyAndTransactions.getNumberOfTransactions());
+                hmap.put(companyAndTransactions.getKvkNumber(), existingValue);
+            } else {
+                hmap.put(companyAndTransactions.getKvkNumber(), companyAndTransactions);
+            }
+        }
+
+        //Put hashmap grouped values back in list
+        companiesAndTransactionsList = new ArrayList<>(hmap.values());
+        //Sort list by number of transactions
+        Collections.sort(companiesAndTransactionsList);
+
+        //Return top10 results (or less if the resultlist is smaller than 10)
+        return companiesAndTransactionsList.subList(0, Math.min(companiesAndTransactionsList.size(), 10));
     }
 }
