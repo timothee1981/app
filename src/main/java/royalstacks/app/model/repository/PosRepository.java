@@ -11,4 +11,7 @@ public interface PosRepository extends CrudRepository<Pos, Integer> {
 
     @Query("SELECT p.identificationNumber FROM Pos p WHERE p.identificationNumber = (select max(p.identificationNumber) from p )")
     Optional<Integer> getLastId();
+
+    @Query("SELECT p FROM Pos p WHERE p.identificationNumber = ?1")
+    Optional<Pos> findPosByIdentificationNumber(int identificationNumber);
 }

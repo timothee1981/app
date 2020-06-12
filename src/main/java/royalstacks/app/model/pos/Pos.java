@@ -14,15 +14,14 @@ public class Pos {
     @Id
     @GeneratedValue
     protected int id;
-    @OneToOne
-    private BusinessAccount businessAccount;
+    private String businessAccountNumber;
     private int identificationNumber;
     @OneToOne
     private Terminal terminal;
 
     // CONSTRUCTORS
-    public Pos(BusinessAccount businessAccount, int identificationNumber, Terminal terminal) {
-        this.businessAccount = businessAccount;
+    public Pos(String businessAccountNumber, int identificationNumber, Terminal terminal) {
+        this.businessAccountNumber = businessAccountNumber;
         this.identificationNumber = identificationNumber;
         this.terminal = terminal;
     }
@@ -32,20 +31,19 @@ public class Pos {
 
 
     // GETTERS & SETTERS
+
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+
+    public String getBusinessAccountNumber() {
+        return businessAccountNumber;
     }
 
-    public BusinessAccount getBusinessAccount() {
-        return businessAccount;
-    }
-
-    public void setBusinessAccount(BusinessAccount businessAccount) {
-        this.businessAccount = businessAccount;
+    public void setBusinessAccountNumber(String businessAccountNumber) {
+        this.businessAccountNumber = businessAccountNumber;
     }
 
     public int getIdentificationNumber() {
@@ -64,13 +62,12 @@ public class Pos {
         this.terminal = terminal;
     }
 
-
     // METHODS
     @Override
     public String toString() {
         return "Pos{" +
                 "id=" + id +
-                ", businessAccount=" + businessAccount +
+                ", businessAccountNumber=" + businessAccountNumber +
                 ", identificationNumber=" + identificationNumber +
                 ", posTerminal=" + terminal +
                 '}';

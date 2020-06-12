@@ -1,6 +1,6 @@
 
 SignUp = function() {
-    const allFields = ["username", "email", "password", "phoneNumber", "firstName",
+    const fieldsToValidate = ["username", "email", "password", "phoneNumber", "firstName",
         "lastName", "city", "street", "postalCode", "houseNumber", "BSN"];
     const validate = new Validate();
     const submitButton = new SubmitButton;
@@ -25,11 +25,17 @@ SignUp = function() {
         validate.addressFields()});
 
     document.getElementById("signUpButton").addEventListener("mouseenter", function() {
-        submitButton.mouseEnter(allFields)});
+        submitButton.mouseEnter(fieldsToValidate)});
     document.getElementById("signUpButton").addEventListener("mouseleave", function() {
-        submitButton.mouseLeave(allFields)});
-    document.getElementById("form").addEventListener("keyup", function(){
-        submitButton.checkFields(allFields)});
+        submitButton.mouseLeave(fieldsToValidate);
+    });
+
+    // duct-tape oplossing voor auto-fill. timer ipv EventListener
+    window.setInterval( function(){
+        submitButton.checkFields(fieldsToValidate);
+    }, 50)
+
+
 }();
 
 

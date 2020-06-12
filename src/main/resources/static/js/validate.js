@@ -205,7 +205,7 @@ class Validate{
         document.getElementById(id).classList.add("isValid");
     }
     setElementInvalid(id){
-        document.getElementById(id).classList.add("isInvagit lid");
+        document.getElementById(id).classList.add("isInvalid");
         document.getElementById(id).classList.remove("isValid");
     }
 

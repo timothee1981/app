@@ -11,7 +11,7 @@ public class Terminal {
     @Id
     @GeneratedValue
     protected int id;
-    @OneToOne
+    @OneToOne(mappedBy="terminal")
     private Pos pos;
 
     public Terminal(Pos pos) {

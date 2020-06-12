@@ -98,6 +98,25 @@ public class CustomerService {
         return customerAndTransactions.subList(0,10);
     }
 
+    public List<CustomerAndTotalBalance> findTop10PrivateAccounts() {
+        Pageable pageable = PageRequest.of(0, PRIVATE_ACCOUNT_SIZE);
+        List<Object[]> results = customerRepository.findCustomersAndPrivateAccountBalance(pageable);
+        List<CustomerAndTotalBalance> customersAndTotalBalance = new ArrayList<>();
+
+        for (Object[] result : results) {
+            customersAndTotalBalance.add(
+                    new CustomerAndTotalBalance(
+                            (String) result[0], // FIRSTNAME
+                            (String) result[1], // LASTNAME
+                            (BigDecimal) result[2] // BALANCE
+                    )
+            );
+        }
+
+        return customersAndTotalBalance;
+    }
+
+
     public boolean isPhoneNumberValid(String phoneNumber){
         Matcher home = PHONE_HOME_REGEX.matcher(phoneNumber);
         Matcher mobile = PHONE_MOBILE_REGEX.matcher(phoneNumber);
@@ -156,24 +175,4 @@ public class CustomerService {
                 isBSNFormatValid(customer.getBSN());
 
     }
-
-    public List<CustomerAndTotalBalance> findTop10PrivateAccounts() {
-        Pageable pageable = PageRequest.of(0, PRIVATE_ACCOUNT_SIZE);
-        List<Object[]> results = customerRepository.findCustomersAndPrivateAccountBalance(pageable);
-        List<CustomerAndTotalBalance> customersAndTotalBalance = new ArrayList<>();
-
-        for (Object[] result : results) {
-            customersAndTotalBalance.add(
-                    new CustomerAndTotalBalance(
-                            (String) result[0], // FIRSTNAME
-                            (String) result[1], // LASTNAME
-                            (BigDecimal) result[2] // BALANCE
-                    )
-            );
-        }
-
-        return customersAndTotalBalance;
-    }
-
-
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <style>
         * {
@@ -142,13 +142,22 @@
             background: #eee;
             border-radius: 25px;
         }
+
+        #idNumber {
+            background:#222;
+            color:#fff;
+            display:block;
+            float:left;
+            margin:10px 10px 0 0;
+            padding:5px 10px
+        }
     </style>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<span id="idNumber" th:text="${pos.identificationNumber}"/>
 <div id="themachine">
-
 
     <div id="container">
 
@@ -207,6 +216,7 @@
     }
 
     function okButton(){
+
     }
 
     function closeButton(){
