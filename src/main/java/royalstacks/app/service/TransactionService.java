@@ -95,13 +95,13 @@ public class TransactionService {
         Account accountFrom;
 
 
-        //IF ACCOUNT IS DEBITET, SET THE ACCOUNTFROM WHERE MONEY IS TRANSFERED TOO
+        //IF ID ACCOUNT IS SAME AS ACCOUNTFROM, THEN THEN MONEY GETS DEBITET FROM ACCOUNT
         if(transaction.getFromAccountId() == accountId) {
             accountFrom = accountService.getAccountById(transaction.getToAccountId());
             accountHolderTransaction = fillTransactionWithCorrectCalue(accountFrom,transaction);
             accountHolderTransaction.setAmount(" - " + transaction.getAmount());
 
-            //IF ACCOUNT IS CREDITET SET THE ACCOUNTFROM FROM WHERE MONEY IS FROM
+            //IF ID ACCOUNT IS SAME AS ACCOUNT TO, THEN THEN MONEY GETS CREDITEN TO ACCOUNT
         }else if(transaction.getToAccountId() == accountId){
             accountFrom = accountService.getAccountById(transaction.getFromAccountId());
             accountHolderTransaction = fillTransactionWithCorrectCalue(accountFrom,transaction);

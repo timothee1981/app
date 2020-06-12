@@ -17,7 +17,7 @@ public abstract class Account implements Comparable<Account>{
     protected int accountId;
     protected String accountNumber;
     protected BigDecimal balance;
-    @ManyToMany
+    @ManyToMany (cascade = CascadeType.ALL)
     protected Set<Customer> accountHolders;
 
     // CONSTRUCTORS
@@ -47,10 +47,7 @@ public abstract class Account implements Comparable<Account>{
     }
 
     public void addAccountHolder(Customer accountHolderToAdd){
-        // als accountholder nog niet bestaat, voeg toe
-        if(! (accountHolders.contains(accountHolderToAdd))){
             accountHolders.add(accountHolderToAdd);
-        }
     }
 
     //Getters and Setters

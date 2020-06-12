@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Transfer Money</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
-    <script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
     <link type="text/css" href="css/transaction.css" rel="stylesheet" />
 </head>
@@ -29,7 +26,7 @@
 
         <input
                 type="text"
-                placeholder="NL12ROYA0123456789433706589"
+                placeholder="NL12ROYA0123456789"
                 name="toAccountNumber"
                 id="toAccountNumber"
                 title="A valid account number"
@@ -81,29 +78,29 @@
 
 <script src="js/navbar"></script>
 <script src="js/transactionFieldValidation.js" defer></script>
-<script>
-    $(document).ready(function(){
+<script defer>
 
-        // add eventlistener to all table-cells - on click- go to account details
+
+
         document.getElementById('backButton').addEventListener("click", function(){
-
-                //1 - get acountnumber clicked
-                // Here, `this` refers to the element the event was hooked on
 
                 let e = document.getElementById("fromAccountNumber");
                 let accountnumber = e.options[e.selectedIndex].value;
                 console.log(accountnumber);
 
-                //2 - fire get request with parameter to go to account details
 
 
-               let input = $("<input>")
-                    .attr("type", "hidden")
-                    .attr("name", "accountNumber")
-                   .attr("value", accountnumber);
-                $('#accountdetailsForm').append($(input)).submit();
+            let input = document.createElement("input");
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "accountNumber");
+            input.setAttribute("value", accountnumber);
+
+            let form = document.getElementById("accountdetailsForm");
+            form.appendChild(input);
+            form.submit();
+
             });
-    })
+
 
 </script>
 </html>
