@@ -188,9 +188,13 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
 
-    let koppelMode = false;
 
-    document.addEventListener('keydown', function(e) {
+    // global variables needed for connection
+    var connectionMode = false;
+    var businessAccountIban = null;
+    var connectionCode = null;
+
+        document.addEventListener('keydown', function(e) {
         if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
             addNumber(e.keyCode - 48);
             console.log(e.code)
@@ -207,36 +211,38 @@
     }
 
     function okButton(){
+
+        if(connectionMode === true){
+            // get input and pass this to process-connectionflow
+            let data = document.getElementById('displayPos').innerHTML;
+            connectionFlow(data);
+        }
     }
 
-    function closeButton(){
+    function connectionFlow(data){
+        if(businessAccountIban == null){
+            document.getElementById("notify").innerHTML = "Enter connection code";
+            document.getElementById('displayPos').innerHTML = "";
+            businessAccountIban = data;
+        } else if(connectionCode == null){
+            connectionCode = data;
+            connectionMode = false;
+            sendRestConnectionRequest();
+        }
+        document.getElementById('displayPos').innerHTML = "";
+
     }
 
-    function connButton() {
+    function sendRestConnectionRequest(){
 
-        connectionMode = true;
-        // document.getElementById("notify").innerHTML = "Enter connection code";
-        // document.getElementById("notify").invisible = false;
-        // document.getElementById('displayPos').innerHTML = null
-
-
-        // display message: accountNumber
-        // customer fills in accountNumber (10 digits)
-        // on OK-> save-accountnumber
-        // and display message: 5-digit
-        // customer fills in 5 digits
-        // on OK -> save-accountNumber
-        // and send REST-POST with 2 params
-        // on-reply:
-        // - show message gekoppeld / fout opgetreden
-        // - machine recieves identificationNumber and 'fakes a save' (actual save is @bankapp)
-        // -- the 'saved' machine is approachable from ....../12345678 -> redirect?
-
-        let myBody = "{\"businessAccountIban\":\"0123456789\", \"connectionCode\":54321}";
+        //let myBody = "{\"businessAccountIban\":\"0123456789\", \"connectionCode\":54321}";
+        let myBody = "{\"businessAccountIban\":\""+ businessAccountIban
+            + "\", \"connectionCode\":" + connectionCode + "}";
 
         const userAction = async () => {
             const response = await fetch('http://localhost/paymentmachine/connect', {
                 method: 'POST',
+                dataType: 'json',
                 body: myBody, // string or object
                 headers: {
                     'Content-Type': 'application/json'
@@ -244,21 +250,33 @@
             });
             const myJson = await response.json(); //extract JSON from the http response
             // do something with myJson
-            console.log(JSON.stringify(myJson));
-        }
 
+            if(myJson.succeeded === true){
+                document.getElementById("notify").innerHTML = "Connection succes!";
+            } else{
+                document.getElementById("notify").innerHTML = "Connection failed!";
+            }
+        };
         userAction();
-
-        koppelMode = true;
-        document.getElementById("notify").innerHTML = "Enter connection code";
-        document.getElementById("notify").invisible = false;
-        document.getElementById('displayPos').innerHTML = null
     }
+
+
+    function closeButton(){
+    }
+
+
+
+    function connButton() {
+
+        // start connection-flow and set variables on null
+        connectionMode = true;
+        businessAccountIban = null;
+        connectionCode = null;
+
+        document.getElementById("notify").innerHTML = "Enter account number";
+            }
 
     function openButton() {
-    }
-
-    function sluitButton(){
     }
 
     function transButton(){
