@@ -188,8 +188,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
 
-    let conenctionMode = false;
-    let display = document.getElementById('displayPos').innerHTML;
+    let koppelMode = false;
 
     document.addEventListener('keydown', function(e) {
         if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
@@ -220,7 +219,7 @@
         // document.getElementById("notify").invisible = false;
         // document.getElementById('displayPos').innerHTML = null
 
-        
+
         // display message: accountNumber
         // customer fills in accountNumber (10 digits)
         // on OK-> save-accountnumber
@@ -250,6 +249,10 @@
 
         userAction();
 
+        koppelMode = true;
+        document.getElementById("notify").innerHTML = "Enter connection code";
+        document.getElementById("notify").invisible = false;
+        document.getElementById('displayPos').innerHTML = null
     }
 
     function openButton() {
