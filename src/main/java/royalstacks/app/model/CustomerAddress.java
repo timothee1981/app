@@ -1,9 +1,6 @@
 package royalstacks.app.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class CustomerAddress {
@@ -11,7 +8,7 @@ public class CustomerAddress {
     @Id
     @GeneratedValue
     protected int id;
-    @OneToOne
+    @OneToOne(mappedBy="customerAddress", cascade = CascadeType.ALL)
     private Customer customer;
     private String postalCode;
     private String houseNumber;

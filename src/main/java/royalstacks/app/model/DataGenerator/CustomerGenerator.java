@@ -1,4 +1,4 @@
-package royalstacks.app.model.fakeDataGenerator;
+package royalstacks.app.model.DataGenerator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import royalstacks.app.model.Customer;
@@ -11,47 +11,49 @@ import java.util.List;
 
 public class CustomerGenerator extends Gen {
 
-    public static List<Customer> generateCustomerList(JSONArray jsonArray){
+    public static List<Customer> generateCustomers(int amount, JSONArray jsonArray){
         final String PASSWORD = "Auto!12345";
         Iterator<JSONObject> iterator = jsonArray.iterator();
         List<Customer> customers = new ArrayList<>();
-        while(iterator.hasNext()) {
+        int arrayTeller = 0;
+        while(iterator.hasNext() && arrayTeller < amount) {
             JSONObject person = iterator.next();
             String username = person.get("username").toString();
+            System.out.println(username);
             String firstName = person.get("firstName").toString();
             String lastName = person.get("lastName").toString();
             String email = person.get("email").toString();
-            String houseNumber = generateHouseNumber();
+            String houseNumber = randomHousNr();
             String city = person.get("city").toString();
             String street = person.get("street").toString();
             String phoneNumber = person.get("phoneNumber").toString();
-            String suffix = generateRandomSuffix();
-            String postcode = postalCodeGenerator();
-            String bsn = bsnGenerator();
+            String suffix = randomSuffix();
+            String postcode = randomPostalCode();
+            String bsn = randomBsn();
             CustomerAddress address = new CustomerAddress(postcode, houseNumber, suffix, city, street);
             Customer customer = new Customer(username, PASSWORD, firstName, lastName, email, address, phoneNumber, bsn, null,  false);
             customers.add(customer);
-
+            arrayTeller++;
         }
         return customers;
     }
-    public static String postalCodeGenerator(){
+    public static String randomPostalCode(){
         final int MAX = 9999;
         final int MIN = 1111;
         final char MAX_CHAR = 'H';
-        int number = Gen.generateRandomInt(MIN, MAX);
-        char letter1 =  Gen.generateRandomChar(MAX_CHAR);
-        char letter2 = Gen.generateRandomChar(MAX_CHAR);
+        int number = Gen.randomInt(MIN, MAX);
+        char letter1 =  Gen.randomChar(MAX_CHAR);
+        char letter2 = Gen.randomChar(MAX_CHAR);
         return String.format("%d%c%c", number, letter1, letter2);
     }
-    public static String bsnGenerator(){
+    public static String randomBsn(){
         int MAX =999999999;
         int MIN = 1;
-        int bsn = Gen.generateRandomInt(MIN, MAX);
+        int bsn = Gen.randomInt(MIN, MAX);
         return String.format("%09d", bsn);
     }
 
-    public static String generateRandomSuffix(){
+    public static String randomSuffix(){
         final int PERCENTAGE_NO_SUFFIX = 60;
         final int PERCENTAGE_LETTER_SUFFIX = 70;
         final char MAX_CHAR_SUFFIX = 'H';
@@ -61,19 +63,19 @@ public class CustomerGenerator extends Gen {
            return "";
         }
         else if (Gen.generateRandomTrueFalse(PERCENTAGE_LETTER_SUFFIX)) {
-            return String.valueOf(Gen.generateRandomChar(MAX_CHAR_SUFFIX));
+            return String.valueOf(Gen.randomChar(MAX_CHAR_SUFFIX));
         }
-        else return String.valueOf(Gen.generateRandomInt(MIN_NUMBER_SUFFIX, MAX_NUMBER_SUFFIX));
+        else return String.valueOf(Gen.randomInt(MIN_NUMBER_SUFFIX, MAX_NUMBER_SUFFIX));
     }
-    public static String generateHouseNumber(){
+    public static String randomHousNr(){
         final int PERCENTAGE_UNDER_100 = 50;
         final int MIN_HOUSENR = 1;
         final int MAX_HOUSENR_COMMON = 100;
         final int MAX_HOUSENR_UNCOMMON = 1000;
         if(Gen.generateRandomTrueFalse(PERCENTAGE_UNDER_100)){
-            return String.valueOf(Gen.generateRandomInt(MIN_HOUSENR, MAX_HOUSENR_COMMON));
+            return String.valueOf(Gen.randomInt(MIN_HOUSENR, MAX_HOUSENR_COMMON));
         }
-        else return String.valueOf(Gen.generateRandomInt(MAX_HOUSENR_COMMON, MAX_HOUSENR_UNCOMMON));
+        else return String.valueOf(Gen.randomInt(MAX_HOUSENR_COMMON, MAX_HOUSENR_UNCOMMON));
 
     }
 

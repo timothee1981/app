@@ -1,4 +1,4 @@
-package royalstacks.app.model.fakeDataGenerator;
+package royalstacks.app.model.DataGenerator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -22,11 +22,11 @@ public class AccountGenerator {
             if(iterator.hasNext()) {
                 JSONObject company = iterator.next();
                 String companyName = company.get("companyName").toString();
-                String kvkNumber = kvkNumberGenerator();
-                String vatNumber = vatNumberGenerator();
-                Sector sector = sectorGenerator();
-                BigDecimal balance = balanceGenerator();
-                String iban = ibanGenerator(lastAccountNr);
+                String kvkNumber = randomKvkNumber();
+                String vatNumber = randomVatNumber();
+                Sector sector = randomSector();
+                BigDecimal balance = randomBalance();
+                String iban = nextIban(lastAccountNr);
                 lastAccountNr = iban.substring(8);
                 Account businessAccount = new BusinessAccount(iban, balance, companyName, kvkNumber, vatNumber, sector);
                 accounts.add(businessAccount);
@@ -36,42 +36,42 @@ public class AccountGenerator {
     public static List<Account> privateAccountGenerator(int amount){
         List<Account> accounts = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            String iban = ibanGenerator(lastAccountNr);
+            String iban = nextIban(lastAccountNr);
             lastAccountNr = iban.substring(8);
-            Account privateAccount = new PrivateAccount(iban, balanceGenerator());
+            Account privateAccount = new PrivateAccount(iban, randomBalance());
 
             System.out.println(privateAccount);
             accounts.add(privateAccount);
         }return accounts;
     }
-    public static String kvkNumberGenerator(){
+    private static String randomKvkNumber(){
         final int KVK_MIN = 1;
         final int KVK_MAX = 99999999;
-        int kvkNumber = Gen.generateRandomInt(KVK_MIN, KVK_MAX);
+        int kvkNumber = Gen.randomInt(KVK_MIN, KVK_MAX);
         return String.format("%08d", kvkNumber);
     }
-    public static String vatNumberGenerator(){
+    private static String randomVatNumber(){
         final String COUNTRY_CODE = "NL";
         final char VAT_LETTER = 'B';
         final int MIN_VAT = 1;
         final int MAX_START_NUMBER = 99999999;
         final int MAX_END_NUMBER = 99;
-        int startNumber = Gen.generateRandomInt(MIN_VAT, MAX_START_NUMBER);
-        int endNumber = Gen.generateRandomInt(MIN_VAT, MAX_END_NUMBER);
+        int startNumber = Gen.randomInt(MIN_VAT, MAX_START_NUMBER);
+        int endNumber = Gen.randomInt(MIN_VAT, MAX_END_NUMBER);
         return String.format("%s%08d%c%02d", COUNTRY_CODE, startNumber, VAT_LETTER, endNumber);
     }
-    public static Sector sectorGenerator(){
+    private static Sector randomSector(){
         Sector[] sectors = Sector.values();
-        return (Sector)Array.get(sectors,Gen.generateRandomInt(0, sectors.length));
+        return (Sector)Array.get(sectors,Gen.randomInt(0, sectors.length-1));
     }
-    public static BigDecimal balanceGenerator(){
+    private static BigDecimal randomBalance(){
         final int MIN = 0;
         final int MAX_UNCOMMON = 10000000;
         final int MAX_COMMON = 5000;
         final int PERCENTAGE_COMMON = 85;
-        return Gen.amountGenerator(MIN, MAX_COMMON, MAX_UNCOMMON, PERCENTAGE_COMMON);
+        return Gen.partiallyRandomAmount(MIN, MAX_COMMON, MAX_UNCOMMON, PERCENTAGE_COMMON);
     }
-    public static String ibanGenerator(String previousAccountNr){
+    private static String nextIban(String previousAccountNr){
         final String LANDCODE = "NL";
         final String BANKCODE = "ROYA";
         AccountService accountService = new AccountService();

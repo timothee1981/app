@@ -1,19 +1,16 @@
-package royalstacks.app.model.fakeDataGenerator;
+package royalstacks.app.model.DataGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.expression.Lists;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.AccountRepository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -30,10 +27,10 @@ public class TransactionGenerator {
         List<Account>  allAccounts = accountRepository.findAll();
         List<Transaction> transactions = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            int randomIndex = Gen.generateRandomInt(0, allAccounts.size()-1);
-            int randomIndex2 = Gen.generateRandomInt(0, allAccounts.size()-1);
+            int randomIndex = Gen.randomInt(0, allAccounts.size()-1);
+            int randomIndex2 = Gen.randomInt(0, allAccounts.size()-1);
             while (randomIndex == randomIndex2){
-                randomIndex2 = Gen.generateRandomInt(0, allAccounts.size()-1);
+                randomIndex2 = Gen.randomInt(0, allAccounts.size()-1);
             }
             int fromAccountId = allAccounts.get(randomIndex).getAccountId();
             int toAccountId = allAccounts.get(randomIndex2).getAccountId();
@@ -43,28 +40,28 @@ public class TransactionGenerator {
         }
         return transactions;
     }
-    public static BigDecimal randomTransferAmount(){
+    private static BigDecimal randomTransferAmount(){
         final int MIN = 1;
         final int MAX_UNCOMMON = 10000;
         final int MAX_COMMON = 200;
         final int PERCENTAGE_COMMON = 85;
-        return Gen.amountGenerator(MIN, MAX_COMMON, MAX_UNCOMMON, PERCENTAGE_COMMON);
+        return Gen.partiallyRandomAmount(MIN, MAX_COMMON, MAX_UNCOMMON, PERCENTAGE_COMMON);
     }
-    public static LocalDateTime randomDateTime(){
+    private static LocalDateTime randomDateTime(){
         LocalDateTime start = LocalDateTime.of(2020, Month.FEBRUARY, 1, 9, 0);
         long seconds = ChronoUnit.SECONDS.between(start, LocalDateTime.now());
         LocalDateTime randomDate = start.plusSeconds(new Random().nextInt((int)seconds+1));
         return randomDate;
     }
 
-    public static String randomDescription(){
+    private static String randomDescription(){
         String description = "";
         final int MIN_LETTERS = 2;
         final int MAX_LETTERS = 7;
         final int MIN_WORDS = 0;
         final int MAX_WORDS = 7;
-        int letterAmount = Gen.generateRandomInt(MIN_LETTERS, MAX_LETTERS);
-        int wordAmount = Gen.generateRandomInt(MIN_WORDS, MAX_WORDS);
+        int letterAmount = Gen.randomInt(MIN_LETTERS, MAX_LETTERS);
+        int wordAmount = Gen.randomInt(MIN_WORDS, MAX_WORDS);
 
         for (int index = 0; index < wordAmount; index++) {
             String word = randomWord(letterAmount) + " ";
@@ -76,7 +73,7 @@ public class TransactionGenerator {
     private static String randomWord(int letterAmount) {
         String word = "";
         for (int i = 0; i < letterAmount; i++) {
-            char letter = Gen.generateRandomChar('Z');
+            char letter = Gen.randomChar('Z');
             word += letter;
         }
         return word;

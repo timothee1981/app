@@ -1,4 +1,4 @@
-package royalstacks.app.model.fakeDataGenerator;
+package royalstacks.app.model.DataGenerator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -10,14 +10,14 @@ import java.math.BigDecimal;
 
 public abstract class Gen {
 
-    public static char generateRandomChar(char maxChar){
+    public static char randomChar(char maxChar){
         return (char)('A' + Math.random() * (maxChar - 'A' + 1));
     }
     public static boolean generateRandomTrueFalse(int percentageTrue) {
         int MAX = 100;
         return (Math.random() * MAX < percentageTrue);
     }
-    public static int generateRandomInt(int min, int max){
+    public static int randomInt(int min, int max){
         return (int)((Math.random()*(max-min+1))+min);
     }
     public static JSONArray createJsonArrayFromFile(String filePath) {
@@ -33,17 +33,17 @@ public abstract class Gen {
             return null;
         }
     }
-    public static BigDecimal amountGenerator(int min, int maxCommon, int maxUncommon, int percentageCommon){
+    public static BigDecimal partiallyRandomAmount(int min, int maxCommon, int maxUncommon, int percentageCommon){
         final int MIN = 0;
         final int MAX_UNCOMMON = 10000000;
         final int MAX_COMMON = 5000;
         final int PERCENTAGE_COMMON = 85;
         if(Gen.generateRandomTrueFalse(PERCENTAGE_COMMON)){
-            double randomBalance =(Gen.generateRandomInt(MIN, MAX_COMMON*100))/100.0;
+            double randomBalance =(Gen.randomInt(MIN, MAX_COMMON*100))/100.0;
             return BigDecimal.valueOf(randomBalance);
         }
         else {
-            double randomBalance = (Gen.generateRandomInt(MIN, MAX_UNCOMMON * 100)) / 100.0;
+            double randomBalance = (Gen.randomInt(MIN, MAX_UNCOMMON * 100)) / 100.0;
             return BigDecimal.valueOf(randomBalance);
         }
     }
