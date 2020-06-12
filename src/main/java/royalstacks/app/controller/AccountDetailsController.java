@@ -95,8 +95,6 @@ public class AccountDetailsController {
             //get accountdetails
             AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
             //get list transactions
-            List<AccountHolderTransaction> tenLatestTransactions = getTenLastTransaction(myAccount);
-            mav.addObject("transactionList", tenLatestTransactions);
             mav.addObject("account",accountDetailsBackingBean);
             mav.addObject("list",accountholders);
     }
@@ -121,6 +119,13 @@ public class AccountDetailsController {
         Customer customer = (Customer) userService.findByUserId(userId);
 
         return new ArrayList<>(customer.getAccount());
+    }
+
+
+    @GetMapping("/accountdetails/transactions")
+    public@ResponseBody List<AccountHolderTransaction> topTransactionList(@RequestParam String accountNumber){
+        Account account = getAccountFromAccountNumber(accountNumber);
+        return getTenLastTransaction(account);
     }
 
 
