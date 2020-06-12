@@ -223,6 +223,42 @@
     }
 
     function connButton() {
+
+        connectionMode = true;
+        // document.getElementById("notify").innerHTML = "Enter connection code";
+        // document.getElementById("notify").invisible = false;
+        // document.getElementById('displayPos').innerHTML = null
+
+
+        // display message: accountNumber
+        // customer fills in accountNumber (10 digits)
+        // on OK-> save-accountnumber
+        // and display message: 5-digit
+        // customer fills in 5 digits
+        // on OK -> save-accountNumber
+        // and send REST-POST with 2 params
+        // on-reply:
+        // - show message gekoppeld / fout opgetreden
+        // - machine recieves identificationNumber and 'fakes a save' (actual save is @bankapp)
+        // -- the 'saved' machine is approachable from ....../12345678 -> redirect?
+
+        let myBody = "{\"businessAccountIban\":\"0123456789\", \"connectionCode\":54321}";
+
+        const userAction = async () => {
+            const response = await fetch('http://localhost/paymentmachine/connect', {
+                method: 'POST',
+                body: myBody, // string or object
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const myJson = await response.json(); //extract JSON from the http response
+            // do something with myJson
+            console.log(JSON.stringify(myJson));
+        }
+
+        userAction();
+
         koppelMode = true;
         document.getElementById("notify").innerHTML = "Enter connection code";
         document.getElementById("notify").invisible = false;

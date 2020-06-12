@@ -20,4 +20,11 @@ public class PosService {
     public void savePos(Pos pos){
         posRepository.save(pos);
     }
+    private PosRepository posRepository;
+
+
+    public Optional<Integer> getLastPosId(){
+        return posRepository.getLastId();
+    }
+
 }
