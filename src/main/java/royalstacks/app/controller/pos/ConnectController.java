@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import royalstacks.app.model.pos.ConnectionRequest;
 import royalstacks.app.model.pos.ConnectionResult;
+import royalstacks.app.model.repository.ConnectionRequestRepository;
 import royalstacks.app.service.PosService;
 
 import java.util.Optional;
@@ -27,6 +28,9 @@ public class ConnectController {
     @Autowired
     PosService posService;
 
+    @Autowired
+    ConnectionRequestRepository connectionRequestRepository;
+
     @PostMapping("/paymentmachine/connect")
     public ConnectionResult paymentMachineConnectionResult(@RequestBody ConnectionRequest connectionRequest){
 
@@ -38,9 +42,7 @@ public class ConnectController {
     private ConnectionResult checkConnectionResult(ConnectionRequest data) {
 
         ConnectionResult connectionResult = new ConnectionResult();
-        boolean connectionRequestExists = doesConnectionObjectExist(data);
-        boolean codeMatches = doesCodeMatch(data);
-        if(connectionRequestExists && codeMatches){
+        if(doesConnectionObjectMatch(data)){
             connectionResult = succeededConnection(connectionResult);
         } else{
             connectionResult = failedConnection(connectionResult);
@@ -48,14 +50,19 @@ public class ConnectController {
         return connectionResult;
     }
 
-    private boolean doesCodeMatch(ConnectionRequest data) {
-        //todo: implement (check in database)
-        return true;
-    }
 
-    private boolean doesConnectionObjectExist(ConnectionRequest data) {
-        //todo: implement (check in database)
-        return true;
+
+    private boolean doesConnectionObjectMatch(ConnectionRequest data) {
+        String ibanRequested = data.getBusinessAccountIban();
+        Optional<ConnectionRequest> request = connectionRequestRepository.findCustomerRequestByBusinessAccountIban(ibanRequested);
+        if(request.isPresent()){
+            // do codes match
+            ConnectionRequest myRequest = request.get();
+            if(data.getConnectionCode() == myRequest.getConnectionCode() ){
+                return true;
+            }
+        }
+        return false;
     }
 
     private ConnectionResult failedConnection(ConnectionResult connectionResult){
