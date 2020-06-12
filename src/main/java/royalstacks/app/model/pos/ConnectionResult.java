@@ -3,6 +3,7 @@ package royalstacks.app.model.pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.repository.ConnectionRequestRepository;
+import royalstacks.app.model.repository.PosRepository;
 
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public class ConnectionResult {
     private long id;
 
     @Autowired
-    private ConnectionRequestRepository connectionRequestRepository;
+    private PosRepository posRepository;
 
 
     //CONSTRUCTORS
@@ -27,7 +28,7 @@ public class ConnectionResult {
 
     public ConnectionResult() {
     }
-/*
+
     public void failedConnection(){
         setSucceeded(SUCCEEDED_IS_FALSE);
         setId(ID_WHEN_SUCCEEDED_IS_FALSE);
@@ -55,14 +56,18 @@ public class ConnectionResult {
     }
 
     private long retrieveLastId() {
-        Optional<Long> lastId = connectionRequestRepository.getLastId();
+        Optional<Integer> lastId = posRepository.getLastId();
         if (lastId.isPresent()) {
-            return lastId.get();
+            try{
+                int intId = lastId.get();
+                return intId;
+            } catch (Error e){
+                return 0;
+            }
         } else {
             return 0;
         }
-    }*/
-
+    }
 
     //GETTERS AND SETTERS
 
