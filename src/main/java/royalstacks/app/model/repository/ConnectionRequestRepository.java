@@ -13,5 +13,5 @@ public interface ConnectionRequestRepository extends CrudRepository<ConnectionRe
     @Query("SELECT c FROM ConnectionRequest c WHERE c.businessAccountIban = ?1")
     Optional<ConnectionRequest> findCustomerRequestByBusinessAccountIban(String accountNumber);
 
-/*    Optional<Long> getLastId();*/
+
 }
