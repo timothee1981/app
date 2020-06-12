@@ -32,7 +32,7 @@ public class HeadBusinessController {
     public ModelAndView overviewHandler(Model model, @SessionAttribute("userid") int userId ){
         List<CustomerAndTotalBalance> top10BusinessAccounts = customerService.findTop10BusinessAccounts();
         List<SectorAndAverageBalance> sectorAndAverageBalances = businessAccountService.findSectorAndAverageBalance();
-        List<CompaniesAndTransactions> top10TransactionsBusinessAccounts = customerService.findTop10TransactionsOnBusinessAccounts();
+        List<CompaniesAndTransactions> top10TransactionsBusinessAccounts = businessAccountService.findTop10TransactionsOnBusinessAccounts();
         Employee employee = employeeService.findById(userId).orElseThrow();
         ModelAndView mav = new ModelAndView("headbusiness");
         model.addAttribute("employee", employee);

@@ -48,13 +48,13 @@ public class BusinessAccountService {
 
         for (Object[] result : results) {
             List<Transaction> transactionList = transactionRepository
-                    .getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc((int)result[2], (int)result[2]);
+                    .getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc((int)result[0], (int)result[0]);
 
             companiesAndTransactions.add(
                     new CompaniesAndTransactions(
-                            (String) result [0],
+                            (String) result [3],
                             transactionList.size(),
-                            (BigDecimal) result [3]
+                            (BigDecimal) result [1]
                     )
             );
         }

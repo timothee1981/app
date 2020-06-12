@@ -18,7 +18,7 @@ public interface BusinessAccountRepository extends CrudRepository<BusinessAccoun
     @Query("SELECT ba FROM BusinessAccount ba WHERE ba.accountId = ?1")
     Optional<BusinessAccount> findByAccountId(int accountId);
 
-    @Query("SELECT c.firstName, c.lastName, ba.accountId, ba.balance FROM Customer c JOIN c.account ba WHERE TYPE(ba) = BusinessAccount")
+    @Query("SELECT ba.accountId, ba.balance, ba.kvkNumber, ba.companyName FROM BusinessAccount ba WHERE TYPE(ba) = BusinessAccount")
     List<Object[]> findCompaniesAndBusinessAccounts();
 
 }
