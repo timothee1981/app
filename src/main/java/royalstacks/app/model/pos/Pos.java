@@ -1,12 +1,10 @@
 package royalstacks.app.model.pos;
 
-
-import royalstacks.app.model.BusinessAccount;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import java.math.BigDecimal;
 
 @Entity
 public class Pos {
@@ -16,14 +14,15 @@ public class Pos {
     protected int id;
     private String businessAccountNumber;
     private int identificationNumber;
-    @OneToOne
-    private Terminal terminal;
+    private BigDecimal pendingAmount;
+    private String clientAccountNumber;
 
     // CONSTRUCTORS
-    public Pos(String businessAccountNumber, int identificationNumber, Terminal terminal) {
+    public Pos(String businessAccountNumber, int identificationNumber, String clientAccountNumber) {
         this.businessAccountNumber = businessAccountNumber;
         this.identificationNumber = identificationNumber;
-        this.terminal = terminal;
+        this.clientAccountNumber = clientAccountNumber;
+
     }
 
     public Pos() {
@@ -31,13 +30,6 @@ public class Pos {
 
 
     // GETTERS & SETTERS
-
-
-    public int getId() {
-        return id;
-    }
-
-
     public String getBusinessAccountNumber() {
         return businessAccountNumber;
     }
@@ -54,22 +46,30 @@ public class Pos {
         this.identificationNumber = identificationNumber;
     }
 
-    public Terminal getTerminal() {
-        return terminal;
+    public BigDecimal getPendingAmount() {
+        return pendingAmount;
     }
 
-    public void setTerminal(Terminal terminal) {
-        this.terminal = terminal;
+    public void setPendingAmount(BigDecimal pendingAmount) {
+        this.pendingAmount = pendingAmount;
     }
 
-    // METHODS
+    public String getClientAccountNumber() {
+        return clientAccountNumber;
+    }
+
+    public void setClientAccountNumber(String clientAccountNumber) {
+        this.clientAccountNumber = clientAccountNumber;
+    }
+
     @Override
     public String toString() {
         return "Pos{" +
                 "id=" + id +
-                ", businessAccountNumber=" + businessAccountNumber +
+                ", businessAccountNumber='" + businessAccountNumber + '\'' +
                 ", identificationNumber=" + identificationNumber +
-                ", posTerminal=" + terminal +
+                ", pendingAmount=" + pendingAmount +
+                ", clientAccountNumber='" + clientAccountNumber + '\'' +
                 '}';
     }
 }

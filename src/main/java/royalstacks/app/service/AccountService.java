@@ -40,6 +40,10 @@ public class AccountService {
         }
     }
 
+    public Optional<Integer> getAccountIdByNumberExIban(String accountNumber){
+        return accountRepository.getAccountIdByNumberExIban(accountNumber);
+    }
+
     public String createNewIban(){
         final String INITIAL_ACCOUNT = "XX00XXX0000000000";
         final String LANDCODE = "NL";

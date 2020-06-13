@@ -197,7 +197,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript">
 
-    let koppelMode = false;
+    let connectionMode = false;
 
     document.addEventListener('keydown', function(e) {
         if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
@@ -216,6 +216,11 @@
     }
 
     function okButton(){
+        if(!connectionMode){
+            let url = window.location.origin + '/pos/customer/' + document.getElementById('idNumber').innerText + "/" +
+            document.getElementById('displayPos').innerText;
+            window.location.replace(url)
+        }
 
     }
 
@@ -259,7 +264,7 @@
 
         userAction();
 
-        koppelMode = true;
+        connectionMode = true;
         document.getElementById("notify").innerHTML = "Enter connection code";
         document.getElementById("notify").invisible = false;
         document.getElementById('displayPos').innerHTML = null

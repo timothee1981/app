@@ -6,10 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import royalstacks.app.model.pos.PendingTransaction;
 import royalstacks.app.model.pos.Pos;
-import royalstacks.app.service.PendingTransactionService;
 import royalstacks.app.service.PosService;
 
 import java.math.BigDecimal;
@@ -21,32 +20,51 @@ import java.util.Optional;
 public class PosCustomerController {
 
     PosService posService;
-    PendingTransactionService pendingTransactionService;
 
     @Autowired
-    public PosCustomerController(PosService posService, PendingTransactionService pendingTransactionService){
+    public PosCustomerController(PosService posService){
         this.posService = posService;
-        this.pendingTransactionService = pendingTransactionService;
     }
 
     @GetMapping("/pos/customer/{identificationNumber}")
     public final ModelAndView posCustomerControllerHandler(@PathVariable("identificationNumber") int identificationNumber, Model model) {
         Pos pos = new Pos();
-        pos.setIdentificationNumber(identificationNumber);
-        pos.setIdentificationNumber(identificationNumber);
-        pos.setBusinessAccountNumber("NL32ROYA0000000019");
+        Optional<Pos> posOptional = posService.findPosByIdentificationNumber(identificationNumber);
+
+        // TODO verwijder tijdelijk automatisch aanmaken POS
+        if(posOptional.isEmpty()){
+            System.out.println("invalid POS idNumber");
+            pos.setIdentificationNumber(identificationNumber);
+            pos.setIdentificationNumber(identificationNumber);
+            pos.setBusinessAccountNumber("NL32ROYA0000000019");
+            posService.savePos(pos);
+        } else {
+            pos = posOptional.get();
+        }
+
         model.addAttribute("pos", pos);
-        posService.savePos(pos);
+        return new ModelAndView("poscustomer");
+    }
+
+    @GetMapping("/pos/customer/{identificationNumber}/{pendingAmount}")
+    public final ModelAndView setPendingAmountControllerHandler(@PathVariable("pendingAmount") BigDecimal pendingAmount, @PathVariable("identificationNumber") int identificationNumber, Model model) {
+        System.out.println(pendingAmount);
+        Pos pos = new Pos();
+        Optional<Pos> posOptional = posService.findPosByIdentificationNumber(identificationNumber);
+        if(posOptional.isEmpty()){
+            return new ModelAndView("poscustomer");
+        } else {
+         pos = posOptional.get();
+         pos.setPendingAmount(pendingAmount);
+         posService.savePos(pos);
+        }
+
+        model.addAttribute("pos", pos);
         return new ModelAndView("poscustomer");
     }
 
     @PostMapping(path = "/pos/customer/{identificationNumber}", consumes = "application/json", produces = "application/json")
     public final  void createPendingTransaction(@PathVariable("identificationNumber") int identificationNumber, BigDecimal amount, Model model) {
         Optional<Pos> pos = posService.findPosByIdentificationNumber(identificationNumber);
-
-        PendingTransaction pendingTransaction = new PendingTransaction();
-        pendingTransaction.setPos(pos.get());
-        pendingTransaction.setAmount(amount);
-        pendingTransactionService.save(pendingTransaction);
     }
 }
