@@ -50,24 +50,28 @@
             width: 100%;
         }
 
+        h1, h2{
+            text-align: center;
+        }
+
         th{
             text-align: center;
-            font-family: Poppins-Regular, serif;
+            /*font-family: Poppins-Regular, serif;*/
             font-size: 18px;
             color: #fff;
             line-height: 1.2;
-            font-weight: unset;
+            /*font-weight: unset;*/
             padding-bottom: 19px;
             padding-top: 19px;
         }
 
         td{
             text-align: center;
-            font-family: Poppins-Regular, sans-serif;
+            /*font-family: Poppins-Regular, sans-serif;*/
             font-size: 15px;
             color: #666666;
             line-height: 1.2;
-            font-weight: unset;
+            /*font-weight: unset;*/
             padding-top: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #f2f2f2;
@@ -88,7 +92,7 @@
 
         tr.trLink:hover{
             opacity: 0.9;
-
+            background: #a6f0ff
         }
 
 
@@ -98,7 +102,7 @@
 </head>
 <body th:object="${customer}">
 
-<div class="content">
+
 
 <div id="navbar" >
     <a>
@@ -108,6 +112,8 @@
     </a>
     <span id="logoNavbar"></span>
 </div>
+
+<div class="content">
 
 <div id="Account_overview">
     <h1>Account overview</h1>

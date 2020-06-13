@@ -6,10 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.CustomerAndTotalBalance;
-import royalstacks.app.model.CustomerAndTransactions;
-import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.CustomerRepository;
-import royalstacks.app.model.repository.TransactionRepository;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -40,9 +37,6 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
-
-    @Autowired
-    private TransactionRepository transactionRepository;
 
     @Autowired
     private UserService userService;
@@ -76,46 +70,6 @@ public class CustomerService {
 
         return customersAndTotalBalance;
     }
-
-    public List<CustomerAndTransactions> findTop10TransactionsOnBusinessAccounts(){
-        List<Object[]> results = customerRepository.findCustomersAndBusinessAccounts();
-        List<CustomerAndTransactions> customerAndTransactions = new ArrayList<>();
-
-        for (Object[] result : results) {
-            List<Transaction> transactionList = transactionRepository
-                    .getTransactionsByFromAccountIdOrToAccountIdOrderByDateDesc((int)result[2], (int)result[2]);
-
-            customerAndTransactions.add(
-                    new CustomerAndTransactions(
-                            (String) result [0],
-                            (String) result [1],
-                            transactionList.size(),
-                            (BigDecimal) result [3]
-                    )
-            );
-        }
-        Collections.sort(customerAndTransactions);
-        return customerAndTransactions.subList(0,10);
-    }
-
-    public List<CustomerAndTotalBalance> findTop10PrivateAccounts() {
-        Pageable pageable = PageRequest.of(0, PRIVATE_ACCOUNT_SIZE);
-        List<Object[]> results = customerRepository.findCustomersAndPrivateAccountBalance(pageable);
-        List<CustomerAndTotalBalance> customersAndTotalBalance = new ArrayList<>();
-
-        for (Object[] result : results) {
-            customersAndTotalBalance.add(
-                    new CustomerAndTotalBalance(
-                            (String) result[0], // FIRSTNAME
-                            (String) result[1], // LASTNAME
-                            (BigDecimal) result[2] // BALANCE
-                    )
-            );
-        }
-
-        return customersAndTotalBalance;
-    }
-
 
     public boolean isPhoneNumberValid(String phoneNumber){
         Matcher home = PHONE_HOME_REGEX.matcher(phoneNumber);
@@ -175,4 +129,24 @@ public class CustomerService {
                 isBSNFormatValid(customer.getBSN());
 
     }
+
+    public List<CustomerAndTotalBalance> findTop10PrivateAccounts() {
+        Pageable pageable = PageRequest.of(0, PRIVATE_ACCOUNT_SIZE);
+        List<Object[]> results = customerRepository.findCustomersAndPrivateAccountBalance(pageable);
+        List<CustomerAndTotalBalance> customersAndTotalBalance = new ArrayList<>();
+
+        for (Object[] result : results) {
+            customersAndTotalBalance.add(
+                    new CustomerAndTotalBalance(
+                            (String) result[0], // FIRSTNAME
+                            (String) result[1], // LASTNAME
+                            (BigDecimal) result[2] // BALANCE
+                    )
+            );
+        }
+
+        return customersAndTotalBalance;
+    }
+
+
 }

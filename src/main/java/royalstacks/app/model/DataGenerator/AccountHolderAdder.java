@@ -12,16 +12,13 @@ public class AccountHolderAdder {
     public static void addAccountHoldersToAccount(List<Account> accounts, List<Customer> customers, Employee headbusiness){
         final int MIN_ACCOUNTHOLDERS = 1;
         final int MAX_ACCOUNTHOLDERS = 4;
-        boolean isBusinessAccounts = false;
-        if(accounts.get(0) instanceof BusinessAccount){
-            isBusinessAccounts = true;
-        }
+
         for(Account account : accounts){
             int amountAccountholders = Gen.randomInt(MIN_ACCOUNTHOLDERS, MAX_ACCOUNTHOLDERS);
             for (int i = 0; i < amountAccountholders; i++) {
                 Customer randomCustomer = customers.get(Gen.randomInt(0, customers.size()-1));
                 account.addAccountHolder(randomCustomer);
-                if(isBusinessAccounts){
+                if(account instanceof  BusinessAccount){
                     if(!randomCustomer.isBusinessAccountHolder()){
                         randomCustomer.setBusinessAccountHolder(true);
                         randomCustomer.setAccountManager(headbusiness);

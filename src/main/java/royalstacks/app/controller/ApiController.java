@@ -1,7 +1,6 @@
 package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
@@ -29,6 +28,9 @@ public class ApiController {
         this.posService = ps;
     }
 
+
+    @Autowired
+    private BusinessAccountService businessAccountService;
 
     @GetMapping("/api/accountredirect")
     @ResponseBody
@@ -66,8 +68,8 @@ public class ApiController {
     }
 
     @GetMapping("/api/top10transactions")
-    public @ResponseBody List<CustomerAndTransactions> topTransactionList(){
-        return customerService.findTop10TransactionsOnBusinessAccounts();
+    public @ResponseBody List<CompanyAndTransactions> topTransactionList(){
+        return businessAccountService.findTop10TransactionsOnBusinessAccounts();
     }
 
     @GetMapping("/api/getPendingAmount")
