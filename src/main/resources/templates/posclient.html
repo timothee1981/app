@@ -210,6 +210,7 @@
 
 <div id="container">
     <ul id="display">
+        <span id="status" th:text="${status}"></span>
         <span id="transactionInfo"></span>
         <li>Bank Account + Pincode</li>
         <li id="displayAccountNumber"></li>
@@ -242,14 +243,27 @@
 </script>
 <script type="text/javascript" th:inline="javascript">
 
-    let message = /*[[${pos.pendingAmount}]]*/ 'default';
-    if(message == null){
-        document.getElementById('transactionInfo').innerText = "No pending transaction"
-    } else {
-        document.getElementById('transactionInfo').innerText = "€" + message;
+    const pendingAmount = /*[[${pos.pendingAmount}]]*/ 'default';
+    const businessAccountNumber = /*[[${pos.businessAccountNumber}]]*/ 'default';
+    const identificationNumber = /*[[${pos.identificationNumber}]]*/ 'default';
+
+    let status = /*[[${status}]]*/ 'default';
+    console.log(status);
+
+    if(status != null){
+        document.getElementById('transactionInfo').innerText = status
+
     }
 
+    const addObject = /*[[${addObject}]]*/ 'default';
 
+
+
+    if(pendingAmount == null){
+        document.getElementById('transactionInfo').innerText = "No pending transaction"
+    } else {
+        document.getElementById('transactionInfo').innerText = "€" + pendingAmount;
+    }
 
     document.addEventListener('keydown', function(e) {
         if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
@@ -280,14 +294,40 @@
         }
     }
 
-    // TODO: send rest request
-    function okButton(){
-        if(document.getElementById('displayPincode').innerText.length === 4) {
-            let url = window.location.origin + '/pos/client/' + document.getElementById('idNumber').innerText + "/" +
-                document.getElementById('displayAccountNumber').innerText;
-            window.location.replace(url)
+
+    function okButton() {
+        if (document.getElementById('displayPincode').innerText.length === 4) {
+            okButtonPost()
         }
     }
+
+    const okButtonPost = async () => {
+        const response = await fetch(window.location.origin + '/pos/client/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                businessAccountNumber: businessAccountNumber,
+                identificationNumber: identificationNumber,
+                pendingAmount: pendingAmount,
+                clientAccountNumber: document.getElementById('displayAccountNumber').innerText
+            })
+        })
+            .then(function (response) {
+                console.log("response: " + JSON.stringify(response))
+            })
+            .then(function (data) {
+                console.log("data : " + data)
+            })
+            .then(function (error) {
+                console.log("error: " + error)
+            });
+        const myJson = await response.json();
+        console.log(myJson)
+    };
+
 
     function stopButton(){
         let url = window.location.origin + '/pos/customer/' + document.getElementById('idNumber').innerText;
