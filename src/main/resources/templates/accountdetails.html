@@ -8,7 +8,7 @@
 
 
 </head>
-<body th:object="${account}">
+<body id="body" th:object="${account}">
 <!-- Navigation bra section -->
 <div id="navbar" >
     <a>
@@ -42,7 +42,7 @@
 <div class="infoTable">
     <div class="inforow">
         <div class = "infocell infoheader">IBAN</div>
-        <div class = "infocell"><span th:text="${account.accountNumber}"></span></div>
+        <div class = "infocell" ><span id="accountNumber" name="accountNumber"span  th:text="${account.accountNumber}"></span></div>
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Balance</div>
@@ -71,28 +71,8 @@
 
 
 
-    <!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
-<div class="table">
 
-    <div class="row header">
-        <div class="cell">Date Transaction</div>
-        <div class="cell">IBAN </div>
-        <div class="cell">Name</div>
-        <div class="cell">description</div>
-        <div class="cell"> Amount</div>
-    </div>
 
-    <div class="row" th:each="transaction : ${transactionList}">
-
-        <div class="cell"  th:text="${transaction.dateTime}"></div>
-        <div class="cell"  th:text="${transaction.bankAccountNumber}"></div>
-        <div class="cell"  th:text="${transaction.customerName}"></div>
-        <div class="cell"  th:text="${transaction.description}"></div>
-        <div class="cell"  th:text="${#numbers.formatDecimal(transaction.amount, 0, 2)}"></div>
-
-    </div>
-
-</div>
 </div>
 
 </div>
@@ -106,6 +86,7 @@
 </body>
 
 <script>
+    const accountNumber = document.getElementById("accountNumber");
     function updateClock() {
         let now = new Date(), // current date
             months = ['January', 'February', 'March','April','Mei','June','July','Augustus','September','October','November','December']; // you get the idea
@@ -124,11 +105,66 @@
         setTimeout(updateClock, 1000);
     }
     updateClock(); // initial call
+    <!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
+   // Creating a new XMLHttpRequest object
+    const request = new XMLHttpRequest();
+    //Initialize request
+    let accountNumbervalue = accountNumber.innerText;
+    request.open("GET",`/accountdetails/transactions?accountNumber=${accountNumbervalue}`, true);
 
- /*   const accountNumber = document.getElementById("option");
+    //Send HTTP request & handle server output
+    request.onreadystatechange = function() {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                createTable(JSON.parse(request.responseText));
+            }
+            else {
+                alert('Something is wrong!');
+            }
+        }
+    };
+    request.send(null);
 
+    function createTable(transactions) {
+        const body = document.body,
+            tbl = document.createElement('div');
+        tbl.setAttribute("class", "table");
+        tbl.style.width = '50%';
+        const headerRow = document.createElement('div');
+        headerRow.setAttribute("class","row header");
+        tbl.appendChild(headerRow);
+        createTableHeader("DateTime", headerRow);
+        createTableCell("IBAN", headerRow);
+        createTableHeader("Name", headerRow);
+        createTableHeader("description", headerRow);
+        createTableHeader("Amount", headerRow);
 
-    console.log(accountNumber.innerHTML);*/
+        transactions.forEach(element => {
+            const row = document.createElement('div');
+            row.setAttribute("class","row");
+            tbl.appendChild(row);
+            createTableCell(element.dateTime, row);
+            createTableCell(element.bankAccountNumber, row)
+            createTableCell(element.customerName, row);
+            createTableCell(element.description, row);
+            createTableCell(element.amount, row);
+        });
+        body.appendChild(tbl);
+    }
+
+    function createTableHeader(title, row){
+        const cell = document.createElement('div');
+        cell.setAttribute("class","cell");
+        cell.appendChild(document.createTextNode(title));
+        row.appendChild(cell);
+    }
+
+    function createTableCell(content, row){
+        const cell = document.createElement('div');
+        cell.setAttribute("class","cell");
+        cell.appendChild(document.createTextNode(content));
+        row.appendChild(cell);
+    }
 
 
 

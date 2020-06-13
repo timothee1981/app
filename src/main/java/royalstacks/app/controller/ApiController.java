@@ -1,12 +1,12 @@
 package royalstacks.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
-import royalstacks.app.model.CustomerAndTransactions;
+import royalstacks.app.model.CompanyAndTransactions;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.BusinessAccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
 
@@ -23,6 +23,9 @@ public class ApiController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private BusinessAccountService businessAccountService;
 
     @GetMapping("/api/accountredirect")
     @ResponseBody
@@ -53,8 +56,8 @@ public class ApiController {
     }
 
     @GetMapping("/api/top10transactions")
-    public @ResponseBody List<CustomerAndTransactions> topTransactionList(){
-        return customerService.findTop10TransactionsOnBusinessAccounts();
+    public @ResponseBody List<CompanyAndTransactions> topTransactionList(){
+        return businessAccountService.findTop10TransactionsOnBusinessAccounts();
     }
 
     @PostMapping(value = "/api/iban",consumes = "text/plain")
