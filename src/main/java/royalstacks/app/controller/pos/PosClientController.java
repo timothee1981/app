@@ -24,9 +24,8 @@ public class PosClientController {
 
 
     @PostMapping("/pos/client/")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody ResponseEntity<PaymentResult> postPosClient() {
-        return new ResponseEntity<>(new PaymentResult(true), HttpStatus.OK);
+    public @ResponseBody String StrtPosClient() {
+        return "hoi";
     /*    model.addAttribute(pos);
 
         if(posService.executePosTransaction(pos)){

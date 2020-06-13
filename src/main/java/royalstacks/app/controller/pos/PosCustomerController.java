@@ -60,7 +60,6 @@ public class PosCustomerController {
         }
 
         model.addAttribute("pos", pos);
-        model.addAttribute("status", "status1");
 
         return new ModelAndView("posclient");
     }
