@@ -9,44 +9,67 @@ const companyname = document.getElementById("companyName");
 const companynameregex = /^[\w@ ]*[^\W_ ][\w- @ & +]*$/;
 
 /* check companyname */
-
-
-companyname.addEventListener("input",function () {
-    let companyname = document.getElementById("companyName");
-    let companynameInput = companyname.value;
-    if(companynameregex.test(companynameInput)) {
-        document.getElementById("InvalidCompanyName").style.display = "none";
-        companyname.classList.add("isValid");
-        companyname.classList.remove("isInvalid");
-    }else{
-        document.getElementById("InvalidCompanyName").style.display = "inline";
-        companyname.classList.add("isInvalid");
-        companyname.classList.remove("isValid");
-    }
+kvknumber.addEventListener('input', function () {
+    validateKvkNumber();
 
 });
 
+vatnumber.addEventListener('input', function () {
+    validateVatNumber();
+});
+
+companyname.addEventListener("input", function () {
+    validateCompanyName();
+});
+
+/*check id Company name valid*/
+
+function validateCompanyName() {
+        let companyname = document.getElementById("companyName");
+        let companynameInput = companyname.value;
+        if (companynameregex.test(companynameInput)) {
+           setElementIsValid("InvalidCompanyName");
+        } else {
+            setElementIsInvalid("InvalidCompanyName")
+        }
+
+}
+
+function setElementIsValid(id){
+    document.getElementById(id).style.display = "none";
+    companyname.classList.add("isValid");
+    companyname.classList.remove("isInvalid");
+
+}
+
+function setElementIsInvalid(id){
+    document.getElementById(id).style.display = "inline";
+    companyname.classList.add("isInvalid");
+    companyname.classList.remove("isValid");
+
+}
 
 /*check if kvk valid*/
 
 
-kvknumber.addEventListener('input',function(){
-    let kvknumber = document.getElementById("kvkNumber");
-    let kvknumberInput = kvknumber.value;
-    const re = /^[0-9]{8}$/;
-    if(re.test(kvknumberInput)){
-        document.getElementById("InvalidKvkNumber").style.display = "none";
-        kvknumber.classList.add("isValid");
-        kvknumber.classList.remove("isInvalid");
-    }else{
-        document.getElementById("InvalidKvkNumber").style.display = "inline";
-        kvknumber.classList.add("isInvalid");
-        kvknumber.classList.remove("isValid");
-    }
-});
+function validateKvkNumber() {
+        let kvknumber = document.getElementById("kvkNumber");
+        let kvknumberInput = kvknumber.value;
+        const re = /^[0-9]{8}$/;
+        if (re.test(kvknumberInput)) {
+            document.getElementById("InvalidKvkNumber").style.display = "none";
+            kvknumber.classList.add("isValid");
+            kvknumber.classList.remove("isInvalid");
+        } else {
+            document.getElementById("InvalidKvkNumber").style.display = "inline";
+            kvknumber.classList.add("isInvalid");
+            kvknumber.classList.remove("isValid");
+        }
+
+}
 
 
-/*check if VAT valid*/
+/*set vat class to valid/invalid*/
 
 function setVatClassInValid() {
     hideVatNumberNotCorrect();
@@ -60,39 +83,43 @@ function setVatClassValid() {
     vatnumber.classList.remove("isInvalid")
 }
 
+/* check if vat valid*/
 
-vatnumber.addEventListener('input', function () {
+function validateVatNumber() {
+        const vatnumberInput = vatnumber.value;
+        const VATchek = window.location.pathname + `/v_check?vatnumber=${vatnumber.value}`;
 
-    const vatnumberInput = vatnumber.value;
-    const VATchek = window.location.pathname + `/v_check?vatnumber=${vatnumber.value}`;
+        const re = /^[nN][lL][0-9]{9}[bB][0-9]{2}$/;
+        console.log(VATchek);
+        if (!re.test(vatnumberInput)) {
+            setVatClassInValid();
 
-    const re = /^[nN][lL][0-9]{9}[bB][0-9]{2}$/;
-    console.log(VATchek);
-    if(!re.test(vatnumberInput)) {
-        setVatClassInValid();
+        } else {
+            getUrlResponseVat(VATchek);
+        }
 
-    }else {
-        fetch(VATchek)
-            .then((response) => {
-                if (!response) {
-                    throw new Error("Response Error")
+}
 
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (data === true) {
-                    setVatClassValid();
-                } else {
-                    setVatClassInValid();
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+function getUrlResponseVat(VATchek) {
+    fetch(VATchek)
+        .then((response) => {
+            if (!response) {
+                throw new Error("Response Error")
 
-});
+            }
+            return response.json();
+        })
+        .then((data) => {
+            if (data === true) {
+                setVatClassValid();
+            } else {
+                setVatClassInValid();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
 
 
 /* enable/disable submit button met click nb: kan waarschijnlijk in een methode maar weet niet hoe */
