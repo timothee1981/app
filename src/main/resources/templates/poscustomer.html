@@ -100,14 +100,9 @@
         #keyboard .stop {
             width: 90px;
         }
-        .lastitem {
-            margin-right: 0;
-        }
-        #keyboard .space {
-            float: left;
-            width: 556px;
-        }
-        #keyboard .stop, #keyboard .space, #keyboard .delete, #keyboard .return, #keyboard .bottom{
+
+
+        #keyboard .stop, #keyboard .delete, #keyboard .return, #keyboard .bottom{
             font-size: 20px;
         }
         #keyboard li:hover {
@@ -151,18 +146,25 @@
             margin:10px 10px 0 0;
             padding:5px 10px
         }
+
+        h2{
+            margin-top: 10px;
+            padding-top: 7px;
+            color: #f1f1f1;
+        }
     </style>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <span id="idNumber" th:text="${pos.identificationNumber}"/>
+<h2>Seller</h2>
 <div id="themachine">
 
     <div id="container">
 
         <ul id="display">
-            <li id="notify" class="titles">Welcome!</li>
+            <li id="notify" class="titles">Enter amount</li>
             <li id="displayPos"></li>
         </ul>
         <ul id="keyboard">
@@ -199,9 +201,9 @@
 
 
     // global variables needed for connection
-    var connectionMode = false;
-    var businessAccountIban = null;
-    var connectionCode = null;
+    let connectionMode = false;
+    let businessAccountIban = null;
+    let connectionCode = null;
 
     document.addEventListener('keydown', function(e) {
         if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
@@ -278,6 +280,15 @@
 
 
     function closeButton(){
+    }
+
+    function stopButton() {
+        connectionMode = false;
+        businessAccountIban = null;
+        connectionCode = null;
+
+        document.getElementById('displayPos').innerHTML = "";
+        document.getElementById("notify").innerHTML = "Enter amount";
     }
 
 

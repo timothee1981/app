@@ -6,10 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.CustomerAndTransactions;
-import royalstacks.app.service.AccountService;
-import royalstacks.app.service.BusinessAccountService;
-import royalstacks.app.service.CustomerService;
-import royalstacks.app.service.UserService;
+import royalstacks.app.service.*;
 
 import java.util.List;
 
@@ -21,13 +18,15 @@ public class ApiController {
     private UserService userService;
     private CustomerService customerService;
     private BusinessAccountService businessAccountService;
+    private PosService posService;
 
     @Autowired
-    public ApiController(AccountService as, UserService us, CustomerService cs,  BusinessAccountService bs){
+    public ApiController(AccountService as, UserService us, CustomerService cs,  BusinessAccountService bs, PosService ps){
         this.accountService = as;
         this.userService = us;
         this.customerService = cs;
         this.businessAccountService = bs;
+        this.posService = ps;
     }
 
 
@@ -70,6 +69,17 @@ public class ApiController {
     public @ResponseBody List<CustomerAndTransactions> topTransactionList(){
         return customerService.findTop10TransactionsOnBusinessAccounts();
     }
+
+    @GetMapping("/api/getPendingAmount")
+    public @ResponseBody String getPendingAmount(int posId) {
+        if (posService.findPosByIdentificationNumber(posId).isPresent()) {
+            return String.valueOf(posService.findPosByIdentificationNumber(posId).get().getPendingAmount());
+        } else {
+            return "No payment pending";
+        }
+    }
+
+
 
     @PostMapping(value = "/api/iban",consumes = "text/plain")
     @ResponseBody

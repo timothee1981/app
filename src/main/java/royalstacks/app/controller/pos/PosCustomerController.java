@@ -60,7 +60,7 @@ public class PosCustomerController {
         }
 
         model.addAttribute("pos", pos);
-        return new ModelAndView("poscustomer");
+        return new ModelAndView("posclient");
     }
 
     @PostMapping(path = "/pos/customer/{identificationNumber}", consumes = "application/json", produces = "application/json")

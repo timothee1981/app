@@ -31,7 +31,6 @@ public class PosClientController {
     @GetMapping("/pos/client/{identificationNumber}")
     public final ModelAndView posCustomerControllerHandler(@PathVariable("identificationNumber") int identificationNumber, Model model) {
 
-
         Pos pos;
 
         Optional<Pos> posOptional = posService.findPosByIdentificationNumber(identificationNumber);
@@ -67,7 +66,7 @@ public class PosClientController {
         pos.setClientAccountNumber(clientAccountNumber);
         posService.savePos(pos);
 
-        // TODO vervang dit met REST request
+        // TODO vervang dit door REST request
         if(posService.executePosTransaction(pos)){
             System.out.println("success");
             mav.addObject("notification", "Transaction executed");
