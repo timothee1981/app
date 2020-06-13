@@ -72,7 +72,7 @@ function validateKvkNumber() {
 /*set vat class to valid/invalid*/
 
 function setVatClassInValid() {
-    hideVatNumberNotCorrect();
+    setVatNumberNotCorrect(String);
     vatnumber.classList.add("isInvalid");
     vatnumber.classList.remove("isValid");
 }
