@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
-import royalstacks.app.model.CustomerAndTransactions;
+import royalstacks.app.model.CompanyAndTransactions;
 import royalstacks.app.service.*;
 
 import java.util.List;
@@ -27,10 +27,6 @@ public class ApiController {
         this.businessAccountService = bs;
         this.posService = ps;
     }
-
-
-    @Autowired
-    private BusinessAccountService businessAccountService;
 
     @GetMapping("/api/accountredirect")
     @ResponseBody

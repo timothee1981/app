@@ -152,6 +152,10 @@
             padding-top: 7px;
             color: #f1f1f1;
         }
+
+        #transButton{
+            background-color: #d6d6d6;
+        }
     </style>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -181,10 +185,10 @@
             <a onclick="stopButton();"> <li class="stop">Stop</li></a>
             <a onclick="delButton();"><li class="delete">Del</li></a>
             <a onclick="okButton();"> <li class="return">Ok</li></a>
-            <a onclick="connButton();"> <li class="bottom">Conn</li></a>
+            <a onclick="transButton();"> <li id="transButton" class="bottom">Trans</li></a>
+            <a onclick="connButton();"> <li id="connButton" class="bottom">Conn</li></a>
             <a onclick="openButton();"><li class="bottom">Open</li></a>
             <a onclick="closeButton();"> <li class="bottom">Close</li></a>
-            <a onclick="transButton();"> <li class="bottom">Trans</li></a>
 
         </ul>
     </div>
@@ -204,6 +208,8 @@
     let connectionMode = false;
     let businessAccountIban = null;
     let connectionCode = null;
+
+    document.getElementById('transButton').style.backgroundColor = '#d6d6d6';
 
     document.addEventListener('keydown', function(e) {
         if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
@@ -283,12 +289,7 @@
     }
 
     function stopButton() {
-        connectionMode = false;
-        businessAccountIban = null;
-        connectionCode = null;
-
         document.getElementById('displayPos').innerHTML = "";
-        document.getElementById("notify").innerHTML = "Enter amount";
     }
 
 
@@ -301,12 +302,19 @@
         connectionCode = null;
 
         document.getElementById("notify").innerHTML = "Enter account number";
-            }
+        document.getElementById('connButton').style.backgroundColor = '#d6d6d6';
+        document.getElementById('transButton').style.backgroundColor = '#ffffff';
+
+    }
 
     function openButton() {
     }
 
     function transButton(){
+        connectionMode  = false;
+        document.getElementById("notify").innerHTML = "Enter amount";
+        document.getElementById('transButton').style.backgroundColor = '#d6d6d6';
+        document.getElementById('connButton').style.backgroundColor = '#ffffff';
     }
 
 
