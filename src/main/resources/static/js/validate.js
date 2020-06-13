@@ -18,9 +18,8 @@ class Validate{
         const USERNAME_FIELD = document.getElementById("username");
         let username = USERNAME_FIELD.value;
 
-        this.setElementInvalid("username");
-
         if (!regex.username.test(username)) {
+            this.setElementInvalid("username");
             this.revealElement("usernameNotAvailable", this.#USERNAME_IS_INVALID);
         } else {
             const api = new API();
@@ -29,6 +28,7 @@ class Validate{
                     this.setElementValid("username");
                     this.hideElement("usernameNotAvailable");
                 } else {
+                    this.setElementInvalid("username");
                     this.revealElement("usernameNotAvailable", this.#USERNAME_NOT_AVAILABLE);
                 }
             })
@@ -40,11 +40,12 @@ class Validate{
         const requirements = { "lowercase": regex.lowerCase, "uppercase": regex.upperCase,
             "number": regex.numbers, "special": regex.specials, "length": regex.pass_length };
 
-        this.setElementValid("showPasswordButton");
+
 
         for (let k in requirements) {
             const element = document.getElementById(k);
             if(document.getElementById("password").value.match(requirements[k])){
+                this.setElementValid("showPasswordButton");
                 this.setPassRequirementValid(element)
             } else {
                 this.setPassRequirementInvalid(element);
@@ -107,12 +108,12 @@ class Validate{
         const BSN_FIELD = document.getElementById("BSN");
         let BSNInput = BSN_FIELD.value;
 
-        this.setElementInvalid("BSN");
-
         if (!regex.bsn.test(BSNInput)) {
+            this.setElementInvalid("BSN");
             this.revealElement("BSNNotAvailable", this.#BSN_INCORRECT_LENGTH);
 
         } else if (!this.passesCheckDigit(BSNInput)) {
+            this.setElementInvalid("BSN");
             this.revealElement("BSNNotAvailable", this.#BSN_IS_INVALID);
 
         } else {

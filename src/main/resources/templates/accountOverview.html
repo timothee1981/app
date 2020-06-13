@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://java.sun.com/JSP/Page">
 <head>
     <meta charset="UTF-8">
-    <title>myaccounts</title>
+    <title>Account Overview</title>
 
     <link type="text/css" href="css/navbar.css" rel="stylesheet" />
 
@@ -41,25 +41,51 @@
         }
 
         #Account_overview{
-            width: 40%;
-            margin-left: 30%;
+            width: 60%;
+            margin-left: 20%;
         }
 
 
         table{
             width: 100%;
-            -webkit-border-horizontal-spacing: 0;
         }
+
+        th{
+            text-align: center;
+            font-family: Poppins-Regular, serif;
+            font-size: 18px;
+            color: #fff;
+            line-height: 1.2;
+            font-weight: unset;
+            padding-bottom: 19px;
+            padding-top: 19px;
+        }
+
         td{
             text-align: center;
+            font-family: Poppins-Regular, sans-serif;
+            font-size: 15px;
+            color: #666666;
+            line-height: 1.2;
+            font-weight: unset;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+        thead{
+            color: #ffffff;
+            background: #1E90FF;
         }
 
         tr.trLink{
             cursor: pointer;
             border-collapse: collapse;
 
-            background: #1E90FF;
+            background: #fff;
+
         }
+
         tr.trLink:hover{
             opacity: 0.9;
 
@@ -71,6 +97,8 @@
     </style>
 </head>
 <body th:object="${customer}">
+
+<div class="content">
 
 <div id="navbar" >
     <a>
@@ -89,8 +117,8 @@
         <table id="accountdetailstable">
             <thead>
                 <tr>
-                    <th>Iban Account</th>
-                    <th>Account balance</th>
+                    <th class="cell">Iban Account</th>
+                    <th class="cell">Account balance</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,10 +133,14 @@
     <form th:action="@{openaccount}"  method="get">
         <input type="submit" name="submitbutton" value="Create a new account" />
     </form>
+    <form th:action="@{acceptaccountholderinvite}"  method="get">
+        <input type="submit" name="submitbutton" value="Accept invite" />
+    </form>
 </div>
 
 <script src="js/navbar.js"></script>
 
+</div>
 </body>
 </html>
 

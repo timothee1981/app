@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.CustomerAddress;
 import royalstacks.app.model.User;
 
 import java.util.Optional;
@@ -27,12 +28,15 @@ class CustomerRepositoryTest {
 
     @Test
     void findCustomerByBSNTest() {
+        CustomerAddress customerAddress = new CustomerAddress("AAAA12", "12", "A", "Hoorn", "Voorstraat");
         Customer customer = new Customer("username", "password", "Fiep", "Bakker",
-                "emailaddress", "AAAA12", "12", "A", "Hoorn" , "0612345678",
+                "emailaddress", customerAddress , "0612345678",
                 "753861489", null, false);
 
-/*        customer.setUsername("username1");
-        customer.setBSN("302110501");*/
+        customer.setUsername("username1");
+        customer.setBSN("302110501");
+        System.out.println(customer);
+
 
         this.entityManager.persist(customer);
         Optional<Customer> expected = Optional.of(customer);

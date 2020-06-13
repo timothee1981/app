@@ -76,7 +76,7 @@ public class DoLoginController {
             return mav.addObject(employee);
         } else if (user instanceof Customer) {
             Customer customer = (Customer) user;
-            ModelAndView mav = new ModelAndView("redirect:/myaccounts");
+            ModelAndView mav = new ModelAndView("redirect:/accountOverview");
             return mav.addObject(customer);
         } else {
             ModelAndView mav = new ModelAndView("homepage");

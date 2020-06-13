@@ -20,7 +20,7 @@
 <div class="content">
 <h1>Sign up</h1>
 <fieldset th:disabled="${form}">
-<form th:action="@{signup}" method="post" class="form" id="form" novalidate>
+<form modelAttribute="customerBackingBean" method="post" class="form" id="form" novalidate>
     <h3><span th:text="${notification}"/></h3>
 
     <div id="formLeft">
@@ -99,7 +99,7 @@
                 placeholder="123456789"
                 name="BSN"
                 id="BSN"
-                th:value="${BSN}"
+                th:value="${bsn}"
         /><span></span>
 
 
@@ -185,6 +185,7 @@
                 type="text"
                 name="street"
                 id="street"
+                th:value="${street}"
                 readonly
         /><span></span>
             </div>

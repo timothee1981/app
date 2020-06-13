@@ -48,15 +48,28 @@ kvknumber.addEventListener('input',function(){
 
 /*check if VAT valid*/
 
+function setVatClassInValid() {
+    hideVatNumberNotCorrect();
+    vatnumber.classList.add("isInvalid");
+    vatnumber.classList.remove("isValid");
+}
+
+function setVatClassValid() {
+    hideVatNumberNotCorrect();
+    vatnumber.classList.add("isValid");
+    vatnumber.classList.remove("isInvalid")
+}
+
+
 vatnumber.addEventListener('input', function () {
-    let vatnumberInput = vatnumber.value;
-    let VATchek = window.location.pathname + `/v_check?vatnumber=${vatnumberInput}`;
+
+    const vatnumberInput = vatnumber.value;
+    const VATchek = window.location.pathname + `/v_check?vatnumber=${vatnumber.value}`;
+
     const re = /^[nN][lL][0-9]{9}[bB][0-9]{2}$/;
     console.log(VATchek);
     if(!re.test(vatnumberInput)) {
-        hideVatNumberNotCorrect();
-        vatnumber.classList.add("isInvalid");
-        vatnumber.classList.remove("isValid");
+        setVatClassInValid();
 
     }else {
         fetch(VATchek)
@@ -69,13 +82,9 @@ vatnumber.addEventListener('input', function () {
             })
             .then((data) => {
                 if (data === true) {
-                    hideVatNumberNotCorrect();
-                    vatnumber.classList.add("isValid");
-                    vatnumber.classList.remove("isInvalid")
+                    setVatClassValid();
                 } else {
-                    setVatNumberNotCorrect("Vat number not valid");
-                    vatnumber.classList.add("isInvalid");
-                    vatnumber.classList.remove("isValid")
+                    setVatClassInValid();
                 }
             })
             .catch((error) => {

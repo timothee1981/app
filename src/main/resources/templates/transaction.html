@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="navbar">
-        <a class="active" href="/myaccounts">My accounts</a>
+        <a class="active" href="/accountOverview">Account Overview</a>
         <span id="logoNavbar"></span>
     </div>
     <h1 class="content">Transfer Money</h1>
@@ -26,7 +26,7 @@
 
         <input
                 type="text"
-                placeholder="NL12ROYA0123456789433706589"
+                placeholder="NL12ROYA0123456789"
                 name="toAccountNumber"
                 id="toAccountNumber"
                 title="A valid account number"
@@ -64,11 +64,43 @@
         <span></span>
         <span></span>
             <td><button type="submit" name="submit" id="submitButton" disabled=true value="Send Money">Send Money</button></td>
+
     </form>
+    <form id="accountdetailsForm" th:action="@{accountdetails}" type="get">
+        <button type="button" id="backButton" value="Cancel">Cancel</button>
+    </form>
+
+
+
 
 
 </body>
 
 <script src="js/navbar"></script>
 <script src="js/transactionFieldValidation.js" defer></script>
+<script defer>
+
+
+
+        document.getElementById('backButton').addEventListener("click", function(){
+
+                let e = document.getElementById("fromAccountNumber");
+                let accountnumber = e.options[e.selectedIndex].value;
+                console.log(accountnumber);
+
+
+
+            let input = document.createElement("input");
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "accountNumber");
+            input.setAttribute("value", accountnumber);
+
+            let form = document.getElementById("accountdetailsForm");
+            form.appendChild(input);
+            form.submit();
+
+            });
+
+
+</script>
 </html>

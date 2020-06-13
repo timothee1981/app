@@ -2,12 +2,13 @@ package royalstacks.app.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Account {
+public abstract class Account implements Comparable<Account>{
 
     protected final static double STARTING_BALANCE = 1337.00;
 
@@ -16,7 +17,7 @@ public abstract class Account {
     protected int accountId;
     protected String accountNumber;
     protected BigDecimal balance;
-    @ManyToMany
+    @ManyToMany (cascade = CascadeType.ALL)
     protected Set<Customer> accountHolders;
 
     // CONSTRUCTORS
@@ -46,10 +47,7 @@ public abstract class Account {
     }
 
     public void addAccountHolder(Customer accountHolderToAdd){
-        // als accountholder nog niet bestaat, voeg toe
-        if(! (accountHolders.contains(accountHolderToAdd))){
             accountHolders.add(accountHolderToAdd);
-        }
     }
 
     //Getters and Setters
@@ -87,6 +85,13 @@ public abstract class Account {
 
     public void setAccountHolders(Set<Customer> accountHolders) {
         this.accountHolders = accountHolders;
+    }
+
+    @Override
+    public int compareTo(Account otherAccount) {
+        // sort by last 10 digits (ignore first 8 nrs being: NL / checknum / ROYA )
+
+        return this.accountNumber.substring(8).compareTo(otherAccount.accountNumber.substring(8));
     }
 
     @Override
