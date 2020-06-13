@@ -15,7 +15,7 @@ public class Customer extends User {
     private boolean isBusinessAccountHolder;
     @ManyToOne(cascade = CascadeType.ALL)
     private Employee accountManager;
-    @ManyToMany(mappedBy = "accountHolders", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "accountHolders")
     // TODO add mapping after implementing config file hibernate
     private Set<Account> account;
 

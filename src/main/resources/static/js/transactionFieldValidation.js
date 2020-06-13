@@ -153,6 +153,7 @@ fromAccountField.addEventListener("click", function(){
     removeValidInValidClasses("toAccountNumber");
     toAccountFieldErrorHandler();
     amountFieldErrorHandler();
+    buttonHandler();
 
 
 });

@@ -31,7 +31,7 @@ public class CommandRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         transactionRepository.deleteAll();
-        generator.GenerateAllDatabaseData();
+        generator.fillDbAllData();
 
 
     }

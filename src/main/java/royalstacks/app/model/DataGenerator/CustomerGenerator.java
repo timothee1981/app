@@ -11,12 +11,12 @@ import java.util.List;
 
 public class CustomerGenerator extends Gen {
 
-    public static List<Customer> generateCustomers(int amount, JSONArray jsonArray){
+    public static List<Customer> generateCustomers(JSONArray jsonArray){
         final String PASSWORD = "Auto!12345";
         Iterator<JSONObject> iterator = jsonArray.iterator();
         List<Customer> customers = new ArrayList<>();
-        int arrayTeller = 0;
-        while(iterator.hasNext() && arrayTeller < amount) {
+
+        while(iterator.hasNext()) {
             JSONObject person = iterator.next();
             String username = person.get("username").toString();
             System.out.println(username);
@@ -33,7 +33,6 @@ public class CustomerGenerator extends Gen {
             CustomerAddress address = new CustomerAddress(postcode, houseNumber, suffix, city, street);
             Customer customer = new Customer(username, PASSWORD, firstName, lastName, email, address, phoneNumber, bsn, null,  false);
             customers.add(customer);
-            arrayTeller++;
         }
         return customers;
     }
