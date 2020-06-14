@@ -63,6 +63,30 @@ public class OpenAccountBackingBean {
 
 
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getKvkNumber() {
+        return kvkNumber;
+    }
+
+    public void setKvkNumber(String kvkNumber) {
+        this.kvkNumber = kvkNumber;
+    }
+
+    public String getVatNumber() {
+        return vatNumber;
+    }
+
+    public void setVatNumber(String vatNumber) {
+        this.vatNumber = vatNumber;
+    }
+
     public String getSector() {
         return sector;
     }
