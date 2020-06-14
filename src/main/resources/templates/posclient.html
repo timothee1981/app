@@ -51,46 +51,6 @@
         border-radius: 5px;
     }
 
-    #notification  {
-        float: left;
-        margin: 0 5px 5px 0;
-        width: 170px;
-        height: 60px;
-        font-size: 24px;
-        line-height: 60px;
-        text-align: center;
-        background: #fff;
-        border: 1px solid #f9f9f9;
-        border-radius: 5px;
-    }
-
-    #displayPincode  {
-        float: left;
-        margin: 0 5px 5px 0;
-        width: 90px;
-        height: 60px;
-        font-size: 24px;
-        line-height: 60px;
-        text-align: center;
-        background: #fff;
-        border: 1px solid #f9f9f9;
-        border-radius: 5px;
-    }
-
-    #displayPos {
-        float: left;
-        margin: 0 5px 5px 0;
-        width: 250px;
-        height: 60px;
-        font-size: 24px;
-        line-height: 60px;
-        text-align: center;
-        background: #fff;
-        border: 1px solid #f9f9f9;
-        border-radius: 5px;
-
-    }
-
     #display {
         margin: 0;
         padding-top: 30px;
@@ -99,7 +59,7 @@
 
     }
 
-    .capslock, .tab, .left-shift, .clearl, .stop {
+     .clearl, .stop {
         clear: left;
     }
     #keyboard .tab, #keyboard .delete {
@@ -113,9 +73,7 @@
     #keyboard .stop {
         width: 90px;
     }
-    .lastitem {
-        margin-right: 0;
-    }
+
     #keyboard .space {
         float: left;
         width: 556px;
@@ -142,12 +100,6 @@
         position: absolute;
         top: 520px;
         left: 620px
-    }
-
-    #headers{
-        text-align: center;
-        margin-top: 50px;
-        margin-bottom: 50px;
     }
 
     .notification{
@@ -262,43 +214,36 @@
 
     const pendingAmount = /*[[${pos.pendingAmount}]]*/ 'default';
     const identificationNumber = /*[[${pos.identificationNumber}]]*/ 'default';
+
     let paymentMode = true;
     let fillBankAccount = true;
 
     let account;
     let pincode;
 
-    if(pendingAmount == null){
-        document.getElementById('transactionInfo').innerText = "No pending transaction"
-    } else {
-        document.getElementById('transactionInfo').innerText = "€" + pendingAmount;
-    }
+    document.getElementById('transactionInfo').innerText = "€" + pendingAmount;
 
-    document.addEventListener('keydown', function(e) {
-        if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
-            addNumber(e.keyCode - 48);
-            console.log(e.code)
-        } else if (e.keyCode === 8){
-            delButton()
-        }
-    });
 
+    // keyboard input
     function addNumber(number) {
         let displayAccountNumber = document.getElementById('displayAccountNumber').innerHTML;
-        console.log(displayAccountNumber.length);
-        let maxLength;
 
         if(paymentMode) {
-            if (fillBankAccount) {
-                maxLength = 10
-            } else {
-                maxLength = 4
-            }
+            let maxLength;
+            fillBankAccount ? maxLength = 10 : maxLength = 4;
             if (displayAccountNumber.length < maxLength) {
                 document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML + number;
             }
         }
     }
+
+    document.addEventListener('keydown', function(e) {
+        if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+            addNumber(e.keyCode - 48);
+        } else if (e.keyCode === 8){
+            delButton()
+        }
+    });
 
 
     function delButton(){
@@ -306,18 +251,16 @@
     }
 
 
+    // OK button
     function okButton() {
         if (paymentMode){
+           let displayText = document.getElementById('displayAccountNumber').innerText;
 
-            if (fillBankAccount && document.getElementById('displayAccountNumber').innerText.length < 10) {
+            if (fillBankAccount && displayText.length < 10) {
                 document.getElementById('response').innerText = 'Enter your account number'
 
             } else if (fillBankAccount && document.getElementById('displayAccountNumber').innerText.length === 10) {
-                account = document.getElementById('displayAccountNumber').innerText;
-                fillBankAccount = false;
-                document.getElementById('displayAccountNumber').innerText = "";
-                document.getElementById('response').innerText = '';
-                document.getElementById('title').innerText = 'Pincode';
+                fillPincode();
 
             } else if (document.getElementById('displayAccountNumber').innerText.length < 4) {
                 document.getElementById('response').innerText = 'Enter your pincode'
@@ -330,6 +273,15 @@
                 setStatusFailed("")
             }
         }
+
+
+        function fillPincode() {
+            account = document.getElementById('displayAccountNumber').innerText;
+            fillBankAccount = false;
+            document.getElementById('displayAccountNumber').innerText = "";
+            document.getElementById('response').innerText = '';
+            document.getElementById('title').innerText = 'Pincode';
+        }
     }
 
     const okButtonPost = async () => {
@@ -340,7 +292,6 @@
             pin: pincode
         };
 
-        if(paymentMode){
         await fetch(window.location.origin + '/pos/client/', {
             method: 'POST',
             headers: {
@@ -351,18 +302,18 @@
         })
             .then((response) => response.json().then((body) => {
                 if(!body.accountVerified) {
-                setStatusFailed('Invalid account number')
+                    setStatusFailed('Invalid account number')
                 } else if (!body.sufficientBalance) {
-                setStatusFailed('Insufficient balance')
-                } else if (body.paymentSuccess) {
-                setStatusSuccess(body.transactionid)} else {
-                setStatusFailed('Internal error')}}
-                ))
-            .then((error) => error.json().then((error) => console.log(error))
-
-            )}
+                    setStatusFailed('Insufficient balance')
+                } else if (!body.paymentSuccess) {
+                    setStatusFailed('Internal error')
+                } else {
+                    setStatusSuccess(body.transactionid)
+                }}))
+            .catch(error => {
+                console.log(error);
+            });
     };
-
 
     function setStatusFailed(text){
         const window = document.getElementById('response');
@@ -387,6 +338,7 @@
 
     }
 
+    // stop button
     function stopButton(){
         let url = window.location.origin + '/pos/customer/' + document.getElementById('idNumber').innerText;
         window.location.replace(url)

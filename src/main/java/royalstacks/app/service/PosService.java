@@ -11,6 +11,7 @@ import royalstacks.app.model.pos.PaymentResult;
 import royalstacks.app.model.pos.Pos;
 import royalstacks.app.model.repository.PosRepository;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -75,7 +76,8 @@ public class PosService {
         transaction.setFromAccountId(accountId);
         transaction.setAmount(pos.getPendingAmount());
         transaction.setToAccountId(accountOptional.get().getAccountId());
-        transaction.setDescription("POS transfer");
+        transaction.setDescription("PosId: " + pos.getIdentificationNumber());
+        transaction.setDate(LocalDateTime.now());
         System.out.println(transaction);
 
         Optional<Transaction> tOptional = transactionService.executeTransaction(transaction);
