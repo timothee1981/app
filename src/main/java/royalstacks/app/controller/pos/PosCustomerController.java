@@ -46,6 +46,13 @@ public class PosCustomerController {
         return new ModelAndView("poscustomer");
     }
 
+    @GetMapping("/pos/customer")
+    public final ModelAndView posCustomerControllerHandler(Model model) {
+        Pos dummy = new Pos();
+        model.addAttribute(dummy);
+        return new ModelAndView("poscustomer");
+    }
+
     @GetMapping("/pos/customer/{identificationNumber}/{pendingAmount}")
     public final ModelAndView setPendingAmountControllerHandler(@PathVariable("pendingAmount") BigDecimal pendingAmount, @PathVariable("identificationNumber") int identificationNumber, Model model) {
         System.out.println(pendingAmount);

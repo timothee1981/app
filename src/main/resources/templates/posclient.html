@@ -259,30 +259,10 @@
 </div>
 </div>
 </div>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-
-
-
-    /*]]>*/
-</script>
 <script type="text/javascript" th:inline="javascript">
 
     const pendingAmount = /*[[${pos.pendingAmount}]]*/ 'default';
-    const businessAccountNumber = /*[[${pos.businessAccountNumber}]]*/ 'default';
     const identificationNumber = /*[[${pos.identificationNumber}]]*/ 'default';
-
-    let status = /*[[${status}]]*/ 'default';
-    console.log(status);
-
-    if(status != null){
-        document.getElementById('transactionInfo').innerText = status
-
-    }
-
-    const addObject = /*[[${addObject}]]*/ 'default';
-
-
 
     if(pendingAmount == null){
         document.getElementById('transactionInfo').innerText = "No pending transaction"
@@ -323,24 +303,26 @@
     function okButton() {
         if (document.getElementById('displayPincode').innerText.length === 4) {
             okButtonPost()
+        } else {
+            setStatusFailed("")
         }
     }
 
     const okButtonPost = async () => {
 
-        let pos = {
-            businessAccountNumber: businessAccountNumber,
+        let paymentData = {
             identificationNumber: identificationNumber,
-            pendingAmount: pendingAmount,
-            clientAccountNumber: document.getElementById('displayAccountNumber').innerText
+            account: document.getElementById('displayAccountNumber').innerText,
+            pin: document.getElementById('displayPincode').innerText
         };
-        const response = await fetch(window.location.origin + '/pos/client/', {
+
+        await fetch(window.location.origin + '/pos/client/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(pos)
+            body: JSON.stringify(paymentData)
         })
             .then((response) => response.json().then((body) => {
                 if(!body.accountVerified) {
@@ -369,8 +351,6 @@
         window.classList.add('success');
         window.innerText = 'Thank you!';
     }
-
-
 
     function stopButton(){
         let url = window.location.origin + '/pos/customer/' + document.getElementById('idNumber').innerText;
