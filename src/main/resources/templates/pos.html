@@ -11,8 +11,6 @@
             background: #666666;
             font-weight: lighter;
             font-size: 20px;
-          /* background: linear-gradient(90deg, #666666 50%, #222 50%);*/
-
         }
         .container {
             margin-top: 0px;
@@ -116,8 +114,6 @@
             font-size: 20px;
             font-weight: lighter;
         }
-
-
 
         #logo{
            text-align: center;
@@ -340,6 +336,7 @@
     /**
      * Check if Pos is connected or not
      */
+    console.log("idnumber :" + identificationNumber);
     window.onload = checkPos;
     function checkPos(){
         if(identificationNumber == 0){
@@ -372,7 +369,13 @@
     }
 
     function addNumberL(number) {
-        if (document.getElementById('displayPos').innerHTML.length < 10 && paymentMode === false) {
+        if(connectionMode) {
+            if (document.getElementById('displayPos').innerHTML.length < 10 && businessAccountNumber === null) {
+                document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML + number;
+            } else if (document.getElementById('displayPos').innerHTML.length < 5 && connectionCode === null) {
+                document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML + number;
+            }
+        } else if (document.getElementById('displayPos').innerHTML.length < 10){
             document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML + number;
         }
     }
@@ -395,12 +398,11 @@
     function okButtonL() {
         if (!paymentMode) {
             if (!connectionMode) {
-                if (document.getElementById('displayPos').innerText > 0 && connectionMode === false) {
+                if (connectionMode === false && document.getElementById('displayPos').innerText > 0) {
                     goToClient();
                 }
             }
             if (connectionMode === true) {
-                // get input and pass this to process-connectionflow
                 let data = document.getElementById('displayPos').innerHTML;
                 connectionFlow(data);
             }
@@ -408,17 +410,24 @@
     }
 
     function connectionFlow(data){
-        if(businessAccountNumber == null){
+
+        if(businessAccountNumber == null && data.length !== 10){
+            document.getElementById("responseL").innerHTML = "Enter 10 numbers";
+            document.getElementById('displayPos').innerHTML = data;
+
+        } else if(businessAccountNumber == null && data.length === 10) {
             document.getElementById("notify").innerHTML = "Enter connection code";
             document.getElementById('displayPos').innerHTML = "";
             businessAccountNumber = data;
-        } else if(connectionCode == null){
+
+        } else if(connectionCode == null && data.length !==5){
+            document.getElementById("responseL").innerHTML = "Enter 5 digits";
+            document.getElementById('displayPos').innerHTML = data;
+
+        } else if(connectionCode == null && data.length === 5){
             connectionCode = data;
-            connectionMode = false;
             sendRestConnectionRequest();
         }
-        document.getElementById('displayPos').innerHTML = "";
-
     }
 
     const sendRestConnectionRequest = async () => {
@@ -439,10 +448,20 @@
         })
             .then((response) => response.json().then((body) => {
                 if (body.succeeded) {
+                    document.getElementById("responseL").classList.add('success');
+                    document.getElementById("responseL").innerHTML = "Connection succesful!";
                     let url = window.location.origin + '/pos/' + body.id;
                     window.location.href = url
                 } else {
-                    document.getElementById("responseL").innerHTML = "Connection Failed!"
+                    document.getElementById("responseL").innerHTML = "Connection failed!";
+                    businessAccountNumber = null;
+                    connectionCode = null;
+                    document.getElementById('displayPos').innerHTML = "";
+                    document.getElementById("notify").innerHTML = "Enter account number";
+                    setButtonInactive('connButtonL');
+                    setButtonActive('transButtonL');
+                    setButtonActive('openButtonL');
+                    setButtonActive('closeButtonL');
                 }
             }))
             .catch(error => {
@@ -483,17 +502,16 @@
     function connButtonL() {
         if(!paymentMode) {
             document.getElementById('responseL').innerText = 'Connection Mode';
-            setButtonActive('openButtonL');
-            setButtonActive('closeButtonL');
 
-            // start connection-flow and set variables on null
             connectionMode = true;
-            businessAccountIban = null;
+            businessAccountNumber = null;
             connectionCode = null;
             document.getElementById('displayPos').innerHTML = "";
             document.getElementById("notify").innerHTML = "Enter account number";
             setButtonInactive('connButtonL');
             setButtonActive('transButtonL');
+            setButtonActive('openButtonL');
+            setButtonActive('closeButtonL');
         }
     }
 
@@ -501,7 +519,7 @@
      * TRANSFER BUTTON LEFT
      */
     function transButtonL(){
-        if(identificationNumber === '0'){
+        if(identificationNumber == 0){
             closeButtonL();
         } else {
             if(!paymentMode) {
@@ -655,15 +673,6 @@
             document.getElementById('responseL').innerText = 'Transaction Mode';
         }
     }
-
-
-
-
-
-
-
-
-
 
 </script>
 </body>
