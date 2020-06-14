@@ -93,7 +93,7 @@
 
     #display {
         margin: 0;
-        padding-top: 50px;
+        padding-top: 30px;
         padding-bottom: 100px;
         list-style: none;
 
@@ -193,6 +193,31 @@
         text-align: center;
     }
 
+    #response {
+        float: left;
+        margin: 0 0 15px 0;
+        width: 270px;
+        height: 30px;
+        font-size: 14px;
+        line-height: 30px;
+        text-align: center;
+        border: 1px solid #f9f9f9;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .success {
+        background: rgba(41, 228, 10, 0.35);
+    }
+
+    .failed {
+        background: rgba(228,4,0,0.35)
+    }
+
+    .neutral {
+        background: rgba(160, 160, 160, 0.35)
+    }
+
     h2{
         margin-top: 10px;
         padding-top: 7px;
@@ -210,7 +235,7 @@
 
 <div id="container">
     <ul id="display">
-        <span id="status" th:text="${status}"></span>
+        <span id="response" class="neutral"></span>
         <span id="transactionInfo"></span>
         <li>Bank Account + Pincode</li>
         <li id="displayAccountNumber"></li>
@@ -302,31 +327,49 @@
     }
 
     const okButtonPost = async () => {
+
+        let pos = {
+            businessAccountNumber: businessAccountNumber,
+            identificationNumber: identificationNumber,
+            pendingAmount: pendingAmount,
+            clientAccountNumber: document.getElementById('displayAccountNumber').innerText
+        };
         const response = await fetch(window.location.origin + '/pos/client/', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                businessAccountNumber: businessAccountNumber,
-                identificationNumber: identificationNumber,
-                pendingAmount: pendingAmount,
-                clientAccountNumber: document.getElementById('displayAccountNumber').innerText
-            })
+            body: JSON.stringify(pos)
         })
-            .then(function (response) {
-                console.log("response: " + JSON.stringify(response))
-            })
-            .then(function (data) {
-                console.log("data : " + data)
-            })
-            .then(function (error) {
-                console.log("error: " + error)
-            });
-        const myJson = await response.json();
-        console.log(myJson)
-    };
+            .then((response) => response.json().then((body) => {
+                if(!body.accountVerified) {
+                setStatusFailed('Invalid account number')
+                } else if (!body.sufficientBalance) {
+                setStatusFailed('Insufficient balance')
+                } else if (body.paymentSuccess) {
+                setStatusSuccess()} else {
+                setStatusFailed('Internal error')}}
+                ))
+            .then((error) => error.json().then((error) => console.log(error))
+
+            )};
+
+
+    function setStatusFailed(text){
+        const window = document.getElementById('response');
+        window.classList.add('failed');
+        window.classList.remove('neutral');
+        window.innerText = text;
+    }
+
+    function setStatusSuccess() {
+        const window = document.getElementById('response');
+        window.classList.remove('neutral', 'failed');
+        window.classList.add('success');
+        window.innerText = 'Thank you!';
+    }
+
 
 
     function stopButton(){

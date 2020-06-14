@@ -59,6 +59,7 @@ public class TransactionService {
     private void updateBalances(){
         this.fromAccount.subtractAmount(this.transaction.getAmount());
         accountService.saveAccount(this.fromAccount);
+
         this.toAccount.addAmount(this.transaction.getAmount());
         accountService.saveAccount(this.toAccount);
     }

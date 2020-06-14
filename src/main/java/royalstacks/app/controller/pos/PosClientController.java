@@ -7,53 +7,96 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import royalstacks.app.model.Account;
 import royalstacks.app.model.pos.Pos;
+import royalstacks.app.service.AccountService;
 import royalstacks.app.service.PosService;
+
+import java.util.Optional;
 
 @Controller
 public class PosClientController {
 
 
     PosService posService;
+    AccountService accountService;
+
 
 
     @Autowired
-    public PosClientController(PosService posService) {
+    public PosClientController(PosService posService, AccountService accountService ) {
         this.posService = posService;
+        this.accountService = accountService;
     }
 
 
+    // curl -H "Content-Type: application/json" -X POST -d '{"id":"0", "businessAccountNumber":"NL32ROYA0000000019", "identificationNumber":"1232", "pendingAmount":"100", "clientAccountNumber":"1111111111"}' http://localhost/pos/client/
     @PostMapping("/pos/client/")
-    public @ResponseBody String StrtPosClient() {
-        return "hoi";
-    /*    model.addAttribute(pos);
+    public @ResponseBody ResponseEntity<PaymentResult> StartPosClient(@RequestBody Pos pos) {
+        PaymentResult pr = new PaymentResult();
 
-        if(posService.executePosTransaction(pos)){
-            System.out.println("success");
-
-            return new ResponseEntity<>(new PaymentResult(true), HttpStatus.OK);
+        Optional<Integer> accountIdOptional = accountService.getAccountIdByNumberExIban(pos.getClientAccountNumber());
+        if(accountIdOptional.isEmpty()) {
+            pr.setAccountVerified(false);
+            return new ResponseEntity<>(pr, HttpStatus.OK);
         } else {
-            System.out.println("failt");
-            return new ResponseEntity<>(new PaymentResult(false), HttpStatus.OK);
+            pr.setAccountVerified(true);
         }
-    }*/
+
+        if(accountService.getAccountById(accountIdOptional.get()).getBalance().compareTo(pos.getPendingAmount() ) < 0){
+            pr.setSufficientBalance(false);
+            return new ResponseEntity<>(pr, HttpStatus.OK);
+        } else {
+            pr.setSufficientBalance(true);
+        }
+
+        if(posService.executePosTransaction(pos)) {
+            pr.setPaymentSuccess(true);
+        } else {
+            pr.setPaymentSuccess(false);
+        }
+        return new ResponseEntity<>(pr,HttpStatus.OK);
     }
 }
 
 class PaymentResult {
 
-    private boolean successful;
+    private boolean accountVerified;
+    private boolean sufficientBalance;
+    private boolean paymentSuccess;
 
-    public PaymentResult(boolean succesful) {
-        this.successful = succesful;
+
+    public PaymentResult(boolean accountVerified, boolean sufficientBalance, boolean paymentSuccess) {
+        this.accountVerified = accountVerified;
+        this.sufficientBalance = sufficientBalance;
+        this.paymentSuccess = paymentSuccess;
     }
 
-    public boolean isSuccessful() {
-        return successful;
+    public PaymentResult() {
     }
 
-    public void setSuccessful(boolean successful) {
-        this.successful = successful;
+    public boolean isAccountVerified() {
+        return accountVerified;
+    }
+
+    public void setAccountVerified(boolean accountVerified) {
+        this.accountVerified = accountVerified;
+    }
+
+    public boolean isSufficientBalance() {
+        return sufficientBalance;
+    }
+
+    public void setSufficientBalance(boolean sufficientBalance) {
+        this.sufficientBalance = sufficientBalance;
+    }
+
+    public boolean isPaymentSuccess() {
+        return paymentSuccess;
+    }
+
+    public void setPaymentSuccess(boolean paymentSuccess) {
+        this.paymentSuccess = paymentSuccess;
     }
 }
 
