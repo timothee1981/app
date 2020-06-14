@@ -161,7 +161,7 @@
     <title>Title</title>
 </head>
 <body>
-<span id="idNumber" th:text="${pos.identificationNumber}"/>
+<span id="idNumber"></span>
 <h2>Seller</h2>
 <div id="themachine">
 
@@ -215,7 +215,10 @@
 
     function checkPos(){
         if(identificationNumber == 0){
-            connButton()
+            connButton();
+            document.getElementById('idNumber').innerText = 'Not Connected'
+        } else {
+            document.getElementById('idNumber').innerText = identificationNumber
         }
     }
 
@@ -296,8 +299,7 @@
     }
 
 
-    function closeButton(){
-    }
+
 
     function stopButton() {
         document.getElementById('displayPos').innerHTML = "";
@@ -317,9 +319,6 @@
 
     }
 
-    function openButton() {
-    }
-
     function transButton(){
         if(identificationNumber == 0){
             connButton()
@@ -330,6 +329,13 @@
             document.getElementById('transButton').style.backgroundColor = '#d6d6d6';
             document.getElementById('connButton').style.backgroundColor = '#ffffff';
         }
+    }
+
+    function openButton() {
+    }
+
+
+    function closeButton(){
     }
 
 

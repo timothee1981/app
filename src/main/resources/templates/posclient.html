@@ -41,7 +41,7 @@
     #displayAccountNumber  {
         float: left;
         margin: 0 5px 5px 0;
-        width: 170px;
+        width: 270px;
         height: 60px;
         font-size: 24px;
         line-height: 60px;
@@ -237,9 +237,8 @@
     <ul id="display">
         <span id="response" class="neutral"></span>
         <span id="transactionInfo"></span>
-        <li>Bank Account + Pincode</li>
+        <li id="title">Account Number</li>
         <li id="displayAccountNumber"></li>
-        <li id="displayPincode"></li>
     </ul>
     <ul id="keyboard">
         <a onclick="addNumber(1);"><li class="letter">1 </li></a>
@@ -263,6 +262,11 @@
 
     const pendingAmount = /*[[${pos.pendingAmount}]]*/ 'default';
     const identificationNumber = /*[[${pos.identificationNumber}]]*/ 'default';
+    let paymentMode = true;
+    let fillBankAccount = true;
+
+    let account;
+    let pincode;
 
     if(pendingAmount == null){
         document.getElementById('transactionInfo').innerText = "No pending transaction"
@@ -279,32 +283,52 @@
         }
     });
 
-    function addNumber(number){
+    function addNumber(number) {
         let displayAccountNumber = document.getElementById('displayAccountNumber').innerHTML;
         console.log(displayAccountNumber.length);
-        if(displayAccountNumber.length < 10) {
-            document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML + number;
-        } else if (displayAccountNumber.length === 10 && document.getElementById('displayPincode').innerHTML.length < 4){
-            document.getElementById('displayPincode').innerHTML = document.getElementById('displayPincode').innerHTML + number
+        let maxLength;
+
+        if(paymentMode) {
+            if (fillBankAccount) {
+                maxLength = 10
+            } else {
+                maxLength = 4
+            }
+            if (displayAccountNumber.length < maxLength) {
+                document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML + number;
+            }
         }
     }
+
+
     function delButton(){
-        let displayAccountNumber = document.getElementById('displayAccountNumber').innerHTML;
-        if(displayAccountNumber.length < 10) {
-            document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML.slice(0, -1)
-        } else if (displayAccountNumber.length === 10 && document.getElementById('displayPincode').innerHTML.length > 0){
-            document.getElementById('displayPincode').innerHTML = document.getElementById('displayPincode').innerHTML.slice(0, -1)
-        } else if (displayAccountNumber.length === 10 && document.getElementById('displayPincode').innerHTML.length === 0){
-            document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML.slice(0, -1)
-        }
+        document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML.slice(0, -1);
     }
 
 
     function okButton() {
-        if (document.getElementById('displayPincode').innerText.length === 4) {
-            okButtonPost()
-        } else {
-            setStatusFailed("")
+        if (paymentMode){
+
+            if (fillBankAccount && document.getElementById('displayAccountNumber').innerText.length < 10) {
+                document.getElementById('response').innerText = 'Enter your account number'
+
+            } else if (fillBankAccount && document.getElementById('displayAccountNumber').innerText.length === 10) {
+                account = document.getElementById('displayAccountNumber').innerText;
+                fillBankAccount = false;
+                document.getElementById('displayAccountNumber').innerText = "";
+                document.getElementById('response').innerText = '';
+                document.getElementById('title').innerText = 'Pincode';
+
+            } else if (document.getElementById('displayAccountNumber').innerText.length < 4) {
+                document.getElementById('response').innerText = 'Enter your pincode'
+
+            } else if (document.getElementById('displayAccountNumber').innerText.length === 4) {
+                pincode = document.getElementById('displayAccountNumber').innerText;
+                document.getElementById('response').innerText = '';
+                okButtonPost();
+            } else {
+                setStatusFailed("")
+            }
         }
     }
 
@@ -312,10 +336,11 @@
 
         let paymentData = {
             identificationNumber: identificationNumber,
-            account: document.getElementById('displayAccountNumber').innerText,
-            pin: document.getElementById('displayPincode').innerText
+            account: account,
+            pin: pincode
         };
 
+        if(paymentMode){
         await fetch(window.location.origin + '/pos/client/', {
             method: 'POST',
             headers: {
@@ -330,12 +355,13 @@
                 } else if (!body.sufficientBalance) {
                 setStatusFailed('Insufficient balance')
                 } else if (body.paymentSuccess) {
-                setStatusSuccess()} else {
+                setStatusSuccess(body.transactionid)} else {
                 setStatusFailed('Internal error')}}
                 ))
             .then((error) => error.json().then((error) => console.log(error))
 
-            )};
+            )}
+    };
 
 
     function setStatusFailed(text){
@@ -343,13 +369,22 @@
         window.classList.add('failed');
         window.classList.remove('neutral');
         window.innerText = text;
+        fillBankAccount = true;
+        document.getElementById('title').innerText = 'Account Number';
+        document.getElementById('displayAccountNumber').innerText = '';
+
     }
 
-    function setStatusSuccess() {
+    function setStatusSuccess(text) {
         const window = document.getElementById('response');
         window.classList.remove('neutral', 'failed');
         window.classList.add('success');
-        window.innerText = 'Thank you!';
+        window.innerText = 'id: ' + text;
+        paymentMode = false;
+        document.getElementById('displayAccountNumber').innerText = '';
+        document.getElementById('transactionInfo').innerText = ''
+        document.getElementById('title').innerText = 'Thank You!';
+
     }
 
     function stopButton(){

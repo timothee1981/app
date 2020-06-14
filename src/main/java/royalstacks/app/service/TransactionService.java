@@ -10,6 +10,7 @@ import royalstacks.app.model.repository.TransactionRepository;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +32,7 @@ public class TransactionService {
         this.transactionRepository = tr;
     }
 
-    public final boolean executeTransaction(Transaction t){
+    public final Optional<Transaction> executeTransaction(Transaction t){
         setAttributes(t);
 
         if(isTransactionValid()) {
@@ -39,10 +40,10 @@ public class TransactionService {
             saveTransaction();
 
             LOGGER.log(Level.INFO, "**** Transaction has been executed");
-            return true;
+            return Optional.of(transaction);
         } else {
             LOGGER.log(Level.SEVERE,"**** Transaction FAILED");
-            return false;
+            return Optional.ofNullable(null);
         }
     }
 
