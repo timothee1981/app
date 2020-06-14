@@ -14,10 +14,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import royalstacks.app.model.Customer;
-import royalstacks.app.service.AccountService;
-import royalstacks.app.service.BusinessAccountService;
-import royalstacks.app.service.CustomerService;
-import royalstacks.app.service.UserService;
+import royalstacks.app.service.*;
 
 import java.util.Optional;
 
@@ -45,9 +42,11 @@ class ApiControllerTest {
     @MockBean
     private BusinessAccountService businessAccountService;
 
+    @MockBean
+    private PosService posService;
+
     @Autowired
     WebApplicationContext webApplicationContext;
-
 
     @Test
     void UsernameIsUnique() throws Exception {
