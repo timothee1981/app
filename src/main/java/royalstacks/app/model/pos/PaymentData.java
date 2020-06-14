@@ -7,6 +7,7 @@ public class PaymentData {
     private String identificationNumber;
     private String account;
     private String pin;
+    private BigDecimal amount;
 
     public PaymentData() {
 
@@ -36,12 +37,21 @@ public class PaymentData {
         this.pin = pin;
     }
 
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     @Override
     public String toString() {
         return "PaymentData{" +
-                "identificationNumber=" + identificationNumber +
+                "identificationNumber='" + identificationNumber + '\'' +
                 ", account='" + account + '\'' +
-                ", pin=" + pin +
+                ", pin='" + pin + '\'' +
+                ", amount=" + amount +
                 '}';
     }
 }

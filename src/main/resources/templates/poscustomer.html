@@ -119,9 +119,9 @@
         }
 
         h3 {
-            color: #767676;
+            color: #666666;
             text-align: center;
-            padding-top: 20px
+            padding-top: 18px
         }
 
         #logo{
@@ -158,7 +158,7 @@
         }
     </style>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Customer Terminal</title>
 </head>
 <body>
 <span id="idNumber"></span>
@@ -187,8 +187,8 @@
             <a onclick="okButton();"> <li class="return">Ok</li></a>
             <a onclick="transButton();"> <li id="transButton" class="bottom">Trans</li></a>
             <a onclick="connButton();"> <li id="connButton" class="bottom">Conn</li></a>
-            <a onclick="openButton();"><li class="bottom">Open</li></a>
-            <a onclick="closeButton();"> <li class="bottom">Close</li></a>
+            <a onclick="openButton();"><li id="openButton" class="bottom">Open</li></a>
+            <a onclick="closeButton();"> <li id="closeButton" class="bottom">Close</li></a>
 
         </ul>
     </div>
@@ -243,9 +243,11 @@
     function okButton(){
 
         if(!connectionMode){
-            let url = window.location.origin + '/pos/customer/' + document.getElementById('idNumber').innerHTML + "/" +
-                document.getElementById('displayPos').innerText;
-            window.location.replace(url)
+            if (document.getElementById('displayPos').innerText > 0) {
+                let url = window.location.origin + '/pos/' + document.getElementById('idNumber').innerHTML + "/" +
+                    document.getElementById('displayPos').innerText;
+                window.location.replace(url)
+            }
         }
 
         if(connectionMode === true){
@@ -308,37 +310,70 @@
 
 
     function connButton() {
+        setButtonActive('openButton');
+        setButtonActive('closeButton');
+
         // start connection-flow and set variables on null
         connectionMode = true;
         businessAccountIban = null;
         connectionCode = null;
         document.getElementById('displayPos').innerHTML = "";
         document.getElementById("notify").innerHTML = "Enter account number";
-        document.getElementById('connButton').style.backgroundColor = '#d6d6d6';
-        document.getElementById('transButton').style.backgroundColor = '#ffffff';
+        setButtonInactive('connButton');
+        setButtonActive('transButton');
 
     }
 
     function transButton(){
         if(identificationNumber == 0){
-            connButton()
+            closeButton();
         } else {
             connectionMode = false;
             document.getElementById('displayPos').innerHTML = "";
             document.getElementById("notify").innerHTML = "Enter amount";
-            document.getElementById('transButton').style.backgroundColor = '#d6d6d6';
-            document.getElementById('connButton').style.backgroundColor = '#ffffff';
+            setButtonInactive('transButton');
+            setButtonActive('connButton');
+
         }
+    }
+    function setButtonInactive(id){
+        document.getElementById(id).style.backgroundColor = '#d6d6d6';
+    }
+
+    function setButtonActive(id){
+        document.getElementById(id).style.backgroundColor = '#ffffff';
     }
 
     function openButton() {
+        if (connectionMode === false) {
+
+            // JOURNAL POST
+/*           let post = async () => await fetch(window.location.origin + '/pos/journal/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(identificationNumber)
+            })
+                .then((response) => response.json().then((body) => {
+                    console.log(body)
+                }))
+                .catch(error => {
+                    console.log(error);
+                });
+           post();*/
+        }
     }
 
 
     function closeButton(){
+        if(connectionMode = true){
+
+        } else {
+
+        }
     }
-
-
 </script>
 </body>
 </html>

@@ -118,7 +118,7 @@
     }
 
     h3 {
-        color: #767676;
+        color: #9e9e9e;
         text-align: center;
     }
 
@@ -177,7 +177,7 @@
     }
 </style>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Payment Terminal</title>
 </head>
 <body>
 <span id="idNumber" th:text="${pos.identificationNumber}"/>
@@ -340,7 +340,7 @@
 
     // stop button
     function stopButton(){
-        let url = window.location.origin + '/pos/customer/' + document.getElementById('idNumber').innerText;
+        let url = window.location.origin + '/pos/' + document.getElementById('idNumber').innerText;
         window.location.replace(url)
     }
 
