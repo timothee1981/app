@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ConnectionRequestRepository extends CrudRepository<ConnectionRequest, Integer> {
 
-    @Query("SELECT c FROM ConnectionRequest c WHERE c.businessAccountIban = ?1")
+    @Query("SELECT c FROM ConnectionRequest c WHERE c.businessAccountIban LIKE CONCAT('%%%%%%%%', ?1)")
     Optional<ConnectionRequest> findCustomerRequestByBusinessAccountIban(String accountNumber);
 
 

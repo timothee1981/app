@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import royalstacks.app.model.pos.ConnectionRequest;
 import royalstacks.app.model.pos.ConnectionResult;
+import royalstacks.app.model.pos.Pos;
 import royalstacks.app.model.repository.ConnectionRequestRepository;
+import royalstacks.app.model.repository.ConnectionResultRepository;
+import royalstacks.app.service.AccountService;
 import royalstacks.app.service.PosService;
 
 import java.util.Optional;
@@ -31,10 +34,24 @@ public class ConnectController {
     @Autowired
     ConnectionRequestRepository connectionRequestRepository;
 
+    @Autowired
+    ConnectionResultRepository connectionResultRepository;
+
+    @Autowired
+    AccountService accountService;
+
     @PostMapping("/paymentmachine/connect")
     public ConnectionResult paymentMachineConnectionResult(@RequestBody ConnectionRequest connectionRequest){
 
         ConnectionResult returnValue = checkConnectionResult(connectionRequest);
+
+        if(returnValue.isSucceeded()){
+            Pos pos = new Pos();
+            pos.setIdentificationNumber((int) returnValue.getId());
+            pos.setBusinessAccountNumber(connectionRequestRepository.findCustomerRequestByBusinessAccountIban(connectionRequest.getBusinessAccountIban()).get().getBusinessAccountIban());
+            posService.savePos(pos);
+            connectionResultRepository.delete(returnValue);
+        }
 
         return returnValue;
     }
@@ -47,6 +64,7 @@ public class ConnectController {
         } else{
             connectionResult = failedConnection(connectionResult);
         }
+        System.out.println();
         return connectionResult;
     }
 
@@ -79,7 +97,7 @@ public class ConnectController {
     }
 
     private long generate8DigitId() {
-        final long INITIAL_ID = 00000000;
+        final long INITIAL_ID = 1000000;
         long lastId;
 
         if(retrieveLastId() == 0){

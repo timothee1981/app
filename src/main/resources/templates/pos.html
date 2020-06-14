@@ -117,14 +117,10 @@
             font-weight: lighter;
         }
 
-        h3 {
-            color: #666666;
-            text-align: center;
-            padding-top: 18px
-        }
+
 
         #logo{
-)           text-align: center;
+           text-align: center;
         }
 
         #themachineLeft {
@@ -161,6 +157,14 @@
             padding-top: 7px;
             padding-left: 10px;
             color: #f1f1f1;
+        }
+
+        h3 {
+            color: #666666;
+            text-align: center;
+            padding-top: 18px;
+            font-size: 14px;
+            font-weight: lighter;
         }
 
         .selected {
@@ -260,7 +264,7 @@
             <a onclick="addNumberL(9);"> <li class="letter">9</li></a>
             <a onclick="addNumberL(0);"> <li class="letter">0</li></a>
             <a onclick="stopButtonL();"> <li class="stop">Stop</li></a>
-            <a onclick="delButtonL();"><li class="delete">Del</li></a>
+            <a onclick="delButton();"><li class="delete">Del</li></a>
             <a onclick="okButtonL();"> <li class="return">Ok</li></a>
             <a onclick="transButtonL();"> <li id="transButtonL" class="bottom">Trans</li></a>
             <a onclick="connButtonL();"> <li id="connButtonL" class="bottom">Conn</li></a>
@@ -299,7 +303,7 @@
                     <a onclick="addNumberR(9);"> <li class="letter">9</li></a>
                     <a onclick="addNumberR(0);"> <li class="letter">0</li></a>
                     <a onclick="stopButtonR();"> <li class="stop">Stop</li></a>
-                    <a onclick="delButtonR();"><li class="delete">Del</li></a>
+                    <a onclick="delButton();"><li class="delete">Del</li></a>
                     <a onclick="okButtonR();"> <li class="return">Ok</li></a>
                 </ul>
             </div>
@@ -311,22 +315,32 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript"  th:inline="javascript">
 
-    const pendingAmount = /*[[${pos.pendingAmount}]]*/ 'default';
-    const businessAccountNumber = /*[[${pos.businessAccountNumber}]]*/ 'default';
     const identificationNumber = /*[[${pos.identificationNumber}]]*/ 'default';
 
-
-    // global variables needed for connection
     let connectionMode = false;
     let paymentMode = false;
-    let businessAccountIban = null;
+
+    let businessAccountNumber = null;
     let connectionCode = null;
     let amount;
 
+    let fillBankAccount = true;
+    let account;
+    let pincode;
+
+
+    function setButtonInactive(id){
+        document.getElementById(id).style.backgroundColor = '#d6d6d6';
+    }
+
+    function setButtonActive(id){
+        document.getElementById(id).style.backgroundColor = '#ffffff';
+    }
+
+    /**
+     * Check if Pos is connected or not
+     */
     window.onload = checkPos;
-
-    console.log("identificationNumber: " + identificationNumber);
-
     function checkPos(){
         if(identificationNumber == 0){
             connButtonL();
@@ -337,35 +351,24 @@
         }
     }
 
-    document.getElementById('transButtonL').style.backgroundColor = '#d6d6d6';
-
+    /**
+     *  Input user Left and Right
+     */
     document.addEventListener('keydown', function(e) {
         if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
-            if(paymentMode) {
-                addNumberR(e.keyCode - 48);
-            } else {
-                addNumberL(e.keyCode - 48);
-            }
+            paymentMode ? addNumberR(e.keyCode - 48) : addNumberL(e.keyCode - 48);
         } else if (e.keyCode === 8){
-            if(paymentMode) {
-                delButtonR();
-            } else {
-                delButtonL()
-            }
-
+            delButton();
+        } else if (e.keyCode === 13){
+            paymentMode ? okButtonR() : okButtonL();
         }
     });
 
-    function delButtonL() {
-        if (!paymentMode){
-            document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML.slice(0, -1);
-        }
-    }
 
-    function delButtonR(){
-        if (paymentMode) {
-            document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML.slice(0, -1);
-        }
+    function delButton(){
+        paymentMode ?
+            document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML.slice(0, -1)
+            : document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML.slice(0, -1);
     }
 
     function addNumberL(number) {
@@ -374,32 +377,41 @@
         }
     }
 
-    function okButtonL(){
-        if(!paymentMode) {
+    function addNumberR(number) {
+        let displayAccountNumber = document.getElementById('displayAccountNumber').innerHTML;
+
+        if(paymentMode) {
+            let maxLength;
+            fillBankAccount ? maxLength = 10 : maxLength = 4;
+            if (displayAccountNumber.length < maxLength) {
+                document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML + number;
+            }
+        }
+    }
+
+    /**
+     * OK button LEFT
+     */
+    function okButtonL() {
+        if (!paymentMode) {
             if (!connectionMode) {
                 if (document.getElementById('displayPos').innerText > 0 && connectionMode === false) {
-                    amount = document.getElementById('displayPos').innerText;
-                    document.getElementById('transactionInfo').innerText = '€' + document.getElementById('displayPos').innerText;
-                    paymentMode = true;
-                    document.getElementById('responseL').innerText = 'Wait for client...'
+                    goToClient();
                 }
             }
-
             if (connectionMode === true) {
                 // get input and pass this to process-connectionflow
                 let data = document.getElementById('displayPos').innerHTML;
                 connectionFlow(data);
             }
         }
-
     }
 
-
     function connectionFlow(data){
-        if(businessAccountIban == null){
+        if(businessAccountNumber == null){
             document.getElementById("notify").innerHTML = "Enter connection code";
             document.getElementById('displayPos').innerHTML = "";
-            businessAccountIban = data;
+            businessAccountNumber = data;
         } else if(connectionCode == null){
             connectionCode = data;
             connectionMode = false;
@@ -409,50 +421,65 @@
 
     }
 
-    function sendRestConnectionRequest(){
+    const sendRestConnectionRequest = async () => {
+        console.log("businessaccount :" + businessAccountNumber + " connectionCode: " + connectionCode);
 
-        //let myBody = "{\"businessAccountIban\":\"0123456789\", \"connectionCode\":54321}";
-        let myBody = "{\"businessAccountIban\":\""+ businessAccountIban
-            + "\", \"connectionCode\":" + connectionCode + "}";
-
-        const userAction = async () => {
-            const response = await fetch('http://localhost/paymentmachine/connect', {
-                method: 'POST',
-                dataType: 'json',
-                body: myBody, // string or object
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const myJson = await response.json(); //extract JSON from the http response
-            // do something with myJson
-
-            if(myJson.succeeded === true){
-                document.getElementById("notify").innerHTML = "Connection succes!";
-            } else{
-                document.getElementById("notify").innerHTML = "Connection failed!";
-            }
+        let connectionRequest = {
+            businessAccountIban: businessAccountNumber,
+            connectionCode: connectionCode
         };
-        userAction();
+
+        await fetch(window.location.origin + '/paymentmachine/connect', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(connectionRequest)
+        })
+            .then((response) => response.json().then((body) => {
+                if (body.succeeded) {
+                    let url = window.location.origin + '/pos/' + body.id;
+                    window.location.href = url
+                } else {
+                    document.getElementById("responseL").innerHTML = "Connection Failed!"
+                }
+            }))
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
+
+
+    function goToClient() {
+        amount = document.getElementById('displayPos').innerText;
+        document.getElementById('transactionInfo').innerText = '€' + document.getElementById('displayPos').innerText;
+        document.getElementById('responseL').innerText = 'Waiting for client...'
+        paymentMode = true;
     }
 
 
-
-
+    /**
+     * STOP button LEFT
+     */
     function stopButtonL() {
         document.getElementById('displayPos').innerHTML = "";
-        const window = document.getElementById('response');
         document.getElementById('displayAccountNumber').innerText = '';
         document.getElementById('transactionInfo').innerText = '';
         document.getElementById('response').innerText = '';
-        window.classList.remove('success', 'failed');
-        window.classList.add('neutral');
+        document.getElementById('response').classList.remove('success', 'failed');
+        document.getElementById('response').classList.add('neutral');
         document.getElementById('title').innerText = "Account number:";
-        paymentMode = false;
+
+        paymentMode ? document.getElementById('responseL').innerText = 'Transaction Mode'
+            : paymentMode = false;
     }
 
 
-
+    /**
+     * CONNECTION button LEFT
+     */
     function connButtonL() {
         if(!paymentMode) {
             document.getElementById('responseL').innerText = 'Connection Mode';
@@ -470,30 +497,29 @@
         }
     }
 
+    /**
+     * TRANSFER BUTTON LEFT
+     */
     function transButtonL(){
-        if(identificationNumber == 0){
+        if(identificationNumber === '0'){
             closeButtonL();
         } else {
-            document.getElementById('responseL').innerText = 'Transaction Mode';
-            connectionMode = false;
-            document.getElementById('displayPos').innerHTML = "";
-            document.getElementById("notify").innerHTML = "Enter amount";
-            setButtonInactive('transButtonL');
-            setButtonActive('connButtonL');
-
+            if(!paymentMode) {
+                document.getElementById('responseL').innerText = 'Transaction Mode';
+                document.getElementById('displayPos').innerHTML = "";
+                document.getElementById("notify").innerHTML = "Enter amount";
+                setButtonInactive('transButtonL');
+                setButtonActive('connButtonL');
+                connectionMode = false;
+            }
         }
     }
-    function setButtonInactive(id){
-        document.getElementById(id).style.backgroundColor = '#d6d6d6';
-    }
 
-    function setButtonActive(id){
-        document.getElementById(id).style.backgroundColor = '#ffffff';
-    }
-
+    /**
+     * OPEN BUTTON L
+     */
     function openButtonL() {
         if (connectionMode === false) {
-
             // JOURNAL POST
 /*           let post = async () => await fetch(window.location.origin + '/pos/journal/', {
                 method: 'POST',
@@ -523,29 +549,10 @@
     }
 
     /**
-     * RECHTS
+     * OK button RECHTS
      */
-    let fillBankAccount = true;
-
-    let account;
-    let pincode;
-
-    function addNumberR(number) {
-        let displayAccountNumber = document.getElementById('displayAccountNumber').innerHTML;
-
-        if(paymentMode) {
-            let maxLength;
-            fillBankAccount ? maxLength = 10 : maxLength = 4;
-            if (displayAccountNumber.length < maxLength) {
-                document.getElementById('displayAccountNumber').innerHTML = document.getElementById('displayAccountNumber').innerHTML + number;
-            }
-        }
-    }
-
-
-    // OK button
     function okButtonR() {
-        if (paymentMode){
+        if (paymentMode) {
             let displayText = document.getElementById('displayAccountNumber').innerText;
 
             if (fillBankAccount && displayText.length < 10) {
@@ -558,25 +565,24 @@
                 document.getElementById('response').innerText = 'Enter your pincode'
 
             } else if (document.getElementById('displayAccountNumber').innerText.length === 4) {
-                pincode = document.getElementById('displayAccountNumber').innerText;
-                document.getElementById('response').innerText = '';
                 okButtonPost();
             } else {
                 setStatusFailed("")
             }
         }
+    }
 
 
-        function fillPincode() {
-            account = document.getElementById('displayAccountNumber').innerText;
-            fillBankAccount = false;
-            document.getElementById('displayAccountNumber').innerText = "";
-            document.getElementById('response').innerText = '';
-            document.getElementById('title').innerText = 'Pincode';
-        }
+    function fillPincode() {
+        account = document.getElementById('displayAccountNumber').innerText;
+        fillBankAccount = false;
+        document.getElementById('displayAccountNumber').innerText = "";
+        document.getElementById('response').innerText = '';
+        document.getElementById('title').innerText = 'Pincode';
     }
 
     const okButtonPost = async () => {
+        pincode = document.getElementById('displayAccountNumber').innerText;
 
         let paymentData = {
             identificationNumber: identificationNumber,
@@ -631,22 +637,33 @@
 
     }
 
-    // stop button
+    /**
+     * STOP button rechts
+     */
     function stopButtonR(){
-        const window = document.getElementById('response');
-        document.getElementById('displayAccountNumber').innerText = '';
-        document.getElementById('transactionInfo').innerText = '';
-        document.getElementById('response').innerText = '';
-        window.classList.remove('success', 'failed');
-        window.classList.add('neutral');
-        document.getElementById('displayPos').innerText = '';
-        document.getElementById('title').innerText = "Account number:";
-        paymentMode = false;
-        fillBankAccount = true;
-        document.getElementById('responseL').innerText = 'Transaction Mode';
-
-
+        if(paymentMode) {
+            const window = document.getElementById('response');
+            document.getElementById('displayAccountNumber').innerText = '';
+            document.getElementById('transactionInfo').innerText = '';
+            document.getElementById('response').innerText = '';
+            window.classList.remove('success', 'failed');
+            window.classList.add('neutral');
+            document.getElementById('displayPos').innerText = '';
+            document.getElementById('title').innerText = "Account number:";
+            paymentMode = false;
+            fillBankAccount = true;
+            document.getElementById('responseL').innerText = 'Transaction Mode';
+        }
     }
+
+
+
+
+
+
+
+
+
 
 </script>
 </body>
