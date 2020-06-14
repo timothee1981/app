@@ -50,8 +50,7 @@ public class TransactionGenerator {
     private static LocalDateTime randomDateTime(){
         LocalDateTime start = LocalDateTime.of(2020, Month.FEBRUARY, 1, 9, 0);
         long seconds = ChronoUnit.SECONDS.between(start, LocalDateTime.now());
-        LocalDateTime randomDate = start.plusSeconds(new Random().nextInt((int)seconds+1));
-        return randomDate;
+        return start.plusSeconds(new Random().nextInt((int)seconds+1));
     }
 
     private static String randomDescription(){

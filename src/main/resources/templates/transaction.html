@@ -11,72 +11,70 @@
         <a class="active" href="/accountOverview">Account Overview</a>
         <span id="logoNavbar"></span>
     </div>
-    <h1 class="content">Transfer Money</h1>
-    <h3><span th:text="${notification}"/></h3>
-    <form id="form"   method="post" class="form" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <div class="content">
+        <h1 class="content">Transfer Money</h1>
+        <h3><span th:text="${notification}"/></h3>
+        <div id="forms">
+            <form id="form"   method="post" class="form" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                <label for="fromAccountNumber"><b>From Account</b></label>
+                <select id="fromAccountNumber" class="balanceCheck" name="fromAccountNumber" th:value="${fromAccountNumber}">
+                    <option th:each="account : ${account}"  th:value="${account.accountNumber}" th:label="*{account.accountNumber} + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balance: €' + *{account.balance}" th:text="${account.balance}"></option>
+                </select>
+                <span></span>
+                <span></span>
+                <label for="toAccountNumber"><b>To Account</b></label>
 
-        <!-- Deze wordt automatisch geselecteerd. Later eventueel een dropdown -->
-        <label for="fromAccountNumber"><b>From Account</b></label>
-        <select id="fromAccountNumber" class="balanceCheck" name="fromAccountNumber" th:value="${fromAccountNumber}">
-            <option th:each="account : ${account}"  th:value="${account.accountNumber}" th:label="*{account.accountNumber} + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balance: €' + *{account.balance}" th:text="${account.balance}"></option>
-        </select>
-        <span></span>
-        <span></span>
-        <label for="toAccountNumber"><b>To Account</b></label>
+                <input
+                        type="text"
+                        placeholder="NL12ROYA0123456789"
+                        name="toAccountNumber"
+                        id="toAccountNumber"
+                        title="A valid account number"
+                        th:value="${toAccountNumber}"
+                        required
+                />
+                <span></span>
+                <span id="toAccountError"> </span>
 
-        <input
-                type="text"
-                placeholder="NL12ROYA0123456789"
-                name="toAccountNumber"
-                id="toAccountNumber"
-                title="A valid account number"
-                th:value="${toAccountNumber}"
-                required
-        />
-        <span></span>
-        <span id="toAccountError"> </span>
+                <label for="amount"><b>Amount</b></label>
+                <input
+                        type="number"
+                        placeholder="119.95"
+                        name="amount"
+                        id="amount"
+                        class="balanceCheck"
+                        title="Enter a valid amount"
+                        th:value="${amount}"
+                        step=".01"
+                        min="0.01"
+                        required
+                />
+                <span></span>
+                <span id="amountError"></span>
 
-        <label for="amount"><b>Amount</b></label>
-        <input
-                type="number"
-                placeholder="119.95"
-                name="amount"
-                id="amount"
-                class="balanceCheck"
-                title="Enter a valid amount"
-                th:value="${amount}"
-                step=".01"
-                min="0.01"
-                required
-        />
-        <span></span>
-        <span id="amountError"></span>
+                <label for="description"><b>Description</b></label>
+                <input
+                        type="text"
+                        placeholder="example: Here's some money for your trip to Spain"
+                        name="description"
+                        id="description"
+                        title="Enter a valid description"
+                        th:value="${description}"
+                />
+                <span></span>
+                <span></span>
+                    <button type="submit" name="submit" id="submitButton" disabled=true value="Send Money">Send Money</button>
+                    <button type="button" id="backButton" value="Cancel">Cancel</button>
 
-        <label for="description"><b>Description</b></label>
-        <input
-                type="text"
-                placeholder="example: Here's some money for your trip to Spain"
-                name="description"
-                id="description"
-                title="Enter a valid description"
-                th:value="${description}"
-        />
-        <span></span>
-        <span></span>
-            <td><button type="submit" name="submit" id="submitButton" disabled=true value="Send Money">Send Money</button></td>
+            </form>
+            <form id="accountdetailsForm" th:action="@{accountdetails}" type="get">
 
-    </form>
-    <form id="accountdetailsForm" th:action="@{accountdetails}" type="get">
-        <button type="button" id="backButton" value="Cancel">Cancel</button>
-    </form>
-
-
-
-
-
+            </form>
+        </div>
+    </div>
 </body>
 
-<script src="js/navbar"></script>
+<script src="js/navbar.js"></script>
 <script src="js/transactionFieldValidation.js" defer></script>
 <script defer>
 

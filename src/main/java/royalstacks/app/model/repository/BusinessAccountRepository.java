@@ -15,6 +15,9 @@ public interface BusinessAccountRepository extends CrudRepository<BusinessAccoun
     @Query("SELECT ba.sector, AVG(ba.balance) AS averageBalance FROM BusinessAccount ba GROUP BY ba.sector ORDER BY averageBalance DESC")
     List<Object[]> findSectorAndAverageBalance();
 
+    @Query("SELECT ba FROM BusinessAccount ba WHERE ba.accountNumber = ?1")
+    Optional<BusinessAccount> findBusinessAccountByAccountNumber(String accountNumber);
+
     @Query("SELECT ba FROM BusinessAccount ba WHERE ba.accountId = ?1")
     Optional<BusinessAccount> findByAccountId(int accountId);
 

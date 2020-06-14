@@ -99,7 +99,7 @@ public class TransactionController {
     }
 
     private void executeTransaction() {
-        if (transactionService.executeTransaction(this.tbb.transaction())) {
+        if (transactionService.executeTransaction(this.tbb.transaction()).isPresent()) {
             showNotification(TRANSACTION_SUCCESS);
         } else {
             showNotification(TRANSACTION_FAILED);

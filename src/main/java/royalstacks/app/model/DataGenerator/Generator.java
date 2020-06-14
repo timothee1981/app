@@ -7,9 +7,9 @@ import royalstacks.app.model.*;
 import royalstacks.app.model.repository.AccountRepository;
 import royalstacks.app.model.repository.CustomerRepository;
 import royalstacks.app.model.repository.EmployeeRepository;
-import royalstacks.app.service.AccountService;
-import royalstacks.app.service.UserService;
+import royalstacks.app.model.repository.TransactionRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,33 +22,85 @@ public class Generator {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private AccountService accountService;
+    TransactionRepository transactionRepository;
     @Autowired
-    private UserService userService;
+    private TransactionGenerator transactionGenerator;
+
+
 
     final String customer_data_1 = "src\\main\\resources\\testDataSets\\customer_data_1.json";
-    final String customer_data_2 = "src\\main\\resources\\testDataSets\\customer_data_1.json";
-    final String customer_data_3 = "src\\main\\resources\\testDataSets\\customer_data_1.json";
-    final String customer_data_4 = "src\\main\\resources\\testDataSets\\customer_data_1.json";
-    final String companyNAme1 = "src\\main\\resources\\testDataSets\\companyName1.json";
-    final String companyNAme2 = "src\\main\\resources\\testDataSets\\companyName2.json";
+    final String customer_data_2 = "src\\main\\resources\\testDataSets\\customer_data_2.json";
+    final String customer_data_3 = "src\\main\\resources\\testDataSets\\customer_data_3.json";
+    final String customer_data_4 = "src\\main\\resources\\testDataSets\\customer_data_4.json";
+    final String companyName1 = "src\\main\\resources\\testDataSets\\companyName1.json";
+    final String companyName2 = "src\\main\\resources\\testDataSets\\companyName2.json";
 
-    public void GenerateAllDatabaseData() {
-        JSONArray customerJson = Gen.createJsonArrayFromFile(customer_data_1);
-        List<Customer> customers = CustomerGenerator.generateCustomers(1000, customerJson);
-        customerRepository.saveAll(customers);
-        Employee headBusiness = EmployeeGenerator.headBusinessGenerator();
-        Employee headPrivate = EmployeeGenerator.headPrivateGenerator();
-        employeeRepository.save(headPrivate);
+    List<Customer> allCustomers;
+    Employee headBusiness;
+    Employee headPrivate;
+    List<Account> allAccounts;
+
+    public Generator() {
+        allCustomers = new ArrayList<>();
+        allAccounts = new ArrayList<>();
+    }
+
+    public void fillDbAllData() {
+        fillDbCustomers();
+        fillDbHeadbusiness();
+        fillDbHeadPrivate();
+        fillDbAccounts();
+        fillDbAccountholder();
+        fillDbtransactions();
+
+    }
+    private void fillDbCustomers(){
+        fillDbCustomerBatch(customer_data_1);
+        fillDbCustomerBatch(customer_data_2);
+        fillDbCustomerBatch(customer_data_3);
+        fillDbCustomerBatch(customer_data_4);
+    }
+    private void fillDbHeadbusiness(){
+        headBusiness = EmployeeGenerator.headBusinessGenerator();
         employeeRepository.save(headBusiness);
-        JSONArray companyJson = Gen.createJsonArrayFromFile(companyNAme1);
-        List<Account> businessAccounts = AccountGenerator.businessAccountGenerator(500, companyJson);
-        List<Account> privateAccounts = AccountGenerator.privateAccountGenerator(500);
+    }
+    private void fillDbHeadPrivate(){
+        headPrivate = EmployeeGenerator.headPrivateGenerator();
+        employeeRepository.save(headPrivate);
+    }
+    private void fillDbAccounts() {
+        fillDbBusinessAccountBatch(companyName1);
+        fillDbBusinessAccountBatch(companyName2);
+        fillDbPrivateAccountBatch();
+        fillDbPrivateAccountBatch();
+    }
+
+    private void fillDbAccountholder(){
+        AccountHolderAdder.addAccountHoldersToAccount(allAccounts, allCustomers, headBusiness);
+        accountRepository.saveAll(allAccounts);
+    }
+    private  void fillDbtransactions(){
+        List<Transaction> transactions;
+        for (int i = 0; i < 400; i++) {
+            transactions = transactionGenerator.generateTransactions(1000);
+            transactionRepository.saveAll(transactions);
+        }
+    }
+    private void fillDbCustomerBatch(String fileName){
+        JSONArray customerJson = Gen.createJsonArrayFromFile(fileName);
+        List<Customer> customers = CustomerGenerator.generateCustomers(customerJson);
+        allCustomers.addAll(customers);
+        customerRepository.saveAll(customers);
+    }
+    private void fillDbBusinessAccountBatch(String fileName){
+        JSONArray companyJson = Gen.createJsonArrayFromFile(fileName);
+        List<Account> businessAccounts = AccountGenerator.businessAccountGenerator(1000, companyJson);
+        allAccounts.addAll(businessAccounts);
         accountRepository.saveAll(businessAccounts);
-        accountRepository.saveAll(privateAccounts);
-        AccountHolderAdder.addAccountHoldersToAccount(businessAccounts, customers, headBusiness);
-        AccountHolderAdder.addAccountHoldersToAccount(privateAccounts, customers, null);
-        accountRepository.saveAll(businessAccounts);
+    }
+    private void fillDbPrivateAccountBatch(){
+        List<Account> privateAccounts = AccountGenerator.privateAccountGenerator(1000);
+        allAccounts.addAll(privateAccounts);
         accountRepository.saveAll(privateAccounts);
     }
 }

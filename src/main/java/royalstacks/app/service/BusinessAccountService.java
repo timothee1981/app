@@ -34,6 +34,10 @@ public class BusinessAccountService {
 
     }
 
+    public Optional<BusinessAccount> findBusinessAccountByAccountNumber(String accountNumber){
+        return businessAccountRepository.findBusinessAccountByAccountNumber(accountNumber);
+    }
+
 
     public Optional<BusinessAccount> findByAccountId(int accountId) {
         return businessAccountRepository.findByAccountId(accountId);

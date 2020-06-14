@@ -8,7 +8,6 @@ import royalstacks.app.backingBean.OpenAccountBackingBean;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.Customer;
 import royalstacks.app.model.PrivateAccount;
-import royalstacks.app.model.User;
 import royalstacks.app.model.repository.EmployeeRepository;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;

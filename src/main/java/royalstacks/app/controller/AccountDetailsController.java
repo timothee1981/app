@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountDetailsBackingBean;
 import royalstacks.app.model.AccountHolderTransaction;
 import royalstacks.app.model.*;
+import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;

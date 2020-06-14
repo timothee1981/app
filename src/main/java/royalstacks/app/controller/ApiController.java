@@ -5,27 +5,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.CompanyAndTransactions;
-import royalstacks.app.service.AccountService;
-import royalstacks.app.service.BusinessAccountService;
-import royalstacks.app.service.CustomerService;
-import royalstacks.app.service.UserService;
+import royalstacks.app.service.*;
 
 import java.util.List;
 
 @Controller
 public class ApiController {
 
-    @Autowired
+
     private AccountService accountService;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
     private CustomerService customerService;
+    private BusinessAccountService businessAccountService;
+    private PosService posService;
 
     @Autowired
-    private BusinessAccountService businessAccountService;
+    public ApiController(AccountService as, UserService us, CustomerService cs,  BusinessAccountService bs, PosService ps){
+        this.accountService = as;
+        this.userService = us;
+        this.customerService = cs;
+        this.businessAccountService = bs;
+        this.posService = ps;
+    }
 
     @GetMapping("/api/accountredirect")
     @ResponseBody
@@ -47,6 +48,13 @@ public class ApiController {
 
     }
 
+    @GetMapping("/api/isBusinessAccount")
+    @ResponseBody
+    public String isBusinessAccountHandler(@RequestParam String accountNumber) {
+        return String.valueOf(businessAccountService.findBusinessAccountByAccountNumber(accountNumber).isPresent());
+
+    }
+
     @GetMapping("/openaccount/v_check")
     @ResponseBody
     public String vatNumberCheckHandler(@RequestParam String vatnumber){
@@ -59,6 +67,17 @@ public class ApiController {
     public @ResponseBody List<CompanyAndTransactions> topTransactionList(){
         return businessAccountService.findTop10TransactionsOnBusinessAccounts();
     }
+
+    @GetMapping("/api/getPendingAmount")
+    public @ResponseBody String getPendingAmount(int posId) {
+        if (posService.findPosByIdentificationNumber(posId).isPresent()) {
+            return String.valueOf(posService.findPosByIdentificationNumber(posId).get().getPendingAmount());
+        } else {
+            return "No payment pending";
+        }
+    }
+
+
 
     @PostMapping(value = "/api/iban",consumes = "text/plain")
     @ResponseBody

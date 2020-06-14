@@ -17,6 +17,7 @@ h3{
 body{
     background-color: #ebebeb;
     width: 100%;
+    margin: 0px;
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
 }
 
@@ -101,27 +102,13 @@ input:focus{
     outline: none;
 }
 
-/*input:disabled {
-    background: #dcdcdc;
-}*/
-
-/*
-input + span::before {
-    position: relative;
-    right: -20px;
-    top: 0px;
-}*/
-
 .isValid + span::before {
     content: '✓';
     font-size: 1em;
     color: #00b300;
     position: relative;
     margin-top: 6px;
-
-
 }
-
 .isInvalid + span::before {
     content: '✗';
     font-size: 1em;
