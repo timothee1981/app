@@ -90,12 +90,12 @@ function validateVatNumber() {
         if (!vatnumberRegex.test(vatnumberInput)) {
             setVatClassInValid();
         } else {
-            getUrlResponseVat(VATchek);
+            getResponseVatCheck(VATchek);
         }
 }
 
 /*get respons to check id vat passes the 11 proof*/
-function getUrlResponseVat(VATchek) {
+function getResponseVatCheck(VATchek) {
     fetch(VATchek)
         .then((response) => {
             if (!response) {
