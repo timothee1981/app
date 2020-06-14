@@ -7,12 +7,28 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.CustomerAndTotalBalance;
+import royalstacks.app.model.Sector;
+import royalstacks.app.model.SectorAndAverageBalance;
+import royalstacks.app.model.repository.CustomerRepository;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class CustomerServiceTest {
+
+    @Mock
+    CustomerRepository customerRepository;
 
     @InjectMocks
     CustomerService customerService;
@@ -120,4 +136,45 @@ class CustomerServiceTest {
         Assert.assertFalse(customerService.isBSNFormatValid("01234567A"));
     }
 
+    @Test
+    public void findTop10BusinessAccountsTest() {
+        //ARRANGE
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Object[]> mockedList = new ArrayList<>();
+        mockedList.add(new Object[]{"Jabba","de Hutt",new BigDecimal(1625978.47)});
+        mockedList.add(new Object[]{"Anakin","Skywalker", new BigDecimal(666666.66)});
+        mockedList.add(new Object[]{"Boba","Fett",new BigDecimal(125683.12)});
+        mockedList.add(new Object[]{"Lando","Calrissian",new BigDecimal(5489.57)});
+        mockedList.add(new Object[]{"Obi-Wan","Kenobi",new BigDecimal(2500.00)});
+        mockedList.add(new Object[]{"Zorri","Bliss",new BigDecimal(187.03)});
+        mockedList.add(new Object[]{"Padme","Amidala",new BigDecimal(126.12)});
+        mockedList.add(new Object[]{"Leia","Organa",new BigDecimal(25.00)});
+        mockedList.add(new Object[]{"Poe","Dameron",new BigDecimal(5.00)});
+        mockedList.add(new Object[]{"Han","Solo",new BigDecimal(0.01)});
+
+        when(customerRepository.findCustomersAndBusinessAccountBalance(pageable)).thenReturn(mockedList);
+
+        //ACT
+        List<CustomerAndTotalBalance> actual = customerService.findTop10BusinessAccounts();
+
+        //ASSERT
+        //Size CustomerAndTotalBalance-list
+        assertEquals(10,actual.size());
+
+        CustomerAndTotalBalance firstResult = actual.get(0);
+        //Check first name in first record from CustomerAndTotalBalance-list
+        assertEquals("Jabba",firstResult.getFirstName());
+        //Check last name in first record from CustomerAndTotalBalance-list
+        assertEquals("de Hutt", firstResult.getLastName());
+        //Check balance in first record from SectorAndAverageBalance-list
+        assertEquals(1625978.47,firstResult.getTotalBalance().doubleValue(),0);
+
+        CustomerAndTotalBalance sixthResult = actual.get(5);
+        //Check first name in 6th record from CustomerAndTotalBalance-list
+        assertEquals("Zorri",sixthResult.getFirstName());
+        //Check last name in 6th record from CustomerAndTotalBalance-list
+        assertEquals("Bliss", sixthResult.getLastName());
+        //Check balance in 6th record from SectorAndAverageBalance-list
+        assertEquals(187.03,sixthResult.getTotalBalance().doubleValue(),0);
+    }
 }
