@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.BusinessAccountService;
 import royalstacks.app.service.CustomerService;
 import royalstacks.app.service.UserService;
 
@@ -40,6 +41,9 @@ class ApiControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private BusinessAccountService businessAccountService;
 
     @Autowired
     WebApplicationContext webApplicationContext;
