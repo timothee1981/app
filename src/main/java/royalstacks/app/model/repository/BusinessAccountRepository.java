@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface BusinessAccountRepository extends CrudRepository<BusinessAccount, Integer> {
 
-    @Query("SELECT ba.sector, AVG(ba.balance) AS totalBalance FROM BusinessAccount ba GROUP BY ba.sector ORDER BY totalBalance DESC")
+    @Query("SELECT ba.sector, AVG(ba.balance) AS averageBalance FROM BusinessAccount ba GROUP BY ba.sector ORDER BY averageBalance DESC")
     List<Object[]> findSectorAndAverageBalance();
 
     @Query("SELECT ba FROM BusinessAccount ba WHERE ba.accountId = ?1")
