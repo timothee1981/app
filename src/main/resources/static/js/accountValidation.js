@@ -7,83 +7,113 @@ const companyname = document.getElementById("companyName");
 
 /* Regex */
 const companynameregex = /^[\w@ ]*[^\W_ ][\w- @ & +]*$/;
+const vatnumberRegex = /^[nN][lL][0-9]{9}[bB][0-9]{2}$/;
+const kvkRegex =  /^[0-9]{8}$/;
 
 /* check companyname */
-
-
-companyname.addEventListener("input",function () {
-    let companyname = document.getElementById("companyName");
-    let companynameInput = companyname.value;
-    if(companynameregex.test(companynameInput)) {
-        document.getElementById("InvalidCompanyName").style.display = "none";
-        companyname.classList.add("isValid");
-        companyname.classList.remove("isInvalid");
-    }else{
-        document.getElementById("InvalidCompanyName").style.display = "inline";
-        companyname.classList.add("isInvalid");
-        companyname.classList.remove("isValid");
-    }
+kvknumber.addEventListener('input', function () {
+    validateKvkNumber();
 
 });
+
+vatnumber.addEventListener('input', function () {
+    validateVatNumber();
+});
+
+companyname.addEventListener("input", function () {
+    validateCompanyName();
+});
+
+/*check id Company name valid*/
+
+function validateCompanyName() {
+        let companynameInput = companyname.value;
+        if (companynameregex.test(companynameInput)) {
+           setElementIsValid("InvalidCompanyName",companyname);
+        } else {
+           setElementIsInvalid("InvalidCompanyName",companyname);
+        }
+
+}
+
 
 
 /*check if kvk valid*/
 
 
-kvknumber.addEventListener('input',function(){
-    let kvknumber = document.getElementById("kvkNumber");
-    let kvknumberInput = kvknumber.value;
-    const re = /^[0-9]{8}$/;
-    if(re.test(kvknumberInput)){
-        document.getElementById("InvalidKvkNumber").style.display = "none";
-        kvknumber.classList.add("isValid");
-        kvknumber.classList.remove("isInvalid");
-    }else{
-        document.getElementById("InvalidKvkNumber").style.display = "inline";
-        kvknumber.classList.add("isInvalid");
-        kvknumber.classList.remove("isValid");
-    }
-});
+function validateKvkNumber() {
+
+        let kvknumberInput = kvknumber.value;
+        if (kvkRegex.test(kvknumberInput)) {
+            setElementIsValid("InvalidKvkNumber",kvknumber);
+        } else {
+            setElementIsInvalid("InvalidKvkNumber",kvknumber);
+        }
+
+}
 
 
-/*check if VAT valid*/
+/*set element to valid or not valid*/
 
-vatnumber.addEventListener('input', function () {
-    let vatnumberInput = vatnumber.value;
-    let VATchek = window.location.pathname + `/v_check?vatnumber=${vatnumberInput}`;
-    const re = /^[nN][lL][0-9]{9}[bB][0-9]{2}$/;
-    console.log(VATchek);
-    if(!re.test(vatnumberInput)) {
-        hideVatNumberNotCorrect();
-        vatnumber.classList.add("isInvalid");
-        vatnumber.classList.remove("isValid");
+function setElementIsValid(id,element){
+    document.getElementById(id).style.display = "none";
+    element.classList.add("isValid");
+    element.classList.remove("isInvalid");
 
-    }else {
-        fetch(VATchek)
-            .then((response) => {
-                if (!response) {
-                    throw new Error("Response Error")
+}
 
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (data === true) {
-                    hideVatNumberNotCorrect();
-                    vatnumber.classList.add("isValid");
-                    vatnumber.classList.remove("isInvalid")
-                } else {
-                    setVatNumberNotCorrect("Vat number not valid");
-                    vatnumber.classList.add("isInvalid");
-                    vatnumber.classList.remove("isValid")
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+function setElementIsInvalid(id,element){
+    document.getElementById(id).style.display = "inline";
+    element.classList.add("isInvalid");
+    element.classList.remove("isValid");
 
-});
+}
+/*set vat class to valid/invalid*/
+
+function setVatClassInValid() {
+    setVatNumberNotCorrect("Vat number not valid");
+    vatnumber.classList.add("isInvalid");
+    vatnumber.classList.remove("isValid");
+}
+
+function setVatClassValid() {
+    hideVatNumberNotCorrect();
+    vatnumber.classList.add("isValid");
+    vatnumber.classList.remove("isInvalid")
+}
+
+/* check if vat valid*/
+
+function validateVatNumber() {
+        const vatnumberInput = vatnumber.value;
+        const VATchek = window.location.pathname + `/v_check?vatnumber=${vatnumber.value}`;
+        if (!vatnumberRegex.test(vatnumberInput)) {
+            setVatClassInValid();
+        } else {
+            getResponseVatCheck(VATchek);
+        }
+}
+
+/*get respons to check id vat passes the 11 proof*/
+function getResponseVatCheck(VATchek) {
+    fetch(VATchek)
+        .then((response) => {
+            if (!response) {
+                throw new Error("Response Error")
+            }
+            return response.json();
+        })
+        .then((data) => {
+            if (data === true) {
+                setVatClassValid();
+            } else {
+                setVatClassInValid();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
 
 
 /* enable/disable submit button met click nb: kan waarschijnlijk in een methode maar weet niet hoe */
@@ -94,14 +124,10 @@ const sector = document.getElementById("sector");
 const form = document.getElementById("form");
 form.addEventListener('click', function () {
     if(document.getElementById("business").checked) {
-        if (companyname.classList.contains("isValid") &&
+        document.getElementById("submitButton").disabled = !(companyname.classList.contains("isValid") &&
             kvknumber.classList.contains("isValid") &&
             vatnumber.classList.contains("isValid") &&
-            sector.value !== "") {
-            document.getElementById("submitButton").disabled = false;
-        } else {
-            document.getElementById("submitButton").disabled = true;
-        }
+            sector.value !== "");
     }else{
         hideBusinessFields();
     }
@@ -110,15 +136,10 @@ form.addEventListener('click', function () {
 /* enable/disable submit button met keyup*/
 
 form.addEventListener('keyup', function () {
-    if(companyname.classList.contains("isValid") &&
+    document.getElementById("submitButton").disabled = !(companyname.classList.contains("isValid") &&
         kvknumber.classList.contains("isValid") &&
-        vatnumber.classList.contains("isValid")&&
-        sector.value !== "")
-    {
-        document.getElementById("submitButton").disabled = false;
-    } else {
-        document.getElementById("submitButton").disabled = true;
-    }
+        vatnumber.classList.contains("isValid") &&
+        sector.value !== "");
 });
 
 
