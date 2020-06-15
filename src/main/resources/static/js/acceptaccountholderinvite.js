@@ -3,6 +3,15 @@ const verificationCodeField = document.getElementById("verificationCode");
 const messageVerificationCodeInvalid = "Please enter a code consisting of five numbers."
 const messageAccountNumberInvalid = "Please enter a valid account number."
 
+function isAccountNumberFormatValid(){
+    let accountFormatRegex = new RegExp(/^nl[\d]{2}roya[\d]{10}$/i);
+    return (accountFormatRegex.test(accountNumberField.value));
+}
+
+function isAccountNumberProvided() {
+    return (accountNumberField.value.length !== 0);
+}
+
 function isVerificationCodeFormatValid(){
     let verificationCodeFormatRegex = new RegExp(/^[/\d]{5}?$/);
     return (verificationCodeFormatRegex.test(verificationCodeField.value));
@@ -12,18 +21,6 @@ function isVerificationCodeProvided() {
     return (verificationCodeField.value.length !== 0);
 }
 
-function isAccountNumberProvided() {
-    return (accountNumberField.value.length !== 0);
-}
-
-
-function verificationCodeFieldMessageHandler() {
-    if ((!isVerificationCodeFormatValid()) || (!isVerificationCodeProvided())) {
-        showMessage(messageVerificationCodeInvalid, "verificationCodeMessage");
-        //setClassInvalid("verificationCode");
-    }
-}
-
 function accountNumberFieldMessageHandler() {
     if (!isAccountNumberFormatValid() || (!isAccountNumberProvided())) {
         showMessage(messageAccountNumberInvalid, "accountNumberMessage");
@@ -31,9 +28,11 @@ function accountNumberFieldMessageHandler() {
     }
 }
 
-function isAccountNumberFormatValid(){
-    let accountFormatRegex = new RegExp(/^nl[\d]{2}roya[\d]{10}$/i);
-    return (accountFormatRegex.test(toAccountField.value));
+function verificationCodeFieldMessageHandler() {
+    if ((!isVerificationCodeFormatValid()) || (!isVerificationCodeProvided())) {
+        showMessage(messageVerificationCodeInvalid, "verificationCodeMessage");
+        //setClassInvalid("verificationCode");
+    }
 }
 
 function isAllInputValid(){
