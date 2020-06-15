@@ -22,7 +22,7 @@ function isVerificationCodeProvided() {
 }
 
 function accountNumberFieldMessageHandler() {
-    if (!isAccountNumberFormatValid() || (!isAccountNumberProvided())) {
+    if ((!isAccountNumberFormatValid()) || (!isAccountNumberProvided())) {
         showMessage(messageAccountNumberInvalid, "accountNumberMessage");
         //setClassInvalid("accountNumber");
     }
@@ -68,13 +68,13 @@ verificationCodeField.addEventListener("input", function() {
 
 
 function enableButton(){
-    if(document.getElementById("submitButton").disabled === true){
-        document.getElementById("submitButton").disabled = false;
+    if(document.getElementById("acceptButton").disabled === true){
+        document.getElementById("acceptButton").disabled = false;
     }
 }
 function disableButton(){
-    if(document.getElementById("submitButton").disabled === false) {
-        document.getElementById("submitButton").disabled = true;
+    if(document.getElementById("acceptButton").disabled === false) {
+        document.getElementById("acceptButton").disabled = true;
     }
 }
 
