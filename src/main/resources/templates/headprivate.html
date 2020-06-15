@@ -61,7 +61,7 @@
     <tr th:each="topPrivateAccount: ${top10PrivateAccounts}">
         <td th:text="${topPrivateAccount.firstName}"></td>
         <td th:text="${topPrivateAccount.lastName}"></td>
-        <td th:text="${#numbers.formatDecimal(topPrivateAccount.totalBalance, 0, 2)}"></td>
+        <td th:text="${#numbers.formatDecimal(topPrivateAccount.totalBalance, 0,'POINT', 2, 'COMMA')}"></td>
     </tr>
 </table>
 <script src="js/navbar.js"></script>

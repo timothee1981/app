@@ -31,7 +31,12 @@ function createTable(top10transactions) {
         const row = tbl.insertRow();
         createTableCell(element.companyName, row);
         createTableCell(element.numberOfTransactions, row);
-        createTableCell(element.balance.toFixed(2), row);
+        createTableCell(
+            "€ " + element.balance.toLocaleString(
+                undefined,
+                {minimumFractionDigits: 2, maximumFractionDigits: 2}),
+            row
+        );
     });
     body.appendChild(tbl);
 }

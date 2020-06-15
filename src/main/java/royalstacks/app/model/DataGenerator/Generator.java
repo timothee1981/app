@@ -56,9 +56,9 @@ public class Generator {
     }
     private void fillDbCustomers(){
         fillDbCustomerBatch(customer_data_1);
-        fillDbCustomerBatch(customer_data_2);
-        fillDbCustomerBatch(customer_data_3);
-        fillDbCustomerBatch(customer_data_4);
+//        fillDbCustomerBatch(customer_data_2);
+//        fillDbCustomerBatch(customer_data_3);
+//        fillDbCustomerBatch(customer_data_4);
     }
     private void fillDbHeadbusiness(){
         headBusiness = EmployeeGenerator.headBusinessGenerator();
@@ -81,7 +81,7 @@ public class Generator {
     }
     private  void fillDbtransactions(){
         List<Transaction> transactions;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 1; i++) {
             transactions = transactionGenerator.generateTransactions(1000);
             transactionRepository.saveAll(transactions);
         }
