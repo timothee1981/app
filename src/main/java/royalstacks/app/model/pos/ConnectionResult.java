@@ -12,15 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Optional;
 
-@Entity
+
 public class ConnectionResult {
 
     final static long ID_WHEN_SUCCEEDED_IS_FALSE = 0;
     final static boolean SUCCEEDED_IS_FALSE = false;
     final static boolean SUCCEEDED_IS_TRUE = true;
 
-    @Id
-    @GeneratedValue
     private long id;
     private boolean succeeded;
 

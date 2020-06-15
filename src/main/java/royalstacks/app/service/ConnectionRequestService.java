@@ -21,4 +21,8 @@ public class ConnectionRequestService {
     public Optional<ConnectionRequest> findCustomerRequestByBusinessAccountIban(String businessAcountIban){
        return connectionRequestRepository.findCustomerRequestByBusinessAccountIban(businessAcountIban);
     }
+
+    public void delete(ConnectionRequest connectionRequest){
+        connectionRequestRepository.delete(connectionRequest);
+    }
 }

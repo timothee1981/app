@@ -322,6 +322,7 @@
 
     let connectionMode = false;
     let paymentMode = false;
+    let paymentCompleted = false;
 
     let businessAccountNumber = null;
     let connectionCode = null;
@@ -376,13 +377,14 @@
     }
 
     function addNumberL(number) {
-        if(!paymentMode) {
+        if(!paymentMode && !paymentCompleted) {
             if (connectionMode) {
                 if (document.getElementById('displayPos').innerHTML.length < 10 && businessAccountNumber === null) {
                     document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML + number;
                 } else if (document.getElementById('displayPos').innerHTML.length < 5 && connectionCode === null) {
                     document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML + number;
                 }
+            } else if(document.getElementById('displayPos').innerHTML.length === 0 && number === 0) {
             } else if (document.getElementById('displayPos').innerHTML.length < 10) {
                 document.getElementById('displayPos').innerHTML = document.getElementById('displayPos').innerHTML + number;
             }
@@ -405,7 +407,7 @@
      * OK button LEFT
      */
     function okButtonL() {
-        if (!paymentMode) {
+        if (!paymentMode && !paymentCompleted) {
             if (!connectionMode) {
                 if (connectionMode === false && document.getElementById('displayPos').innerText > 0) {
                     goToClient();
@@ -415,6 +417,9 @@
                 let data = document.getElementById('displayPos').innerHTML;
                 connectionFlow(data);
             }
+        } else if (paymentCompleted){
+            stopButtonL();
+            paymentCompleted = false;
         }
     }
 
@@ -448,7 +453,7 @@
             connectionCode: connectionCode
         };
 
-        await fetch(window.location.origin + '/paymentmachine/connect', {
+        await fetch(window.location.origin + '/pos/connect', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -483,39 +488,55 @@
 
 
     function goToClient() {
+        paymentMode = true;
         amount = document.getElementById('displayPos').innerText;
         document.getElementById('transactionInfo').innerText = '€' + document.getElementById('displayPos').innerText;
         document.getElementById('responseL').innerText = 'Waiting for client...';
-        paymentMode = true;
+        document.getElementById('responseL').classList.remove('failed', 'success');
+        document.getElementById('responseL').classList.add('neutral');
         document.getElementById('themachineLeft').classList.remove('focus');
-        document.getElementById('themachineRight').classList.add('focusLight')
+        document.getElementById('themachineRight').classList.add('focusLight');
+        document.getElementById('response').classList.remove('success', 'failed');
+        document.getElementById('response').classList.add('neutral');
+        document.getElementById('response').innerText = 'Pending payment...';
+        document.getElementById('title').innerText = "Account number:";
+
     }
 
-
     /**
-     * STOP button LEFT
+     * STOP button LEFT & RIGHT
      */
     function stopButtonL() {
-        const window = document.getElementById('response');
-
-        paymentMode = false;
-        fillBankAccount = true;
-
-        document.getElementById('themachineLeft').classList.add('focus');
-        document.getElementById('themachineRight').classList.remove('focusLight');
-
+        resetFields();
 
         document.getElementById('displayPos').innerHTML = "";
+        paymentCompleted = false;
+
+    }
+
+    function stopButtonR(){
+        if(!paymentCompleted && paymentMode) {
+            resetFields();
+        }
+    }
+
+    function resetFields() {
+        document.getElementById('themachineLeft').classList.add('focus');
+        document.getElementById('themachineRight').classList.remove('focusLight');
         document.getElementById('displayAccountNumber').innerText = '';
         document.getElementById('transactionInfo').innerText = '';
         document.getElementById('response').innerText = '';
         document.getElementById('response').classList.remove('success', 'failed');
         document.getElementById('response').classList.add('neutral');
+        document.getElementById('responseL').classList.remove('success', 'failed');
+        document.getElementById('responseL').classList.add('neutral');
         document.getElementById('title').innerText = "Account number:";
 
+        connectionMode ? document.getElementById('responseL').innerText = 'Connection Mode' :
+            document.getElementById('responseL').innerText = 'Transaction Mode';
 
-        paymentMode ? document.getElementById('responseL').innerText = 'Transaction Mode'
-            : paymentMode = false;
+        fillBankAccount = true;
+        paymentMode = false;
     }
 
 
@@ -523,7 +544,7 @@
      * CONNECTION button LEFT
      */
     function connButtonL() {
-        if(!paymentMode) {
+        if(!paymentMode && !paymentCompleted) {
             document.getElementById('responseL').innerText = 'Connection Mode';
 
             connectionMode = true;
@@ -545,7 +566,7 @@
         if(identificationNumber == 0){
             closeButtonL();
         } else {
-            if(!paymentMode) {
+            if(!paymentMode && !paymentCompleted) {
                 document.getElementById('responseL').innerText = 'Transaction Mode';
                 document.getElementById('displayPos').innerHTML = "";
                 document.getElementById("notify").innerHTML = "Enter amount";
@@ -605,6 +626,7 @@
             } else if (document.getElementById('displayAccountNumber').innerText.length < 4) {
                 document.getElementById('response').innerText = 'Enter your pincode'
 
+
             } else if (document.getElementById('displayAccountNumber').innerText.length === 4) {
                 okButtonPost();
             } else {
@@ -618,7 +640,7 @@
         account = document.getElementById('displayAccountNumber').innerText;
         fillBankAccount = false;
         document.getElementById('displayAccountNumber').innerText = "";
-        document.getElementById('response').innerText = '';
+        document.getElementById('response').innerText = 'Pending payment...'
         document.getElementById('title').innerText = 'Pincode';
     }
 
@@ -655,51 +677,45 @@
     };
 
     function setStatusFailed(text){
-        const window = document.getElementById('response');
-        window.classList.add('failed');
-        window.classList.remove('neutral');
-        window.innerText = text;
-        fillBankAccount = true;
+        document.getElementById('responseL').innerText = 'Payment denied. Press STOP or OK';
+        document.getElementById('responseL').classList.add('failed');
+        document.getElementById('responseL').classList.remove('neutral');
+
+        document.getElementById('response').classList.remove('neutral');
+        document.getElementById('response').classList.add('failed');
+        document.getElementById('response').innerText = text;
+
         document.getElementById('title').innerText = 'Account Number';
         document.getElementById('displayAccountNumber').innerText = '';
 
+        document.getElementById('themachineLeft').classList.add('focus');
+        document.getElementById('themachineRight').classList.remove('focusLight');
+
+        fillBankAccount = true;
+        paymentMode = false;
     }
 
     function setStatusSuccess(text) {
-        const window = document.getElementById('response');
-        window.classList.remove('neutral', 'failed');
-        window.classList.add('success');
-        window.innerText = 'id: ' + text;
-        document.getElementById('displayAccountNumber').innerText = '';
-        document.getElementById('transactionInfo').innerText = '';
+        document.getElementById('responseL').innerText = 'Success! Press STOP or OK';
+        document.getElementById('responseL').classList.remove('neutral', 'failed');
+        document.getElementById('responseL').classList.add('success');
+
+        document.getElementById('response').classList.remove('neutral', 'failed');
+        document.getElementById('response').classList.add('success');
+        document.getElementById('response').innerText = 'id: ' + text;
+
         document.getElementById('title').innerText = 'Thank You!';
-        document.getElementById('responseL').innerText = 'Transaction has completed!';
+        document.getElementById('displayAccountNumber').innerText = '';
+        document.getElementById('displayPos').innerText = '';
+        document.getElementById('transactionInfo').innerText = '';
+
+        document.getElementById('themachineLeft').classList.add('focus');
+        document.getElementById('themachineRight').classList.remove('focusLight');
+
         fillBankAccount = true;
         paymentMode = false;
-
+        paymentCompleted = true;
     }
-
-    /**
-     * STOP button rechts
-     */
-    function stopButtonR(){
-        if(paymentMode) {
-            const window = document.getElementById('response');
-            document.getElementById('displayAccountNumber').innerText = '';
-            document.getElementById('transactionInfo').innerText = '';
-            document.getElementById('response').innerText = '';
-            window.classList.remove('success', 'failed');
-            window.classList.add('neutral');
-            document.getElementById('displayPos').innerText = '';
-            document.getElementById('title').innerText = "Account number";
-
-            fillBankAccount = true;
-            document.getElementById('responseL').innerText = 'Transaction Mode';
-            document.getElementById('themachineLeft').classList.add('focus');
-            document.getElementById('themachineRight').classList.remove('focusLight')
-        }
-    }
-
 </script>
 </body>
 </html>

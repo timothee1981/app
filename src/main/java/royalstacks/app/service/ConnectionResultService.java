@@ -1,65 +1,24 @@
-
-package royalstacks.app.controller.pos;
-
+package royalstacks.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import royalstacks.app.model.BusinessAccount;
+import org.springframework.stereotype.Service;
 import royalstacks.app.model.pos.ConnectionRequest;
 import royalstacks.app.model.pos.ConnectionResult;
-import royalstacks.app.model.pos.Pos;
 import royalstacks.app.model.repository.ConnectionRequestRepository;
-import royalstacks.app.model.repository.ConnectionResultRepository;
-import royalstacks.app.service.AccountService;
-import royalstacks.app.service.PosService;
 
 import java.util.Optional;
 
-
-@RestController
-public class ConnectController {
-
-/**
-     *  Zenden van volgende curl stuurt een bericht terug:
-     *  curl -X POST http://localhost/paymentmachine/connect -H "Content-Type: application/json" -d "{\"businessAccountIban\":\"0123456789\", \"connectionCode\":54321}"
-     * @param connectionRequest
-     * @return ConnectionResult - false / 0 als gefaald
-     * - true / id als geslaagd
-     */
-
-    @Autowired
-    PosService posService;
+@Service
+public class ConnectionResultService {
 
     @Autowired
     ConnectionRequestRepository connectionRequestRepository;
 
     @Autowired
-    ConnectionResultRepository connectionResultRepository;
+    PosService posService;
 
-    @Autowired
-    AccountService accountService;
 
-    @PostMapping("/paymentmachine/connect")
-    public ConnectionResult paymentMachineConnectionResult(@RequestBody ConnectionRequest connectionRequest){
-
-        ConnectionResult returnValue = checkConnectionResult(connectionRequest);
-
-        if(returnValue.isSucceeded()){
-            ConnectionRequest cr = connectionRequestRepository.findCustomerRequestByBusinessAccountIban(connectionRequest.getBusinessAccountIban()).get();
-            Pos pos = new Pos();
-            pos.setIdentificationNumber((int) returnValue.getId());
-            pos.setBusinessAccountNumber(cr.getBusinessAccountIban());
-            posService.savePos(pos);
-            System.out.println(cr);
-            connectionRequestRepository.delete(cr);
-        }
-
-        return returnValue;
-    }
-
-    private ConnectionResult checkConnectionResult(ConnectionRequest data) {
+    public ConnectionResult checkConnectionResult(ConnectionRequest data) {
 
         ConnectionResult connectionResult = new ConnectionResult();
         if(doesConnectionObjectMatch(data)){
@@ -127,4 +86,3 @@ public class ConnectController {
     }
 
 }
-

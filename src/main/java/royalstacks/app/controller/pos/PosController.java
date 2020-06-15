@@ -7,25 +7,35 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import royalstacks.app.model.pos.PaymentData;
-import royalstacks.app.model.pos.PaymentResult;
-import royalstacks.app.model.pos.Pos;
+import royalstacks.app.model.pos.*;
+import royalstacks.app.service.ConnectionRequestService;
+import royalstacks.app.service.ConnectionResultService;
 import royalstacks.app.service.PosService;
 
-import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
 public class PosController {
 
     PosService posService;
+    ConnectionResultService connectionResultService;
+    ConnectionRequestService connectionRequestService;
 
     @Autowired
-    public PosController(PosService posService) {
+    public PosController(PosService posService, ConnectionResultService connectionResultService, ConnectionRequestService connectionRequestService) {
         this.posService = posService;
+        this.connectionResultService = connectionResultService;
+        this.connectionRequestService = connectionRequestService;
     }
+
+
+    @GetMapping("/pos")
+    public final ModelAndView posCustomerTestControllerHandler(Model model) {
+        Pos dummy = new Pos();
+        model.addAttribute(dummy);
+        return new ModelAndView("pos");
+    }
+
 
     @GetMapping("/pos/{identificationNumber}")
     public final ModelAndView posDuoControllerHandler(@PathVariable("identificationNumber") int identificationNumber, Model model) {
@@ -39,14 +49,6 @@ public class PosController {
         model.addAttribute("pos", pos);
         return new ModelAndView("pos");
     }
-
-    @GetMapping("/pos")
-    public final ModelAndView posCustomerTestControllerHandler(Model model) {
-        Pos dummy = new Pos();
-        model.addAttribute(dummy);
-        return new ModelAndView("pos");
-    }
-
 
     // curl -H "Content-Type: application/json" -X POST -d '{"id":"0", "businessAccountNumber":"NL32ROYA0000000019", "identificationNumber":"1232", "pendingAmount":"100", "clientAccountNumber":"1111111111"}' http://localhost/pos/client/
     @PostMapping("/pos/client/")
@@ -68,5 +70,23 @@ public class PosController {
             }
         }
         return new ResponseEntity<>(pr, HttpStatus.OK);
+    }
+
+    @PostMapping("/pos/connect")
+    public @ResponseBody ConnectionResult posConnectionResult(@RequestBody ConnectionRequest connectionRequest){
+
+        ConnectionResult returnValue = connectionResultService.checkConnectionResult(connectionRequest);
+
+        if(returnValue.isSucceeded()){
+            ConnectionRequest cr = connectionRequestService.findCustomerRequestByBusinessAccountIban(connectionRequest.getBusinessAccountIban()).get();
+
+            Pos pos = new Pos();
+            pos.setIdentificationNumber((int) returnValue.getId());
+            pos.setBusinessAccountNumber(cr.getBusinessAccountIban());
+            posService.savePos(pos);
+
+            connectionRequestService.delete(cr);
+        }
+        return returnValue;
     }
 }
