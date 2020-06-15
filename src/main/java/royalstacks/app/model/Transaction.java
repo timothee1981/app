@@ -16,6 +16,7 @@ public class Transaction {
     private String transactionId;
     private int fromAccountId;
     private int toAccountId;
+    @Indexed(direction = IndexDirection.DESCENDING)
     private BigDecimal amount;
     private String description;
     @Indexed(direction = IndexDirection.DESCENDING)

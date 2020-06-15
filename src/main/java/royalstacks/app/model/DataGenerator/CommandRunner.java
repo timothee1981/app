@@ -30,7 +30,7 @@ public class CommandRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        //transactionRepository.deleteAll();
+       //transactionRepository.deleteAll();
         //generator.fillDbAllData();
 
 

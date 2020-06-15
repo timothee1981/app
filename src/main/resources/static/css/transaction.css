@@ -67,24 +67,6 @@ option{
     padding:15px;
 }
 
-/*
-
-#formLeft{
-    width: 360px;
-    float:left;
-    margin-right: 30px;
-}
-
-#formRight{
-    width: 360px;
-    float:left;
-    margin-left: 30px;
-}
-*/
-
-
-
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
