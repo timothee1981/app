@@ -13,7 +13,9 @@ h2{
 }
 
 .wrapper{
-    width: 1000px;
+    width: 800px;
+    align-content: center;
+    margin: auto;
 }
 
 body{
@@ -21,7 +23,7 @@ body{
     background-color: #ebebeb;
     margin: auto;
     width: 100%;
-    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
 }
 /*form{
     width: 30px;
@@ -30,7 +32,7 @@ body{
     overflow: hidden;
     border: hidden;
 }*/
-
+/*
 input[type=text] {
     width: 100%;
     padding: 15px;
@@ -38,12 +40,14 @@ input[type=text] {
     display: inline-block;
     border: none;
     background: #f1f1f1;
-}
+}*/
 
+/*
 input[type=text]:focus{
     background-color: #ddd;
     outline: none;
 }
+*/
 
 
 
@@ -54,12 +58,14 @@ input[type=text]:focus{
     height: 30%;
     margin: 1%;
     font-size: 14px;
+
 }
 
 .inforow{
     display: table-row;
 
 }
+
 
 
 .infocell{
@@ -73,7 +79,7 @@ input[type=text]:focus{
 }
 
 .inforow .infocell{
-    font-family: Poppins-Regular, sans-serif;
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size: 15px;
     color: #666666;
     line-height: 1.2;
@@ -85,23 +91,30 @@ input[type=text]:focus{
 
 .inforow .infocell:nth-child(1) {
     width: 50px;
-    padding-left: 40px;
+    padding-left: 10px;
 }
 
 .inforow .infocell:nth-child(2) {
 
     margin-left: -2px;
     margin-bottom: -19px;
-    padding: 4px 49px 2px 25px;
+    padding: 15px 69px 2px 25px;
 
 }
+
+
 
 #select{
     border: none;
     background-color: transparent;
     text-overflow: ellipsis;
     outline: none;
+    position: absolute;
+
 }
+
+
+
 
 #option{
     padding-top: 3px;
@@ -112,22 +125,33 @@ input[type=text]:focus{
 
 /*style button */
 
-button {
+.button {
     background-color: #1E90FF;
     color: white;
-    padding: 14px 20px;
     border: none;
     cursor: pointer;
-    width: 233px;
     opacity: 0.9;
     font-size: 16px;
-    font-weight: bold;
-    margin: 20px auto auto;
 
 
 }
-button:hover {
-    opacity:1;
+#logoutbutton :hover {
+    float: left;
+    display: inline;
+    color: #1e90ff;
+    background: #ebebeb;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+}
+
+#navbar a:hover .button{
+    float: left;
+    display: inline;
+    color: #1e90ff;
+    background: #ebebeb;
+    text-align: center;
+    text-decoration: none;
 }
 
 button[disabled]{
@@ -149,12 +173,12 @@ button[type=submit]:disabled {
     max-width: 85%;
     background-color: transparent;
     font-weight: 400;
-    border-radius: 10px;
     overflow: hidden;
 }
 
 .table, .row{
     width: 93%;
+    margin: auto;
 }
 
 
@@ -176,7 +200,7 @@ button[type=submit]:disabled {
 }
 
 .row .cell{
-    font-family: Poppins-Regular, sans-serif;
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size: 15px;
     color: #666666;
     line-height: 1.2;
@@ -188,7 +212,7 @@ button[type=submit]:disabled {
 
 .row .cell:nth-child(1) {
     width: 360px;
-    padding-left: 40px;
+    padding-left: 20px;
 }
 
 .row .cell:nth-child(2) {
@@ -196,23 +220,31 @@ button[type=submit]:disabled {
 }
 
 .row .cell:nth-child(3) {
-    width: 250px;
-}
-.row .cell:nth-child(4) {
     width: 400px;
 }
-.row .cell:nth-child(5) {
+.row .cell:nth-child(4) {
     width: 160px;
 }
 
+
 .row.header .cell{
-    font-family: Poppins-Regular, serif;
-    font-size: 18px;
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size: 15px;
     color: #fff;
     line-height: 1.2;
     font-weight: unset;
     padding-bottom: 19px;
     padding-top: 19px;
+}
+
+
+#rowred{
+    background-color: #f7f1f0;
+
+}
+
+#rowgreen{
+    background-color:  #f2edec;
 }
 
 .cell {
@@ -225,8 +257,8 @@ li{
 }
 
 #dateTime{
-    margin: 2px;
-    font-size: 10px;
+    margin: 20px;
+    font-size: 13px;
     font-style: italic;
 }
 

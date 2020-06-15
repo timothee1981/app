@@ -11,18 +11,31 @@
 <body id="body" th:object="${account}">
 <!-- Navigation bra section -->
 <div id="navbar" >
-    <a>
+   <!-- <a>
         <form th:action="@{logoutAction}" method="post">
             <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
         </form>
-    </a>
+    </a>-->
+    <a href="/logoutAction">Logout</a>
     <a href="/accountOverview">Account Overview</a>
+    <a>
+    <form th:action="@{transaction}"  method="get">
+        <button class="button" type="submit" id="submitButton" name="accountId" th:value="${account.accountId}"   value="DoTransfer">New money transfer</button>
+    </form>
+    </a>
+    <a>
+    <form th:action="@{addaccountholder}" method="get">
+        <button class="button"  type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
+    </form>
+    </a>
     <span id="logoNavbar"></span>
-</div>
 
+
+</div>
+<div class="wrapper">
 
 <div class="content">
-    <div class="wrapper">
+
 <span id="dateTime"></span><br>
     <h1>Account details</h1>
 
@@ -46,7 +59,7 @@
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Balance</div>
-        <div class = "infocell">€ <span th:text="${#numbers.formatDecimal(account.balance, 0, 2)}"></span></div>
+        <div class = "infocell">€ <span th:text="${#numbers.formatDecimal(account.balance, 0,'POINT', 2, 'COMMA')}"></span></div>
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Account Type</div>
@@ -54,120 +67,31 @@
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Account holders</div>
-        <Select  size="2" id="select" class="infocell" >
+        <Select  size="2" id="select" class="infocell" style="overflow-scrolling: auto">
                 <option id="option" th:each="customer : ${list}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></option>
         </Select>
     </div>
 </div>
-<div class="buttondiv">
+<!--<div class="buttondiv">
     <form th:action="@{transaction}"  method="get">
         <button type="submit" id="submitButton" name="accountId" th:value="${account.accountId}"   value="DoTransfer">New money transfer</button>
     </form>
     <form th:action="@{addaccountholder}" method="get">
         <button type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
     </form>
-</div>
-
-
-
-
-
+</div>-->
 
 </div>
 
 </div>
-
 
 
 
 
 <script src="js/navbar.js"></script>
-
+<script src="js/accountdetails.js"></script>
 </body>
 
-<script>
-    const accountNumber = document.getElementById("accountNumber");
-    function updateClock() {
-        let now = new Date(), // current date
-            months = ['January', 'February', 'March','April','Mei','June','July','Augustus','September','October','November','December']; // you get the idea
 
-        let time = now.getHours() + ':' + ((now.getMinutes() < 10)?"0":"") + now.getMinutes();
-
-            // a cleaner way than string concatenation
-            date = [now.getDate(),
-                months[now.getMonth()],
-                now.getFullYear()].join(' ');
-
-        // set the content of the element with the ID time to the formatted string
-        document.getElementById('dateTime').innerHTML = [date, time].join(' / ');
-
-        // call this function again in 1000ms
-        setTimeout(updateClock, 1000);
-    }
-    updateClock(); // initial call
-    <!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
-   // Creating a new XMLHttpRequest object
-    const request = new XMLHttpRequest();
-    //Initialize request
-    let accountNumbervalue = accountNumber.innerText;
-    request.open("GET",`/accountdetails/transactions?accountNumber=${accountNumbervalue}`, true);
-
-    //Send HTTP request & handle server output
-    request.onreadystatechange = function() {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                createTable(JSON.parse(request.responseText));
-            }
-            else {
-                alert('Something is wrong!');
-            }
-        }
-    };
-    request.send(null);
-
-    function createTable(transactions) {
-        const body = document.body,
-            tbl = document.createElement('div');
-        tbl.setAttribute("class", "table");
-        tbl.style.width = '50%';
-        const headerRow = document.createElement('div');
-        headerRow.setAttribute("class","row header");
-        tbl.appendChild(headerRow);
-        createTableHeader("DateTime", headerRow);
-        createTableCell("IBAN", headerRow);
-        createTableHeader("Name", headerRow);
-        createTableHeader("description", headerRow);
-        createTableHeader("Amount", headerRow);
-
-        transactions.forEach(element => {
-            const row = document.createElement('div');
-            row.setAttribute("class","row");
-            tbl.appendChild(row);
-            createTableCell(element.dateTime, row);
-            createTableCell(element.bankAccountNumber, row)
-            createTableCell(element.customerName, row);
-            createTableCell(element.description, row);
-            createTableCell(element.amount, row);
-        });
-        body.appendChild(tbl);
-    }
-
-    function createTableHeader(title, row){
-        const cell = document.createElement('div');
-        cell.setAttribute("class","cell");
-        cell.appendChild(document.createTextNode(title));
-        row.appendChild(cell);
-    }
-
-    function createTableCell(content, row){
-        const cell = document.createElement('div');
-        cell.setAttribute("class","cell");
-        cell.appendChild(document.createTextNode(content));
-        row.appendChild(cell);
-    }
-
-
-
-</script>
 
 </html>
