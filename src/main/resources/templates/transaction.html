@@ -17,7 +17,7 @@
         <div id="forms">
             <form id="form"   method="post" class="form" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 <label for="fromAccountNumber"><b>From Account</b></label>
-                <select id="fromAccountNumber" class="balanceCheck" name="fromAccountNumber" th:value="${fromAccountNumber}">
+                <select id="fromAccountNumber" name="fromAccountNumber" th:value="${fromAccountNumber}">
                     <option th:each="account : ${account}"  th:value="${account.accountNumber}" th:label="*{account.accountNumber} + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balance: €' + *{account.balance}" th:text="${account.balance}"></option>
                 </select>
                 <span></span>
@@ -62,7 +62,7 @@
                         th:value="${description}"
                 />
                 <span></span>
-                <span></span>
+                <span id="descriptionError"></span>
                     <button type="submit" name="submit" id="submitButton" disabled=true value="Send Money">Send Money</button>
                     <button type="button" id="backButton" value="Cancel">Cancel</button>
 
@@ -96,8 +96,9 @@
             let form = document.getElementById("accountdetailsForm");
             form.appendChild(input);
             form.submit();
+        //class="balanceCheck"
 
-            });
+        });
 
 
 </script>

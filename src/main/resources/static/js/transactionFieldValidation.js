@@ -1,13 +1,15 @@
 const fromAccountField = document.getElementById("fromAccountNumber");
 const toAccountField = document.getElementById("toAccountNumber");
 const amountField = document.getElementById("amount");
+const desciptionField = document.getElementById("description");
 const errorAccountDoesntExist1 = "Pleas enter a valid Royal Stacks Iban"
 const errorAccountDoesntExist2 = "Account doesn't exist, enter an existing account "
 const errorSenderSameAsReceiver = "The receiving account can't be the same as the sending account"
 const errorAmountTooHigh = "The amount can't be higher than the available balance"
 const errorAmountFormatInvalid = "The amount should only consist of numbers, with a maximum of two decimals"
-const errorNoAmount = "Enter the amount to be transfered"
+const errorDescriptionTooLong = "The description length is too long, use a maximum of 45 character"
 const ibanLength = 18;
+const maxDescriptionLentgh = 45;
 let ibanExistInDb;
 
 //Input validation checks
@@ -60,6 +62,9 @@ function isAmountSmallerThanBalance(){
 function isAmountFilledIn(){
     return (amountField.value.length !== 0);
 }
+function isDescriptionFormatValid(){
+    return (desciptionField.value.length < maxDescriptionLentgh+1);
+}
 //Combined validation checks on singel input fields
 function isToAccountValid(){
     return(isAccountFormatValid() && isAccountDifferentThanFromAccount() && ibanExistInDb);
@@ -69,9 +74,7 @@ function isAmountValid(){
 }
 //Combined check on ALL input fields
 function isAllInputValid(){
-    console.log("toAccount Valid:  "+ isToAccountValid());
-    console.log("Amount Valid:  "+ isAmountValid());
-    return (isToAccountValid() && isAmountValid());
+    return (isToAccountValid() && isAmountValid() && isDescriptionFormatValid());
 }
 //Combined check and error handling for toAccount inputField
 function toAccountFieldErrorHandler(){
@@ -108,6 +111,17 @@ function amountFieldErrorHandler(){
     }
 
 };
+
+//Description validation and error handler
+function descriptionFieldErrorHandler(){
+    if(!isDescriptionFormatValid()){
+        showError(errorDescriptionTooLong, "descriptionError");
+        setClassInvalid("description");
+    }
+    else{
+        setClassValid("description");
+    }
+}
 
 //Button enable/disable handler
 function buttonHandler(){
@@ -154,9 +168,13 @@ fromAccountField.addEventListener("click", function(){
     toAccountFieldErrorHandler();
     amountFieldErrorHandler();
     buttonHandler();
-
-
 });
+desciptionField.addEventListener("input", function(){
+    hideError(errorDescriptionTooLong, "descriptionError");
+    removeValidInValidClasses("description");
+    descriptionFieldErrorHandler();
+    buttonHandler()
+})
 
 function enableButton(){
     if(document.getElementById("submitButton").disabled === true){
