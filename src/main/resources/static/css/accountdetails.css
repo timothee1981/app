@@ -13,7 +13,9 @@ h2{
 }
 
 .wrapper{
-    width: 1000px;
+    width: 800px;
+    align-content: center;
+    margin: auto;
 }
 
 body{
@@ -21,7 +23,7 @@ body{
     background-color: #ebebeb;
     margin: auto;
     width: 100%;
-    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
 }
 /*form{
     width: 30px;
@@ -62,6 +64,7 @@ input[type=text]:focus{
 }
 
 
+
 .infocell{
     display: table-cell;
 
@@ -73,7 +76,7 @@ input[type=text]:focus{
 }
 
 .inforow .infocell{
-    font-family: Poppins-Regular, sans-serif;
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size: 15px;
     color: #666666;
     line-height: 1.2;
@@ -85,7 +88,7 @@ input[type=text]:focus{
 
 .inforow .infocell:nth-child(1) {
     width: 50px;
-    padding-left: 40px;
+    padding-left: 10px;
 }
 
 .inforow .infocell:nth-child(2) {
@@ -96,11 +99,14 @@ input[type=text]:focus{
 
 }
 
+
+
 #select{
     border: none;
     background-color: transparent;
     text-overflow: ellipsis;
     outline: none;
+    overflow: auto;
 }
 
 #option{
@@ -112,22 +118,24 @@ input[type=text]:focus{
 
 /*style button */
 
-button {
+.button {
     background-color: #1E90FF;
     color: white;
-    padding: 14px 20px;
     border: none;
     cursor: pointer;
-    width: 233px;
     opacity: 0.9;
     font-size: 16px;
-    font-weight: bold;
-    margin: 20px auto auto;
 
 
 }
-button:hover {
-    opacity:1;
+
+#navbar a:hover .button{
+    float: left;
+    display: inline;
+    color: #1e90ff;
+    background: #ebebeb;
+    text-align: center;
+    text-decoration: none;
 }
 
 button[disabled]{
@@ -149,12 +157,12 @@ button[type=submit]:disabled {
     max-width: 85%;
     background-color: transparent;
     font-weight: 400;
-    border-radius: 10px;
     overflow: hidden;
 }
 
 .table, .row{
     width: 93%;
+    margin: auto;
 }
 
 
@@ -176,7 +184,7 @@ button[type=submit]:disabled {
 }
 
 .row .cell{
-    font-family: Poppins-Regular, sans-serif;
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size: 15px;
     color: #666666;
     line-height: 1.2;
@@ -206,8 +214,8 @@ button[type=submit]:disabled {
 }
 
 .row.header .cell{
-    font-family: Poppins-Regular, serif;
-    font-size: 18px;
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size: 15px;
     color: #fff;
     line-height: 1.2;
     font-weight: unset;
@@ -225,8 +233,8 @@ li{
 }
 
 #dateTime{
-    margin: 2px;
-    font-size: 10px;
+    margin: 20px;
+    font-size: 13px;
     font-style: italic;
 }
 
