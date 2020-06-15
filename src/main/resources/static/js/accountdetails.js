@@ -47,21 +47,50 @@ function createTable(transactions) {
     tbl.appendChild(headerRow);
     createTableHeader("Date and Time", headerRow);
     createTableCell("IBAN", headerRow);
-    createTableHeader("Name", headerRow);
     createTableHeader("Description", headerRow);
     createTableHeader("Amount", headerRow);
 
     transactions.forEach(element => {
+        console.log(element.credit);
+        console.log(element.debit);
+        let amount;
+        if(element.credit === null) {
+            amount = element.debit;
+        }
+        else{
+            amount = element.credit;
+        }
+        console.log(amount);
         const row = document.createElement('div');
         row.setAttribute("class","row");
+
         tbl.appendChild(row);
+
         createTableCell(element.dateTime, row);
         createTableCell(element.bankAccountNumber, row)
-        createTableCell(element.customerName, row);
         createTableCell(element.description, row);
-        createTableCell(element.amount, row);
+
+        if(element.credit === null) {
+            amount = element.debit;
+            amount = numberWithCommas(amount.toFixed(2));
+            createTableCell("- €" + amount, row);
+            row.setAttribute("id","rowred");
+        }
+        else {
+            amount = element.credit;
+            amount = numberWithCommas(amount.toFixed(2));
+            createTableCell("+ €" + amount, row);
+            row.setAttribute("id","rowgreen");
+
+        }
     });
     body.appendChild(tbl);
+}
+
+function numberWithCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
+    return parts.join(",");
 }
 
 function createTableHeader(title, row){

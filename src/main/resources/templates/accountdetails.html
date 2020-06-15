@@ -11,11 +11,12 @@
 <body id="body" th:object="${account}">
 <!-- Navigation bra section -->
 <div id="navbar" >
-    <a>
+   <!-- <a>
         <form th:action="@{logoutAction}" method="post">
             <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
         </form>
-    </a>
+    </a>-->
+    <a href="/logoutAction">Logout</a>
     <a href="/accountOverview">Account Overview</a>
     <a>
     <form th:action="@{transaction}"  method="get">
@@ -58,7 +59,7 @@
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Balance</div>
-        <div class = "infocell">€ <span th:text="${#numbers.formatDecimal(account.balance, 0, 2)}"></span></div>
+        <div class = "infocell">€ <span th:text="${#numbers.formatDecimal(account.balance, 0,'POINT', 2, 'COMMA')}"></span></div>
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Account Type</div>
@@ -66,7 +67,7 @@
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Account holders</div>
-        <Select  size="3" id="select" class="infocell" >
+        <Select  size="2" id="select" class="infocell" style="overflow-scrolling: auto">
                 <option id="option" th:each="customer : ${list}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></option>
         </Select>
     </div>

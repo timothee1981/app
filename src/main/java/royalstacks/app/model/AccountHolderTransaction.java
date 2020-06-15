@@ -1,23 +1,25 @@
 package royalstacks.app.model;
 
+import java.math.BigDecimal;
+
 public class AccountHolderTransaction {
     private String dateTime;
-    private String customerName;
     private String bankAccountNumber;
     private String description;
-    private String amount;
+    private BigDecimal credit;
+    private BigDecimal debit;
 
 
     public AccountHolderTransaction() {
-        this("dd","dd","dd","dd","dd");
+        this("dd","dd","dd",null,null);
     }
 
-    public AccountHolderTransaction(String dateTime, String customerName, String bankAccountNumber, String description, String amount) {
+    public AccountHolderTransaction(String dateTime,  String bankAccountNumber, String description, BigDecimal credit, BigDecimal debit) {
         this.dateTime = dateTime;
-        this.customerName = customerName;
         this.bankAccountNumber = bankAccountNumber;
         this.description = description;
-        this.amount = amount;
+        this.credit = credit;
+        this.debit = debit;
     }
 
 
@@ -31,13 +33,6 @@ public class AccountHolderTransaction {
         this.dateTime = dateTime;
     }
 
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
 
     public String getBankAccountNumber() {
         return bankAccountNumber;
@@ -55,11 +50,19 @@ public class AccountHolderTransaction {
         this.description = description;
     }
 
-    public String getAmount() {
-        return amount;
+    public BigDecimal getCredit() {
+        return credit;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setCredit(BigDecimal credit) {
+        this.credit = credit;
+    }
+
+    public BigDecimal getDebit() {
+        return debit;
+    }
+
+    public void setDebit(BigDecimal debit) {
+        this.debit = debit;
     }
 }
