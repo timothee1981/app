@@ -2,13 +2,17 @@
 SignUp = function() {
     const fieldsToValidate = ["username", "email", "password", "phoneNumber", "firstName",
         "lastName", "city", "street", "postalCode", "houseNumber", "BSN"];
+
+    const passRequirements = { lowercase: regex.lowerCase, uppercase: regex.upperCase,
+        number: regex.numbers, special: regex.specials, length: regex.pass_length };
+
     const validate = new Validate();
     const submitButton = new SubmitButton;
 
     document.getElementById("username").addEventListener("input", () => {
         validate.username()});
     document.getElementById("password").addEventListener('input', () => {
-        validate.password()});
+        validate.password(passRequirements)});
     document.getElementById("firstName").addEventListener('input', () => {
         validate.names("firstName")});
     document.getElementById("lastName").addEventListener('input', () => {
@@ -30,8 +34,8 @@ SignUp = function() {
         submitButton.mouseLeave(fieldsToValidate);
     });
 
-    // Duct-tape oplossing voor auto-fill. Timer ipv EventListener
-    window.setInterval( () =>{
+    // Duct-tape oplossing voor tegen auto-fill: timer ipv EventListener
+    window.setInterval( () => {
         submitButton.checkFields(fieldsToValidate);
     }, 50)
 }();
@@ -40,13 +44,13 @@ SignUp = function() {
 
 passwordFeatures = function(){
     // reveal requirements
-    document.getElementById("passwordElements").addEventListener('focusin', () =>  {
+    document.getElementById("passwordElements").addEventListener('focusin', () => {
         document.getElementById("passRequirements1of2").style.display = 'inline';
         document.getElementById("passRequirements2of2").style.display = 'inline';
     });
 
     // hide requirements
-    document.getElementById("passwordElements").addEventListener('focusout', () =>  {
+    document.getElementById("passwordElements").addEventListener('focusout', () => {
         document.getElementById("passRequirements1of2").style.display = 'none';
         document.getElementById("passRequirements2of2").style.display = 'none';
     });
