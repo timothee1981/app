@@ -28,12 +28,12 @@ public class Generator {
 
 
 
-    final String customer_data_1 = "src\\main\\resources\\testDataSets\\customer_data_1.json";
-    final String customer_data_2 = "src\\main\\resources\\testDataSets\\customer_data_2.json";
-    final String customer_data_3 = "src\\main\\resources\\testDataSets\\customer_data_3.json";
-    final String customer_data_4 = "src\\main\\resources\\testDataSets\\customer_data_4.json";
-    final String companyName1 = "src\\main\\resources\\testDataSets\\companyName1.json";
-    final String companyName2 = "src\\main\\resources\\testDataSets\\companyName2.json";
+    final String customer_data_1 = "src/main/resources/testDataSets/customer_data_1.json";
+    final String customer_data_2 = "src/main/resources/testDataSets/customer_data_2.json";
+    final String customer_data_3 = "src/main/resources/testDataSets/customer_data_3.json";
+    final String customer_data_4 = "src/main/resources/testDataSets/customer_data_4.json";
+    final String companyName1 = "src/main/resources/testDataSets/companyName1.json";
+    final String companyName2 = "src/main/resources/testDataSets/companyName2.json";
 
     List<Customer> allCustomers;
     Employee headBusiness;
