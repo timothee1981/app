@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.pos.ConnectionRequest;
 import royalstacks.app.model.pos.ConnectionResult;
 import royalstacks.app.model.pos.Pos;
@@ -46,11 +47,13 @@ public class ConnectController {
         ConnectionResult returnValue = checkConnectionResult(connectionRequest);
 
         if(returnValue.isSucceeded()){
+            ConnectionRequest cr = connectionRequestRepository.findCustomerRequestByBusinessAccountIban(connectionRequest.getBusinessAccountIban()).get();
             Pos pos = new Pos();
             pos.setIdentificationNumber((int) returnValue.getId());
-            pos.setBusinessAccountNumber(connectionRequestRepository.findCustomerRequestByBusinessAccountIban(connectionRequest.getBusinessAccountIban()).get().getBusinessAccountIban());
+            pos.setBusinessAccountNumber(cr.getBusinessAccountIban());
             posService.savePos(pos);
-            connectionResultRepository.delete(returnValue);
+            System.out.println(cr);
+            connectionRequestRepository.delete(cr);
         }
 
         return returnValue;
