@@ -132,11 +132,6 @@ function buttonHandler(){
         disableButton()
     }
 }
-// remove errors and valid/invalid classen
-function resetErrorsAndClasses(){
-
-}
-
 
 //Event Listeners
 toAccountField.addEventListener("input", function() {
@@ -186,7 +181,6 @@ function disableButton(){
         document.getElementById("submitButton").disabled = true;
     }
 }
-
 function showError(errorMessage, elementId){
     let currentText = document.getElementById(elementId).innerHTML;
     if(!currentText.includes(errorMessage)) {
