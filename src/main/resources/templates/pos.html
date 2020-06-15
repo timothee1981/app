@@ -441,6 +441,7 @@
 
     const sendRestConnectionRequest = async () => {
         console.log("businessaccount :" + businessAccountNumber + " connectionCode: " + connectionCode);
+        console.log("sendRequest");
 
         let connectionRequest = {
             businessAccountIban: businessAccountNumber,
@@ -456,6 +457,7 @@
             body: JSON.stringify(connectionRequest)
         })
             .then((response) => response.json().then((body) => {
+                console.log("body: " + body);
                 if (body.succeeded) {
                     document.getElementById("responseL").classList.add('success');
                     document.getElementById("responseL").innerHTML = "Connection succesful!";
@@ -673,6 +675,7 @@
         document.getElementById('title').innerText = 'Thank You!';
         document.getElementById('responseL').innerText = 'Transaction has completed!';
         fillBankAccount = true;
+        paymentMode = false;
 
     }
 
@@ -689,7 +692,7 @@
             window.classList.add('neutral');
             document.getElementById('displayPos').innerText = '';
             document.getElementById('title').innerText = "Account number";
-            paymentMode = false;
+
             fillBankAccount = true;
             document.getElementById('responseL').innerText = 'Transaction Mode';
             document.getElementById('themachineLeft').classList.add('focus');
