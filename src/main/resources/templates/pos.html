@@ -291,7 +291,7 @@
 </div>
 <div id="rightScreen">
     <h2>Client</h2>
-    <div id="themachineRight">
+    <div id="themachineRight" class="focusLight">
         <div>
 
             <div class="container">
@@ -324,6 +324,7 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript"  src="../js/journal.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript"  th:inline="javascript">
 
     const identificationNumber = /*[[${pos.identificationNumber}]]*/ 'default';
@@ -360,15 +361,6 @@
         document.getElementById(id).style.backgroundColor = '#ffffff';
     }
 
-    function focusOnLeft(){
-        document.getElementById('themachineLeft').classList.add('focus');
-        document.getElementById('themachineRight').classList.remove('focusLight');
-    }
-
-    function focusOnRight(){
-        document.getElementById('themachineLeft').classList.remove('focus');
-        document.getElementById('themachineRight').classList.add('focusLight');
-    }
 
     function neutralResponseL(){
         responseLeft.classList.remove('success', 'failed');
@@ -414,6 +406,7 @@
     console.log("idnumber :" + identificationNumber);
     window.onload = checkPos;
     function checkPos(){
+        document.getElementById('closeButtonL').style.backgroundColor = '#d6d6d6';
         if(identificationNumber == 0){
             connButtonL();
             document.getElementById('idNumber').innerText = 'Not Connected'
@@ -421,6 +414,7 @@
             transButtonL();
             document.getElementById('idNumber').innerText = identificationNumber
         }
+
     }
 
     /**
@@ -433,6 +427,8 @@
             delButton();
         } else if (e.keyCode === 13){
             paymentMode ? okButtonR() : okButtonL();
+        } else if (e.keyCode === 27){
+            paymentMode ? stopButtonR() : stopButtonL()
         }
     });
 
@@ -465,31 +461,39 @@
     }
 
     function delButton(){
-        paymentMode ?
-            inputRight.innerHTML = inputRight.innerHTML.slice(0, -1) : inputLeft.innerHTML = inputLeft.innerHTML.slice(0, -1);
+        if(paymentMode) {
+            inputRight.innerHTML = inputRight.innerHTML.slice(0, -1)
+        } else {
+            if(!connectionMode) {
+                if (inputLeft.innerHTML.length > 1) {
+                    inputLeft.innerHTML = inputLeft.innerHTML.slice(0, -1);
+                }
+            } else {
+                inputLeft.innerHTML = inputLeft.innerHTML.slice(0, -1);
+            }
+        }
     }
 
     /**
      * OK button LEFT
      */
     function okButtonL() {
-        if(isOpened) {
-            if (!paymentMode && !paymentCompleted) {
-                if (!connectionMode) {
-                    if (connectionMode === false && inputLeft.innerText > 0) {
-                        goToClient();
-                    }
-                }
-                if (connectionMode === true) {
-                    let data = inputLeft.innerHTML;
-                    connectionFlow(data);
-                }
+        if(connectionMode){
+            let data = inputLeft.innerHTML;
+            connectionFlow(data);
+
+        } else if(isOpened) {
+            console.log("iets opened!");
+            if (!paymentCompleted && inputLeft.innerText.length > 1) {
+                console.log("true true door!");
+                goToClient();
             } else if (paymentCompleted) {
                 stopButtonL();
                 paymentCompleted = false;
             }
-        } else {
-            setLeftRed("Open POS first")
+
+        } else if (!isOpened) {
+            responseLeft.innerText = "Open device first"
         }
     }
 
@@ -500,12 +504,12 @@
             inputLeft.innerHTML = data;
 
         } else if(businessAccountNumber == null && data.length === 10) {
-            titleLeft.innerHTML.innerHTML = "Enter connection code";
+            titleLeft.innerHTML = "Enter connection code";
             inputLeft.innerHTML = "";
             businessAccountNumber = data;
 
         } else if(connectionCode == null && data.length !==5){
-            responseLeft.innerHTML = "Enter 5 digits";
+            titleLeft.innerHTML = "Enter 5 digits";
             inputLeft.innerHTML = data;
 
         } else if(connectionCode == null && data.length === 5){
@@ -558,15 +562,14 @@
 
     function goToClient() {
         paymentMode = true;
-        amount = inputLeft.innerText;
+        amount = inputLeft.innerText.slice(1, inputLeft.innerText.length);
         titleRight.innerText = "Account number:";
 
-        document.getElementById('transactionInfo').innerText = '€' + inputLeft.innerText;
+        document.getElementById('transactionInfo').innerText = inputLeft.innerText;
 
         responseLeft.innerText = 'Waiting for client...';
         responseRight.innerText = 'Pending payment...';
 
-        focusOnRight();
         neutralResponseL();
         neutralResponseR();
 
@@ -577,7 +580,7 @@
      */
     function stopButtonL() {
         resetFields();
-        inputLeft.innerHTML = "";
+        connectionMode ? inputLeft.innerHTML = "" : inputLeft.innerHTML = "€";
         paymentCompleted = false;
 
     }
@@ -603,7 +606,6 @@
         fillBankAccount = true;
         paymentMode = false;
 
-        focusOnLeft();
         neutralResponseR();
         neutralResponseL();
     }
@@ -612,7 +614,7 @@
      * CONNECTION button LEFT
      */
     function connButtonL() {
-        if(!paymentMode && !paymentCompleted) {
+        if(!paymentMode && !paymentCompleted && !isOpened) {
             resetFields();
             neutralResponseL();
 
@@ -635,10 +637,10 @@
         if(identificationNumber == 0){
             closeButtonL();
         } else {
-            if(!paymentMode && !paymentCompleted) {
+            if(!paymentMode && !paymentCompleted && !isOpened) {
                 resetFields();
                 responseLeft.innerText = 'Transaction Mode';
-                inputLeft.innerHTML = "";
+                inputLeft.innerHTML = "€";
                 titleLeft.innerHTML = "Enter amount";
                 setButtonInactive('transButtonL');
                 setButtonActive('connButtonL');
@@ -658,37 +660,37 @@
 
     function openButtonL() {
 
-       if(!isOpened){
-           journal.openingTime = new Date().toLocaleString('en-GB');
-           setButtonInactive('openButtonL');
-           setButtonActive('closeButtonL');
-           isOpened = true;
-       }
+        if (!isOpened && !connectionMode && !paymentMode) {
+            journal.transactions = [];
+            journal.openingTime = new Date().toLocaleString('en-GB');
+            setButtonInactive('openButtonL');
+            setButtonActive('closeButtonL');
+            isOpened = true;
+            neutralResponseL();
+            responseLeft.innerText = 'Device is opened'
+        }
     }
 
 
     function closeButtonL(){
 
-        if(isOpened) {
+        if(isOpened && !paymentMode && !connectionMode) {
             isOpened = false;
             journal.closingTime = new Date().toLocaleString('en-GB');
             download(JSON.stringify(journal, null, '\t'), "Journal of " + date.toLocaleString('en-GB'))
-
-            journal.closingTime = null;
-            journal.openingTime = null;
-            journal.transactions = null;
             setButtonInactive('closeButtonL');
             setButtonActive('openButtonL');
+            responseLeft.innerText = 'Device is closed';
         }
     }
 
 
     function download(data, filename) {
-        var file = new Blob([data], {type: 'text/plain'});
+        const file = new Blob([data], {type: 'text/plain'});
         if (window.navigator.msSaveOrOpenBlob) // IE10+
             window.navigator.msSaveOrOpenBlob(file, filename);
         else { // Others
-            var a = document.createElement("a"),
+            let a = document.createElement("a"),
                 url = URL.createObjectURL(file);
             a.href = url;
             a.download = filename;
@@ -778,7 +780,7 @@
     function setStatusFailed(text){
         setLeftRed('Payment denied. Press STOP or OK');
         setRightRed(text);
-        focusOnLeft();
+
 
         titleRight.innerText = 'Account Number';
 
@@ -790,12 +792,12 @@
     function setStatusSuccess(text) {
         setLeftGreen('Success! Press STOP or OK');
         setRightGreen('id: ' + text);
-        focusOnLeft();
+
 
         titleRight.innerText = 'Thank You!';
 
         inputRight.innerText = '';
-        inputLeft.innerText = '';
+        inputLeft.innerText = '€';
         fillBankAccount = true;
         paymentMode = false;
         paymentCompleted = true;

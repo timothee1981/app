@@ -44,6 +44,8 @@ public class PosService {
         return posRepository.getLastId();
     }
 
+
+
     public Optional<PaymentResult> executePosTransaction(Pos pos){
 
         PaymentResult pr = new PaymentResult(false, false, false);
