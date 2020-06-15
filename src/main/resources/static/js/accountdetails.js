@@ -1,7 +1,14 @@
 const accountNumber = document.getElementById("accountNumber");
+
+updateClock();
+loadingTable();
+
+
+//FUNCTION THAT UPDATE CLOCK
+
 function updateClock() {
     let now = new Date(), // current date
-        months = ['January', 'February', 'March','April','Mei','June','July','Augustus','September','October','November','December']; // you get the idea
+        months = ['January', 'February', 'March','April','Mei','June','July','Augustus','September','October','November','December'];
 
     let time = now.getHours() + ':' + ((now.getMinutes() < 10)?"0":"") + now.getMinutes();
 
@@ -16,82 +23,59 @@ function updateClock() {
     // call this function again in 1000ms
     setTimeout(updateClock, 1000);
 }
-updateClock(); // initial call
-<!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
-// Creating a new XMLHttpRequest object
-const request = new XMLHttpRequest();
+
+
+
+// Creating a new XMLHttpRequest object that loads Table transaction when window is loading
+
+function loadingTable() {
+
+    const request = new XMLHttpRequest();
 //Initialize request
-let accountNumbervalue = accountNumber.innerText;
-request.open("GET",`/accountdetails/transactions?accountNumber=${accountNumbervalue}`, true);
+    let accountNumbervalue = accountNumber.innerText;
+    request.open("GET", `/accountdetails/transactions?accountNumber=${accountNumbervalue}`, true);
 
 //Send HTTP request & handle server output
-request.onreadystatechange = function() {
-    if (request.readyState === 4) {
-        if (request.status === 200) {
-            createTable(JSON.parse(request.responseText));
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                createTable(JSON.parse(request.responseText));
+            } else {
+                alert('Something is wrong!');
+            }
         }
-        else {
-            alert('Something is wrong!');
-        }
-    }
-};
-request.send(null);
+    };
+    request.send(null);
+}
+
+/*CREATING TABLE TRANSACTION*/
 
 function createTable(transactions) {
     const body = document.body,
         tbl = document.createElement('div');
     tbl.setAttribute("class", "table");
     tbl.style.width = '50%';
-    const headerRow = document.createElement('div');
-    headerRow.setAttribute("class","row header");
-    tbl.appendChild(headerRow);
-    createTableHeader("Date and Time", headerRow);
-    createTableCell("IBAN", headerRow);
-    createTableHeader("Description", headerRow);
-    createTableHeader("Amount", headerRow);
-
+    createTableHeaderRow(tbl);
     transactions.forEach(element => {
-        console.log(element.credit);
-        console.log(element.debit);
-        let amount;
-        if(element.credit === null) {
-            amount = element.debit;
-        }
-        else{
-            amount = element.credit;
-        }
-        console.log(amount);
-        const row = document.createElement('div');
-        row.setAttribute("class","row");
-
-        tbl.appendChild(row);
-
-        createTableCell(element.dateTime, row);
-        createTableCell(element.bankAccountNumber, row)
-        createTableCell(element.description, row);
-
-        if(element.credit === null) {
-            amount = element.debit;
-            amount = numberWithCommas(amount.toFixed(2));
-            createTableCell("- €" + amount, row);
-            row.setAttribute("id","rowred");
-        }
-        else {
-            amount = element.credit;
-            amount = numberWithCommas(amount.toFixed(2));
-            createTableCell("+ €" + amount, row);
-            row.setAttribute("id","rowgreen");
-
-        }
+        createRow(element, tbl);
     });
     body.appendChild(tbl);
 }
 
-function numberWithCommas(x) {
-    var parts = x.toString().split(".");
-    parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
-    return parts.join(",");
+/*CREATING TABLE ROW HEADER*/
+
+function createTableHeaderRow(tbl){
+    const headerRow = document.createElement('div');
+    headerRow.setAttribute("class","row header");
+    tbl.appendChild(headerRow);
+    createTableHeader("Date and Time", headerRow);
+    createTableHeader("IBAN", headerRow);
+    createTableHeader("Description", headerRow);
+    createTableHeader("Amount", headerRow);
+
 }
+
+//ADDING CELL TO HEADER
 
 function createTableHeader(title, row){
     const cell = document.createElement('div');
@@ -100,11 +84,59 @@ function createTableHeader(title, row){
     row.appendChild(cell);
 }
 
+
+//CREATING TABLE ROW
+function createRow(element, tbl){
+    const row = document.createElement('div');
+
+    row.setAttribute("class","row");
+    tbl.appendChild(row);
+    createTableCell(element.dateTime, row);
+    createTableCell(element.bankAccountNumber, row)
+    createTableCell(element.description, row);
+    if(element.credit === null) {
+        setAmountDebit(element.debit,row);
+    }
+    else {
+        setAmountCredit(element.credit,row);
+    }
+
+}
+
+//ADDING CELL TO ROW
+
 function createTableCell(content, row){
     const cell = document.createElement('div');
     cell.setAttribute("class","cell");
     cell.appendChild(document.createTextNode(content));
     row.appendChild(cell);
 }
+
+//SET CELL AMOUNT TO DEBIT
+function setAmountDebit(amount,row) {
+    amount = numberWithCommas(amount.toFixed(2));
+    createTableCell("- €" + amount, row);
+    row.setAttribute("id","rowred");
+}
+
+//SET CELL AMOUNT TO CREDIT
+function setAmountCredit(amount,row){
+    amount = numberWithCommas(amount.toFixed(2));
+    createTableCell("+ €" + amount, row);
+    row.setAttribute("id","rowgreen");
+
+}
+
+
+//PUTTING AMOUNT TO RIGHT FORMAT
+function numberWithCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
+    return parts.join(",");
+}
+
+
+
+
 
 

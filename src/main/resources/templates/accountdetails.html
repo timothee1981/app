@@ -11,23 +11,18 @@
 <body id="body" th:object="${account}">
 <!-- Navigation bra section -->
 <div id="navbar" >
-   <!-- <a>
-        <form th:action="@{logoutAction}" method="post">
-            <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
-        </form>
-    </a>-->
+
     <a href="/logoutAction">Logout</a>
     <a href="/accountOverview">Account Overview</a>
-    <a>
-    <form th:action="@{transaction}"  method="get">
-        <button class="button" type="submit" id="submitButton" name="accountId" th:value="${account.accountId}"   value="DoTransfer">New money transfer</button>
+    <a id="makeTransaction" class="aclass">New Money Transfer</a>
+    <a id="addHolder" class="aclass">Add accountholder</a>
+
+    <form id="transactionForm" th:action="@{transaction}"  method="get">
+        <input type="hidden"  name="accountId" value="DoTransfer" th:value="${account.accountId}" />
     </form>
-    </a>
-    <a>
-    <form th:action="@{addaccountholder}" method="get">
-        <button class="button"  type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
+    <form id="accountHolderForm" th:action="@{addaccountholder}" method="get">
+        <input type = "hidden" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder"/>
     </form>
-    </a>
     <span id="logoNavbar"></span>
 
 
@@ -39,23 +34,12 @@
 <span id="dateTime"></span><br>
     <h1>Account details</h1>
 
-    <!--<THAT'S THE DROPDOWN SELECT. DIFFICULT MAYBE, LETS SEE IF I HAVE TIME LEFT-->
-<!--
-    <label for="accountNumber">AccountList</label>
-        <select id="accountNumber" name="accountNumber" th:value="${accountnumber}">
-            <option id="option" th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
-            </option>
-        </select>
-<<<<<<< HEAD
-        <button type="submit" id="SUBMIT_BUTTON"  value="DoTransfer">choose account</button>-->
-
-
     <!--TABLE HOUDT INFORMATIE OVER REKENING HOUDER -->
 
 <div class="infoTable">
     <div class="inforow">
         <div class = "infocell infoheader">IBAN</div>
-        <div class = "infocell" ><span id="accountNumber" name="accountNumber"span  th:text="${account.accountNumber}"></span></div>
+        <div class = "infocell" ><span id="accountNumber" name="accountNumber" th:text="${account.accountNumber}"></span></div>
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Balance</div>
@@ -72,14 +56,7 @@
         </Select>
     </div>
 </div>
-<!--<div class="buttondiv">
-    <form th:action="@{transaction}"  method="get">
-        <button type="submit" id="submitButton" name="accountId" th:value="${account.accountId}"   value="DoTransfer">New money transfer</button>
-    </form>
-    <form th:action="@{addaccountholder}" method="get">
-        <button type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
-    </form>
-</div>-->
+
 
 </div>
 
@@ -91,7 +68,14 @@
 <script src="js/navbar.js"></script>
 <script src="js/accountdetails.js"></script>
 </body>
+<script>
+document.getElementById("makeTransaction").addEventListener("click",function(){
+document.getElementById("transactionForm").submit();
+});
 
+document.getElementById("addHolder").addEventListener("click",function(){
+    document.getElementById("accountHolderForm").submit();
+});
 
-
+</script>
 </html>

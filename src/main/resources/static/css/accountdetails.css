@@ -24,30 +24,9 @@ body{
     margin: auto;
     width: 100%;
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
 }
-/*form{
-    width: 30px;
-    height: auto;
-    margin: auto;
-    overflow: hidden;
-    border: hidden;
-}*/
-/*
-input[type=text] {
-    width: 100%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
-    display: inline-block;
-    border: none;
-    background: #f1f1f1;
-}*/
-
-/*
-input[type=text]:focus{
-    background-color: #ddd;
-    outline: none;
-}
-*/
 
 
 
@@ -131,7 +110,7 @@ input[type=text]:focus{
     border: none;
     cursor: pointer;
     opacity: 0.9;
-    font-size: 16px;
+    font-size: 14px;
 
 
 }
@@ -145,22 +124,25 @@ input[type=text]:focus{
     text-decoration: none;
 }
 
-#navbar a:hover .button{
+.aclass {
+    background-color: #1E90FF;
+    color:  #f2f2f2;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.aclass :hover{
     float: left;
     display: inline;
     color: #1e90ff;
     background: #ebebeb;
     text-align: center;
+    padding: 14px;
     text-decoration: none;
 }
 
-button[disabled]{
-    background-color: #9a9a9a;
-}
 
-button[type=submit]:disabled {
-    background-color: #9a9a9a;
-}
 
 
 
