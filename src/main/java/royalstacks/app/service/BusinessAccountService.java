@@ -82,7 +82,7 @@ public class BusinessAccountService {
         //Enrich with number of transactions & join with object model
         for (Object[] result : results) {
             List<Transaction> transactionList = transactionRepository
-                    .getTransactionsByFromAccountIdOrToAccountId((int) result[0], (int) result[0]);
+                    .countByFromAccountIdOrToAccountId((int) result[0], (int) result[0]);
 
             companiesAndTransactionsList.add(
                     new CompanyAndTransactions(
