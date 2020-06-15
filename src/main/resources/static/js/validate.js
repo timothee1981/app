@@ -35,19 +35,13 @@ class Validate{
     }
 
 
-    password() {
-        const requirements = { "lowercase": regex.lowerCase, "uppercase": regex.upperCase,
-            "number": regex.numbers, "special": regex.specials, "length": regex.pass_length };
-
-
-
-        for (let k in requirements) {
-            const element = document.getElementById(k);
-            if(document.getElementById("password").value.match(requirements[k])){
+    password(fields) {
+        for (const [key, value] of Object.entries(fields)) {
+            if(document.getElementById("password").value.match(value)){
                 this.setElementValid("showPasswordButton");
-                this.setPassRequirementValid(element)
+                this.setPassRequirementValid(key)
             } else {
-                this.setPassRequirementInvalid(element);
+                this.setPassRequirementInvalid(key);
                 this.setElementInvalid("showPasswordButton")
             }
         }
@@ -55,13 +49,13 @@ class Validate{
 
 
     setPassRequirementValid(requirement) {
-        requirement.classList.remove("passReqInvalid");
-        requirement.classList.add("passReqValid");
+        document.getElementById(requirement).classList.remove("passReqInvalid");
+        document.getElementById(requirement).classList.add("passReqValid");
     }
 
     setPassRequirementInvalid(requirement){
-        requirement.classList.remove("passReqValid");
-        requirement.classList.add("passReqInvalid");
+        document.getElementById(requirement).classList.remove("passReqValid");
+        document.getElementById(requirement).classList.add("passReqInvalid");
     }
 
 
