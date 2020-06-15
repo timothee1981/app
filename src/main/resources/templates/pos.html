@@ -2,6 +2,13 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <style>
+        pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+
         * {
             margin: 0;
             padding: 0;
@@ -316,6 +323,7 @@
 <div id="fillRightScreen">.</div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript"  src="../js/journal.js"></script>
 <script type="text/javascript"  th:inline="javascript">
 
     const identificationNumber = /*[[${pos.identificationNumber}]]*/ 'default';
@@ -328,6 +336,8 @@
 
     const titleRight = document.getElementById('title');
     const titleLeft = document.getElementById("notify");
+
+    let date = new Date();
 
     let connectionMode = false;
     let paymentMode = false;
@@ -463,19 +473,23 @@
      * OK button LEFT
      */
     function okButtonL() {
-        if (!paymentMode && !paymentCompleted) {
-            if (!connectionMode) {
-                if (connectionMode === false && inputLeft.innerText > 0) {
-                    goToClient();
+        if(isOpened) {
+            if (!paymentMode && !paymentCompleted) {
+                if (!connectionMode) {
+                    if (connectionMode === false && inputLeft.innerText > 0) {
+                        goToClient();
+                    }
                 }
+                if (connectionMode === true) {
+                    let data = inputLeft.innerHTML;
+                    connectionFlow(data);
+                }
+            } else if (paymentCompleted) {
+                stopButtonL();
+                paymentCompleted = false;
             }
-            if (connectionMode === true) {
-                let data = inputLeft.innerHTML;
-                connectionFlow(data);
-            }
-        } else if (paymentCompleted){
-            stopButtonL();
-            paymentCompleted = false;
+        } else {
+            setLeftRed("Open POS first")
         }
     }
 
@@ -599,6 +613,7 @@
      */
     function connButtonL() {
         if(!paymentMode && !paymentCompleted) {
+            resetFields();
             neutralResponseL();
 
             responseLeft.innerText = 'Connection Mode';
@@ -610,9 +625,6 @@
 
             setButtonInactive('connButtonL');
             setButtonActive('transButtonL');
-            setButtonActive('openButtonL');
-            setButtonActive('closeButtonL');
-
         }
     }
 
@@ -624,6 +636,7 @@
             closeButtonL();
         } else {
             if(!paymentMode && !paymentCompleted) {
+                resetFields();
                 responseLeft.innerText = 'Transaction Mode';
                 inputLeft.innerHTML = "";
                 titleLeft.innerHTML = "Enter amount";
@@ -638,11 +651,54 @@
     /**
      * OPEN BUTTON L
      */
+
+    journal = new Journal();
+    let isOpened = false;
+
+
     function openButtonL() {
+
+       if(!isOpened){
+           journal.openingTime = new Date().toLocaleString('en-GB');
+           setButtonInactive('openButtonL');
+           setButtonActive('closeButtonL');
+           isOpened = true;
+       }
     }
 
 
     function closeButtonL(){
+
+        if(isOpened) {
+            isOpened = false;
+            journal.closingTime = new Date().toLocaleString('en-GB');
+            download(JSON.stringify(journal, null, '\t'), "Journal of " + date.toLocaleString('en-GB'))
+
+            journal.closingTime = null;
+            journal.openingTime = null;
+            journal.transactions = null;
+            setButtonInactive('closeButtonL');
+            setButtonActive('openButtonL');
+        }
+    }
+
+
+    function download(data, filename) {
+        var file = new Blob([data], {type: 'text/plain'});
+        if (window.navigator.msSaveOrOpenBlob) // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        else { // Others
+            var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
     }
 
     /**
@@ -703,12 +759,21 @@
                 } else if (!body.paymentSuccess) {
                     setStatusFailed('Internal error')
                 } else {
-                    setStatusSuccess(body.transactionid)
+                    setStatusSuccess(body.transactionid);
+                    let journalData = {
+                        time : new Date().toLocaleString('en-GB'),
+                        transactionId : body.transactionid,
+                        accountNumber : account,
+                        amount : amount
+                    };
+                    journal.transactions.push(journalData) ;
+
                 }}))
             .catch(error => {
                 console.log(error);
             });
     };
+
 
     function setStatusFailed(text){
         setLeftRed('Payment denied. Press STOP or OK');
