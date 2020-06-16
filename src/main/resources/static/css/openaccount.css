@@ -18,7 +18,9 @@ body{
     background-color: #ebebeb;
     margin: auto;
     width: 100%;
-    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
 }
 
 form{
@@ -27,10 +29,13 @@ form{
     margin: auto;
     overflow: hidden;
     border: hidden;
+
 }
 
+
+
 input[type=text] {
-    width: 100%;
+
     padding: 15px;
     margin: 5px 0 22px 0;
     display: inline-block;
@@ -129,6 +134,8 @@ fieldset{
     color: rgba(255, 0, 0, 0.70);
     font-style: italic;
     display: none;
+    width: 100%;
+
 }
 
 

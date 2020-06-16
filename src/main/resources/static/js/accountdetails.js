@@ -94,6 +94,7 @@ function createRow(element, tbl){
     createTableCell(element.dateTime, row);
     createTableCell(element.bankAccountNumber, row)
     createTableCell(element.description, row);
+
     if(element.credit === null) {
         setAmountDebit(element.debit,row);
     }
@@ -115,15 +116,18 @@ function createTableCell(content, row){
 //SET CELL AMOUNT TO DEBIT
 function setAmountDebit(amount,row) {
     amount = numberWithCommas(amount.toFixed(2));
-    createTableCell("- €" + amount, row);
-    row.setAttribute("id","rowred");
+    createTableCell("- €" + amount,row);
+ //   cell.setAttribute("id","cellred");
 }
 
 //SET CELL AMOUNT TO CREDIT
 function setAmountCredit(amount,row){
     amount = numberWithCommas(amount.toFixed(2));
-    createTableCell("+ €" + amount, row);
-    row.setAttribute("id","rowgreen");
+    const cell = document.createElement('div');
+    cell.setAttribute("class","cell");
+    cell.appendChild(document.createTextNode("+ €" + amount));
+    row.appendChild(cell);
+    cell.setAttribute("id","cellgreen");
 
 }
 

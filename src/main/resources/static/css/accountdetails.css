@@ -220,13 +220,13 @@ body{
 }
 
 
-#rowred{
-    background-color: rgb(255, 191, 191);
+#cellred{
+    color: rgb(255, 191, 191);
 
 }
 
-#rowgreen{
-    background-color: rgb(217, 255, 191);
+#cellgreen{
+    color: rgb(83, 159, 32);
 }
 
 .cell {
