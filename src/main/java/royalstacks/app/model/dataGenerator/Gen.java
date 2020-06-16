@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -15,7 +15,7 @@ public abstract class Gen {
     }
 
     public static boolean generateRandomTrueFalse(int percentageTrue) {
-        int MAX = 100;
+        final int MAX = 100;
         return (Math.random() * MAX < percentageTrue);
     }
 
@@ -38,14 +38,16 @@ public abstract class Gen {
     }
     public static BigDecimal partiallyRandomAmount(int min, int maxCommon, int maxUncommon, int percentageCommon){
         double randomAmount;
+        final int INT_100 = 100;
+        final double DOUBLE_100 = 100.0;
+
         if(Gen.generateRandomTrueFalse(percentageCommon)){
-            randomAmount =(Gen.randomInt(min, maxCommon *100))/100.0;
-            return BigDecimal.valueOf(randomAmount);
+            randomAmount =(Gen.randomInt(min, maxCommon * INT_100)) / DOUBLE_100;
         }
         else {
-            randomAmount = (Gen.randomInt(min, maxUncommon * 100)) / 100.0;
-            return BigDecimal.valueOf(randomAmount);
+            randomAmount = (Gen.randomInt(min, maxUncommon * INT_100)) / DOUBLE_100;
         }
+        return BigDecimal.valueOf(randomAmount);
     }
 
 

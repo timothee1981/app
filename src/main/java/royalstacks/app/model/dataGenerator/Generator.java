@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +56,9 @@ public class Generator {
     }
     private void fillDbCustomers(){
         fillDbCustomerBatch(customer_data_1);
-//        fillDbCustomerBatch(customer_data_2);
-//        fillDbCustomerBatch(customer_data_3);
-//        fillDbCustomerBatch(customer_data_4);
+        fillDbCustomerBatch(customer_data_2);
+        fillDbCustomerBatch(customer_data_3);
+        fillDbCustomerBatch(customer_data_4);
     }
     private void fillDbHeadbusiness(){
         headBusiness = EmployeeGenerator.headBusinessGenerator();

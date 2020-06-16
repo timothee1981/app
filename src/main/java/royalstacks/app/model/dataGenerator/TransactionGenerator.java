@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +54,7 @@ public class TransactionGenerator {
     }
 
     private static String randomDescription(){
-        String description = "";
+        StringBuilder description = new StringBuilder();
         final int MIN_LETTERS = 2;
         final int MAX_LETTERS = 7;
         final int MIN_WORDS = 0;
@@ -64,18 +64,18 @@ public class TransactionGenerator {
 
         for (int index = 0; index < wordAmount; index++) {
             String word = randomWord(letterAmount) + " ";
-            description += word.toLowerCase();
+            description.append(word.toLowerCase());
         }
-        return description;
+        return description.toString();
     }
 
     private static String randomWord(int letterAmount) {
-        String word = "";
+        StringBuilder word = new StringBuilder();
         for (int i = 0; i < letterAmount; i++) {
             char letter = Gen.randomChar('Z');
-            word += letter;
+            word.append(letter);
         }
-        return word;
+        return word.toString();
     }
 
 
