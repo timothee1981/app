@@ -88,7 +88,7 @@ public class ApiController {
     }
 
     @GetMapping("/api/transactions")
-    public@ResponseBody List<AccountHolderTransaction> topTransactionList(@RequestParam String accountNumber){
+    public@ResponseBody List<AccountHolderTransaction> LastTenTransactionList(@RequestParam String accountNumber){
         Account account = accountService.getAccountFromAccountNumber(accountNumber);
         return transactionService.getTenLastTransaction(account.getAccountId());
     }
