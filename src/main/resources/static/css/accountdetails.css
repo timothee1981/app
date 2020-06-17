@@ -36,10 +36,11 @@ body{
 
 .infoTable{
     display: table;
-    width: 20%;
+    width: 43%;
     height: 30%;
     margin: 1%;
     font-size: 14px;
+    table-layout: fixed;
 
 }
 
@@ -72,7 +73,7 @@ body{
 }
 
 .inforow .infocell:nth-child(1) {
-    width: 50px;
+    width: 132px;
     padding-left: 10px;
 }
 
@@ -80,18 +81,20 @@ body{
 
     margin-left: -2px;
     margin-bottom: -19px;
-    padding: 15px 69px 2px 25px;
+    padding: 15px 13px 2px 22px;
 
 }
 
 #select1{
+    width: 120%;
     height: 45px;
-    padding-left: 14px;
+    padding-left: 5px;
     padding-right: 32px;
     grid-column: 2;
     background: transparent;
     border: none;
     text-align: center;
+    margin-left: 9px;
 
 }
 
@@ -101,7 +104,8 @@ body{
     background-color: transparent;
     padding-right: 78px;
     outline: none;
-    min-width: 102%;
+    min-width: 125%;
+    max-width: 125% ;
 
 
 }
