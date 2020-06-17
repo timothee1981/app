@@ -1,4 +1,4 @@
-package royalstacks.app.model.dataGenerator;
+package royalstacks.app.model.DataGenerator;
 
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +61,11 @@ public class Generator {
         fillDbCustomerBatch(customer_data_4);
     }
     private void fillDbHeadbusiness(){
-        headBusiness = EmployeeGenerator.headBusinessGenerator();
+        headBusiness = royalstacks.app.model.dataGenerator.EmployeeGenerator.headBusinessGenerator();
         employeeRepository.save(headBusiness);
     }
     private void fillDbHeadPrivate(){
-        headPrivate = EmployeeGenerator.headPrivateGenerator();
+        headPrivate = royalstacks.app.model.dataGenerator.EmployeeGenerator.headPrivateGenerator();
         employeeRepository.save(headPrivate);
     }
     private void fillDbAccounts() {
@@ -87,13 +87,13 @@ public class Generator {
         }
     }
     private void fillDbCustomerBatch(String fileName){
-        JSONArray customerJson = Gen.createJsonArrayFromFile(fileName);
+        JSONArray customerJson = royalstacks.app.model.dataGenerator.Gen.createJsonArrayFromFile(fileName);
         List<Customer> customers = CustomerGenerator.generateCustomers(customerJson);
         allCustomers.addAll(customers);
         customerRepository.saveAll(customers);
     }
     private void fillDbBusinessAccountBatch(String fileName){
-        JSONArray companyJson = Gen.createJsonArrayFromFile(fileName);
+        JSONArray companyJson = royalstacks.app.model.dataGenerator.Gen.createJsonArrayFromFile(fileName);
         List<Account> businessAccounts = AccountGenerator.businessAccountGenerator(1000, companyJson);
         allAccounts.addAll(businessAccounts);
         accountRepository.saveAll(businessAccounts);

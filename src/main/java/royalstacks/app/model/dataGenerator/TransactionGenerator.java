@@ -1,10 +1,11 @@
-package royalstacks.app.model.dataGenerator;
+package royalstacks.app.model.DataGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import royalstacks.app.model.Account;
 import royalstacks.app.model.Transaction;
 import royalstacks.app.model.repository.AccountRepository;
+import royalstacks.app.model.dataGenerator.Gen;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

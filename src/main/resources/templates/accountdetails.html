@@ -39,7 +39,7 @@
     <div class="inforow">
         <div class = "infocell infoheader">IBAN</div>
         <select class = "infocell" id="select1">
-            <option id="option1" th:each="account : ${accounts}"  name="accountNumber"  th:value="${account.accountNumber}"  th:text="${account.accountNumber}"></option>
+            <option class="option1" th:each="account : ${accounts}"  name="accountNumber"  th:value="${account.accountNumber}"  th:text="${account.accountNumber}"></option>
         </select>
     </div>
     <div class="inforow">

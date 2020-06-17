@@ -1,9 +1,10 @@
-package royalstacks.app.model.dataGenerator;
+package royalstacks.app.model.DataGenerator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import royalstacks.app.model.*;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.model.dataGenerator.Gen;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -62,7 +63,7 @@ public class AccountGenerator {
     }
     private static Sector randomSector(){
         Sector[] sectors = Sector.values();
-        return (Sector)Array.get(sectors,Gen.randomInt(0, sectors.length-1));
+        return (Sector)Array.get(sectors, Gen.randomInt(0, sectors.length-1));
     }
     private static BigDecimal randomBalance(){
         final int MIN = 0;
