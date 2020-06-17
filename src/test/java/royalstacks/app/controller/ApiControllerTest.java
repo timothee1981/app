@@ -13,9 +13,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import royalstacks.app.model.AccountHolderTransaction;
 import royalstacks.app.model.Customer;
+import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.service.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +39,9 @@ class ApiControllerTest {
 
     @MockBean
     private AccountService accountService;
+
+    @MockBean
+    private TransactionService transactionService;
 
     @MockBean
     private UserService userService;
@@ -137,6 +144,31 @@ class ApiControllerTest {
         int status = mvcResult.getResponse().getStatus();
 
         assertEquals(404, status);
+
+    }
+
+    @Test
+    void lastTenTransactionList() throws Exception {
+
+        List<AccountHolderTransaction> accountHolderTransaction = new ArrayList<>();
+        String accountNumber ="NL79ROYA1111111111";
+        PrivateAccount account = new PrivateAccount();
+
+        given(accountService.getAccountFromAccountNumber(accountNumber)).willReturn(account);
+        given(transactionService.getTenLastTransaction(account.getAccountId())).willReturn(accountHolderTransaction);
+
+        String url = "/api/transactions?accountNumber=" + accountNumber;
+
+        MvcResult mvcResult = mvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+
+        assertEquals(200, status);
+
+        String content = mvcResult.getResponse().getContentAsString();
+        System.out.println(content);
+        assertFalse(Boolean.parseBoolean(content));
+
 
     }
 }
