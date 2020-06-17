@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +81,7 @@ public class Generator {
     }
     private  void fillDbtransactions(){
         List<Transaction> transactions;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 1; i++) {
             transactions = transactionGenerator.generateTransactions(1000);
             transactionRepository.saveAll(transactions);
         }

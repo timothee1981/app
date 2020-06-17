@@ -8,13 +8,6 @@ public class PaymentResult {
     private String transactionid;
 
 
-    public PaymentResult(boolean accountVerified, boolean sufficientBalance, boolean paymentSuccess, String transactionid) {
-        this.accountVerified = accountVerified;
-        this.sufficientBalance = sufficientBalance;
-        this.paymentSuccess = paymentSuccess;
-        this.transactionid = transactionid;
-    }
-
     public PaymentResult(boolean accountVerified, boolean sufficientBalance, boolean paymentSuccess) {
         this.accountVerified = accountVerified;
         this.sufficientBalance = sufficientBalance;

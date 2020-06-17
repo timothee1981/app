@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 
 import royalstacks.app.model.Account;
 import royalstacks.app.model.BusinessAccount;
@@ -18,17 +18,11 @@ public class AccountHolderAdder {
             for (int i = 0; i < amountAccountholders; i++) {
                 Customer randomCustomer = customers.get(Gen.randomInt(0, customers.size()-1));
                 account.addAccountHolder(randomCustomer);
-                if(account instanceof  BusinessAccount){
-                    if(!randomCustomer.isBusinessAccountHolder()){
+                if(account instanceof  BusinessAccount && !randomCustomer.isBusinessAccountHolder()){
                         randomCustomer.setBusinessAccountHolder(true);
                         randomCustomer.setAccountManager(headbusiness);
-                    }
                 }
             }
-
-
         }
-
     }
-
 }

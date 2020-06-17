@@ -18,6 +18,7 @@ public class Transaction {
     private int toAccountId;
     @Indexed(direction = IndexDirection.DESCENDING)
     private BigDecimal amount;
+
     private String description;
     @Indexed(direction = IndexDirection.DESCENDING)
     private LocalDateTime date;

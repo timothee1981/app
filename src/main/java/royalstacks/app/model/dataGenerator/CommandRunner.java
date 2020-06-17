@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,8 +30,8 @@ public class CommandRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-       //transactionRepository.deleteAll();
-        //generator.fillDbAllData();
+//        transactionRepository.deleteAll();
+//        generator.fillDbAllData();
 
 
     }

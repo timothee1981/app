@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import royalstacks.app.model.Customer;
@@ -38,7 +38,7 @@ public class CustomerGenerator extends Gen {
     }
     public static String randomPostalCode(){
         final int MAX = 9999;
-        final int MIN = 1111;
+        final int MIN = 1000;
         final char MAX_CHAR = 'H';
         int number = Gen.randomInt(MIN, MAX);
         char letter1 =  Gen.randomChar(MAX_CHAR);
@@ -46,8 +46,8 @@ public class CustomerGenerator extends Gen {
         return String.format("%d%c%c", number, letter1, letter2);
     }
     public static String randomBsn(){
-        int MAX =999999999;
-        int MIN = 1;
+        final int MAX =999999999;
+        final int MIN = 1;
         int bsn = Gen.randomInt(MIN, MAX);
         return String.format("%09d", bsn);
     }
