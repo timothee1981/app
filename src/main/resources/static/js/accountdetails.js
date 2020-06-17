@@ -3,17 +3,7 @@
 const accountNumber = document.getElementById("accountNumber");
 const body = document.getElementById("body");
 const selectBankAccount = document.getElementById("select1");
-
-
-
-//URL
-
-let IBANcheck = window.location.pathname + `/accountNumber?accountNumber=${selectValue}`;
-let AccountHolderscheck = window.location.pathname + `/accountHolder?accountNumber=${selectValue}`;
-let transactionCheck = window.location.pathname+ `/transactions?accountNumber=${selectValue}`;
-
-
-
+const balance = document.getElementById("balance");
 
 
 updateClock();
@@ -23,15 +13,16 @@ selectBankAccount.addEventListener('change', function () {
     switchBankAccount();
 });
 
+
+//switch from bankaccount
+
 function switchBankAccount(){
-    let selectValue = selectBankAccount.innerHTML;
+    let selectValue = selectBankAccount.value;
+    console.log(selectValue);
 
     let IBANcheck = window.location.pathname + `/accountNumber?accountNumber=${selectValue}`;
-    let AccountHolderscheck = window.location.pathname + `/accountHolder?accountNumber=${selectValue}`;
-    let transactionCheck = window.location.pathname+ `/transactions?accountNumber=${selectValue}`;
-
     fetchDataUrl(IBANcheck)
-
+    changeBankAccountParameter(selectValue);
 }
 
 function fetchDataUrl(url) {
@@ -57,6 +48,22 @@ function changeFields(data) {
     accountNumber.innerHTML = data.accountNumber;
 
 
+
+}
+
+//FUNCTION THAT ALTERS URL PARAMETER BANKACCOUNT
+function changeBankAccountParameter( newAccountNumber){
+
+    window.location = '/accountdetails' + replaceQueryParam('accountNumber', newAccountNumber, window.location.search)
+
+}
+
+
+function replaceQueryParam(param, newval, search) {
+    let regex = new RegExp("([?;&])" + param + "[^&;]*[;&]?");
+    let query = search.replace(regex, "$1").replace(/&$/, '');
+
+    return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
 }
 
 //FUNCTION THAT UPDATE CLOCK

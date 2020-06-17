@@ -31,6 +31,9 @@ body{
 
 
 
+
+
+
 .infoTable{
     display: table;
     width: 20%;
@@ -81,22 +84,34 @@ body{
 
 }
 
+#select1{
+    height: 45px;
+    padding-left: 14px;
+    padding-right: 32px;
+    grid-column: 2;
+    background: transparent;
+    border: none;
+    text-align: center;
+
+}
 
 
 #select{
     border: none;
     background-color: transparent;
-    text-overflow: ellipsis;
+    padding-right: 78px;
     outline: none;
-    position: absolute;
+    min-width: 102%;
+
 
 }
 
-
-
+.option1{
+    padding: 15px;
+}
 
 #option{
-    padding-top: 3px;
+    padding: 3px;
 
 }
 
