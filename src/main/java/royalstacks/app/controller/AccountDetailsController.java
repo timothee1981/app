@@ -85,7 +85,11 @@ public class AccountDetailsController {
     }
 
 
-
+    @GetMapping("/accountdetails/accountNumber")
+    public@ResponseBody AccountDetailsBackingBean getNewAccountInformation(@RequestParam String accountNumber){
+        Account account = accountService.getAccountFromAccountNumber(accountNumber);
+        return  getAccountdetailsbb(account) ;
+    }
 
 
 

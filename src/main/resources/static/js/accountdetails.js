@@ -1,14 +1,65 @@
+//VARIABLE
+
 const accountNumber = document.getElementById("accountNumber");
 const body = document.getElementById("body");
 const selectBankAccount = document.getElementById("select1");
 
 
+
+//URL
+
+let IBANcheck = window.location.pathname + `/accountNumber?accountNumber=${selectValue}`;
+let AccountHolderscheck = window.location.pathname + `/accountHolder?accountNumber=${selectValue}`;
+let transactionCheck = window.location.pathname+ `/transactions?accountNumber=${selectValue}`;
+
+
+
+
+
 updateClock();
 loadingTable();
 
+selectBankAccount.addEventListener('change', function () {
+    switchBankAccount();
+});
+
+function switchBankAccount(){
+    let selectValue = selectBankAccount.innerHTML;
+
+    let IBANcheck = window.location.pathname + `/accountNumber?accountNumber=${selectValue}`;
+    let AccountHolderscheck = window.location.pathname + `/accountHolder?accountNumber=${selectValue}`;
+    let transactionCheck = window.location.pathname+ `/transactions?accountNumber=${selectValue}`;
+
+    fetchDataUrl(IBANcheck)
+
+}
+
+function fetchDataUrl(url) {
+    fetch(url)
+        .then((response) => {
+            if (!response) {
+                throw new Error("Response Error")
+            }
+            return response.json();
+        })
+        .then((data) => {
+            changeFields(data);
+
+
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
+
+//FUNCTION ALTERATING FIELD
+function changeFields(data) {
+    accountNumber.innerHTML = data.accountNumber;
+
+
+}
 
 //FUNCTION THAT UPDATE CLOCK
-
 function updateClock() {
     let now = new Date(), // current date
         months = ['January', 'February', 'March','April','Mei','June','July','Augustus','September','October','November','December'];
@@ -146,13 +197,10 @@ function setAmountCredit(amount,row){
 
 //PUTTING AMOUNT TO RIGHT FORMAT
 function numberWithCommas(x) {
-    var parts = x.toString().split(".");
+    let parts = x.toString().split(".");
     parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
     return parts.join(",");
 }
-
-
-
 
 
 
