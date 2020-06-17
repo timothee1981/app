@@ -40,7 +40,7 @@ public class AccountDetailsController {
         ModelAndView mav = new ModelAndView("accountdetails");
 
         List<Account> myAccounts = getAccountsFromUserId(userId);
-        // mav.addObject("accounts",myAccounts); //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
+        mav.addObject("accounts",myAccounts); //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
         String accountNumberCookie;
         //check if accountnumber belongs to user:
         if(accountNumber!=null) {

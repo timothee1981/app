@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://java.sun.com/JSP/Page">
+<html lang="en" xmlns:th="http://java.sun.com/JSP/Page" xmlns:selected="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>accountdetails</title>
@@ -34,12 +34,13 @@
 <span id="dateTime"></span><br>
     <h1>Account details</h1>
 
-    <!--TABLE HOUDT INFORMATIE OVER REKENING HOUDER -->
-
+<span id="accountNumber" th:value="${account.accountNumber}" th:text="${account.accountNumber}"></span>
 <div class="infoTable">
     <div class="inforow">
         <div class = "infocell infoheader">IBAN</div>
-        <div class = "infocell" ><span id="accountNumber" name="accountNumber" th:text="${account.accountNumber}"></span></div>
+        <select class = "infocell" id="select1">
+            <option th:each="account : ${accounts}"  name="accountNumber"  th:value="${account.accountNumber}"  ><span th:value="account.accountNumber" th:text="${account.accountNumber}"></span></option>
+        </select>
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Balance</div>
@@ -76,6 +77,8 @@ document.getElementById("transactionForm").submit();
 document.getElementById("addHolder").addEventListener("click",function(){
     document.getElementById("accountHolderForm").submit();
 });
+
+
 
 </script>
 </html>

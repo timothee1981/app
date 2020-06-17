@@ -1,4 +1,7 @@
 const accountNumber = document.getElementById("accountNumber");
+const body = document.getElementById("body");
+const selectBankAccount = document.getElementById("select1");
+
 
 updateClock();
 loadingTable();
@@ -30,9 +33,14 @@ function updateClock() {
 
 function loadingTable() {
 
+
+    console.log(accountNumber.innerHTML);
+    //set value dropdown when loading to value bankaccountNumber
+    selectBankAccount.value = accountNumber.innerHTML;
+
     const request = new XMLHttpRequest();
 //Initialize request
-    let accountNumbervalue = accountNumber.innerText;
+    let accountNumbervalue = accountNumber.innerHTML;
     request.open("GET", `/api/transactions?accountNumber=${accountNumbervalue}`, true);
 
 //Send HTTP request & handle server output
@@ -46,6 +54,10 @@ function loadingTable() {
         }
     };
     request.send(null);
+  /*  let url_string = window.location.pathname + `accountdetails?accountNumber=${accountNumbervalue};`;
+    var url = new URL(url_string);
+    let accountNumber = url.searchParams.get("accountNumber");
+    console.log(accountNumber);*/
 }
 
 /*CREATING TABLE TRANSACTION*/
