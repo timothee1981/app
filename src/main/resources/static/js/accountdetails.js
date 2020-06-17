@@ -33,7 +33,7 @@ function loadingTable() {
     const request = new XMLHttpRequest();
 //Initialize request
     let accountNumbervalue = accountNumber.innerText;
-    request.open("GET", `/accountdetails/transactions?accountNumber=${accountNumbervalue}`, true);
+    request.open("GET", `/api/transactions?accountNumber=${accountNumbervalue}`, true);
 
 //Send HTTP request & handle server output
     request.onreadystatechange = function () {

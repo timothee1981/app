@@ -110,4 +110,15 @@ public class AccountService {
 
     }
 
+    public Account getAccountFromAccountNumber(String accountNumber) {
+        Account myAccount = null;
+        Optional<Account> account = accountRepository.getAccountByAccountNumber(accountNumber);
+        if(account.isPresent()){
+            myAccount = account.get();
+        }
+
+        return myAccount;
+    }
+
+
 }

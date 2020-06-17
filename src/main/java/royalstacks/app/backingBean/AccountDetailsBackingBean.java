@@ -10,7 +10,6 @@ import java.util.Set;
 public class AccountDetailsBackingBean {
 
     private int accountId;
-    private String account;
     private String accountType;
     private String accountNumber;
     private BigDecimal balance;
@@ -75,14 +74,6 @@ public class AccountDetailsBackingBean {
     }
 
 
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
 
 
     public String getAccountType() {
@@ -126,4 +117,6 @@ public class AccountDetailsBackingBean {
                 ", balance=" + balance +
                 '}';
     }
+
+
 }

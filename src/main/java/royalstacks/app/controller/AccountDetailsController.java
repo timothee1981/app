@@ -51,7 +51,7 @@ public class AccountDetailsController {
         }
         for(Account account: myAccounts){
             if(accountNumberCookie.matches(account.getAccountNumber())){
-            Account myAccount = getAccountFromAccountNumber(accountNumberCookie);
+            Account myAccount = accountService.getAccountFromAccountNumber(accountNumberCookie) /*getAccountFromAccountNumber(accountNumberCookie)*/;
             mav.addObject("account", getAccountdetailsbb(myAccount));
             return mav;
             }
@@ -60,23 +60,12 @@ public class AccountDetailsController {
 
         return new ModelAndView("homepage");
 
-
     }
 
-    //METHODE DIE JUISTE ACCOUNT TERUG GEEFT
 
-    private Account getAccountFromAccountNumber(String accountNumber) {
-        Account myAccount = null;
-        Optional<Account> account = accountService.getAccountByAccountNumber(accountNumber);
-        if(account.isPresent()){
-            myAccount = account.get();
-        }
-
-        return myAccount;
-    }
 
     //PUT DE ACCOUNT IN ACCOUNT DETAILS BACKING BEAN
-    private AccountDetailsBackingBean getAccountdetailsbb(Account myAccount) {
+    public AccountDetailsBackingBean getAccountdetailsbb(Account myAccount) {
         AccountDetailsBackingBean accountDetailsBackingBean = null;
         if(myAccount instanceof PrivateAccount){
             accountDetailsBackingBean = AccountDetailsBackingBean.createBeanPrivate((PrivateAccount) myAccount);
@@ -87,34 +76,15 @@ public class AccountDetailsController {
 
 
 
-
-    //METHODE DIE DE TIEN LAATSTE TRANSACTIES OPHAALD
-
-    private List<AccountHolderTransaction> getTenLastTransaction(Account myAccount) {
-        List<AccountHolderTransaction> getTenLastTransaction;
-        getTenLastTransaction = transactionService.getTenLastTransaction(myAccount.getAccountId());
-        if(getTenLastTransaction != null) {
-            return getTenLastTransaction;
-        }
-        else return null;
-    }
-
-
-
     //METHODE DIE HAALT  ACCOUNTS DIE HOREN BIJ HET GEBRUIKER
 
-    private List<Account> getAccountsFromUserId(int userId) {
+    public List<Account> getAccountsFromUserId(int userId) {
         Customer customer = (Customer) userService.findByUserId(userId);
 
         return new ArrayList<>(customer.getAccount());
     }
 
 
-    @GetMapping("/accountdetails/transactions")
-    public@ResponseBody List<AccountHolderTransaction> topTransactionList(@RequestParam String accountNumber){
-        Account account = getAccountFromAccountNumber(accountNumber);
-        return getTenLastTransaction(account);
-    }
 
 
 
