@@ -39,7 +39,6 @@ public class AccountDetailsController {
 
         ModelAndView mav = new ModelAndView("accountdetails");
 
-
         List<Account> myAccounts = getAccountsFromUserId(userId);
         // mav.addObject("accounts",myAccounts); //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
         String accountNumberCookie;
@@ -53,7 +52,7 @@ public class AccountDetailsController {
         for(Account account: myAccounts){
             if(accountNumberCookie.matches(account.getAccountNumber())){
             Account myAccount = getAccountFromAccountNumber(accountNumberCookie);
-            populatefields(mav,myAccount);
+            mav.addObject("account", getAccountdetailsbb(myAccount));
             return mav;
             }
         }
@@ -87,18 +86,6 @@ public class AccountDetailsController {
     }
 
 
-
-    //POPULATE THE FIELDS WITH THE DIFFERENT VALUE
-    private void populatefields(ModelAndView mav,Account myAccount) {
-
-            //get accountholder
-            List<Customer> accountholders =  accountService.getAccountHolders(myAccount);
-            //get accountdetails
-            AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
-            //get list transactions
-            mav.addObject("account",accountDetailsBackingBean);
-            mav.addObject("list",accountholders);
-    }
 
 
     //METHODE DIE DE TIEN LAATSTE TRANSACTIES OPHAALD
