@@ -36,7 +36,12 @@ public class CompanyAndTransactions implements Comparable<CompanyAndTransactions
 
     @Override
     public int compareTo(CompanyAndTransactions o) {
-        return (o.getNumberOfTransactions() - this.getNumberOfTransactions());
+       int compareTransactions = (o.getNumberOfTransactions() - this.getNumberOfTransactions());
+       if (compareTransactions == 0){
+           return o.getBalance().subtract(this.getBalance()).intValue();
+       } else {
+           return compareTransactions;
+       }
     }
 
 

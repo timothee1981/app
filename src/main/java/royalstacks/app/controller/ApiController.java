@@ -77,8 +77,6 @@ public class ApiController {
         }
     }
 
-
-
     @PostMapping(value = "/api/iban",consumes = "text/plain")
     @ResponseBody
     public String ibanCheckHandler(@RequestBody String iban) throws Exception{
