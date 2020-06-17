@@ -60,11 +60,6 @@ public class OpenAccountBackingBean {
         return privateAccount;
     }
 
-/*    public static OpenAccountBackingBean createOpenAccountBean(BusinessAccount businessAccount){
-        OpenAccountBackingBean bb = new OpenAccountBackingBean(businessAccount.getCompanyName(),businessAccount.getKvkNumber(),
-                businessAccount.getVatNumber(),businessAccount.getSector());
-        return bb;
-    }*/
 
 
 

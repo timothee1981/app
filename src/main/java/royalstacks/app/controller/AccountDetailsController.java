@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountDetailsBackingBean;
 import royalstacks.app.model.AccountHolderTransaction;
 import royalstacks.app.model.*;
+import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
@@ -38,9 +39,8 @@ public class AccountDetailsController {
 
         ModelAndView mav = new ModelAndView("accountdetails");
 
-
         List<Account> myAccounts = getAccountsFromUserId(userId);
-        // mav.addObject("accounts",myAccounts); //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
+        mav.addObject("accounts",myAccounts); //TU USE IN DROPDWON SELECT EVENTUALLY: DO NO FORGET TO ERASE IT IF ITS NOT USED!!!!!!!!!!!
         String accountNumberCookie;
         //check if accountnumber belongs to user:
         if(accountNumber!=null) {
@@ -51,8 +51,8 @@ public class AccountDetailsController {
         }
         for(Account account: myAccounts){
             if(accountNumberCookie.matches(account.getAccountNumber())){
-            Account myAccount = getAccountFromAccountNumber(accountNumberCookie);
-            populatefields(mav,myAccount);
+            Account myAccount = accountService.getAccountFromAccountNumber(accountNumberCookie) /*getAccountFromAccountNumber(accountNumberCookie)*/;
+            mav.addObject("account", getAccountdetailsbb(myAccount));
             return mav;
             }
         }
@@ -60,23 +60,12 @@ public class AccountDetailsController {
 
         return new ModelAndView("homepage");
 
-
     }
 
-    //METHODE DIE JUISTE ACCOUNT TERUG GEEFT
 
-    private Account getAccountFromAccountNumber(String accountNumber) {
-        Account myAccount = null;
-        Optional<Account> account = accountService.getAccountByAccountNumber(accountNumber);
-        if(account.isPresent()){
-            myAccount = account.get();
-        }
-
-        return myAccount;
-    }
 
     //PUT DE ACCOUNT IN ACCOUNT DETAILS BACKING BEAN
-    private AccountDetailsBackingBean getAccountdetailsbb(Account myAccount) {
+    public AccountDetailsBackingBean getAccountdetailsbb(Account myAccount) {
         AccountDetailsBackingBean accountDetailsBackingBean = null;
         if(myAccount instanceof PrivateAccount){
             accountDetailsBackingBean = AccountDetailsBackingBean.createBeanPrivate((PrivateAccount) myAccount);
@@ -87,47 +76,20 @@ public class AccountDetailsController {
 
 
 
-    //POPULATE THE FIELDS WITH THE DIFFERENT VALUE
-    private void populatefields(ModelAndView mav,Account myAccount) {
-
-            //get accountholder
-            List<Customer> accountholders =  accountService.getAccountHolders(myAccount);
-            //get accountdetails
-            AccountDetailsBackingBean accountDetailsBackingBean = getAccountdetailsbb(myAccount);
-            //get list transactions
-            mav.addObject("account",accountDetailsBackingBean);
-            mav.addObject("list",accountholders);
-    }
-
-
-    //METHODE DIE DE TIEN LAATSTE TRANSACTIES OPHAALD
-
-    private List<AccountHolderTransaction> getTenLastTransaction(Account myAccount) {
-        List<AccountHolderTransaction> getTenLastTransaction;
-        getTenLastTransaction = transactionService.getTenLastTransaction(myAccount.getAccountId());
-        if(getTenLastTransaction != null) {
-            return getTenLastTransaction;
-        }
-        else return null;
-    }
-
-
-
     //METHODE DIE HAALT  ACCOUNTS DIE HOREN BIJ HET GEBRUIKER
 
-    private List<Account> getAccountsFromUserId(int userId) {
+    public List<Account> getAccountsFromUserId(int userId) {
         Customer customer = (Customer) userService.findByUserId(userId);
 
         return new ArrayList<>(customer.getAccount());
     }
 
 
-    @GetMapping("/accountdetails/transactions")
-    public@ResponseBody List<AccountHolderTransaction> topTransactionList(@RequestParam String accountNumber){
-        Account account = getAccountFromAccountNumber(accountNumber);
-        return getTenLastTransaction(account);
+    @GetMapping("/accountdetails/accountNumber")
+    public@ResponseBody AccountDetailsBackingBean getNewAccountInformation(@RequestParam String accountNumber){
+        Account account = accountService.getAccountFromAccountNumber(accountNumber);
+        return  getAccountdetailsbb(account) ;
     }
-
 
 
 

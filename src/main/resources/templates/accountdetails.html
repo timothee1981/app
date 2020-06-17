@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://java.sun.com/JSP/Page">
+<html lang="en" xmlns:th="http://java.sun.com/JSP/Page" xmlns:selected="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>accountdetails</title>
@@ -11,42 +11,40 @@
 <body id="body" th:object="${account}">
 <!-- Navigation bra section -->
 <div id="navbar" >
-    <a>
-        <form th:action="@{logoutAction}" method="post">
-            <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
-        </form>
-    </a>
-    <a href="/accountOverview">Account Overview</a>
-    <span id="logoNavbar"></span>
-</div>
 
+    <a href="/logoutAction">Logout</a>
+    <a href="/accountOverview">Account Overview</a>
+    <a id="makeTransaction" class="aclass">New Money Transfer</a>
+    <a id="addHolder" class="aclass">Add accountholder</a>
+
+    <form id="transactionForm" th:action="@{transaction}"  method="get">
+        <input type="hidden"  name="accountId" value="DoTransfer" th:value="${account.accountId}" />
+    </form>
+    <form id="accountHolderForm" th:action="@{addaccountholder}" method="get">
+        <input type = "hidden" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder"/>
+    </form>
+    <span id="logoNavbar"></span>
+
+
+</div>
+<div class="wrapper">
 
 <div class="content">
-    <div class="wrapper">
+
 <span id="dateTime"></span><br>
     <h1>Account details</h1>
 
-    <!--<THAT'S THE DROPDOWN SELECT. DIFFICULT MAYBE, LETS SEE IF I HAVE TIME LEFT-->
-<!--
-    <label for="accountNumber">AccountList</label>
-        <select id="accountNumber" name="accountNumber" th:value="${accountnumber}">
-            <option id="option" th:each="account : ${accounts}" th:value="${account.accountNumber}" th:text="${account.accountNumber}">
-            </option>
-        </select>
-<<<<<<< HEAD
-        <button type="submit" id="SUBMIT_BUTTON"  value="DoTransfer">choose account</button>-->
-
-
-    <!--TABLE HOUDT INFORMATIE OVER REKENING HOUDER -->
-
+<span hidden id="accountNumber" th:value="${account.accountNumber}" th:text="${account.accountNumber}"></span>
 <div class="infoTable">
     <div class="inforow">
         <div class = "infocell infoheader">IBAN</div>
-        <div class = "infocell" ><span id="accountNumber" name="accountNumber"span  th:text="${account.accountNumber}"></span></div>
+        <select class = "infocell" id="select1">
+            <option id="option1" th:each="account : ${accounts}"  name="accountNumber"  th:value="${account.accountNumber}"  th:text="${account.accountNumber}"></option>
+        </select>
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Balance</div>
-        <div class = "infocell">€ <span th:text="${#numbers.formatDecimal(account.balance, 0, 2)}"></span></div>
+        <div id="balance" class = "infocell">€ <span th:text="${#numbers.formatDecimal(account.balance, 0,'POINT', 2, 'COMMA')}"></span></div>
     </div>
     <div class="inforow">
         <div class = "infocell infoheader">Account Type</div>
@@ -55,119 +53,32 @@
     <div class="inforow">
         <div class = "infocell infoheader">Account holders</div>
         <Select  size="2" id="select" class="infocell" >
-                <option id="option" th:each="customer : ${list}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></option>
+                <option id="option" th:each="customer : ${account.accountHolders}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></option>
         </Select>
     </div>
 </div>
-<div class="buttondiv">
-    <form th:action="@{transaction}"  method="get">
-        <button type="submit" id="submitButton" name="accountId" th:value="${account.accountId}"   value="DoTransfer">New money transfer</button>
-    </form>
-    <form th:action="@{addaccountholder}" method="get">
-        <button type = "submit" id = "addaccountholderbutton" th:name="accountNumber" th:value="${account.accountNumber}" value = "Add Accountholder">Add accountholder</button>
-    </form>
-</div>
-
-
-
-
 
 
 </div>
 
 </div>
-
 
 
 
 
 <script src="js/navbar.js"></script>
-
+<script src="js/accountdetails.js"></script>
 </body>
-
 <script>
-    const accountNumber = document.getElementById("accountNumber");
-    function updateClock() {
-        let now = new Date(), // current date
-            months = ['January', 'February', 'March','April','Mei','June','July','Augustus','September','October','November','December']; // you get the idea
+document.getElementById("makeTransaction").addEventListener("click",function(){
+document.getElementById("transactionForm").submit();
+});
 
-        let time = now.getHours() + ':' + ((now.getMinutes() < 10)?"0":"") + now.getMinutes();
-
-            // a cleaner way than string concatenation
-            date = [now.getDate(),
-                months[now.getMonth()],
-                now.getFullYear()].join(' ');
-
-        // set the content of the element with the ID time to the formatted string
-        document.getElementById('dateTime').innerHTML = [date, time].join(' / ');
-
-        // call this function again in 1000ms
-        setTimeout(updateClock, 1000);
-    }
-    updateClock(); // initial call
-    <!--TABLE HOUDT INFORMATIE OVER TRANSACTIE REKENING HOUDER -->
-   // Creating a new XMLHttpRequest object
-    const request = new XMLHttpRequest();
-    //Initialize request
-    let accountNumbervalue = accountNumber.innerText;
-    request.open("GET",`/accountdetails/transactions?accountNumber=${accountNumbervalue}`, true);
-
-    //Send HTTP request & handle server output
-    request.onreadystatechange = function() {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                createTable(JSON.parse(request.responseText));
-            }
-            else {
-                alert('Something is wrong!');
-            }
-        }
-    };
-    request.send(null);
-
-    function createTable(transactions) {
-        const body = document.body,
-            tbl = document.createElement('div');
-        tbl.setAttribute("class", "table");
-        tbl.style.width = '50%';
-        const headerRow = document.createElement('div');
-        headerRow.setAttribute("class","row header");
-        tbl.appendChild(headerRow);
-        createTableHeader("DateTime", headerRow);
-        createTableCell("IBAN", headerRow);
-        createTableHeader("Name", headerRow);
-        createTableHeader("description", headerRow);
-        createTableHeader("Amount", headerRow);
-
-        transactions.forEach(element => {
-            const row = document.createElement('div');
-            row.setAttribute("class","row");
-            tbl.appendChild(row);
-            createTableCell(element.dateTime, row);
-            createTableCell(element.bankAccountNumber, row)
-            createTableCell(element.customerName, row);
-            createTableCell(element.description, row);
-            createTableCell(element.amount, row);
-        });
-        body.appendChild(tbl);
-    }
-
-    function createTableHeader(title, row){
-        const cell = document.createElement('div');
-        cell.setAttribute("class","cell");
-        cell.appendChild(document.createTextNode(title));
-        row.appendChild(cell);
-    }
-
-    function createTableCell(content, row){
-        const cell = document.createElement('div');
-        cell.setAttribute("class","cell");
-        cell.appendChild(document.createTextNode(content));
-        row.appendChild(cell);
-    }
+document.getElementById("addHolder").addEventListener("click",function(){
+    document.getElementById("accountHolderForm").submit();
+});
 
 
 
 </script>
-
 </html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font: 71%/1.5 Helvetica;
+            background: #666666;
+            font-weight: lighter;
+            font-size: 20px;
+        }
+        .container {
+            margin-top: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 300px;
+            align-content: center;
+
+        }
+
+        #keyboard {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        #keyboard li {
+            float: left;
+            margin: 0 5px 5px 0;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            line-height: 60px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #f9f9f9;
+            border-radius: 5px;
+        }
+
+
+        #displayAccountNumber  {
+            float: left;
+            margin: 0 5px 5px 0;
+            width: 270px;
+            height: 60px;
+            font-size: 24px;
+            line-height: 60px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #f9f9f9;
+            border-radius: 5px;
+        }
+
+        #displayPos {
+            float: left;
+            margin: 0 5px 0px 0;
+            width: 270px;
+            height: 60px;
+            font-size: 24px;
+            line-height: 60px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #f9f9f9;
+            border-radius: 5px;
+
+        }
+
+        #displayL {
+            margin: 0;
+            padding-top: 30px;
+            padding-bottom: 85px;
+            list-style: none;
+
+        }
+
+        #displayR {
+            margin: 0;
+            padding-top: 30px;
+            padding-bottom: 100px;
+            list-style: none;
+
+        }
+
+        .capslock, .tab, .left-shift, .clearl, .stop {
+            clear: left;
+        }
+        #keyboard .tab, #keyboard .delete {
+            width: 70px;
+        }
+        #keyboard .return {
+            width: 90px;
+        }
+
+
+        #keyboard .stop {
+            width: 90px;
+        }
+
+
+        #keyboard .stop, #keyboard .delete, #keyboard .return, #keyboard .bottom{
+            font-size: 20px;
+        }
+        #keyboard li:hover {
+            position: relative;
+            top: 1px;
+            left: 1px;
+            border-color: #e5e5e5;
+            cursor: pointer;
+        }
+
+        .titles {
+            font-size: 20px;
+            font-weight: lighter;
+        }
+
+        #logo{
+           text-align: center;
+        }
+
+        #themachineLeft {
+            width: 370px;
+            height: 580px;
+            margin-top:60px;
+            margin-right: auto;
+            margin-left: auto;
+            background: #eee;
+            border-radius: 25px;
+        }
+
+        #themachineRight {
+            border-radius: 25px;
+            width: 370px;
+            height: 580px;
+            margin-top:60px;
+            margin-right: auto;
+            margin-left: auto;
+            background: #eee;
+        }
+
+        #idNumber {
+            background:#222;
+            color:#fff;
+            display:block;
+            float: left;
+            margin:10px 10px 0 0;
+            padding:5px 10px;
+        }
+
+        h2{
+            margin-top: 10px;
+            padding-top: 7px;
+            padding-left: 10px;
+            color: #f1f1f1;
+        }
+
+        h3 {
+            color: #666666;
+            text-align: center;
+            padding-top: 18px;
+            font-size: 14px;
+            font-weight: lighter;
+        }
+
+        .selected {
+            background-color: #d6d6d6;
+        }
+        #transactionInfo {
+            float: left;
+            margin: 0 0 15px 0;
+            width: 270px;
+            height: 50px;
+            font-size: 22px;
+            line-height: 60px;
+            text-align: center;
+            background: #cecece;
+            border: 1px solid #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #response {
+            float: left;
+            margin: 0 0 15px 0;
+            width: 270px;
+            height: 30px;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #responseL {
+            float: left;
+            margin: 0 0 15px 0;
+            width: 270px;
+            height: 30px;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #f9f9f9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .success {
+            background: rgba(41, 228, 10, 0.35);
+        }
+
+        .failed {
+            background: rgba(228,4,0,0.35)
+        }
+
+        .neutral {
+            background: rgba(160, 160, 160, 0.35)
+        }
+
+        #leftScreen{
+            width: 50%;
+            float: left;
+            height: 100vh;
+        }
+
+        #rightScreen{
+            width: 50%;
+            float: right;
+            height: 100vh;
+            background: #222;
+        }
+
+        .focus {
+            box-shadow: 0 0 5pt 3pt #4d4d4d;
+        }
+
+        .focusLight {
+            box-shadow: 0 0 5pt 2pt #5f5f5f;
+        }
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Customer Terminal</title>
+</head>
+<div>
+<div id="leftScreen">
+<span id="idNumber"></span>
+<h2>Seller</h2>
+<div id="themachineLeft" class="focus">
+
+    <div class="container">
+
+        <ul id="displayL">
+            <span id="responseL" class="neutral"></span>
+            <li id="notify" class="titles">Enter amount</li>
+            <li id="displayPos"></li>
+        </ul>
+        <ul id="keyboard">
+            <a onclick="addNumberL(1);"><li class="letter">1 </li></a>
+            <a onclick="addNumberL(2);"><li class="letter">2</li></a>
+            <a onclick="addNumberL(3);"> <li class="letter">3</li></a>
+            <a onclick="addNumberL(4);"><li class="letter clearl">4</li></a>
+            <a onclick="addNumberL(5);"> <li class="letter">5</li></a>
+            <a onclick="addNumberL(6);"> <li class="letter">6</li></a>
+            <a onclick="addNumberL(7);"><li class="letter clearl">7</li></a>
+            <a onclick="addNumberL(8);"> <li class="letter ">8</li></a>
+            <a onclick="addNumberL(9);"> <li class="letter">9</li></a>
+            <a onclick="addNumberL(0);"> <li class="letter">0</li></a>
+            <a onclick="stopButtonL();"> <li class="stop">Stop</li></a>
+            <a onclick="delButton();"><li class="delete">Del</li></a>
+            <a onclick="okButtonL();"> <li class="return">Ok</li></a>
+            <a onclick="transButtonL();"> <li id="transButtonL" class="bottom">Trans</li></a>
+            <a onclick="connButtonL();"> <li id="connButtonL" class="bottom">Conn</li></a>
+            <a onclick="openButtonL();"><li id="openButtonL" class="bottom">Open</li></a>
+            <a onclick="closeButtonL();"> <li id="closeButtonL" class="bottom">Close</li></a>
+
+        </ul>
+    </div>
+    <div id="logo">
+        <h3 class="bottom clearl">ROYAL STACKS ♔</h3>
+    </div>
+</div>
+</div>
+</div>
+<div id="rightScreen">
+    <h2>Client</h2>
+    <div id="themachineRight" class="focusLight">
+        <div>
+
+            <div class="container">
+                <ul id="displayR">
+                    <span id="response" class="neutral"></span>
+                    <span id="transactionInfo"></span>
+                    <li id="title">Account Number</li>
+                    <li id="displayAccountNumber"></li>
+                </ul>
+                <ul id="keyboard">
+                    <a onclick="addNumberR(1);"><li class="letter">1 </li></a>
+                    <a onclick="addNumberR(2);"><li class="letter">2</li></a>
+                    <a onclick="addNumberR(3);"> <li class="letter">3</li></a>
+                    <a onclick="addNumberR(4);"><li class="letter clearl">4</li></a>
+                    <a onclick="addNumberR(5);"> <li class="letter">5</li></a>
+                    <a onclick="addNumberR(6);"> <li class="letter">6</li></a>
+                    <a onclick="addNumberR(7);"><li class="letter clearl">7</li></a>
+                    <a onclick="addNumberR(8);"> <li class="letter ">8</li></a>
+                    <a onclick="addNumberR(9);"> <li class="letter">9</li></a>
+                    <a onclick="addNumberR(0);"> <li class="letter">0</li></a>
+                    <a onclick="stopButtonR();"> <li class="stop">Stop</li></a>
+                    <a onclick="delButton();"><li class="delete">Del</li></a>
+                    <a onclick="okButtonR();"> <li class="return">Ok</li></a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fillRightScreen">.</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript"  src="../js/journal.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript"  th:inline="javascript">
+
+    const identificationNumber = /*[[${pos.identificationNumber}]]*/ 'default';
+
+    const inputLeft = document.getElementById('displayPos');
+    const inputRight = document.getElementById('displayAccountNumber');
+
+    const responseLeft = document.getElementById('responseL');
+    const responseRight = document.getElementById('response');
+
+    const titleRight = document.getElementById('title');
+    const titleLeft = document.getElementById("notify");
+
+    let date = new Date();
+
+    let connectionMode = false;
+    let paymentMode = false;
+    let paymentCompleted = false;
+
+    let businessAccountNumber = null;
+    let connectionCode = null;
+    let amount;
+
+    let fillBankAccount = true;
+    let account;
+    let pincode;
+
+
+    function setButtonInactive(id){
+        document.getElementById(id).style.backgroundColor = '#d6d6d6';
+    }
+
+    function setButtonActive(id){
+        document.getElementById(id).style.backgroundColor = '#ffffff';
+    }
+
+
+    function neutralResponseL(){
+        responseLeft.classList.remove('success', 'failed');
+        responseLeft.classList.add('neutral');
+    }
+
+    function neutralResponseR(){
+        responseRight.classList.remove('success', 'failed');
+        responseRight.classList.add('neutral');
+    }
+
+
+    function setLeftRed(text){
+        responseLeft.innerText = text;
+        responseLeft.classList.add('failed');
+        responseLeft.classList.remove('neutral');
+    }
+
+    function setRightRed(text){
+        responseRight.innerText = text;
+        responseRight.classList.remove('neutral');
+        responseRight.classList.add('failed');
+
+    }
+
+    function setLeftGreen(text){
+        responseLeft.innerText = text;
+        responseLeft.classList.remove('neutral', 'failed');
+        responseLeft.classList.add('success');
+
+    }
+
+    function setRightGreen(text){
+        responseRight.innerText = text;
+        responseRight.classList.remove('neutral', 'failed');
+        responseRight.classList.add('success');
+
+    }
+
+    /**
+     * Check if Pos is connected or not
+     */
+    console.log("idnumber :" + identificationNumber);
+    window.onload = checkPos;
+    function checkPos(){
+        document.getElementById('closeButtonL').style.backgroundColor = '#d6d6d6';
+        if(identificationNumber == 0){
+            connButtonL();
+            document.getElementById('idNumber').innerText = 'Not Connected'
+        } else {
+            transButtonL();
+            document.getElementById('idNumber').innerText = identificationNumber
+        }
+
+    }
+
+    /**
+     *  Input user Left and Right
+     */
+    document.addEventListener('keydown', function(e) {
+        if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+            paymentMode ? addNumberR(e.keyCode - 48) : addNumberL(e.keyCode - 48);
+        } else if (e.keyCode === 8){
+            delButton();
+        } else if (e.keyCode === 13){
+            paymentMode ? okButtonR() : okButtonL();
+        } else if (e.keyCode === 27){
+            paymentMode ? stopButtonR() : stopButtonL()
+        }
+    });
+
+    function addNumberL(number) {
+        if(!paymentMode && !paymentCompleted) {
+            if (connectionMode) {
+                if (inputLeft.innerHTML.length < 10 && businessAccountNumber === null) {
+                    inputLeft.innerHTML = inputLeft.innerHTML + number;
+                } else if (inputLeft.innerHTML.length < 5 && connectionCode === null) {
+                    inputLeft.innerHTML = inputLeft.innerHTML + number;
+                }
+            } else if(inputLeft.innerHTML.length === 0 && number === 0) {
+            } else if (inputLeft.innerHTML.length < 10) {
+                inputLeft.innerHTML = inputLeft.innerHTML + number;
+            }
+
+        }
+    }
+
+    function addNumberR(number) {
+        let displayAccountNumber = inputRight.innerHTML;
+
+        if(paymentMode) {
+            let maxLength;
+            fillBankAccount ? maxLength = 10 : maxLength = 4;
+            if (displayAccountNumber.length < maxLength) {
+                inputRight.innerHTML = inputRight.innerHTML + number;
+            }
+        }
+    }
+
+    function delButton(){
+        if(paymentMode) {
+            inputRight.innerHTML = inputRight.innerHTML.slice(0, -1)
+        } else {
+            if(!connectionMode) {
+                if (inputLeft.innerHTML.length > 1) {
+                    inputLeft.innerHTML = inputLeft.innerHTML.slice(0, -1);
+                }
+            } else {
+                inputLeft.innerHTML = inputLeft.innerHTML.slice(0, -1);
+            }
+        }
+    }
+
+    /**
+     * OK button LEFT
+     */
+    function okButtonL() {
+        if(connectionMode){
+            let data = inputLeft.innerHTML;
+            connectionFlow(data);
+
+        } else if(isOpened) {
+            console.log("iets opened!");
+            if (!paymentCompleted && inputLeft.innerText.length > 1) {
+                console.log("true true door!");
+                goToClient();
+            } else if (paymentCompleted) {
+                stopButtonL();
+                paymentCompleted = false;
+            }
+
+        } else if (!isOpened) {
+            responseLeft.innerText = "Open device first"
+        }
+    }
+
+    function connectionFlow(data){
+
+        if(businessAccountNumber == null && data.length !== 10){
+            responseLeft.innerHTML = "Enter 10 numbers";
+            inputLeft.innerHTML = data;
+
+        } else if(businessAccountNumber == null && data.length === 10) {
+            titleLeft.innerHTML = "Enter connection code";
+            inputLeft.innerHTML = "";
+            businessAccountNumber = data;
+
+        } else if(connectionCode == null && data.length !==5){
+            titleLeft.innerHTML = "Enter 5 digits";
+            inputLeft.innerHTML = data;
+
+        } else if(connectionCode == null && data.length === 5){
+            connectionCode = data;
+            sendRestConnectionRequest();
+        }
+    }
+
+    const sendRestConnectionRequest = async () => {
+        let connectionRequest = {
+            businessAccountIban: businessAccountNumber,
+            connectionCode: connectionCode
+        };
+
+        await fetch(window.location.origin + '/pos/connect', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(connectionRequest)
+        })
+            .then((response) => response.json().then((body) => {
+                body.succeeded ? connectionSuccess(body) : connectionFailed();
+            }))
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
+    function connectionSuccess(body) {
+        responseLeft.classList.add('success');
+        responseLeft.innerHTML = "Connection succesful!";
+
+        window.location.href = window.location.origin + '/pos/' + body.id;
+    }
+
+    function connectionFailed() {
+        responseLeft.innerHTML = "Connection failed!";
+        businessAccountNumber = null;
+        connectionCode = null;
+
+        inputLeft.innerHTML = "";
+        titleLeft.innerHTML = "Enter account number";
+        setButtonInactive('connButtonL');
+        setButtonActive('transButtonL');
+        setButtonActive('openButtonL');
+        setButtonActive('closeButtonL');
+    }
+
+    function goToClient() {
+        paymentMode = true;
+        amount = inputLeft.innerText.slice(1, inputLeft.innerText.length);
+        titleRight.innerText = "Account number:";
+
+        document.getElementById('transactionInfo').innerText = inputLeft.innerText;
+
+        responseLeft.innerText = 'Waiting for client...';
+        responseRight.innerText = 'Pending payment...';
+
+        neutralResponseL();
+        neutralResponseR();
+
+    }
+
+    /**
+     * STOP button LEFT & RIGHT
+     */
+    function stopButtonL() {
+        resetFields();
+        connectionMode ? inputLeft.innerHTML = "" : inputLeft.innerHTML = "€";
+        paymentCompleted = false;
+
+    }
+
+    function stopButtonR(){
+        if(!paymentCompleted && paymentMode) {
+            resetFields();
+            responseLeft.innerText = 'Transaction stopped';
+            responseLeft.classList.add('failed');
+            responseLeft.classList.remove('neutral');
+
+        }
+    }
+
+    function resetFields() {
+        inputRight.innerText = '';
+        document.getElementById('transactionInfo').innerText = '';
+        responseRight.innerText = '';
+
+        titleRight.innerText = "Account number:";
+        connectionMode ? responseLeft.innerText = 'Connection Mode' : responseLeft.innerText = 'Transaction Mode';
+
+        fillBankAccount = true;
+        paymentMode = false;
+
+        neutralResponseR();
+        neutralResponseL();
+    }
+
+    /**
+     * CONNECTION button LEFT
+     */
+    function connButtonL() {
+        if(!paymentMode && !paymentCompleted && !isOpened) {
+            resetFields();
+            neutralResponseL();
+
+            responseLeft.innerText = 'Connection Mode';
+            connectionMode = true;
+            businessAccountNumber = null;
+            connectionCode = null;
+            inputLeft.innerHTML = "";
+            titleLeft.innerHTML = "Enter account number";
+
+            setButtonInactive('connButtonL');
+            setButtonActive('transButtonL');
+        }
+    }
+
+    /**
+     * TRANSFER BUTTON LEFT
+     */
+    function transButtonL(){
+        if(identificationNumber == 0){
+            closeButtonL();
+        } else {
+            if(!paymentMode && !paymentCompleted && !isOpened) {
+                resetFields();
+                responseLeft.innerText = 'Transaction Mode';
+                inputLeft.innerHTML = "€";
+                titleLeft.innerHTML = "Enter amount";
+                setButtonInactive('transButtonL');
+                setButtonActive('connButtonL');
+                connectionMode = false;
+                neutralResponseL()
+            }
+        }
+    }
+
+    /**
+     * OPEN BUTTON L
+     */
+
+    journal = new Journal();
+    let isOpened = false;
+
+
+    function openButtonL() {
+
+        if (!isOpened && !connectionMode && !paymentMode) {
+            journal.transactions = [];
+            journal.openingTime = new Date().toLocaleString('en-GB');
+            setButtonInactive('openButtonL');
+            setButtonActive('closeButtonL');
+            isOpened = true;
+            neutralResponseL();
+            responseLeft.innerText = 'Device is opened'
+        }
+    }
+
+
+    function closeButtonL(){
+
+        if(isOpened && !paymentMode && !connectionMode) {
+            isOpened = false;
+            journal.closingTime = new Date().toLocaleString('en-GB');
+            download(JSON.stringify(journal, null, '\t'), "Journal of " + date.toLocaleString('en-GB'))
+            setButtonInactive('closeButtonL');
+            setButtonActive('openButtonL');
+            responseLeft.innerText = 'Device is closed';
+        }
+    }
+
+
+    function download(data, filename) {
+        const file = new Blob([data], {type: 'text/plain'});
+        if (window.navigator.msSaveOrOpenBlob) // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        else { // Others
+            let a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+    }
+
+    /**
+     * OK button RECHTS
+     */
+    function okButtonR() {
+        if (paymentMode) {
+            let displayText = inputRight.innerText;
+
+            if (fillBankAccount && displayText.length < 10) {
+                responseRight.innerText = 'Enter your account number'
+
+            } else if (fillBankAccount && inputRight.innerText.length === 10) {
+                fillPincode();
+
+            } else if (inputRight.innerText.length < 4) {
+                responseRight.innerText = 'Enter your pincode'
+
+            } else if (inputRight.innerText.length === 4) {
+                okButtonPost();
+            } else {
+                setStatusFailed("")
+            }
+        }
+    }
+
+
+    function fillPincode() {
+        account = inputRight.innerText;
+        fillBankAccount = false;
+        inputRight.innerText = "";
+        responseRight.innerText = 'Pending payment...';
+        titleRight.innerText = 'Pincode';
+    }
+
+    const okButtonPost = async () => {
+        pincode = inputRight.innerText;
+
+        let paymentData = {
+            identificationNumber: identificationNumber,
+            account: account,
+            pin: pincode,
+            amount: amount
+        };
+        await fetch(window.location.origin + '/pos/client/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(paymentData)
+        })
+            .then((response) => response.json().then((body) => {
+                if(!body.accountVerified) {
+                    setStatusFailed('Invalid account number')
+                } else if (!body.sufficientBalance) {
+                    setStatusFailed('Insufficient balance')
+                } else if (!body.paymentSuccess) {
+                    setStatusFailed('Internal error')
+                } else {
+                    setStatusSuccess(body.transactionid);
+                    let journalData = {
+                        time : new Date().toLocaleString('en-GB'),
+                        transactionId : body.transactionid,
+                        accountNumber : account,
+                        amount : amount
+                    };
+                    journal.transactions.push(journalData) ;
+
+                }}))
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
+
+    function setStatusFailed(text){
+        setLeftRed('Payment denied. Press STOP or OK');
+        setRightRed(text);
+
+
+        titleRight.innerText = 'Account Number';
+
+        inputRight.innerText = '';
+        fillBankAccount = true;
+        paymentMode = false;
+    }
+
+    function setStatusSuccess(text) {
+        setLeftGreen('Success! Press STOP or OK');
+        setRightGreen('id: ' + text);
+
+
+        titleRight.innerText = 'Thank You!';
+
+        inputRight.innerText = '';
+        inputLeft.innerText = '€';
+        fillBankAccount = true;
+        paymentMode = false;
+        paymentCompleted = true;
+
+        document.getElementById('transactionInfo').innerText = '';
+    }
+</script>
+</body>
+</html>

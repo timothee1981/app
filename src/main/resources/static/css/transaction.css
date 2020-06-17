@@ -1,24 +1,29 @@
 * {box-sizing: border-box}
 * {font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif}
 
-h1{
+
+body {
+    background-color: #ebebeb;
     text-align: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+}
+/*}
+h1{
+
     margin: 0px;
     padding: 0px;
 }
 
 h3{
     text-align: center;
-    margin: auto;
+    margin: 0px;
     padding: 0px;
     min-height: 0px;
     height: auto;
-}
-body{
-    background-color: #ebebeb;
-    width: 100%;
-    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
-}
+}*/
 
 #form{
     display: grid;
@@ -34,27 +39,23 @@ form > * {
     height: 30px;
     width: 100%;
     border: none;
+    text-align: start;
 }
 label{
     margin-top: 2px;
-    position: relative;
-    align-content: end;
-    justify-content: end;
     vertical-align: bottom;
     grid-column: 2;
 }
 input, select {
     height: 45px;
-    border-radius: 3px;
     padding: 10px;
     grid-column: 2 ;
     background: #f5f5f5;
-
-    -webkit-box-shadow: 6px 6px 15px -6px rgba(0,0,0,0.18);
-    -moz-box-shadow: 6px 6px 15px -6px rgba(0,0,0,0.18);
-    box-shadow: 6px 6px 15px -6px rgba(0,0,0,0.18);
 }
 input + span, select + span {
+   vertical-align: center;
+    height: 45px;
+    margin: auto;
     grid-column: 3 ;
 }
 span + span {
@@ -67,28 +68,12 @@ option{
 }
 
 /*
-
-#formLeft{
-    width: 360px;
-    float:left;
-    margin-right: 30px;
-}
-
-#formRight{
-    width: 360px;
-    float:left;
-    margin-left: 30px;
-}
-*/
-
-
-
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+*/
 
 /* Firefox */
 input[type=number] {
@@ -97,36 +82,20 @@ input[type=number] {
 
 /* Add a background color when the inputs get focus */
 input:focus{
-    background-color: white;
+    background-color:  #ddd;
     outline: none;
 }
 
-/*input:disabled {
-    background: #dcdcdc;
-}*/
-
-/*
-input + span::before {
-    position: relative;
-    right: -20px;
-    top: 0px;
-}*/
-
 .isValid + span::before {
     content: '✓';
-    font-size: 1em;
-    color: #00b300;
-    position: relative;
-    margin-top: 6px;
-
+    font-size: 1.5em;
+    color: #1E90FF;
 
 }
-
 .isInvalid + span::before {
     content: '✗';
-    font-size: 1em;
-    color: #1E90FF;
-    margin-top: 6px;
+    font-size: 1.5em;
+    color: rgba(255, 0, 0, 0.6);
 }
 #backButton {
     grid-row: 14;
@@ -137,21 +106,16 @@ input + span::before {
 }
 /* Set a style button */
 button {
-    background-color: #1E90FF;
-    border-radius: 3px;
+    background-color: #1e90ff;
+    text-align: center;
     color: white;
     border: none;
     cursor: pointer;
-    opacity: 0.7;
+    font-size: 1em;
+    opacity: 0.9;
     grid-row: 14;
-
     height: 45px;
     width: 200px;
-
-    -webkit-box-shadow: 6px 6px 15px -6px rgba(0, 0, 0, 0.18);
-    -moz-box-shadow: 6px 6px 15px -6px rgba(0, 0, 0, 0.18);
-    box-shadow: 6px 6px 15px -6px rgba(0, 0, 0, 0.18);
-    cursor: pointer;
 }
 
 #submitButton {
@@ -159,7 +123,6 @@ button {
     grid-column: 2;
     align-self: end;
     justify-self: end;
-
 }
 
 #submitButton:disabled{

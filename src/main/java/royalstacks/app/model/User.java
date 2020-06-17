@@ -1,7 +1,6 @@
 package royalstacks.app.model;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import royalstacks.app.service.UserService;
 
 import javax.persistence.*;
 import java.util.Objects;

@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -15,7 +16,9 @@ public class Transaction {
     private String transactionId;
     private int fromAccountId;
     private int toAccountId;
+    @Indexed(direction = IndexDirection.DESCENDING)
     private BigDecimal amount;
+
     private String description;
     @Indexed(direction = IndexDirection.DESCENDING)
     private LocalDateTime date;

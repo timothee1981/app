@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import royalstacks.app.model.Customer;
@@ -11,12 +11,12 @@ import java.util.List;
 
 public class CustomerGenerator extends Gen {
 
-    public static List<Customer> generateCustomers(int amount, JSONArray jsonArray){
+    public static List<Customer> generateCustomers(JSONArray jsonArray){
         final String PASSWORD = "Auto!12345";
         Iterator<JSONObject> iterator = jsonArray.iterator();
         List<Customer> customers = new ArrayList<>();
-        int arrayTeller = 0;
-        while(iterator.hasNext() && arrayTeller < amount) {
+
+        while(iterator.hasNext()) {
             JSONObject person = iterator.next();
             String username = person.get("username").toString();
             System.out.println(username);
@@ -33,13 +33,12 @@ public class CustomerGenerator extends Gen {
             CustomerAddress address = new CustomerAddress(postcode, houseNumber, suffix, city, street);
             Customer customer = new Customer(username, PASSWORD, firstName, lastName, email, address, phoneNumber, bsn, null,  false);
             customers.add(customer);
-            arrayTeller++;
         }
         return customers;
     }
     public static String randomPostalCode(){
         final int MAX = 9999;
-        final int MIN = 1111;
+        final int MIN = 1000;
         final char MAX_CHAR = 'H';
         int number = Gen.randomInt(MIN, MAX);
         char letter1 =  Gen.randomChar(MAX_CHAR);
@@ -47,8 +46,8 @@ public class CustomerGenerator extends Gen {
         return String.format("%d%c%c", number, letter1, letter2);
     }
     public static String randomBsn(){
-        int MAX =999999999;
-        int MIN = 1;
+        final int MAX =999999999;
+        final int MIN = 1;
         int bsn = Gen.randomInt(MIN, MAX);
         return String.format("%09d", bsn);
     }

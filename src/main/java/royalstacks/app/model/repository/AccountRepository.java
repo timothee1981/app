@@ -25,6 +25,9 @@ public interface AccountRepository extends CrudRepository<Account,Integer> {
     @Query("SELECT a.accountId FROM Account a WHERE a.accountNumber = ?1")
     Optional<Integer> getAccountIdByAccountNumber(String accountNumber);
 
+    @Query("SELECT a.accountId FROM Account a WHERE a.accountNumber LIKE CONCAT('%%%%%%%%', ?1)")
+    Optional<Integer> getAccountIdByNumberExIban(String accountNumber);
+
     @Query("SELECT p FROM PrivateAccount p")
     Iterable<Account> findAllPrivateAccounts();
 

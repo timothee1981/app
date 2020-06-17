@@ -10,6 +10,7 @@ import royalstacks.app.model.repository.TransactionRepository;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +32,7 @@ public class TransactionService {
         this.transactionRepository = tr;
     }
 
-    public final boolean executeTransaction(Transaction t){
+    public final Optional<Transaction> executeTransaction(Transaction t){
         setAttributes(t);
 
         if(isTransactionValid()) {
@@ -39,10 +40,10 @@ public class TransactionService {
             saveTransaction();
 
             LOGGER.log(Level.INFO, "**** Transaction has been executed");
-            return true;
+            return Optional.of(transaction);
         } else {
             LOGGER.log(Level.SEVERE,"**** Transaction FAILED");
-            return false;
+            return Optional.ofNullable(null);
         }
     }
 
@@ -59,6 +60,7 @@ public class TransactionService {
     private void updateBalances(){
         this.fromAccount.subtractAmount(this.transaction.getAmount());
         accountService.saveAccount(this.fromAccount);
+
         this.toAccount.addAmount(this.transaction.getAmount());
         accountService.saveAccount(this.toAccount);
     }
@@ -99,13 +101,13 @@ public class TransactionService {
         if(transaction.getFromAccountId() == accountId) {
             accountFrom = accountService.getAccountById(transaction.getToAccountId());
             accountHolderTransaction = fillTransactionWithCorrectCalue(accountFrom,transaction);
-            accountHolderTransaction.setAmount(" - " + transaction.getAmount());
+            accountHolderTransaction.setDebit(transaction.getAmount());
 
             //IF ID ACCOUNT IS SAME AS ACCOUNT TO, THEN THEN MONEY GETS CREDITEN TO ACCOUNT
         }else if(transaction.getToAccountId() == accountId){
             accountFrom = accountService.getAccountById(transaction.getFromAccountId());
             accountHolderTransaction = fillTransactionWithCorrectCalue(accountFrom,transaction);
-            accountHolderTransaction.setAmount(" + " + transaction.getAmount());
+            accountHolderTransaction.setCredit(transaction.getAmount());
 
         }
         return accountHolderTransaction;
@@ -115,16 +117,14 @@ public class TransactionService {
     public AccountHolderTransaction fillTransactionWithCorrectCalue(Account accountFrom, Transaction transaction) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String datetime = transaction.getDate().format(formatter);
-        String name = null;
         String bankaccount = null;
         if(accountFrom != null) {
-            name = accountService.getAccountHolders(accountFrom).get(0).getLastName();
             bankaccount = accountFrom.getAccountNumber();
         }
         String description = transaction.getDescription();
 
 
-        return new AccountHolderTransaction(datetime,name,bankaccount,description,null);
+        return new AccountHolderTransaction(datetime,bankaccount,description,null,null);
     }
 
 

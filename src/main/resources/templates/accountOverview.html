@@ -34,107 +34,85 @@
             background-color: #ddd;
             outline: none;
         }
-
-        #logoutbutton{
-            padding: 0;
-            margin: 0;
-        }
-
         #Account_overview{
             width: 60%;
             margin-left: 20%;
         }
-
-
         table{
             width: 100%;
         }
-
+        h1, h2{
+            text-align: center;
+        }
         th{
             text-align: center;
-            font-family: Poppins-Regular, serif;
             font-size: 18px;
             color: #fff;
             line-height: 1.2;
-            font-weight: unset;
             padding-bottom: 19px;
             padding-top: 19px;
         }
-
         td{
             text-align: center;
-            font-family: Poppins-Regular, sans-serif;
             font-size: 15px;
             color: #666666;
             line-height: 1.2;
-            font-weight: unset;
             padding-top: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #f2f2f2;
         }
-
         thead{
             color: #ffffff;
             background: #1E90FF;
         }
-
         tr.trLink{
             cursor: pointer;
             border-collapse: collapse;
-
             background: #fff;
-
         }
-
         tr.trLink:hover{
-            opacity: 0.9;
-
+            background: rgba(30,144,255, 0.25);
         }
-
-
-
-
     </style>
 </head>
+
 <body th:object="${customer}">
 
-<div class="content">
-
-<div id="navbar" >
-    <a>
-        <form th:action="@{logoutAction}" method="post">
-            <input id="logoutbutton" type="submit" name="submitbutton" value="Logout"/>
-        </form>
-    </a>
+<div id="navbar">
+    <a href="/logoutAction">Logout</a>
+    <a id="openAccount">Open new account</a>
+    <a id="acceptInvite">Accept invite</a>
     <span id="logoNavbar"></span>
 </div>
 
+<div class="content">
+
 <div id="Account_overview">
     <h1>Account overview</h1>
-    <h2>Hello <span th:text="${customer.username}"></span></h2>
+    <h2>Hello <span th:text="${customer.firstName}"></span></h2>
     <form id="accountdetailsForm" th:action="@{/accountdetails}" method="get">
         <input id="inputdetails" type="hidden" value="dummy">
         <table id="accountdetailstable">
             <thead>
                 <tr>
-                    <th class="cell">Iban Account</th>
+                    <th class="cell">IBAN</th>
                     <th class="cell">Account balance</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="trLink" th:each="account : ${list}">
                     <td th:text="${account.accountNumber}"></td>
-                    <td><span th:text="${#numbers.formatDecimal(account.balance, 0, 2)}"></span></td>
+                    <td><span>€ </span> <span th:text="${#numbers.formatDecimal(account.balance, 0,'POINT', 2, 'COMMA')}"></span></td>
                 </tr>
             </tbody>
         </table>
     </form>
 
-    <form th:action="@{openaccount}"  method="get">
-        <input type="submit" name="submitbutton" value="Create a new account" />
+    <form id="openAccountForm" th:action="@{openaccount}"  method="get">
+        <input type="hidden" name="submitbutton" value="Create a new account" />
     </form>
-    <form th:action="@{acceptaccountholderinvite}"  method="get">
-        <input type="submit" name="submitbutton" value="Accept invite" />
+    <form id="acceptInviteForm" th:action="@{acceptaccountholderinvite}"  method="get">
+        <input type="hidden" name="submitbutton" value="Accept invite" />
     </form>
 </div>
 
@@ -150,24 +128,31 @@
 
     $(document).ready(function(){
 
+        //Go to account-details of specific account
         // add eventlistener to all table-cells - on click- go to account details
         document.querySelectorAll('#accountdetailstable tr')
         .forEach(e => e.addEventListener("click", function() {
-
-            //1 - get acountnumber clicked
+            // 1 - get acountnumber clicked
             // Here, `this` refers to the element the event was hooked on
             let accountnumber = this.cells[0].innerHTML;
 
-            //2 - fire get request with parameter to go to account details
-            //document.getElementById("accountdetailsForm").submit();
-
+            // 2 - fire get request with parameter to go to account details
             let input = $("<input>")
                 .attr("type", "hidden")
                 .attr("name", "accountNumber").val(accountnumber);
             $('#accountdetailsForm').append($(input)).submit();
         }));
+
+        // Open new account-action
+        document.getElementById("openAccount").addEventListener("click",function(){
+                document.getElementById("openAccountForm").submit();
+            })
+
+        // Accept account-holders invite
+        document.getElementById("acceptInvite").addEventListener("click",function(){
+            document.getElementById("acceptInviteForm").submit();
+        })
     })
 
-
 </script>
-<script type="text/javascript"></script>
+

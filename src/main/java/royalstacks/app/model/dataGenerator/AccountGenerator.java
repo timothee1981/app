@@ -1,4 +1,4 @@
-package royalstacks.app.model.DataGenerator;
+package royalstacks.app.model.dataGenerator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

@@ -3,6 +3,15 @@ const verificationCodeField = document.getElementById("verificationCode");
 const messageVerificationCodeInvalid = "Please enter a code consisting of five numbers."
 const messageAccountNumberInvalid = "Please enter a valid account number."
 
+function isAccountNumberFormatValid(){
+    let accountFormatRegex = new RegExp(/^nl[\d]{2}roya[\d]{10}$/i);
+    return (accountFormatRegex.test(accountNumberField.value));
+}
+
+function isAccountNumberProvided() {
+    return (accountNumberField.value.length !== 0);
+}
+
 function isVerificationCodeFormatValid(){
     let verificationCodeFormatRegex = new RegExp(/^[/\d]{5}?$/);
     return (verificationCodeFormatRegex.test(verificationCodeField.value));
@@ -12,28 +21,18 @@ function isVerificationCodeProvided() {
     return (verificationCodeField.value.length !== 0);
 }
 
-function isAccountNumberProvided() {
-    return (accountNumberField.value.length !== 0);
+function accountNumberFieldMessageHandler() {
+    if ((!isAccountNumberFormatValid()) || (!isAccountNumberProvided())) {
+        showMessage(messageAccountNumberInvalid, "accountNumberMessage");
+        //setClassInvalid("accountNumber");
+    }
 }
-
 
 function verificationCodeFieldMessageHandler() {
     if ((!isVerificationCodeFormatValid()) || (!isVerificationCodeProvided())) {
         showMessage(messageVerificationCodeInvalid, "verificationCodeMessage");
         //setClassInvalid("verificationCode");
     }
-}
-
-function accountNumberFieldMessageHandler() {
-    if (!isAccountNumberFormatValid() || (!isAccountNumberProvided())) {
-        showMessage(messageAccountNumberInvalid, "accountNumberMessage");
-        //setClassInvalid("accountNumber");
-    }
-}
-
-function isAccountNumberFormatValid(){
-    let accountFormatRegex = new RegExp(/^nl[\d]{2}roya[\d]{10}$/i);
-    return (accountFormatRegex.test(toAccountField.value));
 }
 
 function isAllInputValid(){
@@ -69,13 +68,13 @@ verificationCodeField.addEventListener("input", function() {
 
 
 function enableButton(){
-    if(document.getElementById("submitButton").disabled === true){
-        document.getElementById("submitButton").disabled = false;
+    if(document.getElementById("acceptButton").disabled === true){
+        document.getElementById("acceptButton").disabled = false;
     }
 }
 function disableButton(){
-    if(document.getElementById("submitButton").disabled === false) {
-        document.getElementById("submitButton").disabled = true;
+    if(document.getElementById("acceptButton").disabled === false) {
+        document.getElementById("acceptButton").disabled = true;
     }
 }
 

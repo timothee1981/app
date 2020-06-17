@@ -6,20 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
-import org.springframework.test.context.junit4.SpringRunner;
-import royalstacks.app.model.Account;
-import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.model.repository.AccountRepository;
 
 
-import javax.validation.constraints.AssertTrue;
 import java.math.BigDecimal;
 import java.util.Optional;
 

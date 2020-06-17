@@ -23,17 +23,20 @@ function createTable(top10transactions) {
         tbl = document.createElement('table');
     tbl.style.width = '65%';
     const headerRow = tbl.insertRow();
-    createTableHeader("First name", headerRow);
-    createTableHeader("Last name", headerRow);
+    createTableHeader("Company name", headerRow);
     createTableHeader("Number of transactions", headerRow);
     createTableHeader("Balance", headerRow);
 
     top10transactions.forEach(element => {
         const row = tbl.insertRow();
-        createTableCell(element.firstName, row);
-        createTableCell(element.lastName, row);
+        createTableCell(element.companyName, row);
         createTableCell(element.numberOfTransactions, row);
-        createTableCell(element.balance.toFixed(2), row);
+        createTableCell(
+            "€ " + element.balance.toLocaleString(
+                undefined,
+                {minimumFractionDigits: 2, maximumFractionDigits: 2}),
+            row
+        );
     });
     body.appendChild(tbl);
 }

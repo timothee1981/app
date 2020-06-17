@@ -21,6 +21,10 @@ class API {
         return this.fetch(url);
     }
 
+    isBusinessAccount(url) {
+        return this.fetch(url);
+    }
+
     cityAddress(){
         const header = new Headers;
         const TOKEN = "ccf855f3-4bd0-4cd6-8f12-25c9e254efd2";
