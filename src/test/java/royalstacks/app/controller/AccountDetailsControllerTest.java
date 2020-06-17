@@ -7,18 +7,22 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountDetailsBackingBean;
+import royalstacks.app.backingBean.TransactionBackingBean;
 import royalstacks.app.model.*;
 import royalstacks.app.service.*;
 
 import javax.swing.text.html.Option;
+import java.math.BigDecimal;
 import java.util.*;
 
 import static org.mockito.BDDMockito.given;
@@ -43,12 +47,46 @@ class AccountDetailsControllerTest {
     @MockBean
     private CustomerService customerService;
 
-    @MockBean
-    private AccountService accountService;
+    private AccountService accountService = Mockito.mock(AccountService.class);
 
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private  TransactionService transactionService;
 
+
+    @Test
+    void accountDetailsHandler() {
+        //ARRANGE
+        AccountDetailsController accountDetailsController = new AccountDetailsController();
+
+        //ACT
+        ModelAndView result = accountDetailsController.accountDetailsHandler(1,"NL79ROYA0008851012","NL79ROYA0008851012");
+
+
+        //ASSERT
+        String expected = "accountdetails";
+        assertEquals(expected , result.getViewName());
+
+    }
+
+
+    @Test
+    void getAccountdetailsbb() {
+        PrivateAccount account = new PrivateAccount("NL79ROYA1111111111",new BigDecimal("1337.00"));
+        account.setAccountId(1);
+
+        AccountDetailsBackingBean bbExpected = new AccountDetailsBackingBean("NL79ROYA1111111111", new BigDecimal("1337.00"));
+        bbExpected.setAccountId(1);
+        bbExpected.setAccountType("Private Account");
+
+       AccountDetailsController accountDetailsController = new AccountDetailsController();
+       AccountDetailsBackingBean bbActual =  accountDetailsController.getAccountdetailsbb(account);
+
+       assertEquals(bbExpected.getAccountNumber(),bbActual.getAccountNumber());
+
+
+    }
 
 }

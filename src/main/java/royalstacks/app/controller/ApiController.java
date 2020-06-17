@@ -3,6 +3,8 @@ package royalstacks.app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import royalstacks.app.model.Account;
+import royalstacks.app.model.AccountHolderTransaction;
 import royalstacks.app.model.BusinessAccount;
 import royalstacks.app.model.CompanyAndTransactions;
 import royalstacks.app.service.*;
@@ -18,14 +20,16 @@ public class ApiController {
     private CustomerService customerService;
     private BusinessAccountService businessAccountService;
     private PosService posService;
+    private TransactionService transactionService;
 
     @Autowired
-    public ApiController(AccountService as, UserService us, CustomerService cs,  BusinessAccountService bs, PosService ps){
+    public ApiController(AccountService as, UserService us, CustomerService cs,  BusinessAccountService bs, PosService ps, TransactionService ts){
         this.accountService = as;
         this.userService = us;
         this.customerService = cs;
         this.businessAccountService = bs;
         this.posService = ps;
+        this.transactionService = ts;
     }
 
     @GetMapping("/api/accountredirect")
@@ -81,5 +85,11 @@ public class ApiController {
     @ResponseBody
     public String ibanCheckHandler(@RequestBody String iban) throws Exception{
         return String.valueOf(accountService.getAccountByAccountNumber(iban).isPresent());
+    }
+
+    @GetMapping("/api/transactions")
+    public@ResponseBody List<AccountHolderTransaction> topTransactionList(@RequestParam String accountNumber){
+        Account account = accountService.getAccountFromAccountNumber(accountNumber);
+        return transactionService.getTenLastTransaction(account.getAccountId());
     }
 }

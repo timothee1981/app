@@ -52,7 +52,7 @@
     <div class="inforow">
         <div class = "infocell infoheader">Account holders</div>
         <Select  size="2" id="select" class="infocell" style="overflow-scrolling: auto">
-                <option id="option" th:each="customer : ${list}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></option>
+                <option id="option" th:each="customer : ${account.accountHolders}"><span th:text="${customer.firstName}"></span>  <span th:text="${customer.lastName}"></span></option>
         </Select>
     </div>
 </div>
