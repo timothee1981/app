@@ -44,7 +44,7 @@ public class AccountService {
         return accountRepository.getAccountIdByNumberExIban(accountNumber);
     }
 
-    public String createNewIban(){
+   /* public String createNewIban(){
         final String INITIAL_ACCOUNT = "XX00XXX0000000000";
         final String LANDCODE = "NL";
         final String BANKCODE = "ROYA";
@@ -61,7 +61,7 @@ public class AccountService {
         String controlNr = createControlNrFromAccountNr(accountNr11TestProof);
         return  LANDCODE + controlNr + BANKCODE + accountNr11TestProof;
     }
-
+*/
     public String incrementAccountNrByOne(String accountNr){
         BigInteger bigInteger = new BigInteger(accountNr).add(BigInteger.ONE);
         return  String.format("%010d", bigInteger);

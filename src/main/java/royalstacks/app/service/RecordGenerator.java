@@ -25,6 +25,8 @@ public class RecordGenerator {
     private AccountService accountService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private IBANCheckService ibanCheckService;
 
 
     public void generateAllRecords(int amountCustomers, int amountEmployees, int amountAccounts){
@@ -100,7 +102,7 @@ public class RecordGenerator {
     }
     public void privateAccountGenerator(int amount){
         for (int index = 0; index < amount; index++) {
-            PrivateAccount privateAccount = new PrivateAccount(accountService.createNewIban(), Account.getStartingBalance());
+            PrivateAccount privateAccount = new PrivateAccount(ibanCheckService.createNewIban(), Account.getStartingBalance());
             accountRepository.save(privateAccount);
         }
 
@@ -114,7 +116,7 @@ public class RecordGenerator {
          Sector sector = Sector.ICT_AND_MEDIA;
 
         for (int index = 0; index < amount; index++) {
-            BusinessAccount businessAccount = new BusinessAccount(accountService.createNewIban(), Account.getStartingBalance(), companyName, kvkNumber, vatNumber, sector);
+            BusinessAccount businessAccount = new BusinessAccount(ibanCheckService.createNewIban(), Account.getStartingBalance(), companyName, kvkNumber, vatNumber, sector);
             accountRepository.save(businessAccount);
         }
 

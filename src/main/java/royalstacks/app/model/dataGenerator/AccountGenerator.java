@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import royalstacks.app.model.*;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.model.dataGenerator.Gen;
+import royalstacks.app.service.IBANCheckService;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -75,10 +76,12 @@ public class AccountGenerator {
     private static String nextIban(String previousAccountNr){
         final String LANDCODE = "NL";
         final String BANKCODE = "ROYA";
+
+        IBANCheckService ibanCheckService = new IBANCheckService();
         AccountService accountService = new AccountService();
-        String accountNr = accountService.incrementAccountNrByOne(previousAccountNr);
-        accountNr = accountService.makeAccountNr11TestProof(accountNr);
-        String controlNr = accountService.createControlNrFromAccountNr(accountNr);
+        String accountNr = ibanCheckService.incrementAccountNrByOne(previousAccountNr);
+        accountNr = ibanCheckService.makeAccountNr11TestProof(accountNr);
+        String controlNr = ibanCheckService.createControlNrFromAccountNr(accountNr);
         return  LANDCODE + controlNr + BANKCODE + accountNr;
 
 
