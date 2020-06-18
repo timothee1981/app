@@ -10,6 +10,7 @@ import royalstacks.app.model.Customer;
 import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.model.repository.EmployeeRepository;
 import royalstacks.app.service.AccountService;
+import royalstacks.app.service.IBANCheckService;
 import royalstacks.app.service.UserService;
 
 @Controller
@@ -22,6 +23,9 @@ public class OpenAccountController {
     private UserService userService;
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private IBANCheckService ibanCheckService;
 
     public OpenAccountController() { super();
     }
@@ -43,7 +47,7 @@ public class OpenAccountController {
     //Do private account method
 
     private ModelAndView createPrivateAccount(Customer accountholder, OpenAccountBackingBean bb, ModelAndView mav) {
-        bb.setAccountNumber(accountService.createNewIban());
+        bb.setAccountNumber(ibanCheckService.createNewIban());
         PrivateAccount privateAccount = bb.privateAccount();
         privateAccount.getAccountHolders().add(accountholder);
         accountService.saveAccount(privateAccount);
@@ -56,7 +60,7 @@ public class OpenAccountController {
     //do business account view
 
     private ModelAndView createBusinessAccount(Customer accountholder, OpenAccountBackingBean bb, ModelAndView mav2) {
-        bb.setAccountNumber(accountService.createNewIban());
+        bb.setAccountNumber(ibanCheckService.createNewIban());
         BusinessAccount businessAccount = bb.businessAccount();
         businessAccount.getAccountHolders().add((accountholder));
         if(!accountholder.isBusinessAccountHolder()) {
