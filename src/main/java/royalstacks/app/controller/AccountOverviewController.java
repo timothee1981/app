@@ -11,13 +11,10 @@ import royalstacks.app.model.Customer;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Controller
-public class AccountOverviewController {
+public class AccountOverviewController implements GetCustomer {
     @Autowired
     UserService userService;
 
@@ -58,4 +55,8 @@ public class AccountOverviewController {
 
 
 
+    @Override
+    public Customer getCustomerByUserId(int userId) {
+        return (Customer) userService.findByUserId(userId);
+    }
 }

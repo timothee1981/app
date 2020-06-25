@@ -15,7 +15,7 @@ import royalstacks.app.service.TransactionService;
 import java.util.*;
 
 @Controller
-public class TransactionController {
+public class TransactionController implements GetCustomer {
 
     private static final String INVALID_INPUT = "Transaction failed: invalid input";
     private static final String TRANSACTION_SUCCESS = "Money successfully sent";
@@ -133,5 +133,12 @@ public class TransactionController {
             }
             model.addAttribute("account", myAccounts);
         }
+    }
+
+
+
+    @Override
+    public Customer getCustomerByUserId(int userId) {
+        return null;
     }
 }
