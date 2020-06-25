@@ -13,8 +13,10 @@ import royalstacks.app.service.AccountService;
 import royalstacks.app.service.IBANCheckService;
 import royalstacks.app.service.UserService;
 
+import java.util.Optional;
+
 @Controller
-public class OpenAccountController {
+public class OpenAccountController implements GetCustomer{
 
     @Autowired
     private AccountService accountService;
@@ -37,7 +39,7 @@ public class OpenAccountController {
     public ModelAndView createAccountHandler(@ModelAttribute ("account") OpenAccountBackingBean bb, @SessionAttribute("userid") int userId) {
         //int userId = (int) model.getAttribute("userid");
         ModelAndView mav2 = new ModelAndView("openaccount");
-        Customer accountholder  = (Customer) userService.findByUserId(userId);
+        Customer accountholder  = getCustomerByUserId(userId);
         if (bb.getAccountType().equals("business"))
             return createBusinessAccount(accountholder, bb,mav2);
         else
@@ -114,15 +116,8 @@ public class OpenAccountController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public Customer getCustomerByUserId(int userId) {
+        return (Customer) userService.findByUserId(userId);
+    }
 }

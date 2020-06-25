@@ -5,14 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import royalstacks.app.backingBean.AccountDetailsBackingBean;
-import royalstacks.app.model.AccountHolderTransaction;
 import royalstacks.app.model.*;
 import royalstacks.app.model.PrivateAccount;
 import royalstacks.app.service.AccountService;
 import royalstacks.app.service.TransactionService;
 import royalstacks.app.service.UserService;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.springframework.core.annotation.MergedAnnotations.from;
@@ -21,7 +19,7 @@ import static org.springframework.core.annotation.MergedAnnotations.from;
  * Auteur: Timothee Busch
  */
 @Controller
-public class AccountDetailsController {
+public class AccountDetailsController implements GetCustomer{
     @Autowired
     AccountService accountService;
 
@@ -79,7 +77,7 @@ public class AccountDetailsController {
     //METHODE DIE HAALT  ACCOUNTS DIE HOREN BIJ HET GEBRUIKER
 
     public List<Account> getAccountsFromUserId(int userId) {
-        Customer customer = (Customer) userService.findByUserId(userId);
+        Customer customer = getCustomerByUserId(userId);
 
         return new ArrayList<>(customer.getAccount());
     }
@@ -93,5 +91,10 @@ public class AccountDetailsController {
 
 
 
+
+    @Override
+    public Customer getCustomerByUserId(int userId) {
+        return (Customer) userService.findByUserId(userId);
+    }
 }
 
